@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html data-vue-meta-server-rendered lang="en" {{{ meta.inject().htmlAttrs.text() }}}>
+
+<head {{{ meta.inject().headAttrs.text() }}}>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.png" />
+    {{{ meta.inject().meta.text() }}}
+    {{{ meta.inject().title.text() }}}
+    {{{ meta.inject().link.text() }}}
+    {{{ meta.inject().style.text() }}}
+    {{{ meta.inject().script.text() }}}
+    {{{ meta.inject().noscript.text() }}}
+</head>
+
+<body {{{ meta.inject().bodyAttrs.text() }}}>
+    <!--vue-ssr-outlet-->
+    {{{ meta.inject().script.text({ body: true }) }}}
+</body>
+
+</html>
