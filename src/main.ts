@@ -1,11 +1,16 @@
-import Vue from "vue";
-import App from "./App.vue";
-import "./registerServiceWorker";
-import router from "./router";
+import Vue from 'vue'
+import App from './App.vue'
+import createRouter from './router'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount("#app");
+export default function createApp() {
+  const router = createRouter()
+  const app = new Vue({
+    router,
+    head: {},
+    render: h => h(App),
+  })
+
+  return { app, router }
+}
