@@ -8,10 +8,13 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "dev": "vapper dev",
-    "start": "vapper start"
+    "start": "vapper start",
+    "generate": "vapper generate",
+    "now-build": "yarn generate"
   },
   "dependencies": {
     "@vapper/core": "^0.16.4",
+    "@vapper/plugin-prerender": "^0.1.6",
     "@vue/composition-api": "^0.3.4",
     "core-js": "^3.4.3",
     "register-service-worker": "^1.6.2",
