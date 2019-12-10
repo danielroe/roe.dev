@@ -1,7 +1,7 @@
-<template>
-  <div :class="$style.home">
-    Welcome home
-  </div>
+<template functional>
+  <footer :class="$style.footer">
+    Footer
+  </footer>
 </template>
 
 <script lang="ts">
@@ -11,6 +11,6 @@ export default createComponent({})
 </script>
 
 <style lang="postcss" module>
-.home {
+.footer {
 }
 </style>
