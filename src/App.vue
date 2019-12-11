@@ -13,7 +13,7 @@ import TheSiteHeader from '@/components/layout/TheSiteHeader.vue'
 import TheSiteFooter from '@/components/layout/TheSiteFooter.vue'
 
 export default createComponent({
-  components: { TheSiteHeader, TheSiteFooter }
+  components: { TheSiteHeader, TheSiteFooter },
 })
 </script>
 
@@ -30,11 +30,21 @@ export default createComponent({
   -moz-osx-font-smoothing: grayscale;
 
   /* Body of site */
-  > header + * {
+  > nav + * {
     @apply flex-grow;
+
+    @apply mx-auto p-4 w-full;
+    max-width: 70ch;
+
+    header {
+      @apply text-2xl leading-tight;
+      margin: 5vw 0 1vw;
+    }
+    main {
+      @apply text-gray-300 text-lg;
+    }
   }
 
-  > header,
   > footer {
     @apply text-center mx-auto px-4 py-2;
     max-width: 50rem;

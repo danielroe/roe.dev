@@ -1,8 +1,9 @@
 module.exports = {
   theme: {
     fontFamily: {
-      sans: ['Barlow'],
-      serif: ['Vollkorn'],
+      sans: ['Barlow', 'sans-serif'],
+      code: ['Fira Code'],
+      serif: ['Vollkorn', 'serif'],
     },
     extend: {
       inset: {

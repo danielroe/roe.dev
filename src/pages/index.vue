@@ -1,6 +1,8 @@
 <template>
-  <div :class="$style.home">
-    Welcome home
+  <div>
+    <header>
+      <h2>Welcome!</h2>
+    </header>
   </div>
 </template>
 
@@ -9,12 +11,7 @@ import { createComponent } from '@vue/composition-api'
 
 export default createComponent({
   head: {
-    title: 'Home'
-  }
+    title: 'Home - Daniel Roe',
+  },
 })
 </script>
-
-<style lang="postcss" module>
-.home {
-}
-</style>
