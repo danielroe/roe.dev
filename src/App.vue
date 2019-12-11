@@ -9,8 +9,8 @@
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
 
-import TheSiteHeader from '@/views/layout/TheSiteHeader.vue'
-import TheSiteFooter from '@/views/layout/TheSiteFooter.vue'
+import TheSiteHeader from '@/components/layout/TheSiteHeader.vue'
+import TheSiteFooter from '@/components/layout/TheSiteFooter.vue'
 
 export default createComponent({
   components: { TheSiteHeader, TheSiteFooter }

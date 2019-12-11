@@ -1,22 +1,25 @@
-import Vue, { VueConstructor } from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import routes from 'vue-auto-routing'
+import { createRouterLayout } from 'vue-router-layout'
 
 Vue.use(VueRouter)
 
-const routes: RouteConfig[] = [
-  {
-    path: '/',
-    name: 'home',
-    component: (Home as unknown) as VueConstructor,
-  },
-]
+const RouterLayout = createRouterLayout(layout => {
+  return import('@/layouts/' + layout + '.vue')
+})
 
 const createRouter = () =>
   new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes,
+    routes: [
+      {
+        path: '/',
+        component: RouterLayout,
+        children: routes,
+      },
+    ],
   })
 
 export default createRouter
