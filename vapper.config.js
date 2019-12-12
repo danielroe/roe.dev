@@ -6,7 +6,7 @@ module.exports = {
     [
       '@vapper/plugin-prerender',
       {
-        routes: ['/'],
+        routes: ['/', '/about', '/blog', '/blog/test'],
       },
     ],
   ],

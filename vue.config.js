@@ -23,7 +23,6 @@ module.exports = {
       chunkNamePrefix: 'page-',
     },
   },
-  transpileDependencies: [/vue-auto-routing/, /auto-routing/],
   configureWebpack: {
     module: {
       rules: [

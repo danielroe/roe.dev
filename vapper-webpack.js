@@ -1,1 +1,1 @@
-module.exports = (api, options) => {}
+module.exports = (api, config) => {}
