@@ -1,9 +1,10 @@
 import Vue from 'vue'
+import VueCompositionApi from '@vue/composition-api'
+Vue.use(VueCompositionApi)
+
 import App from './App.vue'
 import createRouter from './router'
-import VueCompositionApi from '@vue/composition-api'
 
-Vue.use(VueCompositionApi)
 Vue.config.productionTip = false
 
 export default function createApp() {

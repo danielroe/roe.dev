@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="themeStyle">
     <TheSiteHeader />
     <router-view />
     <TheSiteFooter />
@@ -12,8 +12,17 @@ import { createComponent } from '@vue/composition-api'
 import TheSiteHeader from '@/components/layout/TheSiteHeader.vue'
 import TheSiteFooter from '@/components/layout/TheSiteFooter.vue'
 
+import { useTheme } from './utils/theme'
+
 export default createComponent({
   components: { TheSiteHeader, TheSiteFooter },
+  setup() {
+    const { themeStyle } = useTheme()
+
+    return {
+      themeStyle,
+    }
+  },
 })
 </script>
 
@@ -24,7 +33,8 @@ export default createComponent({
   @apply font-sans;
   @apply overflow-x-hidden min-h-screen;
   @apply flex flex-col;
-  @apply bg-gray-800 text-white;
+  background-color: var(--background, theme('colors.gray.800'));
+  color: var(--text-base, theme('colors.white'));
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -37,11 +47,27 @@ export default createComponent({
     max-width: 70ch;
 
     header {
-      @apply text-2xl leading-tight;
       margin: 5vw 0 1vw;
+      h2 {
+        @apply text-2xl leading-tight;
+      }
+      dl {
+        @apply flex flex-row flex-wrap;
+        @apply uppercase text-xs;
+      }
+      dt {
+      }
+      dd {
+        @apply font-semibold mx-2;
+
+        + dt {
+          @apply ml-2;
+        }
+      }
     }
     main {
-      @apply text-gray-300 text-lg;
+      @apply text-lg;
+      color: var(--text-muted, theme('colors.gray.300'));
     }
   }
 
