@@ -1,6 +1,6 @@
 ---
 title: A brief introduction
-date: 12122019T16:30Z
+date: '2019-12-12T16:30:00.000Z'
 ---
 
 After a long time without a blog, it's time to put pen to paper again.
