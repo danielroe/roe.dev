@@ -23,6 +23,10 @@ module.exports = {
       chunkNamePrefix: 'page-',
     },
   },
+  css: {
+    extract: true,
+    sourceMap: true,
+  },
   configureWebpack: {
     module: {
       rules: [
