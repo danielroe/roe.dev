@@ -1,1 +1,3 @@
-module.exports = (api, config) => {}
+module.exports = api => {
+  api.publicPath = '_'
+}
