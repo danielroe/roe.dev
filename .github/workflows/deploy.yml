@@ -1,0 +1,21 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  now:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Update blogs on dev.to
+        run: node scripts/publish.js
+        env:
+          DEVTO_TOKEN: ${{ secrets.DEVTO_TOKEN }}
