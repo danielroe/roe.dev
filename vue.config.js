@@ -14,6 +14,7 @@ const md = markdown({
   html: true,
   typographer: true,
   linkify: true,
+  quotes: '“”‘’',
   highlight: (code, lang) => {
     return highlighter.codeToHtml(code, lang)
   },
@@ -40,6 +41,9 @@ module.exports = {
               loader: 'frontmatter-markdown-loader',
               options: {
                 mode: [Mode.HTML],
+                vue: {
+                  root: 'md',
+                },
               },
               // use: [
               //   {
@@ -51,7 +55,9 @@ module.exports = {
               options: {
                 mode: [Mode.VUE_COMPONENT],
                 markdownIt: md,
-                root: 'article',
+                vue: {
+                  root: 'md',
+                },
               },
             },
           ],
