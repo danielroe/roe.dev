@@ -41,7 +41,7 @@ export default createComponent({
       return {
         component,
         title,
-        date,
+        date: date || '',
         formattedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       }
     } catch (e) {
@@ -73,6 +73,7 @@ export default createComponent({
   }
   pre {
     @apply font-code text-sm;
+    background-color: theme('colors.gray.900') !important;
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 1rem 50vw;

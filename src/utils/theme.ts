@@ -31,12 +31,14 @@ export function useTheme() {
     if (theme.value === 'light') {
       return {
         '--background': fullConfig.theme.colors.gray['200'],
+        '--accent': fullConfig.theme.colors.gray['100'],
         '--text-base': fullConfig.theme.colors.gray['800'],
         '--text-muted': fullConfig.theme.colors.gray['700'],
       }
     } else {
       return {
         '--background': fullConfig.theme.colors.gray['800'],
+        '--accent': fullConfig.theme.colors.gray['900'],
         '--text-base': fullConfig.theme.colors.white,
         '--text-muted': fullConfig.theme.colors.gray['300'],
       }

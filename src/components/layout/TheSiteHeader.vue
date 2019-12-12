@@ -37,14 +37,7 @@ export default createComponent({
 
   a {
     @apply outline-none;
-    @apply relative inline-block px-4 py-2;
-    &::after {
-      @apply block -mt-2 -mx-1 border-transparent;
-      transition: 0.3s border-color;
-      width: calc(100% + 0.5rem);
-      border-bottom-width: 8px;
-      content: '';
-    }
+    @apply px-4 py-2;
 
     &:hover,
     &:focus {

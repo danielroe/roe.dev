@@ -12,6 +12,8 @@ shiki
   })
 const md = markdown({
   html: true,
+  typographer: true,
+  linkify: true,
   highlight: (code, lang) => {
     return highlighter.codeToHtml(code, lang)
   },

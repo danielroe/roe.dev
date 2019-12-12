@@ -2,11 +2,7 @@
   <div :class="$style.index">
     <header><h2>Articles</h2></header>
     <main>
-      <article v-for="{ title, slug } in entries" :key="slug">
-        <router-link :to="`/blog/${slug}`">
-          {{ title }}
-        </router-link>
-      </article>
+      <BlogList />
     </main>
   </div>
 </template>
@@ -14,24 +10,12 @@
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
 
-const blogs = require.context('./', true, /.md$/, 'lazy')
+import BlogList from '@/components/BlogList.vue'
 
 export default createComponent({
+  components: { BlogList },
   head: {
     title: 'Blog',
-  },
-  setup() {
-    const entries = blogs.keys().map(key => {
-      const {
-        attributes: { title },
-      } = require(`${key}?meta`)
-      const slug = key.slice(2, -3)
-
-      return { title, slug }
-    })
-    return {
-      entries,
-    }
   },
 })
 </script>
