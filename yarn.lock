@@ -2005,7 +2005,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.9.0.tgz#24390e6ad61386b0a747265754d2a17219de862c"
   integrity sha512-Uvq6hVe90D0B2WEnUqtdgY1bATGz3mw33nH9Y+dmA+w5DHvUmBgkr5rM/KCHpCsiFNRUfokW/szpPPgMK2hm4A==
 
-axios@^0.19.0:
+axios@0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.0.tgz#8e09bff3d9122e133f7b8101c8fbdd00ed3d2ab8"
   integrity sha512-1uvKqKQta3KBxIz14F2v06AEHZ/dIoeKfbTRkK1E5oqjDnuEerLmYTgJB5AiQZHJcljpg1TuRzdjDR06qNk0DQ==
@@ -4638,7 +4638,7 @@ front-matter@^3.0.1:
   dependencies:
     js-yaml "^3.13.1"
 
-frontmatter-markdown-loader@^3.1.0:
+frontmatter-markdown-loader@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/frontmatter-markdown-loader/-/frontmatter-markdown-loader-3.1.0.tgz#5988e8b6d0c0b166b695fd5422ce6d46c2509ad4"
   integrity sha512-sq1YUhV3L5cTutLwGtwXydF2/3Mg2o8nNYMsC1TJoCyYGLIK2rwKG+ZG9g8vXfjo7AO02uceOMiT3Kap5XWDAw==
@@ -9501,7 +9501,7 @@ shiki-themes@^0.1.5:
     json5 "^2.1.0"
     vscode-textmate "https://github.com/octref/vscode-textmate"
 
-shiki@^0.1.6:
+shiki@0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/shiki/-/shiki-0.1.6.tgz#1db16acbb840cd275b196ff2829781b483aef54e"
   integrity sha512-qG/T0bqNxcLM6nvoX0MZKjAzU14P6j5KutFhjCvnNHGfDmH1Z0VL/KQ/kMmtcGRlXfnlaMBXxniMnGGE7DhJRg==
@@ -9509,7 +9509,7 @@ shiki@^0.1.6:
     onigasm "^2.2.1"
     shiki-languages "^0.1.6"
     shiki-themes "^0.1.5"
-    vscode-textmate "https://github.com/octref/vscode-textmate"
+    vscode-textmate "git+https://github.com/octref/vscode-textmate.git"
 
 sigmund@^1.0.1:
   version "1.0.1"
@@ -10700,6 +10700,11 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+"vscode-textmate@git+https://github.com/octref/vscode-textmate.git":
+  version "4.0.1"
+  uid e65aabe2227febda7beaad31dd0fca1228c5ddf3
+  resolved "git+https://github.com/octref/vscode-textmate.git#e65aabe2227febda7beaad31dd0fca1228c5ddf3"
+
 "vscode-textmate@https://github.com/octref/vscode-textmate":
   version "4.0.1"
   resolved "https://github.com/octref/vscode-textmate#e65aabe2227febda7beaad31dd0fca1228c5ddf3"
@@ -10755,7 +10760,7 @@ vue-meta@^2.0.5:
   dependencies:
     deepmerge "^4.0.0"
 
-vue-router-layout@^0.1.2:
+vue-router-layout@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/vue-router-layout/-/vue-router-layout-0.1.5.tgz#4e0454d10428a114be91d6458ffa4242664c6d70"
   integrity sha512-EKH9tWDQ6v8scSfbViFfrqqFz9gOpLoVfDzR/h2exZfVnSw3VAcDuuU+a9r7hSaKYyvki5H1wmv6e5j0KWwypQ==
@@ -10800,7 +10805,7 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue-use-web@^0.10.0:
+vue-use-web@0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/vue-use-web/-/vue-use-web-0.10.0.tgz#73a50d5e1a8436b2b218f4cd2ab5f85ada12d6e8"
   integrity sha512-pXyKCICKeInVIpLbt92WzEaGSm9LwyeVmv9iLo0nwCa5aScJGkqWiJ0X5pHkhEYOMfe0YYG5w8w8fdHQZu6rmA==
