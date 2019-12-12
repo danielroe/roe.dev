@@ -1,5 +1,6 @@
 ---
 title: This is the article title
+date: 2019-12-11
 ---
 
 ### Subheading

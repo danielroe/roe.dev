@@ -2,6 +2,12 @@
   <article v-if="title" :class="$style.blog">
     <header>
       <h2>{{ title }}</h2>
+      <dl v-if="date && formattedDate">
+        <dt>Published</dt>
+        <dd>
+          <time :datetime="date">{{ formattedDate }}</time>
+        </dd>
+      </dl>
     </header>
     <main>
       <component :is="component" />
@@ -24,16 +30,19 @@ export default createComponent({
     const slug = root.$route.params.article
     if (!slug) root.$router.push('/blog')
 
-    let title: string
-    let component: VueConstructor
-
     try {
-      const article = require(`./${slug}.md`)
-      title = article.attributes.title
-      component = article.vue.component
+      const {
+        attributes: { title, date },
+        vue: { component },
+      } = require(`./${slug}.md`)
+
+      const d = new Date(date)
+
       return {
         component,
         title,
+        date,
+        formattedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       }
     } catch (e) {
       root.$router.push('/blog')

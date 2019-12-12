@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.index">
-    <header>Articles</header>
+    <header><h2>Articles</h2></header>
     <main>
       <article v-for="{ title, slug } in entries" :key="slug">
         <router-link :to="`/blog/${slug}`">
