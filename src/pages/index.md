@@ -1,5 +1,5 @@
 Daniel is Chief Technology Officer at
-<a href="https://parentscheme.com/">Parent Scheme</a>.
+[Parent Scheme](https://parentscheme.com).
 He believes in the power of combining a clear
 brand, beautiful design and leading technology
 to engage users and drive business growth. He
