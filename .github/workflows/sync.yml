@@ -1,4 +1,4 @@
-name: deploy
+name: sync
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  now:
+  sync_devto:
     runs-on: ubuntu-latest
 
     steps:
