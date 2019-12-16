@@ -7,6 +7,12 @@
         <dd>
           <time :datetime="date">{{ formattedDate }}</time>
         </dd>
+        <template v-if="tags && tags.length">
+          <dt>Tags</dt>
+          <dd>
+            <span v-for="tag in tags" :key="tag" v-text="tag" />
+          </dd>
+        </template>
       </dl>
     </header>
     <main>
@@ -32,7 +38,7 @@ export default createComponent({
 
     try {
       const {
-        attributes: { title, date },
+        attributes: { title, date, tags },
         vue: { component },
       } = require(`./${slug}.md`)
 
@@ -41,6 +47,7 @@ export default createComponent({
       return {
         component,
         title,
+        tags: tags || [],
         date: date || '',
         formattedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       }
@@ -66,9 +73,17 @@ export default createComponent({
   }
   p {
     + pre,
-    + p,
-    + ul {
+    + p {
       @apply mt-4;
+    }
+
+    + ul,
+    + ol {
+      @apply my-2;
+    }
+
+    + table {
+      @apply my-4;
     }
   }
   pre {
@@ -87,10 +102,14 @@ export default createComponent({
 
     li {
       counter-increment: list;
-      @apply my-2;
+      @apply my-4;
       &::before {
         @apply -ml-6 mr-2 inline-block font-semibold leading-none;
         width: 1rem;
+      }
+
+      > :first-child {
+        @apply inline-block;
       }
     }
   }

@@ -63,6 +63,15 @@ export default createComponent({
         + dt {
           @apply ml-2;
         }
+
+        > span {
+          + span {
+            &::before {
+              @apply mx-1 inline-block font-bold;
+              content: '•';
+            }
+          }
+        }
       }
     }
     main {
