@@ -4,6 +4,7 @@
       v-for="{ title, slug, date } in entries"
       :key="slug"
       :to="`/blog/${slug}`"
+      :title="title"
     >
       <article>
         <header>
