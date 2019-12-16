@@ -34,7 +34,7 @@ export default createComponent({
       const {
         attributes: { title, date },
         vue: { component },
-      } = require(`./${slug}.md`)
+      } = require(`./articles/${slug}.md`)
 
       const d = new Date(date)
 
