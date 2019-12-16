@@ -15,12 +15,14 @@
 import { createComponent } from '@vue/composition-api'
 
 import BlogList from '@/components/BlogList.vue'
-import home from './index.md'
 
 export default createComponent({
   components: {
-    HomePage: home.vue.component,
     BlogList,
+    HomePage: async () => {
+      const content = await import('@/content/index.md')
+      return content.vue.component
+    },
   },
   head: {
     title: 'Home - Daniel Roe',

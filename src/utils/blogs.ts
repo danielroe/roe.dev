@@ -1,10 +1,10 @@
-const blogs = require.context('../pages/blog/', true, /.md$/, 'lazy')
+const blogs = require.context('@/content/articles/', true, /.md$/, 'lazy')
 
 export const useBlogEntries = () => {
   const entries = blogs.keys().map(key => {
     const {
       attributes: { title, date },
-    } = require(`../pages/blog/${key.slice(2)}?meta`)
+    } = require(`@/content/articles/${key.slice(2)}?meta`)
     const slug = key.slice(2, -3)
 
     return { title, slug, date }
