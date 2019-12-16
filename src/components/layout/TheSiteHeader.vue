@@ -9,7 +9,9 @@
       <!-- <li><router-link to="/about">About</router-link></li> -->
       <li><router-link to="/blog">Blog</router-link></li>
     </ul>
-    <button @click="toggleTheme" />
+    <button @click="toggleTheme">
+      <span />
+    </button>
   </nav>
 </template>
 
@@ -58,15 +60,18 @@ export default createComponent({
     @apply font-semibold;
   }
   > :last-child {
-    @apply rounded-full h-4 w-4 border-2 border-solid outline-none;
+    @apply p-2;
+    span {
+      @apply block rounded-full h-4 w-4 border-2 border-solid outline-none;
 
-    border-color: var(--background, theme('colors.white'));
-    background-color: var(--text-base, theme('colors.gray.800'));
-
+      border-color: var(--background, theme('colors.white'));
+      background-color: var(--text-base, theme('colors.gray.800'));
+    }
     transition: 0.3s opacity;
 
     &:hover,
     &:focus {
+      @apply outline-none;
       opacity: 0.7;
     }
   }
