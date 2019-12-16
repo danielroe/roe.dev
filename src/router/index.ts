@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { VueConstructor } from 'vue'
 import VueRouter from 'vue-router'
 import DefaultLayout from '@/layouts/default.vue'
 
@@ -45,7 +45,7 @@ const createRouter = () =>
     routes: [
       {
         path: '/',
-        component: DefaultLayout,
+        component: DefaultLayout as VueConstructor<Vue>,
         children: routes,
       },
     ],
