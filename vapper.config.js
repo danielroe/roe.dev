@@ -8,7 +8,13 @@ module.exports = {
     [
       '@vapper/plugin-prerender',
       {
-        routes: ['/', '/blog', '/blog/introduction'],
+        routes: [
+          '/',
+          '/work',
+          '/blog',
+          '/blog/introduction',
+          '/blog/good-ux-and-giving-birth',
+        ],
       },
     ],
   ],
