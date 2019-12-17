@@ -21,7 +21,7 @@ The app is made by [The Positive Birth Company](https://thepositivebirthcompany.
 
 Their mission is to empower women and their birth partners. That resonated with us. In fact, we traveled 370 miles to attend one of their courses.
 
-![The Positive Birth Company video still](@/assets/images/pbc.jpg)
+![The Positive Birth Company video still](/img/pbc.jpg)
 
 ### Aesthetics and purpose
 
@@ -29,9 +29,9 @@ I mention Freya because I think its interface is noteworthy.
 
 Looking at it, you'll observe that it's simple and attractive. Modern colours and gradients prevail, with smooth transitions and gently-pulsing animations.
 
-|                                                                                                                                        |                                                                                                                                   |                                                                                                                             |
-| -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| ![Freya app screenshot: 'Freya will help you to relax with calming visualisations and guided meditation.'](@/assets/images/freya1.jpg) | ![Freya app screenshot: 'Freya will coach you through each surge with a simple breathing technique.'](@/assets/images/freya2.jpg) | ![Freya app screenshot: 'Use our surge timer to keep track of how your labour is progressing.'](@/assets/images/freya3.jpg) |
+|                                                                                                                             |                                                                                                                        |                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| ![Freya app screenshot: 'Freya will help you to relax with calming visualisations and guided meditation.'](/img/freya1.jpg) | ![Freya app screenshot: 'Freya will coach you through each surge with a simple breathing technique.'](/img/freya2.jpg) | ![Freya app screenshot: 'Use our surge timer to keep track of how your labour is progressing.'](/img/freya3.jpg) |
 
 But it's not just about pretty UI.
 

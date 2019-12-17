@@ -36,11 +36,11 @@ function getMatchOrReturn(haystack, needle, index = 0) {
 
 async function getMarkdownArticles() {
   const articles = []
-  iterateOnDirectory('../src/pages/blog', (path, contents) => {
+  iterateOnDirectory('../src/content/articles', (path, contents) => {
     if (!/\.md$/.test(path)) return
     const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
     articles.push({
-      body_markdown: contents,
+      body_markdown: contents.replace(/\(\//, '(https://roe.dev/'),
       title: getMatchOrReturn(contents, /title: (.*)/, 1),
       slug,
       canonical_url: `https://roe.dev/blog/${slug}/`,
@@ -107,9 +107,8 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
 }
 
 getArticles().then(async articles => {
-  //   console.log('TCL: articles', articles)
   const markdownArticles = await getMarkdownArticles()
-  //   console.log('TCL: markdownArticles', markdownArticles)
+  // console.log('TCL: markdownArticles', markdownArticles)
   markdownArticles.forEach(markdownArticle => {
     const article = articles.find(
       article => article.canonical_url === markdownArticle.canonical_url,
@@ -122,21 +121,3 @@ getArticles().then(async articles => {
     }
   })
 })
-
-// console.log(getArticles())
-
-// ARTICLES=$()
-
-// ARTICLE=$(cat ../src/pages)
-
-// curl --silent --show-error --fail \
-//     -X POST "${API_URL}/articles" \
-//     -H "api-key: ${DEVTO_TOKEN}" \
-//     -H "Content-Type: text/json; charset=utf-8" \
-//     -d @- <<EOF
-// {
-//     "article": {
-//         "body_markdown": "${ARTICLE}"
-//     }
-// }
-// EOF
