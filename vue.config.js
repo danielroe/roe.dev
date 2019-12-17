@@ -45,10 +45,6 @@ module.exports = {
                   root: 'md',
                 },
               },
-              // use: [
-              //   {
-              //   },
-              // ],
             },
             {
               loader: 'frontmatter-markdown-loader',
@@ -62,13 +58,6 @@ module.exports = {
             },
           ],
         },
-        // {
-        //   test: /\.md$/,
-        // },
-        // {
-        //   test: /.mdx?$/,
-        //   use: ['babel-loader', '@mdx-js/vue-loader'],
-        // },
       ],
     },
   },
