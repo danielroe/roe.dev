@@ -6,7 +6,7 @@
           <router-link to="/" title="Daniel Roe">DCR</router-link>
         </h1>
       </li>
-      <!-- <li><router-link to="/about">About</router-link></li> -->
+      <li><router-link to="/work">Work</router-link></li>
       <li><router-link to="/blog">Blog</router-link></li>
     </ul>
     <button aria-label="Change site theme" @click="toggleTheme">

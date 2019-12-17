@@ -6,8 +6,8 @@ Vue.use(VueRouter)
 
 const Index = () =>
   import(/* webpackChunkName: "page-index" */ '@/pages/index.vue')
-// const About = () =>
-//   import(/* webpackChunkName: "page-about" */ '@/pages/about.vue')
+const Work = () =>
+  import(/* webpackChunkName: "page-work" */ '@/pages/work.vue')
 const BlogIndex = () =>
   import(/* webpackChunkName: "page-blog-index" */ '@/pages/blog/index.vue')
 const BlogArticle = () =>
@@ -21,11 +21,11 @@ const routes = [
     path: '',
     component: Index,
   },
-  // {
-  //   name: 'about',
-  //   path: 'about',
-  //   component: About,
-  // },
+  {
+    name: 'work',
+    path: 'work',
+    component: Work,
+  },
   {
     name: 'blog-index',
     path: 'blog',

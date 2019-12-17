@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="themeStyle">
+  <div id="app" :class="theme" :style="themeStyle">
     <TheSiteHeader />
     <router-view />
     <TheSiteFooter />
@@ -17,10 +17,11 @@ import { useTheme } from './utils/theme'
 export default createComponent({
   components: { TheSiteHeader, TheSiteFooter },
   setup() {
-    const { themeStyle } = useTheme()
+    const { themeStyle, theme } = useTheme()
 
     return {
       themeStyle,
+      theme,
     }
   },
 })
