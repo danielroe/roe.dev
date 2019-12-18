@@ -8,6 +8,9 @@
     </main>
     <h3>Recent articles</h3>
     <BlogList :limit="4" />
+
+    <h3>Projects</h3>
+    <GithubRepos />
   </div>
 </template>
 
@@ -15,11 +18,13 @@
 import { createComponent } from '@vue/composition-api'
 
 import BlogList from '@/components/BlogList.vue'
+import GithubRepos from '@/components/GithubRepos.vue'
 import home from '@/content/index.md'
 
 export default createComponent({
   components: {
     BlogList,
+    GithubRepos,
     HomePage: home.vue.component,
   },
   head: {
