@@ -6,7 +6,7 @@ const url = 'https://dev.to/api'
 const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
 async function getMarkdownArticles() {
   const articles = []
-  iterateOnDirectory('../src/content/articles', (path, contents) => {
+  iterateOnDirectory('./src/content/articles', (path, contents) => {
     if (!/\.md$/.test(path)) return
     const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
     articles.push({
