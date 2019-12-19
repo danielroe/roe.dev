@@ -64,13 +64,18 @@ export default createComponent({
 <style lang="postcss" module>
 .blog {
   h3 {
-    @apply text-xl mt-8;
+    @apply text-xl;
   }
 
   h4 {
-    @apply uppercase text-sm mt-8;
+    @apply uppercase text-sm;
     letter-spacing: 0.1rem;
   }
+  * + h3,
+  * + h4 {
+    @apply mt-8;
+  }
+
   p {
     + pre,
     + p {
@@ -86,6 +91,21 @@ export default createComponent({
       @apply my-4;
     }
   }
+  p > code,
+  li > code {
+    @apply px-2 py-1 mx-1 text-sm;
+
+    color: var(--background, theme('colors.gray.800'));
+    background-color: var(--text-base, theme('colors.white'));
+  }
+  p ~ div {
+    @apply mt-4 py-1 uppercase text-xs font-bold text-gray-600;
+    letter-spacing: 0.15rem;
+    background-color: theme('colors.gray.900');
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 1rem 50vw;
+  }
   pre {
     @apply font-code text-sm;
     background-color: theme('colors.gray.900') !important;
@@ -95,16 +115,27 @@ export default createComponent({
     @media (width < 767px) {
       white-space: pre-wrap;
     }
+
+    + * {
+      @apply mt-4;
+    }
+    + h3,
+    + h4 {
+      @apply mt-8;
+    }
+  }
+  blockquote {
+    @apply pl-4 border-l-4;
   }
   ol,
   ul {
     @apply pl-6;
 
     li {
-      counter-increment: list;
       @apply my-4;
+      counter-increment: list;
       &::before {
-        @apply -ml-6 mr-2 inline-block font-semibold leading-none;
+        @apply -ml-6 mt-2 mr-2 inline-block font-semibold leading-none;
         width: 1rem;
       }
 
