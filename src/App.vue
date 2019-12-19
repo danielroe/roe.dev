@@ -28,7 +28,7 @@ export default createComponent({
 </script>
 
 <style lang="postcss">
-@import 'assets/styles/tailwind.postcss';
+@tailwind base;
 
 #app {
   @apply font-sans;
@@ -72,6 +72,17 @@ export default createComponent({
               content: '•';
             }
           }
+        }
+      }
+      @media (width < 767px) {
+        dl {
+          @apply block;
+        }
+        dt {
+          @apply float-left mr-2;
+        }
+        dd + dt {
+          @apply ml-0;
         }
       }
     }
