@@ -1,6 +1,6 @@
 <template functional>
   <footer :class="$style.footer">
-    &copy; 2018-2019 Daniel Roe. All rights reserved.
+    <small>&copy; 2018-2019 Daniel Roe. All rights reserved.</small>
   </footer>
 </template>
 
@@ -12,7 +12,7 @@ export default createComponent({})
 
 <style lang="postcss" module>
 .footer {
-  @apply text-sm relative;
+  @apply relative;
 
   &::before {
     @apply block mx-auto my-4;

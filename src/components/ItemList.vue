@@ -1,14 +1,8 @@
 <template functional>
-  <aside :class="[$style.list, data.staticClass, data.class]">
+  <section :class="[$style.list, data.staticClass, data.class]">
     <slot />
-  </aside>
+  </section>
 </template>
-
-<script lang="ts">
-import { createComponent } from '@vue/composition-api'
-
-export default createComponent({})
-</script>
 
 <style lang="postcss" module>
 .list {
