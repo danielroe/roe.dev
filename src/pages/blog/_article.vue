@@ -25,11 +25,27 @@
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
 import { VueConstructor } from 'vue'
+import { Route } from 'vue-router'
+
+import { getMatchOrReturn } from '../../utils/global'
 
 export default createComponent({
-  head(this: { title: string }) {
+  head(this: { title: string; description: string; $route: Route }) {
+    const slug = getMatchOrReturn(this.$route.fullPath, /\/([^/]*)\/?$/, 1)
     return {
       title: this.title,
+      meta: [
+        {
+          name: 'description',
+          content: this.description,
+          vmid: 'description',
+        },
+        { property: 'og:image', content: `/og/${slug}.jpg` },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:title', content: this.title },
+        { property: 'og:description', content: this.description },
+      ],
     }
   },
   setup(props, { root }) {
@@ -38,7 +54,7 @@ export default createComponent({
 
     try {
       const {
-        attributes: { title, date, tags },
+        attributes: { title, date, tags, description },
         vue: { component },
       } = require(`@/content/articles/${slug}.md`)
 
@@ -49,12 +65,14 @@ export default createComponent({
         title,
         tags: tags || [],
         date: date || '',
+        description,
         formattedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       }
     } catch (e) {
       root.$router.push('/blog')
       return {
         title: '',
+        description: '',
       }
     }
   },

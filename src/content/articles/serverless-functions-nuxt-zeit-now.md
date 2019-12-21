@@ -6,6 +6,7 @@ tags:
   - now
   - serverless
   - zeit
+description: If you are using ZEIT Now to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your Now serverless functions. Here's how.
 ---
 
 When building a modern web application, you might want to use serverless functions (or lambdas). For example:

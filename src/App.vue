@@ -8,14 +8,30 @@
 
 <script lang="ts">
 import { createComponent } from '@vue/composition-api'
+import { Route } from 'vue-router'
 
 import TheSiteHeader from '@/components/layout/TheSiteHeader.vue'
 import TheSiteFooter from '@/components/layout/TheSiteFooter.vue'
 
 import { useTheme } from './utils/theme'
+import { getMatchOrReturn } from './utils/global'
 
 export default createComponent({
   components: { TheSiteHeader, TheSiteFooter },
+  head(this: { $route: Route }) {
+    const path = getMatchOrReturn(this.$route.fullPath, /(.*[^/])\/?$/, 1)
+    const url = `https://roe.dev${path}`
+
+    return {
+      meta: [{ property: 'og:url', content: url }],
+      link: [
+        {
+          rel: 'canonical',
+          href: url,
+        },
+      ],
+    }
+  },
   setup() {
     const { themeStyle, theme } = useTheme()
 
@@ -48,12 +64,14 @@ export default createComponent({
     max-width: 70ch;
 
     header {
+      @apply leading-none;
       margin: 5vw 0 1vw;
       h2 {
-        @apply text-2xl leading-tight;
+        @apply text-2xl;
       }
       dl {
-        @apply flex flex-row flex-wrap;
+        @apply flex flex-row flex-wrap mt-1;
+        @apply leading-normal;
         @apply uppercase text-xs;
       }
       dt {

@@ -5,6 +5,7 @@ tags:
   - personal
   - ux
   - brand
+description: A review of Freya, an app that's head-and-shoulders above the rest.
 ---
 
 I'm absolutely over the moon. My little son was born on Friday! 🎉

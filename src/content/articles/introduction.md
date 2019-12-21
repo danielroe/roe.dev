@@ -3,6 +3,7 @@ title: A brief introduction
 date: '2019-12-12T16:30:00.000Z'
 tags:
   - personal
+description: After a long time without a blog, it's time to put pen to paper again.
 ---
 
 After a long time without a blog, it's time to put pen to paper again.
