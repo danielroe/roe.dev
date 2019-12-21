@@ -23,7 +23,21 @@ export default createComponent({
     const url = `https://roe.dev${path}`
 
     return {
-      meta: [{ property: 'og:url', content: url }],
+      meta: [
+        { property: 'og:url', content: url },
+        { property: 'og:image', content: `/og/og.jpg` },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        {
+          name: 'description',
+          content: `The personal website of Daniel Roe`,
+          vmid: 'description',
+        },
+        {
+          property: 'og:description',
+          content: `The personal website of Daniel Roe`,
+        },
+      ],
       link: [
         {
           rel: 'canonical',

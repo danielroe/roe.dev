@@ -29,7 +29,7 @@ const clients = {
 
 export default createComponent({
   head: {
-    title: 'Work - Daniel Roe',
+    title: 'Work',
   },
   setup() {
     return {

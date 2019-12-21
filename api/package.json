@@ -1,0 +1,19 @@
+{
+  "name": "roe-dev-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "now-build": "node build.js"
+  },
+  "dependencies": {
+    "chrome-aws-lambda": "^2.0.1",
+    "puppeteer-core": "^2.0.0",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.21",
+    "@types/puppeteer-core": "^2.0.0",
+    "gray-matter": "^4.0.2"
+  }
+}

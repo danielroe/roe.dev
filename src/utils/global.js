@@ -30,7 +30,17 @@ function getMatchOrReturn(haystack, needle, index = 0) {
   return matches[index]
 }
 
+/**
+ * @type {(message: string, filename: string, contents: string) => void} writeFile
+ */
+function writeFile(message, filename, contents) {
+  if (fs && fs.writeFileSync) {
+    return fs.writeFileSync(filename, contents)
+  }
+}
+
 module.exports = {
   iterateOnDirectory,
   getMatchOrReturn,
+  writeFile,
 }

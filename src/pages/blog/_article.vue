@@ -41,8 +41,6 @@ export default createComponent({
           vmid: 'description',
         },
         { property: 'og:image', content: `/og/${slug}.jpg` },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
         { property: 'og:title', content: this.title },
         { property: 'og:description', content: this.description },
       ],

@@ -28,7 +28,8 @@ export default createComponent({
     HomePage: home.vue.component,
   },
   head: {
-    title: 'Home - Daniel Roe',
+    title: 'Daniel Roe',
+    meta: [{ property: 'og:title', content: `Daniel Roe` }],
   },
 })
 </script>
