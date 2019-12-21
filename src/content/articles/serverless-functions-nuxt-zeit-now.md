@@ -5,6 +5,7 @@ tags:
   - nuxt
   - now
   - serverless
+  - zeit
 ---
 
 When building a modern web application, you might want to use serverless functions (or lambdas). For example:
