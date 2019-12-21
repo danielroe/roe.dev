@@ -29,7 +29,7 @@ export default createComponent({
   },
   head: {
     title: 'Daniel Roe',
-    meta: [{ property: 'og:title', content: `Daniel Roe` }],
+    meta: [{ vmid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
   },
 })
 </script>

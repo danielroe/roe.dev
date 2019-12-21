@@ -40,9 +40,13 @@ export default createComponent({
           content: this.description,
           vmid: 'description',
         },
-        { property: 'og:image', content: `/og/${slug}.jpg` },
-        { property: 'og:title', content: this.title },
-        { property: 'og:description', content: this.description },
+        { vmid: 'og:image', property: 'og:image', content: `/og/${slug}.jpg` },
+        { vmid: 'og:title', property: 'og:title', content: this.title },
+        {
+          vmid: 'og:description',
+          property: 'og:description',
+          content: this.description,
+        },
       ],
     }
   },

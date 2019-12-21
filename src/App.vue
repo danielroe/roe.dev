@@ -25,7 +25,7 @@ export default createComponent({
     return {
       meta: [
         { property: 'og:url', content: url },
-        { property: 'og:image', content: `/og/og.jpg` },
+        { vmid: 'og:image', property: 'og:image', content: `/og/og.jpg` },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
         {
@@ -36,6 +36,7 @@ export default createComponent({
         {
           property: 'og:description',
           content: `The personal website of Daniel Roe`,
+          vmid: 'og:description',
         },
       ],
       link: [
