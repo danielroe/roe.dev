@@ -78,28 +78,51 @@ header {
   line-height: 1;
 }
 dl {
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
+  line-height: 1.3;
   color: #e2e8f0;
   text-transform: uppercase;
-  display: flex;
+  display: block;
   flex-direction: row;
   font-size: 0.75rem;
 }
 dd {
   font-weight: bold;
   margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+dt {
+  float: left;
+  margin-right: 0.5rem;
+}
+dd > span + span::before {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  display: inline-block;
+  font-weight: bold;
+  content: '•';
 }
 `
 }
 
 export function getHtml(parsedReqs: ParsedReqs) {
-  const { title, date } = parsedReqs
+  const { title, date, tags } = parsedReqs
   const dateEntry = date
     ? `
     <dt>Published</dt>
     <dd>
       ${date}
     </dd>`
+    : ''
+
+  const tagEntry = tags.length
+    ? `
+          <dt>Tags</dt>
+          <dd>
+            ` +
+      tags.map(tag => `<span>${tag}</span>`).join('') +
+      `
+          </dd>`
     : ''
 
   return `
@@ -118,6 +141,7 @@ export function getHtml(parsedReqs: ParsedReqs) {
         ${title}
         <dl>
           ${dateEntry}
+          ${tagEntry}
         </dl>
       </header>
     </article>

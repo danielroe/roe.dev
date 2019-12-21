@@ -7,6 +7,7 @@ import { metadata } from './metadata.json'
 export interface ParsedReqs {
   title: string
   date: string
+  tags: string[]
 }
 
 export function parseReqs(req: IncomingMessage) {
@@ -16,9 +17,10 @@ export function parseReqs(req: IncomingMessage) {
     return {
       date: '',
       title: 'roe.dev',
+      tags: [],
     }
   }
-  const { title, date } = (metadata as Record<string, any>)[slug]
+  const { title, date, tags = [] } = (metadata as Record<string, any>)[slug]
 
   if (!title || !date) {
     throw new Error('No data found.')
@@ -27,6 +29,7 @@ export function parseReqs(req: IncomingMessage) {
   const parsedReqs: ParsedReqs = {
     date,
     title,
+    tags,
   }
 
   console.log(JSON.stringify(parsedReqs))
