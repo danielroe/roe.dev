@@ -38,6 +38,9 @@ export default createComponent({
           content: `The personal website of Daniel Roe`,
           vmid: 'og:description',
         },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:site', content: '@danielcroe' },
+        { name: 'twitter:creator', content: '@danielcroe' },
       ],
       link: [
         {
