@@ -40,7 +40,11 @@ export default createComponent({
           content: this.description,
           vmid: 'description',
         },
-        { vmid: 'og:image', property: 'og:image', content: `/og/${slug}.jpg` },
+        {
+          vmid: 'og:image',
+          property: 'og:image',
+          content: `https://roe.dev/og/${slug}.jpg`,
+        },
         { vmid: 'og:title', property: 'og:title', content: this.title },
         {
           vmid: 'og:description',

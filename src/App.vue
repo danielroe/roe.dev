@@ -25,7 +25,11 @@ export default createComponent({
     return {
       meta: [
         { property: 'og:url', content: url },
-        { vmid: 'og:image', property: 'og:image', content: `/og/og.jpg` },
+        {
+          vmid: 'og:image',
+          property: 'og:image',
+          content: `https://roe.dev/og/og.jpg`,
+        },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
         {
@@ -38,7 +42,7 @@ export default createComponent({
           content: `The personal website of Daniel Roe`,
           vmid: 'og:description',
         },
-        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@danielcroe' },
         { name: 'twitter:creator', content: '@danielcroe' },
       ],
