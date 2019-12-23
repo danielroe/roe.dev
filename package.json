@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "dev": "vapper dev",
-    "generate": "vapper generate",
+    "generate": "vapper generate && prettier 'dist/**/*.html'",
     "now-build": "yarn generate",
     "start": "vapper start"
   },
