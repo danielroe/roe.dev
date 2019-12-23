@@ -4,6 +4,7 @@
       v-for="{ repo, stars, language } in repos"
       :key="repo"
       :href="`https://github.com/${repo}`"
+      :aria-label="`GitHub repository for ${repo}`"
     >
       <article>
         <GithubIcon />
@@ -43,6 +44,17 @@ export default createComponent({
   components: {
     GithubIcon,
     ItemList,
+  },
+  head() {
+    return {
+      link: [
+        {
+          rel: 'preconnect',
+          href: '//api.github.com',
+          crossorigin: true,
+        },
+      ],
+    }
   },
   setup() {
     const enrichedRepos = repos.map(repo => ({
