@@ -13,10 +13,10 @@
     "start": "vapper start"
   },
   "dependencies": {
-    "@vapper/core": "0.18.3",
+    "@vapper/core": "0.18.4",
     "@vapper/plugin-prerender": "0.1.7",
     "@vue/composition-api": "0.3.4",
-    "core-js": "3.6.0",
+    "core-js": "3.6.1",
     "frontmatter-markdown-loader": "3.1.0",
     "register-service-worker": "1.6.2",
     "shiki": "0.1.6",
@@ -28,9 +28,9 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "1.3.0",
     "@ky-is/vue-cli-plugin-tailwind": "2.0.0",
-    "@types/jest": "24.0.24",
-    "@typescript-eslint/eslint-plugin": "2.12.0",
-    "@typescript-eslint/parser": "2.12.0",
+    "@types/jest": "24.0.25",
+    "@typescript-eslint/eslint-plugin": "2.13.0",
+    "@typescript-eslint/parser": "2.13.0",
     "@vue/cli-plugin-babel": "4.1.1",
     "@vue/cli-plugin-eslint": "4.1.1",
     "@vue/cli-plugin-router": "4.1.1",
@@ -43,7 +43,7 @@
     "axios": "0.19.0",
     "eslint": "6.8.0",
     "eslint-plugin-prettier": "3.1.2",
-    "eslint-plugin-vue": "6.0.1",
+    "eslint-plugin-vue": "6.1.1",
     "lint-staged": "9.5.0",
     "postcss-preset-env": "6.7.0",
     "prettier": "1.19.1",
@@ -60,5 +60,8 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
