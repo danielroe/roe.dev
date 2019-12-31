@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="theme" :style="themeStyle">
+  <div id="app" :class="theme || 'dark'">
     <TheSiteHeader />
     <router-view />
     <TheSiteFooter />
@@ -55,10 +55,9 @@ export default createComponent({
     }
   },
   setup() {
-    const { themeStyle, theme } = useTheme()
+    const { theme } = useTheme()
 
     return {
-      themeStyle,
       theme,
     }
   },
@@ -77,6 +76,20 @@ export default createComponent({
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &.dark {
+    --background: theme('colors.gray.800');
+    --accent: theme('colors.gray.900');
+    --text-base: theme('colors.white');
+    --text-muted: theme('colors.gray.300');
+  }
+
+  &.light {
+    --background: theme('colors.gray.200');
+    --accent: theme('colors.gray.100');
+    --text-base: theme('colors.gray.800');
+    --text-muted: theme('colors.gray.700');
+  }
 
   /* Body of site */
   > nav + * {
