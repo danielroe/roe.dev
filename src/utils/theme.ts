@@ -1,10 +1,12 @@
 import { useLocalStorage } from 'vue-use-web'
-import { computed, Ref, ref, onMounted, watch } from '@vue/composition-api'
+import { computed, Ref, onMounted, watch } from '@vue/composition-api'
 import resolveConfig from 'tailwindcss/resolveConfig'
 // @ts-ignore
 import tailwindConfig from '../../tailwind.config.js'
 
-const fullConfig = resolveConfig(tailwindConfig)
+const {
+  theme: { colors },
+} = resolveConfig(tailwindConfig)
 
 type Theme = 'dark' | 'light'
 
@@ -30,17 +32,17 @@ export function useTheme() {
   const themeStyle = computed(() => {
     if (theme.value === 'light') {
       return {
-        '--background': fullConfig.theme.colors.gray['200'],
-        '--accent': fullConfig.theme.colors.gray['100'],
-        '--text-base': fullConfig.theme.colors.gray['800'],
-        '--text-muted': fullConfig.theme.colors.gray['700'],
+        '--background': colors.gray['200'],
+        '--accent': colors.gray['100'],
+        '--text-base': colors.gray['800'],
+        '--text-muted': colors.gray['700'],
       }
     } else {
       return {
-        '--background': fullConfig.theme.colors.gray['800'],
-        '--accent': fullConfig.theme.colors.gray['900'],
-        '--text-base': fullConfig.theme.colors.white,
-        '--text-muted': fullConfig.theme.colors.gray['300'],
+        '--background': colors.gray['800'],
+        '--accent': colors.gray['900'],
+        '--text-base': colors.white,
+        '--text-muted': colors.gray['300'],
       }
     }
   })
