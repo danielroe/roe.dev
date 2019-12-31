@@ -37,6 +37,7 @@ function useLocalStorage<Data = any>(
           : JSON.parse(localStorageValue || 'null')
       }
     } catch (e) {
+      // eslint-disable-next-line
       console.warn(e)
     }
 
@@ -45,6 +46,7 @@ function useLocalStorage<Data = any>(
         try {
           localStorage.setItem(key, serializedValue(refVal.value))
         } catch (e) {
+          // eslint-disable-next-line
           console.warn(e)
         }
       },
