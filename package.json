@@ -49,6 +49,9 @@
     "vue-material-design-icons": "4.4.0",
     "vue-template-compiler": "2.6.11"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
@@ -57,8 +60,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "engines": {
-    "node": "12.x"
   }
 }
