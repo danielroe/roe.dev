@@ -1,6 +1,6 @@
 <template functional>
   <footer :class="$style.footer">
-    <small>&copy; 2018-2019 Daniel Roe. All rights reserved.</small>
+    <small>&copy; 2019-2020 Daniel Roe. All rights reserved.</small>
   </footer>
 </template>
 
