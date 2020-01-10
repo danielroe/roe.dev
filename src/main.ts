@@ -4,16 +4,17 @@ Vue.use(VueCompositionApi)
 
 import App from './App.vue'
 import createRouter from './router'
+import { ComponentOptions } from 'vue'
 
 Vue.config.productionTip = false
 
 export default function createApp() {
   const router = createRouter()
-  const app = new Vue({
+  const options: ComponentOptions<any> = {
     router,
     head: {},
     render: h => h(App),
-  })
+  }
 
-  return { app, router }
+  return options
 }
