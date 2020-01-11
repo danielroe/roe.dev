@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/cache@v1
+        id: cache
+        with:
+          path: "node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Lint project
+        run: yarn lint
+
+      - name: Unit tests
+        run: yarn test:unit
