@@ -1213,25 +1213,25 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@vapper/configer-vue-cli@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vapper/configer-vue-cli/-/configer-vue-cli-1.0.0.tgz#215a4cedfb2d8c5505e2e48b5dfdffa5eedfa849"
-  integrity sha512-rqvjRhQPixk+18CkTcPQ4Y+jwyojhsLmmxwB9YjK8n0O5FqxytTT2BKtV0xYa4/+5WZZn5ONU1AcdrK18MLC+g==
+"@vapper/configer-vue-cli@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vapper/configer-vue-cli/-/configer-vue-cli-1.0.2.tgz#2e7c25bfbc9f805da757f5dc354c8e1bb08b935c"
+  integrity sha512-S2xeudIWjjOXxmULir6py2LoOukV98aWMhXM0l6cGGnsdYT95jO7E1kVXtAL0vwQ3o4p8JEmqV4hMeshg/a/Ww==
   dependencies:
-    "@vapper/webpack-config" "^1.0.0"
+    "@vapper/webpack-config" "^1.1.1"
     chalk "^2.4.2"
     gzip-size "^5.1.1"
     pretty-ms "^5.0.0"
     string-width "^4.1.0"
     text-table "^0.2.0"
 
-"@vapper/core@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@vapper/core/-/core-1.0.4.tgz#570fd2417e8d0ea0be92a96c45ddeaaaefd94355"
-  integrity sha512-4XhhVosCmPCqlW0h+tbzJe8gDlYrRGE1+qfPnLogEyJT6XRjEJN3f1p+NpcceAVjsREjpz7T8x+pVwaWQSVomA==
+"@vapper/core@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vapper/core/-/core-1.1.1.tgz#52b789417be4e3d6d243064832b79ed245a1afd6"
+  integrity sha512-Zpn8yqcQbtur6VWeyTaIeNbgnt+LAzO/6BqAOB0BC8JnY/+D7MqZJ2B6L5LxdtKlT4u2RC/tOmEbzuS3Uph3kg==
   dependencies:
     "@hapi/joi" "^15.1.0"
-    "@vapper/configer-vue-cli" "^1.0.0"
+    "@vapper/configer-vue-cli" "^1.0.2"
     cac "^6.5.2"
     compression "^1.7.4"
     connect "^3.7.0"
@@ -1252,19 +1252,19 @@
     webpack-dev-middleware "^3.7.0"
     webpack-hot-middleware "^2.25.0"
 
-"@vapper/plugin-prerender@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vapper/plugin-prerender/-/plugin-prerender-1.0.0.tgz#660c0318ed0584f61deab43e2d0d39b559fbde19"
-  integrity sha512-s6pkKQHg0mknISeB5TD9+4j8e4Jmw2FO9MC9NZ6dVJA1nfkwj2yElFWf/jwCE8tD2mzqHqCd7uzoCT16I+hdqw==
+"@vapper/plugin-prerender@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vapper/plugin-prerender/-/plugin-prerender-1.0.1.tgz#f621a57a4ba20958ace6d92ec82335e92f817dce"
+  integrity sha512-vPWTKRz2KKxLxDD3lzs5Kyp/6S78cT+4Px5oMvv63RWosS+shMpJZ9o5QRLUIMYEGgnEJMl1yTCclQ6MxaMK3w==
   dependencies:
     finalhandler "^1.1.2"
     fs-extra "^8.1.0"
     serve-static "^1.14.1"
 
-"@vapper/webpack-config@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vapper/webpack-config/-/webpack-config-1.0.0.tgz#ad2b665b73da03ac6551691144a7243b386f084c"
-  integrity sha512-QpEc3hwqCtnNI9GToEC19lqU/O/GUOfKLlkZLTtkx3ELk0w7y8gfHWSMrj8H8/dCmu8pxz9vtvCTkQ4M/TRMfg==
+"@vapper/webpack-config@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vapper/webpack-config/-/webpack-config-1.1.1.tgz#526f11590cbd0eadd3aace6f7b36421686204d66"
+  integrity sha512-wMYjfflbc3gFxOqgx9wVqCp4rANllqx2B7uVzSa2yNlbHPSjTNU3492aeG3pdvEu92j2iQwT0NjbOj4ve72JgQ==
   dependencies:
     time-fix-plugin "^2.0.6"
     webpack "^4.38.0"
@@ -6409,10 +6409,10 @@ linkify-it@^2.0.0:
   dependencies:
     uc.micro "^1.0.1"
 
-lint-staged@10.0.3:
-  version "10.0.3"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.3.tgz#fd27e25c308fb857d9cb44caa5fa845408d07df4"
-  integrity sha512-N071+M0yxKX0u67UOB8emFms29ekzrKoX1UlPcLS615O/rhx3+xRk5so8uU4tjdg4yNsD3ntdPSsuZnUPzblLA==
+lint-staged@10.0.7:
+  version "10.0.7"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.7.tgz#d205f92d9359419a23bc6aa3b6f8546b1998da64"
+  integrity sha512-Byj0F4l7GYUpYYHEqyFH69NiI6ICTg0CeCKbhRorL+ickbzILKUlZLiyCkljZV02wnoh7yH7PmFyYm9PRNwk9g==
   dependencies:
     chalk "^3.0.0"
     commander "^4.0.1"
