@@ -24,7 +24,7 @@
     "vue-use-web": "0.10.0"
   },
   "devDependencies": {
-    "@types/jest": "25.1.0",
+    "@types/jest": "25.1.1",
     "@typescript-eslint/eslint-plugin": "2.18.0",
     "@typescript-eslint/parser": "2.18.0",
     "@vue/cli-plugin-babel": "4.1.2",
@@ -57,8 +57,7 @@
   },
   "lint-staged": {
     "*.{js,vue,ts}": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ]
   }
 }
