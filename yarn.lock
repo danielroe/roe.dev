@@ -1213,10 +1213,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@vapper/configer-vue-cli@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@vapper/configer-vue-cli/-/configer-vue-cli-1.0.2.tgz#2e7c25bfbc9f805da757f5dc354c8e1bb08b935c"
-  integrity sha512-S2xeudIWjjOXxmULir6py2LoOukV98aWMhXM0l6cGGnsdYT95jO7E1kVXtAL0vwQ3o4p8JEmqV4hMeshg/a/Ww==
+"@vapper/configer-vue-cli@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@vapper/configer-vue-cli/-/configer-vue-cli-1.1.0.tgz#757d3e7b575f49e716bec4f744a3000ae7ec8b60"
+  integrity sha512-6q+gGdKivKq2JSvURzRW6Ir7m5+yjPQ0IAmHJ6J3Ty1it66I6IYsPqpUTALBlqss6dtFbzRgxMCbSU7e8AbE9w==
   dependencies:
     "@vapper/webpack-config" "^1.1.1"
     chalk "^2.4.2"
@@ -1225,13 +1225,13 @@
     string-width "^4.1.0"
     text-table "^0.2.0"
 
-"@vapper/core@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@vapper/core/-/core-1.2.1.tgz#8d765c7e684fdb108cd0245e918428433e8b4d9d"
-  integrity sha512-X9741jNoiVNc/TywuWM7J6EDgO7OJQH5DVGn4F3acSv8Qala8PVADKQmvYk3fCpZXFSR/yUAxkKcLsAx8Ca55Q==
+"@vapper/core@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@vapper/core/-/core-1.3.0.tgz#425e0d49e702bcfb6f220c19077d8eeabbb7a0a4"
+  integrity sha512-9TKkM0QLd4ELyGi7i3KMd1RKa3K5IJYI+eansOuI/ShwFwqIeCEPVDYdre4OLMckosCoWqgPI55tif0sp/zm6A==
   dependencies:
     "@hapi/joi" "^15.1.0"
-    "@vapper/configer-vue-cli" "^1.0.2"
+    "@vapper/configer-vue-cli" "^1.1.0"
     cac "^6.5.2"
     compression "^1.7.4"
     connect "^3.7.0"
@@ -1243,6 +1243,7 @@
     lodash.template "^4.5.0"
     lru-cache "^5.1.1"
     memory-fs "^0.4.1"
+    serialize-javascript "^2.1.2"
     serve-static "^1.14.1"
     slash "^3.0.0"
     url-parse "^1.4.7"
