@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 import { Route } from 'vue-router'
 
 import TheSiteHeader from '@/components/layout/TheSiteHeader.vue'
@@ -16,7 +16,7 @@ import TheSiteFooter from '@/components/layout/TheSiteFooter.vue'
 import { useTheme } from './utils/theme'
 import { getMatchOrReturn } from './utils/global'
 
-export default createComponent({
+export default defineComponent({
   components: { TheSiteHeader, TheSiteFooter },
   head(this: { $route: Route }) {
     const path = getMatchOrReturn(this.$route.fullPath, /(.*[^/])\/?$/, 1)

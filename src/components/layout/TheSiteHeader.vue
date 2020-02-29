@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import { useTheme } from '../../utils/theme'
 
-export default createComponent({
+export default defineComponent({
   setup() {
     const { theme, toggleTheme } = useTheme()
     return {

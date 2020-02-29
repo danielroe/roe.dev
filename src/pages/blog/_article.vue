@@ -23,13 +23,13 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 import { VueConstructor } from 'vue'
 import { Route } from 'vue-router'
 
 import { getMatchOrReturn } from '../../utils/global'
 
-export default createComponent({
+export default defineComponent({
   head(this: { title: string; description: string; $route: Route }) {
     const slug = getMatchOrReturn(this.$route.fullPath, /\/([^/]*)\/?$/, 1)
     return {

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 const clients = {
   Comcast: require('@/assets/images/work/comcast.svg?inline'),
@@ -27,7 +27,7 @@ const clients = {
   'Acadian Software': require('@/assets/images/work/acadian-software.svg?inline'),
 }
 
-export default createComponent({
+export default defineComponent({
   head: {
     title: 'Work',
   },

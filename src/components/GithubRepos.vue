@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import GithubIcon from '@/components/icons/GithubCircle.vue'
 import ItemList from '@/components/ItemList.vue'
@@ -40,7 +40,7 @@ import { useGithub } from '@/utils/github'
 
 const repos = ['danielroe/nuxt-typed-vuex', 'nuxt/now-builder']
 
-export default createComponent({
+export default defineComponent({
   components: {
     GithubIcon,
     ItemList,

@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import BlogList from '@/components/BlogList.vue'
 
-export default createComponent({
+export default defineComponent({
   components: { BlogList },
   head: {
     title: 'Blog',

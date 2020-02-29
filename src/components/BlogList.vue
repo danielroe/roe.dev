@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import ItemList from '@/components/ItemList.vue'
 
 import { useBlogEntries } from '@/utils/blogs'
 
-export default createComponent({
+export default defineComponent({
   components: { ItemList },
   props: {
     limit: {

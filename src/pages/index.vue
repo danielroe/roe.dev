@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import BlogList from '@/components/BlogList.vue'
 import GithubRepos from '@/components/GithubRepos.vue'
 import home from '@/content/index.md'
 
-export default createComponent({
+export default defineComponent({
   components: {
     BlogList,
     GithubRepos,
