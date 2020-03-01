@@ -10,7 +10,9 @@ async function getMarkdownArticles() {
     if (!/\.md$/.test(path)) return
     const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
     articles.push({
-      body_markdown: contents.replace(/\(\//g, '(https://roe.dev/'),
+      body_markdown: contents
+        .replace(/\(\//g, '(https://roe.dev/')
+        .replace(/---/g, '—'),
       title: getMatchOrReturn(contents, /title: (.*)/, 1),
       slug,
       canonical_url: `https://roe.dev/blog/${slug}/`,
