@@ -12,7 +12,7 @@ async function getMarkdownArticles() {
     articles.push({
       body_markdown: contents
         .replace(/\(\//g, '(https://roe.dev/')
-        .replace(/---/g, '—'),
+        .replace(/ --- /g, ' — '),
       title: getMatchOrReturn(contents, /title: (.*)/, 1),
       slug,
       canonical_url: `https://roe.dev/blog/${slug}/`,
