@@ -38,7 +38,11 @@ import ItemList from '@/components/ItemList.vue'
 
 import { useGithub } from '@/utils/github'
 
-const repos = ['danielroe/nuxt-typed-vuex', 'nuxt/now-builder']
+const repos = [
+  'danielroe/nuxt-typed-vuex',
+  'nuxt/now-builder',
+  'danielroe/vue-sanity',
+]
 
 export default defineComponent({
   components: {
@@ -57,7 +61,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const enrichedRepos = repos.map(repo => ({
+    const enrichedRepos = repos.map((repo) => ({
       repo,
       ...useGithub(repo),
     }))
