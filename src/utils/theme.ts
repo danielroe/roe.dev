@@ -9,7 +9,7 @@ export function useTheme() {
   if (!theme) theme = useLocalStorage<Theme>('theme', 'dark', true)
 
   onMounted(() => {
-    watch(() => localStorage.setItem('theme', theme.value || 'dark'))
+    watch(theme, () => localStorage.setItem('theme', theme.value || 'dark'))
   })
 
   function toggleTheme() {

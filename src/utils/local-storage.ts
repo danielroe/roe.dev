@@ -42,6 +42,7 @@ function useLocalStorage<Data = any>(
     }
 
     watch(
+      refVal,
       () => {
         try {
           localStorage.setItem(key, serializedValue(refVal.value))
@@ -50,7 +51,7 @@ function useLocalStorage<Data = any>(
           console.warn(e)
         }
       },
-      { flush: 'sync' },
+      { flush: 'sync', immediate: true },
     )
   })
 
