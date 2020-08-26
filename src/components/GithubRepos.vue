@@ -39,7 +39,7 @@ import ItemList from '@/components/ItemList.vue'
 import { useGithub } from '@/utils/github'
 
 const repos = [
-  'nuxt/now-builder',
+  'nuxt/vercel-builder',
   'nuxt-community/composition-api',
   'danielroe/nuxt-typed-vuex',
   'danielroe/sanity-typed-queries',

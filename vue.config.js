@@ -5,7 +5,7 @@ const markdown = require('markdown-it')
 let highlighter
 shiki
   .getHighlighter({
-    theme: 'Material-Theme-Palenight-High-Contrast',
+    theme: 'material-theme-palenight',
   })
   .then(hl => {
     highlighter = hl
