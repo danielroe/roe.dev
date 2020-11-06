@@ -36,8 +36,6 @@ export default defineComponent({
 </script>
 
 <style lang="postcss">
-@tailwind base;
-
 .dark-mode {
   --background: theme('colors.gray.800');
   --accent: theme('colors.gray.900');
