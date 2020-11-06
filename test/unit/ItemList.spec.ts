@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import ItemList from '@/components/ItemList.vue'
+import ItemList from '~/components/ItemList.vue'
 
 describe('ItemList.vue', () => {
   it('renders slot', () => {
@@ -10,5 +10,6 @@ describe('ItemList.vue', () => {
       },
     })
     expect(wrapper.text()).toMatch(msg)
+    expect(wrapper.html()).toMatchSnapshot()
   })
 })

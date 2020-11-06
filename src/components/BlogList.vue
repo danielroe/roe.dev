@@ -1,7 +1,7 @@
 <template>
   <ItemList>
-    <router-link
-      v-for="{ title, slug, date } in entries"
+    <NuxtLink
+      v-for="{ title, slug, date, formattedDate } in entries.slice(0, limit)"
       :key="slug"
       :to="`/blog/${slug}`"
       :title="title"
@@ -12,40 +12,52 @@
           <dl v-if="date">
             <dt>Published</dt>
             <dd>
-              <time :datetime="date">{{ formatDate(date) }}</time>
+              <time :datetime="date">{{ formattedDate }}</time>
             </dd>
           </dl>
         </header>
       </article>
-    </router-link>
+    </NuxtLink>
   </ItemList>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-import ItemList from '@/components/ItemList.vue'
+import ItemList from '~/components/ItemList.vue'
 
-import { useBlogEntries } from '@/utils/blogs'
+interface Entry {
+  title: string
+  date: string
+  slug: string
+  formattedDate: string
+}
 
 export default defineComponent({
   components: { ItemList },
   props: {
     limit: {
       type: Number as () => number,
-      default: 0,
     },
   },
-  setup(props) {
-    const { entries } = useBlogEntries()
-    function formatDate(date: string) {
-      const d = new Date(date)
-      return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
-    }
-    return {
-      entries: props.limit ? entries.slice(0, props.limit) : entries,
-      formatDate,
-    }
+  async fetch() {
+    const entries: Entry[] = (
+      await this.$content('articles').only(['title', 'date', 'slug']).fetch()
+    ).map((entry: Entry) => {
+      const d = new Date(entry.date)
+      const formattedDate = `${d.getFullYear()}-${
+        d.getMonth() + 1
+      }-${d.getDate()}`
+      return { ...entry, formattedDate }
+    })
+
+    entries.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
+    this.entries = entries
   },
+  data: () => ({
+    entries: [] as Entry[],
+  }),
 })
 </script>

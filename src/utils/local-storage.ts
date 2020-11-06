@@ -1,4 +1,4 @@
-import { ref, Ref, watch, onMounted } from '@vue/composition-api'
+import { ref, Ref, watch, onMounted } from '@nuxtjs/composition-api'
 
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isClient = typeof window !== 'undefined'
@@ -6,18 +6,18 @@ export const isClient = typeof window !== 'undefined'
 function useLocalStorage<Data = any>(key: string): Ref<Data>
 function useLocalStorage<Data = any>(
   key: string,
-  defaultValue?: Data,
+  defaultValue?: Data
 ): Ref<Data>
 function useLocalStorage<Data = any>(
   key: string,
   defaultValue?: Data,
-  raw?: boolean,
+  raw?: boolean
 ): Ref<Data | undefined>
 
 function useLocalStorage<Data = any>(
   key: string,
   defaultValue?: Data,
-  raw?: boolean,
+  raw?: boolean
 ) {
   function serializedValue(val: any): string {
     return raw ? String(val) : JSON.stringify(val)
@@ -51,7 +51,7 @@ function useLocalStorage<Data = any>(
           console.warn(e)
         }
       },
-      { flush: 'sync', immediate: true },
+      { flush: 'sync', immediate: true }
     )
   })
 

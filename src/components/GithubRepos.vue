@@ -31,12 +31,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-import GithubIcon from '@/components/icons/GithubCircle.vue'
-import ItemList from '@/components/ItemList.vue'
+import GithubIcon from '~/components/icons/GithubCircle.vue'
+import ItemList from '~/components/ItemList.vue'
 
-import { useGithub } from '@/utils/github'
+import { useGithub } from '~/utils/github'
 
 const repos = [
   'nuxt/vercel-builder',
@@ -54,9 +54,10 @@ export default defineComponent({
     return {
       link: [
         {
+          hid: 'github',
           rel: 'preconnect',
           href: '//api.github.com',
-          crossorigin: true,
+          crossorigin: 'use-credentials',
         },
       ],
     }
@@ -79,6 +80,7 @@ export default defineComponent({
     @apply overflow-hidden;
     article > :first-child {
       @apply absolute flex top-0 right-0 p-1;
+
       color: var(--text, theme('colors.muted'));
 
       > * {
@@ -87,11 +89,11 @@ export default defineComponent({
 
       &::before {
         @apply absolute block w-full;
+
         margin-top: -1rem;
         height: calc(100% + 1rem);
         content: '';
         background-color: var(--background, theme('colors.white'));
-
         transform: rotate(30deg) scaleX(10);
       }
     }

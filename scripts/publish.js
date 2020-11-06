@@ -1,12 +1,13 @@
 const axios = require('axios')
 
-const { iterateOnDirectory, getMatchOrReturn } = require('../src/utils/global')
+const { iterateOnDirectory, getMatchOrReturn } = require('./global')
 
 const url = 'https://dev.to/api'
 const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
+
 async function getMarkdownArticles() {
   const articles = []
-  iterateOnDirectory('./src/content/articles', (path, contents) => {
+  await iterateOnDirectory('./src/content/articles', (path, contents) => {
     if (!/\.md$/.test(path)) return
     const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
     articles.push({
@@ -30,6 +31,7 @@ async function getArticles() {
   return data
 }
 
+// eslint-disable-next-line
 async function postArticle({ title, body_markdown, canonical_url }) {
   try {
     const { data } = await axios.post(
@@ -46,7 +48,7 @@ async function postArticle({ title, body_markdown, canonical_url }) {
         headers: {
           'api-key': token,
         },
-      },
+      }
     )
     return data
   } catch (e) {
@@ -54,6 +56,7 @@ async function postArticle({ title, body_markdown, canonical_url }) {
   }
 }
 
+// eslint-disable-next-line
 async function updateArticle(id, { title, body_markdown, canonical_url }) {
   try {
     const { data } = await axios.put(
@@ -70,7 +73,7 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
         headers: {
           'api-key': token,
         },
-      },
+      }
     )
     return data
   } catch (e) {
@@ -78,12 +81,12 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
   }
 }
 
-getArticles().then(async articles => {
+getArticles().then(async (articles) => {
   const markdownArticles = await getMarkdownArticles()
   // console.log('TCL: markdownArticles', markdownArticles)
-  markdownArticles.forEach(markdownArticle => {
+  markdownArticles.forEach((markdownArticle) => {
     const article = articles.find(
-      article => article.canonical_url === markdownArticle.canonical_url,
+      (article) => article.canonical_url === markdownArticle.canonical_url
     )
     // console.log('TCL: article', article)
     if (article) {

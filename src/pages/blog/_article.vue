@@ -15,16 +15,14 @@
         </template>
       </dl>
     </header>
-    <main>
-      <component :is="component" />
-    </main>
-    <footer></footer>
+    <section>
+      <nuxt-content :document="page" />
+    </section>
   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { VueConstructor } from 'vue'
+import { defineComponent } from '@nuxtjs/composition-api'
 import { Route } from 'vue-router'
 
 import { getMatchOrReturn } from '../../utils/global'
@@ -38,50 +36,47 @@ export default defineComponent({
         {
           name: 'description',
           content: this.description,
-          vmid: 'description',
+          hid: 'description',
         },
         {
-          vmid: 'og:image',
+          hid: 'og:image',
           property: 'og:image',
           content: `https://roe.dev/og/${slug}.jpg`,
         },
-        { vmid: 'og:title', property: 'og:title', content: this.title },
+        { hid: 'og:title', property: 'og:title', content: this.title },
         {
-          vmid: 'og:description',
+          hid: 'og:description',
           property: 'og:description',
           content: this.description,
         },
       ],
     }
   },
-  setup(props, { root }) {
-    const slug = root.$route.params.article
-    if (!slug) root.$router.push('/blog')
+  async fetch() {
+    const slug = this.$route.params.article
+    if (!slug) this.$router.push('/blog')
 
-    try {
-      const {
-        attributes: { title, date, tags, description },
-        vue: { component },
-      } = require(`@/content/articles/${slug}.md`)
+    const page: Record<string, any> = await this.$content(
+      `articles/${slug}`
+    ).fetch()
+    const d = new Date(page.date)
 
-      const d = new Date(date)
+    this.page = page
 
-      return {
-        component,
-        title,
-        tags: tags || [],
-        date: date || '',
-        description,
-        formattedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
-      }
-    } catch (e) {
-      root.$router.push('/blog')
-      return {
-        title: '',
-        description: '',
-      }
-    }
+    this.title = page.title
+    this.tags = page.tags || []
+    this.date = page.date || ''
+    this.description = page.description
+    this.formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
   },
+  data: () => ({
+    page: null as any,
+    tags: [],
+    date: '',
+    title: '',
+    description: '',
+    formattedDate: '',
+  }),
 })
 </script>
 
@@ -93,11 +88,65 @@ export default defineComponent({
 
   h4 {
     @apply uppercase text-sm;
+
     letter-spacing: 0.1rem;
   }
   * + h3,
   * + h4 {
     @apply mt-8;
+  }
+
+  :global(.nuxt-content-highlight) {
+    @apply mb-6;
+  }
+  p + :global(.nuxt-content-highlight) {
+    @apply mt-6;
+  }
+
+  pre {
+    @apply font-code text-sm my-0;
+
+    background-color: theme('colors.gray.900') !important;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 1rem 50vw;
+    @media (width < 767px) {
+      white-space: pre-wrap;
+    }
+
+    + h3,
+    + h4 {
+      @apply mt-8;
+    }
+  }
+
+  ol,
+  ul {
+    @apply pl-6;
+
+    li {
+      @apply my-4;
+
+      counter-increment: list;
+      &::before {
+        @apply -ml-6 mt-2 mr-2 inline-block font-semibold leading-none;
+
+        width: 1rem;
+      }
+
+      > :first-child {
+        @apply inline-block;
+      }
+    }
+  }
+
+  ul li::before {
+    content: '›';
+  }
+  ol li::before {
+    @apply text-xs;
+
+    content: counter(list);
   }
 
   p {
@@ -122,58 +171,19 @@ export default defineComponent({
     color: var(--background, theme('colors.gray.800'));
     background-color: var(--text-base, theme('colors.white'));
   }
-  p ~ div {
-    @apply mt-4 py-1 uppercase text-xs font-bold text-gray-600;
+
+  p + div:not(:global(.nuxt-content-highlight)) {
+    @apply mt-6 py-1 uppercase text-xs font-bold text-gray-600;
+
     letter-spacing: 0.15rem;
     background-color: theme('colors.gray.900');
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 1rem 50vw;
   }
-  pre {
-    @apply font-code text-sm;
-    background-color: theme('colors.gray.900') !important;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    padding: 1rem 50vw;
-    @media (width < 767px) {
-      white-space: pre-wrap;
-    }
 
-    + * {
-      @apply mt-4;
-    }
-    + h3,
-    + h4 {
-      @apply mt-8;
-    }
-  }
   blockquote {
     @apply pl-4 border-l-4;
-  }
-  ol,
-  ul {
-    @apply pl-6;
-
-    li {
-      @apply my-4;
-      counter-increment: list;
-      &::before {
-        @apply -ml-6 mt-2 mr-2 inline-block font-semibold leading-none;
-        width: 1rem;
-      }
-
-      > :first-child {
-        @apply inline-block;
-      }
-    }
-  }
-  ul li::before {
-    content: '›';
-  }
-  ol li::before {
-    @apply text-xs;
-    content: counter(list);
   }
 }
 </style>

@@ -1,66 +1,66 @@
 {
   "name": "roe.dev",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vapper build",
-    "lint": "vue-cli-service lint",
-    "build:cli": "vue-cli-service build",
-    "dev": "vapper dev",
-    "generate": "vapper generate",
-    "now-build": "yarn generate",
-    "start": "vapper start",
-    "test": "vue-cli-service test:unit"
-  },
-  "dependencies": {
-    "@vapper/core": "1.11.2",
-    "@vapper/plugin-prerender": "1.0.1",
-    "@vue/composition-api": "1.0.0-beta.19",
-    "core-js": "3.6.5",
-    "shiki": "0.2.6",
-    "vue": "2.6.12",
-    "vue-router": "3.4.8",
-    "vue-use-web": "1.0.1"
-  },
-  "devDependencies": {
-    "@types/jest": "26.0.15",
-    "@typescript-eslint/eslint-plugin": "4.6.1",
-    "@typescript-eslint/parser": "4.6.1",
-    "@vue/cli-plugin-babel": "4.5.8",
-    "@vue/cli-plugin-eslint": "4.5.8",
-    "@vue/cli-plugin-router": "4.5.8",
-    "@vue/cli-plugin-typescript": "4.5.8",
-    "@vue/cli-plugin-unit-jest": "4.5.8",
-    "@vue/cli-service": "4.5.8",
-    "@vue/eslint-config-prettier": "6.0.0",
-    "@vue/eslint-config-typescript": "7.0.0",
-    "@vue/test-utils": "1.1.1",
-    "axios": "0.21.0",
-    "eslint": "7.12.1",
-    "eslint-plugin-prettier": "3.1.4",
-    "eslint-plugin-vue": "7.1.0",
-    "frontmatter-markdown-loader": "3.6.1",
-    "lint-staged": "10.5.1",
-    "postcss-preset-env": "6.7.0",
-    "prettier": "2.1.2",
-    "tailwindcss": "1.9.6",
-    "typescript": "4.0.5",
-    "vue-material-design-icons": "4.10.0",
-    "vue-template-compiler": "2.6.12"
-  },
-  "engines": {
-    "node": ">=12.x"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
+    "lint": "yarn lint:js && yarn lint:style",
+    "test": "jest"
   },
   "lint-staged": {
-    "*.{js,vue,ts}": [
-      "vue-cli-service lint"
-    ]
+    "*.{js,vue}": "eslint",
+    "*.{css,vue}": "stylelint"
   },
-  "volta": {
-    "node": "14.15.0"
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@nuxt/content": "^1.8.1",
+    "@nuxt/typescript-runtime": "^2.0.0",
+    "core-js": "^3.7.0",
+    "nuxt": "^2.14.5",
+    "prism-themes": "^1.5.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@nuxt/types": "^2.14.5",
+    "@nuxt/typescript-build": "^2.0.3",
+    "@nuxtjs/color-mode": "^2.0.0",
+    "@nuxtjs/composition-api": "^0.14.0",
+    "@nuxtjs/eslint-config": "^4.0.0",
+    "@nuxtjs/eslint-config-typescript": "^4.0.0",
+    "@nuxtjs/eslint-module": "^3.0.0",
+    "@nuxtjs/html-validator": "^0.1.2",
+    "@nuxtjs/pwa": "^3.2.2",
+    "@nuxtjs/stylelint-module": "^4.0.0",
+    "@nuxtjs/tailwindcss": "^3.0.2",
+    "@vue/test-utils": "^1.1.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-nuxt": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "jest": "^26.4.2",
+    "jest-serializer-vue-tjw": "^3.15.0",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
+    "stylelint": "^13.7.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^20.0.0",
+    "ts-jest": "^26.3.0",
+    "vue-jest": "^3.0.4",
+    "vue-use-web": "^1.0.1"
   }
 }

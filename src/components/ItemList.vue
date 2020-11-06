@@ -11,6 +11,7 @@
     @apply p-4 m-2 relative;
     @apply text-xl flex flex-col justify-end;
     @apply shadow;
+
     background-color: var(--accent, theme('colors.gray.900'));
     min-height: 10rem;
     flex: 40%;
@@ -18,15 +19,16 @@
       flex: 100%;
       min-height: 3rem;
     }
-    transition: 0.3s transform;
+
+    transition: 0.3s transform, 0.3s border-color;
     border: 1px solid transparent;
-    transition: 0.3s border-color;
 
     &:hover,
     &:active,
     &:focus {
       @apply outline-none;
-      border-color: var(--text, theme('colors.muted'));
+
+      border-color: var(--text-muted);
     }
     &::after {
       @apply text-transparent;

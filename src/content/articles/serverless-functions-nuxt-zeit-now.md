@@ -11,10 +11,10 @@ description: If you are using ZEIT Now to host your Nuxt application, you can us
 
 When building a modern web application, you might want to use serverless functions (or lambdas). For example:
 
-1. You might need to keep your code private --- because you are consuming secrets or want to conceal your endpoints.
-2. You might need to do processor-intensive operations --- for example, searching a static database.
+1. You might need to keep your code private -- because you are consuming secrets or want to conceal your endpoints.
+2. You might need to do processor-intensive operations -- for example, searching a static database.
 
-If you are using [Nuxt](https://nuxtjs.org/) --- a Vue framework for SSR and static generated applications --- you can extract your functions into [server middleware](https://nuxtjs.org/api/configuration-servermiddleware/). As the name suggests, these only run on the server and they are effectively independent of the rest of your application.
+If you are using [Nuxt](https://nuxtjs.org/) -- a Vue framework for SSR and static generated applications -- you can extract your functions into [server middleware](https://nuxtjs.org/api/configuration-servermiddleware/). As the name suggests, these only run on the server and they are effectively independent of the rest of your application.
 
 If you are using ZEIT Now to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your [Now serverless functions](https://zeit.co/docs/v2/serverless-functions/introduction/). The benefit of setting it up this way is:
 
@@ -23,7 +23,7 @@ If you are using ZEIT Now to host your Nuxt application, you can use the same en
 
 ### Write your functions
 
-Now allows you to use `express` as a routing layer --- even though this might seem paradoxical for a serverless framework.
+Now allows you to use `express` as a routing layer -- even though this might seem paradoxical for a serverless framework.
 
 <div>~/api/sample-function.js</div>
 
@@ -84,7 +84,7 @@ However, if you do want the fine-grained control of adding routes manually, you 
 
 ### Integrate your functions as server middleware in Nuxt
 
-You can easily detect whether you are operating within the Now environment using the `NOW_REGION` environment variable, and conditionally load your server middleware --- such as if you are using [@nuxt/now-builder](https://github.com/nuxt/now-builder).
+You can easily detect whether you are operating within the Now environment using the `NOW_REGION` environment variable, and conditionally load your server middleware -- such as if you are using [@nuxt/now-builder](https://github.com/nuxt/now-builder).
 
 If you are using Nuxt to generate a static site, you will also need to make sure the generated site is placed in a `public` directory.
 

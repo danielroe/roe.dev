@@ -15,16 +15,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 const clients = {
-  Comcast: require('@/assets/images/work/comcast.svg?inline'),
-  'Durham University': require('@/assets/images/work/durham-university.svg?inline'),
-  'Parent Scheme': require('@/assets/images/work/parentscheme.svg?inline'),
-  Concision: require('@/assets/images/work/concision.svg?inline'),
-  'North East Local Enterprise Partnership': require('@/assets/images/work/nelep.png?inline'),
-  Convoke: require('@/assets/images/work/convoke.png?inline'),
-  'Acadian Software': require('@/assets/images/work/acadian-software.svg?inline'),
+  Comcast: require('~/assets/images/work/comcast.svg?inline'),
+  'Durham University': require('~/assets/images/work/durham-university.svg?inline'),
+  'Parent Scheme': require('~/assets/images/work/parentscheme.svg?inline'),
+  Concision: require('~/assets/images/work/concision.svg?inline'),
+  'North East Local Enterprise Partnership': require('~/assets/images/work/nelep.png?inline'),
+  Convoke: require('~/assets/images/work/convoke.png?inline'),
+  'Acadian Software': require('~/assets/images/work/acadian-software.svg?inline'),
 }
 
 export default defineComponent({
@@ -50,6 +50,7 @@ export default defineComponent({
     > * {
       @apply mx-4 my-8;
       @apply h-full w-auto flex-grow-0 flex-shrink;
+
       flex-basis: 5rem;
       max-height: 3rem;
     }

@@ -5,7 +5,7 @@ const fs = require('fs')
  * @type {(dir: string, callback: (path: string) => any)} walkDir
  */
 function walkDir(dir, callback) {
-  fs.readdirSync(dir).forEach(f => {
+  fs.readdirSync(dir).forEach((f) => {
     const dirPath = path.join(dir, f)
     const isDirectory = fs.statSync(dirPath).isDirectory()
     isDirectory ? walkDir(dirPath, callback) : callback(path.join(dir, f))
@@ -16,8 +16,8 @@ function walkDir(dir, callback) {
  * @type {(directory: string, callback: (path: string, contents: string) => any)} iterateOnDirectory
  */
 function iterateOnDirectory(directory, callback) {
-  walkDir(directory, path =>
-    callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8')),
+  walkDir(directory, (path) =>
+    callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8'))
   )
 }
 
@@ -33,7 +33,7 @@ function getMatchOrReturn(haystack, needle, index = 0) {
 /**
  * @type {(message: string, filename: string, contents: string) => void} writeFile
  */
-function writeFile(message, filename, contents) {
+function writeFile(_message, filename, contents) {
   if (fs && fs.writeFileSync) {
     return fs.writeFileSync(filename, contents)
   }

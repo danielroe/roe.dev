@@ -18,4 +18,7 @@ module.exports = {
   corePlugins: {
     container: false,
   },
+  purge: {
+    enabled: false,
+  },
 }
