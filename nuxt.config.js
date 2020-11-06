@@ -32,14 +32,7 @@ export default {
       { name: 'twitter:site', content: '@danielcroe' },
       { name: 'twitter:creator', content: '@danielcroe' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        href:
-          'https://fonts.googleapis.com/css?family=Barlow|Fira+Code&display=swap',
-        rel: 'stylesheet',
-      },
-    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   components: true,
