@@ -14,7 +14,7 @@ export default {
       { name: 'msapplication-TileColor', content: '#1a202c' },
       { name: 'theme-color', content: '#1a202c' },
       {
-        vmid: 'og:image',
+        hid: 'og:image',
         property: 'og:image',
         content: `https://roe.dev/og/og.jpg`,
       },
@@ -23,12 +23,12 @@ export default {
       {
         name: 'description',
         content: `The personal website of Daniel Roe`,
-        vmid: 'description',
+        hid: 'description',
       },
       {
         property: 'og:description',
         content: `The personal website of Daniel Roe`,
-        vmid: 'og:description',
+        hid: 'og:description',
       },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@danielcroe' },
