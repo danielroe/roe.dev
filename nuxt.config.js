@@ -1,4 +1,8 @@
-export default {
+// @ts-check
+/**
+ * @type {import('@nuxt/types').NuxtConfig} config
+ */
+const config = {
   target: 'static',
 
   srcDir: 'src',
@@ -82,6 +86,8 @@ export default {
     purge: false,
   },
 
+  modern: process.env.NODE_ENV !== 'development',
+
   build: {
     postcss: {
       plugins: {
@@ -92,3 +98,5 @@ export default {
 
   modules: ['@nuxt/content'],
 }
+
+export default config
