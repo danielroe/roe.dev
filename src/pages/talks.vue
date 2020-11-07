@@ -4,7 +4,7 @@
       <h2>Talks</h2>
     </header>
     <main>
-      <ItemList :class="$style.list">
+      <ItemList>
         <a
           v-for="{
             title,
@@ -47,24 +47,30 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 import { formatDateField } from '~/utils/dates'
 
+interface Talk {
+  title: string
+  name: string
+  type: string
+  source: string
+  tags: string
+  link: string
+  date: string
+  formattedDate: string
+}
+
 export default defineComponent({
   head: {
     title: 'Talks',
   },
   async fetch() {
-    const talks = await this.$content('talks').fetch()
+    const talks: Talk[] = (await this.$content('talks').fetch()) as any
+    talks.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
     this.talks = talks.map(formatDateField)
   },
   data: () => ({
-    talks: [],
+    talks: [] as Talk[],
   }),
 })
 </script>
-
-<style lang="postcss" module>
-.list {
-  dd + dt {
-    /* white-space: pre; */
-  }
-}
-</style>

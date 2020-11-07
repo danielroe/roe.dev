@@ -7,6 +7,10 @@
 <style lang="postcss" module>
 .list {
   @apply flex flex-row flex-wrap -mx-2;
+  a:not([href]) {
+    opacity: 0.5;
+    pointer-events: none;
+  }
   > * {
     @apply p-4 m-2 relative;
     @apply text-xl flex flex-col justify-end;
