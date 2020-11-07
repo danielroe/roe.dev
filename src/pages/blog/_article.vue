@@ -1,6 +1,6 @@
 <template>
-  <article v-if="title" :class="$style.blog">
-    <header>
+  <article :class="$style.blog">
+    <header v-if="title">
       <h2>{{ title }}</h2>
       <dl v-if="date && formattedDate">
         <dt>Published</dt>
@@ -15,7 +15,7 @@
         </template>
       </dl>
     </header>
-    <section>
+    <section v-if="page">
       <nuxt-content :document="page" />
     </section>
   </article>
@@ -25,7 +25,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import { Route } from 'vue-router'
 
-import { getMatchOrReturn } from '../../utils/global'
+import { getMatchOrReturn } from '~/utils/global'
 
 export default defineComponent({
   head(this: { title: string; description: string; $route: Route }) {

@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import ItemList from '~/components/ItemList.vue'
+import { formatDateField } from '~/utils/dates'
 
 interface Entry {
   title: string
@@ -34,7 +34,6 @@ interface Entry {
 }
 
 export default defineComponent({
-  components: { ItemList },
   props: {
     limit: {
       type: Number as () => number,
@@ -43,13 +42,7 @@ export default defineComponent({
   async fetch() {
     const entries: Entry[] = (
       await this.$content('articles').only(['title', 'date', 'slug']).fetch()
-    ).map((entry: Entry) => {
-      const d = new Date(entry.date)
-      const formattedDate = `${d.getFullYear()}-${
-        d.getMonth() + 1
-      }-${d.getDate()}`
-      return { ...entry, formattedDate }
-    })
+    ).map(formatDateField)
 
     entries.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()

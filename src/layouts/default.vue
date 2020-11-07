@@ -134,12 +134,11 @@ a {
         @apply leading-normal;
         @apply uppercase text-xs;
       }
+      dt {
+        @apply mr-2;
+      }
       dd {
-        @apply font-semibold mx-2;
-
-        + dt {
-          @apply ml-2;
-        }
+        @apply font-semibold mr-4;
 
         > span {
           + span {

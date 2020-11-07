@@ -39,7 +39,8 @@ const config = {
       { name: 'twitter:creator', content: '@danielcroe' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
+      { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',

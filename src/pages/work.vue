@@ -53,6 +53,7 @@ export default defineComponent({
 
       flex-basis: 5rem;
       max-height: 3rem;
+      max-width: 9rem;
     }
 
     @media (width < 767px) {
@@ -63,7 +64,7 @@ export default defineComponent({
   }
 }
 
-:global(.light) .work img {
+:global(.light-mode) .work img {
   filter: invert(1) opacity(0.8);
 }
 </style>
