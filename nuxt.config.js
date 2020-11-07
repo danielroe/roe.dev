@@ -40,7 +40,7 @@ export default {
   buildModules: [
     '@nuxtjs/html-validator',
     '@nuxt/typescript-build',
-    // '@nuxtjs/stylelint-module',
+    '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxtjs/composition-api',
