@@ -3,38 +3,31 @@
     <ul>
       <li>
         <h1>
-          <router-link to="/" title="Daniel Roe">DCR</router-link>
+          <NuxtLink to="/" title="Daniel Roe">DCR</NuxtLink>
         </h1>
       </li>
-      <li><router-link to="/work">Work</router-link></li>
-      <li><router-link to="/blog">Blog</router-link></li>
+      <li><NuxtLink to="/work">Work</NuxtLink></li>
+      <li><NuxtLink to="/blog">Blog</NuxtLink></li>
     </ul>
-    <button aria-label="Change site theme" @click="toggleTheme">
+    <button
+      aria-label="Change site theme"
+      type="button"
+      @click="
+        $colorMode.value === 'dark'
+          ? ($colorMode.preference = 'light')
+          : ($colorMode.preference = 'dark')
+      "
+    >
       <span />
     </button>
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-
-import { useTheme } from '../../utils/theme'
-
-export default defineComponent({
-  setup() {
-    const { theme, toggleTheme } = useTheme()
-    return {
-      toggleTheme,
-      theme,
-    }
-  },
-})
-</script>
-
 <style lang="postcss" module>
 .header {
   @apply p-4 uppercase bg-gray-900 flex flex-row justify-between items-center;
   @apply text-white;
+
   letter-spacing: 0.15rem;
 
   a {
@@ -49,7 +42,7 @@ export default defineComponent({
     }
   }
 
-  :global(.router-link-exact-active) {
+  :global(.nuxt-link-exact-active) {
     &::after {
       @apply border-gray-800;
     }
@@ -67,11 +60,13 @@ export default defineComponent({
       border-color: var(--background, theme('colors.white'));
       background-color: var(--text-base, theme('colors.gray.800'));
     }
+
     transition: 0.3s opacity;
 
     &:hover,
     &:focus {
       @apply outline-none;
+
       opacity: 0.7;
     }
   }
@@ -82,6 +77,7 @@ export default defineComponent({
       &::before {
         @apply font-bold;
         @apply inline-block;
+
         content: '•';
       }
     }

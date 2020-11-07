@@ -17,7 +17,7 @@ function walkDir(dir, callback) {
  */
 function iterateOnDirectory(directory, callback) {
   walkDir(directory, path =>
-    callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8')),
+    callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8'))
   )
 }
 
@@ -33,7 +33,7 @@ function getMatchOrReturn(haystack, needle, index = 0) {
 /**
  * @type {(message: string, filename: string, contents: string) => void} writeFile
  */
-function writeFile(message, filename, contents) {
+function writeFile(_message, filename, contents) {
   if (fs && fs.writeFileSync) {
     return fs.writeFileSync(filename, contents)
   }

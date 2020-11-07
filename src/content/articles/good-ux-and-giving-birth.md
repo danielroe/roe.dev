@@ -36,12 +36,12 @@ Looking at it, you'll observe that it's simple and attractive. Modern colours an
 
 But it's not just about pretty UI.
 
-The design choices aid relaxation --- which is the whole point. Statistics and settings are tucked away unobtrusively, and a soothing colour palette communicates peace.
+The design choices aid relaxation -- which is the whole point. Statistics and settings are tucked away unobtrusively, and a soothing colour palette communicates peace.
 
-Everything seems well thought through. For example, the toggle button to switch the contraction timer on and off is big and in the centre of the screen --- so when a contraction starts, you don't have to focus on hitting a small target.
+Everything seems well thought through. For example, the toggle button to switch the contraction timer on and off is big and in the centre of the screen -- so when a contraction starts, you don't have to focus on hitting a small target.
 
 As someone who spends a lot of time making sure front-end interfaces are engaging as well as attractive, I appreciate the way that Freya's aesthetic and purpose work together.
 
 It's fair to say we're fans.
 
-I might not be planning on using Freya again any time soon, but I'd unapologetically recommend it --- as an example of good design and as an aid whilst giving birth.
+I might not be planning on using Freya again any time soon, but I'd unapologetically recommend it -- as an example of good design and as an aid whilst giving birth.

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.index">
+  <div>
     <header><h2>Articles</h2></header>
     <main>
       <BlogList />
@@ -8,19 +8,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-
-import BlogList from '@/components/BlogList.vue'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  components: { BlogList },
   head: {
     title: 'Blog',
   },
 })
 </script>
-
-<style lang="postcss" module>
-.index {
-}
-</style>

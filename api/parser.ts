@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http'
 
-import { getMatchOrReturn } from '../src/utils/global'
+import { getMatchOrReturn } from '../scripts/global'
 
 import { metadata } from './metadata.json'
 

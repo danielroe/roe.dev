@@ -1,11 +1,10 @@
-const fs = require('fs')
 const grayMatter = require('gray-matter')
 
 const {
   iterateOnDirectory,
   getMatchOrReturn,
   writeFile,
-} = require('../src/utils/global')
+} = require('../scripts/global')
 
 const metadata = {}
 
@@ -26,5 +25,5 @@ writeFile(
   './metadata.json',
   JSON.stringify({
     metadata,
-  }),
+  })
 )

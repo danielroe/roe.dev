@@ -4,7 +4,7 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <HomePage />
+      <NuxtContent :document="page" />
     </main>
     <h3>Recent articles</h3>
     <BlogList :limit="4" />
@@ -15,22 +15,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-
-import BlogList from '@/components/BlogList.vue'
-import GithubRepos from '@/components/GithubRepos.vue'
-import home from '@/content/index.md'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  components: {
-    BlogList,
-    GithubRepos,
-    HomePage: home.vue.component,
-  },
   head: {
     title: 'Daniel Roe',
-    meta: [{ vmid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
+    meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
   },
+  async fetch() {
+    this.page = await this.$content(`index`).fetch()
+  },
+  data: () => ({ page: null as any }),
 })
 </script>
 
