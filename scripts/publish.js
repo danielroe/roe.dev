@@ -81,12 +81,12 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
   }
 }
 
-getArticles().then(async (articles) => {
+getArticles().then(async articles => {
   const markdownArticles = await getMarkdownArticles()
   // console.log('TCL: markdownArticles', markdownArticles)
-  markdownArticles.forEach((markdownArticle) => {
+  markdownArticles.forEach(markdownArticle => {
     const article = articles.find(
-      (article) => article.canonical_url === markdownArticle.canonical_url
+      article => article.canonical_url === markdownArticle.canonical_url
     )
     // console.log('TCL: article', article)
     if (article) {

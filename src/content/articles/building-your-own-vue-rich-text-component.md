@@ -80,8 +80,8 @@ export default {
   // without resetting the cursor.
   watch: {
     value(newValue) {
-      if(this.$el.innerHTML !== newValue) this.$el.innerHTML = newValue
-    }
+      if (this.$el.innerHTML !== newValue) this.$el.innerHTML = newValue
+    },
   },
   methods: {
     // We emit changes as HTML. Alternatively you could serialise

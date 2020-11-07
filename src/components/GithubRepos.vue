@@ -63,7 +63,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const enrichedRepos = repos.map((repo) => ({
+    const enrichedRepos = repos.map(repo => ({
       repo,
       ...useGithub(repo),
     }))

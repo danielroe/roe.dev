@@ -34,13 +34,10 @@ const app = express()
 app.use(express.json())
 
 // It is important that the full path is specified here
-app.post('/api/sample-function', function(req, res) {
+app.post('/api/sample-function', function (req, res) {
   let { info } = req.body
   console.log(info)
-  res
-    .status(200)
-    .json({ info })
-    .end()
+  res.status(200).json({ info }).end()
 })
 
 module.exports = app
