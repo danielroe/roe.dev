@@ -3,13 +3,17 @@
     <header>
       <h2>Work</h2>
     </header>
+
     <main>
-      <img
-        v-for="(image, name) in clients"
-        :key="name"
-        :alt="name"
-        :src="image"
-      />
+      <GithubRepos />
+      <section :class="$style.logos">
+        <img
+          v-for="(image, name) in clients"
+          :key="name"
+          :alt="name"
+          :src="image"
+        />
+      </section>
     </main>
   </div>
 </template>
@@ -18,23 +22,23 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 const clients = {
-  Comcast: require('~/assets/images/work/comcast.svg?inline'),
-  'Durham University': require('~/assets/images/work/durham-university.svg?inline'),
-  'Parent Scheme': require('~/assets/images/work/parentscheme.svg?inline'),
-  Concision: require('~/assets/images/work/concision.svg?inline'),
-  'North East Local Enterprise Partnership': require('~/assets/images/work/nelep.png?inline'),
-  Convoke: require('~/assets/images/work/convoke.png?inline'),
-  'Acadian Software': require('~/assets/images/work/acadian-software.svg?inline'),
+  Comcast: require('~/assets/images/work/comcast.svg'),
+  'Durham University': require('~/assets/images/work/durham-university.svg'),
+  'Parent Scheme': require('~/assets/images/work/parentscheme.svg'),
+  Concision: require('~/assets/images/work/concision.svg'),
+  'North East Local Enterprise Partnership': require('~/assets/images/work/nelep.png'),
+  Convoke: require('~/assets/images/work/convoke.png'),
+  'Acadian Software': require('~/assets/images/work/acadian-software.svg'),
 }
 
 export default defineComponent({
-  head: {
-    title: 'Work',
-  },
   setup() {
     return {
       clients,
     }
+  },
+  head: {
+    title: 'Work',
   },
 })
 </script>
@@ -42,24 +46,24 @@ export default defineComponent({
 <style lang="postcss" module>
 .work {
   h2 {
-    @apply opacity-0;
+    /* @apply opacity-0; */
   }
-  main {
-    @apply flex flex-row flex-wrap justify-center items-center;
+}
+.logos {
+  @apply flex flex-row flex-wrap justify-center items-center my-12;
 
+  > * {
+    @apply mx-4 my-4;
+    @apply h-full w-auto flex-grow-0 flex-shrink;
+
+    flex-basis: 3rem;
+    max-height: 2rem;
+    max-width: 5rem;
+  }
+
+  @media (width < 767px) {
     > * {
-      @apply mx-4 my-8;
-      @apply h-full w-auto flex-grow-0 flex-shrink;
-
-      flex-basis: 5rem;
-      max-height: 3rem;
-      max-width: 9rem;
-    }
-
-    @media (width < 767px) {
-      > * {
-        flex-basis: 33%;
-      }
+      flex-basis: 33%;
     }
   }
 }

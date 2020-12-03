@@ -7,7 +7,9 @@
       :aria-label="`GitHub repository for ${repo}`"
     >
       <article>
-        <GithubIcon />
+        <span>
+          <GithubIcon v-once />
+        </span>
         <header>
           {{ repo }}
           <dl>
@@ -33,7 +35,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import GithubIcon from '~/components/icons/GithubCircle.vue'
+import GithubIcon from '~/components/icons/github.vue'
 import ItemList from '~/components/ItemList.vue'
 
 import { useGithub } from '~/utils/github'
@@ -50,6 +52,15 @@ export default defineComponent({
     GithubIcon,
     ItemList,
   },
+  setup() {
+    const enrichedRepos = repos.map(repo => ({
+      repo,
+      ...useGithub(repo),
+    }))
+    return {
+      repos: enrichedRepos,
+    }
+  },
   head() {
     return {
       link: [
@@ -62,15 +73,6 @@ export default defineComponent({
       ],
     }
   },
-  setup() {
-    const enrichedRepos = repos.map(repo => ({
-      repo,
-      ...useGithub(repo),
-    }))
-    return {
-      repos: enrichedRepos,
-    }
-  },
 })
 </script>
 
@@ -78,10 +80,16 @@ export default defineComponent({
 .list {
   > * {
     @apply overflow-hidden;
+
+    svg {
+      height: 1em;
+      width: 1em;
+      fill: currentColor;
+    }
     article > :first-child {
       @apply absolute flex top-0 right-0 p-1;
 
-      color: var(--text, theme('colors.muted'));
+      color: var(--text, theme('colors.gray.300'));
 
       > * {
         @apply z-10;

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <TheSiteHeader />
+    <TheSiteHeader v-once />
     <Nuxt />
-    <TheSiteFooter />
+    <TheSiteFooter v-once />
   </div>
 </template>
 
@@ -189,5 +189,14 @@ a {
 
     max-width: 50rem;
   }
+}
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap; /* added line */
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
 }
 </style>
