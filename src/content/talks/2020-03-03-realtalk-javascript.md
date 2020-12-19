@@ -1,11 +1,11 @@
 ---
-source: 'Real Talk JS'
+source: 'Web Rush'
 episode: 84
 title: 'Building with Nuxt in the real world'
-date: '2020-10-29T00:00:00.000Z'
+date: '2020-03-03T00:00:00.000Z'
 type: podcast
 tags:
   - vue
   - nuxt
-link: https://realtalkjavascript.simplecast.com/episodes/episode-84-nuxt-vue-and-graphql-daniel-roe
+link: https://webrush.io/episodes/episode-84-nuxt-vue-and-graphql-daniel-roe
 ---

@@ -6,16 +6,7 @@
     <main>
       <ItemList>
         <a
-          v-for="{
-            title,
-            name,
-            type,
-            source,
-            tags,
-            link,
-            date,
-            formattedDate,
-          } in talks"
+          v-for="{ title, source, link, date, formattedDate } in talks"
           :key="link"
           :alt="title"
           :href="link"
@@ -59,9 +50,9 @@ interface Talk {
 }
 
 export default defineComponent({
-  head: {
-    title: 'Talks',
-  },
+  data: () => ({
+    talks: [] as Talk[],
+  }),
   async fetch() {
     const talks: Talk[] = (await this.$content('talks').fetch()) as any
     talks.sort(
@@ -69,8 +60,8 @@ export default defineComponent({
     )
     this.talks = talks.map(formatDateField)
   },
-  data: () => ({
-    talks: [] as Talk[],
-  }),
+  head: {
+    title: 'Talks',
+  },
 })
 </script>
