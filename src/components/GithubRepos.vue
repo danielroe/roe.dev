@@ -89,7 +89,7 @@ export default defineComponent({
     article > :first-child {
       @apply absolute flex top-0 right-0 p-1;
 
-      color: var(--text, theme('colors.gray.300'));
+      color: var(--text-base, theme('colors.gray.300'));
 
       > * {
         @apply z-10;
