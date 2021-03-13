@@ -11,8 +11,8 @@ module.exports = {
   snapshotSerializers: [require.resolve('jest-serializer-vue-tjw')],
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
-    '^.+\\.js$': 'babel-jest',
+    '^.+\\.tsx?$': 'esbuild-jest',
+    '^.+\\.jsx?$': 'esbuild-jest',
     '.*\\.(vue)$': 'vue-jest',
   },
   collectCoverage: true,
