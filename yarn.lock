@@ -1689,11 +1689,6 @@
     ts-loader "^8.0.17"
     typescript "~4.1"
 
-"@nuxt/ufo@^0.5.2":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@nuxt/ufo/-/ufo-0.5.4.tgz#2e1428e2c947cc559d566c27786525bf0f40fbc8"
-  integrity sha512-JZOGDlt2BvLCBmLhrchhRJ6tP9PBfSWLdsHC+JVJ5Qp8/hT/2u61cSsLS30zUOwcPRaQ3y2oHNkEiKJ5v90iEQ==
-
 "@nuxt/utils@2.15.3":
   version "2.15.3"
   resolved "https://registry.yarnpkg.com/@nuxt/utils/-/utils-2.15.3.tgz#45a2e368829274fa03c4d647dea7e420cd50caaa"
@@ -1876,19 +1871,19 @@
     consola "^2.12.1"
     stylelint-webpack-plugin "^2.0.0"
 
-"@nuxtjs/tailwindcss@3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-3.4.2.tgz#2376877b7e3fff35c044e99828d5e7cacfec5621"
-  integrity sha512-Hv1b/4zYaffNc0JHss3jqKLZoPRQfG7upxGguP749Zx2VgMyFExeT3NMAxntLHctKvv/ohN+5kFGiewZGI5n2A==
+"@nuxtjs/tailwindcss@3.4.3":
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-3.4.3.tgz#8239b11857d395000d9ff5df52b18644d631629d"
+  integrity sha512-W2FIB5zzvkPkNayQ3mTy7jcP0rTDwnrjv79v96/CRTptFbY5TxvZVJI7N0r8ova/IWPSdkgjdCb7wbzolzzgjg==
   dependencies:
-    "@nuxt/ufo" "^0.5.2"
     chalk "^4.1.0"
     clear-module "^4.1.1"
-    consola "^2.15.0"
+    consola "^2.15.3"
     defu "^3.2.2"
-    fs-extra "^9.0.1"
-    tailwind-config-viewer "^1.4.0"
+    fs-extra "^9.1.0"
+    tailwind-config-viewer "^1.5.0"
     tailwindcss "^1.9.6"
+    ufo "^0.6.9"
 
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
@@ -12564,7 +12559,7 @@ table@^6.0.4, table@^6.0.7:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
-tailwind-config-viewer@^1.4.0:
+tailwind-config-viewer@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/tailwind-config-viewer/-/tailwind-config-viewer-1.5.0.tgz#b0a345a70f4282f305bf012fdb2d54e48a4e885f"
   integrity sha512-yiQjFh/Hv9MgCmqJgIzCp74TDfwhBSS3no3vwEa094DGSk1eoaAKbzJskFFma91a0IxI8oVFOPZ+HCPiSZR16A==
@@ -13028,7 +13023,7 @@ ua-parser-js@^0.7.24:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.24.tgz#8d3ecea46ed4f1f1d63ec25f17d8568105dc027c"
   integrity sha512-yo+miGzQx5gakzVK3QFfN0/L9uVhosXBBO7qmnk7c2iw1IhL212wfA3zbnI54B0obGwC/5NWub/iT9sReMx+Fw==
 
-ufo@^0.6.10:
+ufo@^0.6.10, ufo@^0.6.9:
   version "0.6.10"
   resolved "https://registry.yarnpkg.com/ufo/-/ufo-0.6.10.tgz#c7ace9b8f72cb08c35e3a8c8edc76f062fbaa7d0"
   integrity sha512-sMbJnrBcKKsbVyr6++hb0n9lCmrMqkJrNnJIOJ3sckeqY6NMfAULcRGbBWcASSnN1HDV3YqiGCPzi9RVs511bw==
