@@ -1,8 +1,6 @@
-// @ts-check
-/**
- * @type {import('@nuxt/types').NuxtConfig} config
- */
-const config = {
+import type { NuxtConfig } from '@nuxt/types'
+
+export default <NuxtConfig>{
   target: 'static',
 
   srcDir: 'src',
@@ -99,5 +97,3 @@ const config = {
 
   modules: ['@nuxt/content'],
 }
-
-export default config
