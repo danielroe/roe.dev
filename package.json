@@ -10,7 +10,8 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -18,12 +19,6 @@
       "prettier --write"
     ],
     "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
   },
   "dependencies": {
     "@nuxt/content": "1.14.0",
@@ -50,13 +45,13 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
-    "esbuild": "0.9.7",
+    "esbuild": "0.11.2",
     "esbuild-jest": "0.5.0",
     "eslint": "7.23.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-nuxt": "2.0.0",
     "eslint-plugin-prettier": "3.3.1",
-    "husky": "4.3.8",
+    "husky": "^6.0.0",
     "jest": "26.6.3",
     "jest-serializer-vue-tjw": "3.17.0",
     "lint-staged": "10.5.4",
