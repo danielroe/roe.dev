@@ -1,7 +1,7 @@
 ---
 source: 'Views on Vue'
 episode: 141
-title: 'Diving into Nuxt 3 with Daniel Roe'
+title: 'Diving into Nuxt 3'
 date: '2021-03-16T00:00:00.000Z'
 type: podcast
 tags:
