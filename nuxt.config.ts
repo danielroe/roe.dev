@@ -69,7 +69,7 @@ export default <NuxtConfig>{
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
-    '@nuxtjs/composition-api',
+    '@nuxtjs/composition-api/module',
   ],
 
   content: {
