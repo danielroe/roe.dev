@@ -13,7 +13,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'esbuild-jest',
     '^.+\\.jsx?$': 'esbuild-jest',
-    '.*\\.(vue)$': 'vue-jest',
+    '.*\\.(vue)$': '@vue/vue2-jest',
   },
   collectCoverage: true,
   collectCoverageFrom: [
