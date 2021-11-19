@@ -86,6 +86,7 @@ export default defineComponent({
       width: 1em;
       fill: currentColor;
     }
+
     article > :first-child {
       @apply absolute flex top-0 right-0 p-1;
 

@@ -49,6 +49,7 @@ export default defineComponent({
     /* @apply opacity-0; */
   }
 }
+
 .logos {
   @apply flex flex-row flex-wrap justify-center items-center my-12;
 

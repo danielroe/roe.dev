@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const axios = require('axios')
 
 const { iterateOnDirectory, getMatchOrReturn } = require('./global')

@@ -63,9 +63,11 @@ export default defineComponent({
   ul {
     @apply flex flex-row justify-center gap-4 my-4 items-center;
   }
+
   li {
     @apply inline-flex items-center;
   }
+
   svg {
     @apply w-4 h-4 fill-current;
   }
