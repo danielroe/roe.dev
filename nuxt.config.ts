@@ -66,8 +66,7 @@ export default <NuxtConfig>{
   buildModules: [
     '@nuxtjs/html-validator',
     '@nuxt/typescript-build',
-    '@nuxtjs/stylelint-module',
-    '@nuxtjs/tailwindcss',
+    'nuxt-windicss',
     '@nuxtjs/color-mode',
     '@nuxtjs/composition-api/module',
   ],
@@ -78,11 +77,6 @@ export default <NuxtConfig>{
         theme: 'prism-themes/themes/prism-material-dark.css',
       },
     },
-  },
-
-  tailwindcss: {
-    configPath: '../tailwind.config.js',
-    purge: false,
   },
 
   modern: process.env.NODE_ENV !== 'development',

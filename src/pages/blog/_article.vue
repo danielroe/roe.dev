@@ -28,6 +28,31 @@ import { Route } from 'vue-router'
 import { getMatchOrReturn } from '~/utils/global'
 
 export default defineComponent({
+  data: () => ({
+    page: null as any,
+    tags: [],
+    date: '',
+    title: '',
+    description: '',
+    formattedDate: '',
+  }),
+  async fetch() {
+    const slug = this.$route.params.article
+    if (!slug) this.$router.push('/blog')
+
+    const page: Record<string, any> = await this.$content(
+      `articles/${slug}`
+    ).fetch()
+    const d = new Date(page.date)
+
+    this.page = page
+
+    this.title = page.title
+    this.tags = page.tags || []
+    this.date = page.date || ''
+    this.description = page.description
+    this.formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+  },
   head(this: { title: string; description: string; $route: Route }) {
     const slug = getMatchOrReturn(this.$route.fullPath, /\/([^/]*)\/?$/, 1)
     return {
@@ -52,31 +77,6 @@ export default defineComponent({
       ],
     }
   },
-  async fetch() {
-    const slug = this.$route.params.article
-    if (!slug) this.$router.push('/blog')
-
-    const page: Record<string, any> = await this.$content(
-      `articles/${slug}`
-    ).fetch()
-    const d = new Date(page.date)
-
-    this.page = page
-
-    this.title = page.title
-    this.tags = page.tags || []
-    this.date = page.date || ''
-    this.description = page.description
-    this.formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
-  },
-  data: () => ({
-    page: null as any,
-    tags: [],
-    date: '',
-    title: '',
-    description: '',
-    formattedDate: '',
-  }),
 })
 </script>
 
@@ -91,6 +91,7 @@ export default defineComponent({
 
     letter-spacing: 0.1rem;
   }
+
   * + h3,
   * + h4 {
     @apply mt-8;
@@ -99,6 +100,7 @@ export default defineComponent({
   :global(.nuxt-content-highlight) {
     @apply mb-6;
   }
+
   p + :global(.nuxt-content-highlight) {
     @apply mt-6;
   }
@@ -128,6 +130,7 @@ export default defineComponent({
       @apply my-4;
 
       counter-increment: list;
+
       &::before {
         @apply -ml-6 mt-2 mr-2 inline-block font-semibold leading-none;
 
@@ -143,6 +146,7 @@ export default defineComponent({
   ul li::before {
     content: '›';
   }
+
   ol li::before {
     @apply text-xs;
 
@@ -164,6 +168,7 @@ export default defineComponent({
       @apply my-4;
     }
   }
+
   p > code,
   li > code {
     @apply px-2 py-1 mx-1 text-sm;

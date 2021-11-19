@@ -64,8 +64,10 @@
       @apply flex-grow-0;
     }
   }
+
   > :last-child {
     @apply p-2 ml-2;
+
     span {
       @apply block rounded-full h-4 w-4 border-2 border-solid outline-none;
 
@@ -82,10 +84,12 @@
       opacity: 0.7;
     }
   }
+
   ul {
     @apply flex flex-row justify-center items-center;
   }
 }
+
 li[aria-hidden]::before {
   @apply font-bold;
   @apply inline-block;

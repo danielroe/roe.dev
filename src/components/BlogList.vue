@@ -37,8 +37,12 @@ export default defineComponent({
   props: {
     limit: {
       type: Number as () => number,
+      default: Infinity,
     },
   },
+  data: () => ({
+    entries: [] as Entry[],
+  }),
   async fetch() {
     const entries: Entry[] = (
       await this.$content('articles').only(['title', 'date', 'slug']).fetch()
@@ -49,8 +53,5 @@ export default defineComponent({
     )
     this.entries = entries
   },
-  data: () => ({
-    entries: [] as Entry[],
-  }),
 })
 </script>
