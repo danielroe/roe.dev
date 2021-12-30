@@ -3,6 +3,9 @@ import { defineNuxtConfig } from '@nuxt/bridge'
 export default defineNuxtConfig({
   bridge: {
     nitro: false,
+    capi: {
+      legacy: false,
+    },
   },
 
   target: 'static',
