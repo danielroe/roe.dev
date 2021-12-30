@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent } from '#imports'
 
 import GithubIcon from '~/components/icons/github.vue'
 import ItemList from '~/components/ItemList.vue'

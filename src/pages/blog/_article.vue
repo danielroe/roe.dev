@@ -22,8 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
 import { Route } from 'vue-router'
+import { defineComponent } from '#imports'
 
 import { getMatchOrReturn } from '~/utils/global'
 
