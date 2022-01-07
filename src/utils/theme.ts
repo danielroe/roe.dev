@@ -1,5 +1,5 @@
-import { Ref, onMounted, watch } from '@nuxtjs/composition-api'
 import useLocalStorage from './local-storage'
+import { Ref, onMounted, watch } from '#imports'
 
 type Theme = 'dark' | 'light' | undefined
 

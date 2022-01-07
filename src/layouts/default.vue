@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
 import { Route } from 'vue-router'
+import { defineComponent } from '#imports'
 
 import TheSiteHeader from '~/components/layout/TheSiteHeader.vue'
 import TheSiteFooter from '~/components/layout/TheSiteFooter.vue'

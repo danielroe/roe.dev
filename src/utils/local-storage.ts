@@ -1,4 +1,4 @@
-import { ref, Ref, watch, onMounted } from '@nuxtjs/composition-api'
+import { ref, Ref, watch, onMounted } from '#imports'
 
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isClient = typeof window !== 'undefined'

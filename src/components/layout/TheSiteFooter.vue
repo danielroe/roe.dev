@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent } from '#imports'
 
 import GitHubIcon from '~/components/icons/github.vue'
 import LinkedInIcon from '~/components/icons/linkedin.vue'

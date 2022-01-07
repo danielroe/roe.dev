@@ -1,6 +1,13 @@
-import type { NuxtConfig } from '@nuxt/types'
+import { defineNuxtConfig } from '@nuxt/bridge'
 
-export default <NuxtConfig>{
+export default defineNuxtConfig({
+  bridge: {
+    nitro: false,
+    capi: {
+      legacy: false,
+    },
+  },
+
   target: 'static',
 
   srcDir: 'src',
@@ -65,10 +72,8 @@ export default <NuxtConfig>{
 
   buildModules: [
     '@nuxtjs/html-validator',
-    '@nuxt/typescript-build',
     'nuxt-windicss',
     '@nuxtjs/color-mode',
-    '@nuxtjs/composition-api/module',
   ],
 
   content: {
@@ -90,4 +95,4 @@ export default <NuxtConfig>{
   },
 
   modules: ['@nuxt/content'],
-}
+})

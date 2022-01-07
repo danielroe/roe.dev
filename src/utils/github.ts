@@ -1,4 +1,4 @@
-import { computed } from '@nuxtjs/composition-api'
+import { computed } from '#imports'
 import { useFetch } from 'vue-use-web'
 
 export function useGithub(repo: string) {
