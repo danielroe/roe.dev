@@ -41,10 +41,13 @@ import ItemList from '~/components/ItemList.vue'
 import { useGithub } from '~/utils/github'
 
 const repos = [
+  'nuxt/framework',
+  'nuxt/nuxt.js',
   'nuxt/vercel-builder',
   'nuxt-community/composition-api',
-  'danielroe/nuxt-typed-vuex',
-  'danielroe/sanity-typed-queries',
+  // 'nuxt-community/sanity-module',
+  // 'danielroe/typed-vuex',
+  // 'danielroe/sanity-typed-queries',
 ]
 
 export default defineComponent({

@@ -13,4 +13,12 @@ module.exports = {
   plugins: ['prettier'],
   // add your custom rules here
   rules: {},
+  overrides: [
+    {
+      files: ['src/pages/**/*.{js,ts,vue}', 'src/layouts/**/*.{js,ts,vue}'],
+      rules: {
+        'vue/multi-word-component-names': 'off',
+      },
+    },
+  ],
 }

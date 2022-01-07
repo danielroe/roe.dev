@@ -29,6 +29,9 @@ const clients = {
   'North East Local Enterprise Partnership': require('~/assets/images/work/nelep.png'),
   Convoke: require('~/assets/images/work/convoke.png'),
   'Acadian Software': require('~/assets/images/work/acadian-software.svg'),
+  NuxtLabs: require('~/assets/images/work/nuxtlabs.svg'),
+  Canvas8: require('~/assets/images/work/canvas8.svg'),
+  'Imperial Enterprise Lab': require('~/assets/images/work/imperial-enterprise-lab.svg'),
 }
 
 export default defineComponent({
@@ -44,12 +47,6 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" module>
-.work {
-  h2 {
-    /* @apply opacity-0; */
-  }
-}
-
 .logos {
   @apply flex flex-row flex-wrap justify-center items-center my-12;
 
