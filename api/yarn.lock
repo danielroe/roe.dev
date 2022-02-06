@@ -153,10 +153,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:0.0.937139":
-  version: 0.0.937139
-  resolution: "devtools-protocol@npm:0.0.937139"
-  checksum: 4ac9d9e5fad229fca6786d2afe95bac4ee87a8e188092ce088a0fba222b20397ec61f8eff8d1703b96e3dab27927cb91a5c6f84d151342e0603c09d4378ab62d
+"devtools-protocol@npm:0.0.948846":
+  version: 0.0.948846
+  resolution: "devtools-protocol@npm:0.0.948846"
+  checksum: add29ebdcc60d2ccb11f8c7125c3d500957da63bac6bc7633041761ea12320febebbc58530e94bc23e0586ce4de2623fb5eaae0971ecbfc778f7159448519b0a
   languageName: node
   linkType: hard
 
@@ -376,12 +376,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.5":
-  version: 2.6.5
-  resolution: "node-fetch@npm:2.6.5"
+"node-fetch@npm:2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
   dependencies:
     whatwg-url: ^5.0.0
-  checksum: 4e83db450718e70762882f00d96f647a7f2f3170035225934ddd5450cb1d91ef339ceb180d3687bcb0a6ed78c3fa5636ce8d3e44ec81ab59e0224ebf8965f65f
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
   languageName: node
   linkType: hard
 
@@ -473,15 +478,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:13.0.1":
-  version: 13.0.1
-  resolution: "puppeteer-core@npm:13.0.1"
+"puppeteer-core@npm:13.1.3":
+  version: 13.1.3
+  resolution: "puppeteer-core@npm:13.1.3"
   dependencies:
     debug: 4.3.2
-    devtools-protocol: 0.0.937139
+    devtools-protocol: 0.0.948846
     extract-zip: 2.0.1
     https-proxy-agent: 5.0.0
-    node-fetch: 2.6.5
+    node-fetch: 2.6.7
     pkg-dir: 4.2.0
     progress: 2.0.3
     proxy-from-env: 1.1.0
@@ -489,7 +494,7 @@ __metadata:
     tar-fs: 2.1.1
     unbzip2-stream: 1.4.3
     ws: 8.2.3
-  checksum: 5b77ede763e438cb4d61349e072a800d92043d8d12087d7ae4ba868d171aca85c648dce92e033f2efccfb32acb9d92ebfea9b65080e3d678c1de42095efd8188
+  checksum: 16fa90800d6ef869719e106d1f343b149f2a2434cdecece444273f36e3b061efa5a927a25e8d2573bd213d93dfb81556f60f83f5c4cdcd0f1343da4accbfaf97
   languageName: node
   linkType: hard
 
@@ -523,7 +528,7 @@ __metadata:
     "@types/puppeteer-core": 5.4.0
     chrome-aws-lambda: 10.1.0
     gray-matter: 4.0.3
-    puppeteer-core: 13.0.1
+    puppeteer-core: 13.1.3
     tslib: 2.3.1
   languageName: unknown
   linkType: soft
