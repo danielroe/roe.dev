@@ -4236,7 +4236,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@windicss/plugin-utils@npm:1.6.3, @windicss/plugin-utils@npm:^1.1.1, @windicss/plugin-utils@npm:^1.6.3":
+"@windicss/config@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@windicss/config@npm:1.7.1"
+  dependencies:
+    debug: ^4.3.3
+    jiti: ^1.12.9
+    windicss: ^3.4.3
+  checksum: ba0e9032311c42177c211b052a216628ce0a6db22f3adaac5d3ce63c050ad3925ae65e1f662e31007485c3c8f169101c56f0a1f2635c380a60d416efcdb1d189
+  languageName: node
+  linkType: hard
+
+"@windicss/plugin-utils@npm:1.7.1, @windicss/plugin-utils@npm:^1.7.0":
+  version: 1.7.1
+  resolution: "@windicss/plugin-utils@npm:1.7.1"
+  dependencies:
+    "@antfu/utils": ^0.4.0
+    "@windicss/config": 1.7.1
+    debug: ^4.3.3
+    fast-glob: ^3.2.11
+    magic-string: ^0.25.7
+    micromatch: ^4.0.4
+    windicss: ^3.4.3
+  checksum: 85d5d2142e2eae03952530ec9e81967d1dc24cc88ecb26c5e8065464a516d329c1ce28e4a56221e9864e515e5c57b3ac2b4c6a3a6ae1abc372dd84fa595eaf5e
+  languageName: node
+  linkType: hard
+
+"@windicss/plugin-utils@npm:^1.1.1":
   version: 1.6.3
   resolution: "@windicss/plugin-utils@npm:1.6.3"
   dependencies:
@@ -14303,12 +14329,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-windicss@npm:2.2.4":
-  version: 2.2.4
-  resolution: "nuxt-windicss@npm:2.2.4"
+"nuxt-windicss@npm:2.2.5":
+  version: 2.2.5
+  resolution: "nuxt-windicss@npm:2.2.5"
   dependencies:
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest"
-    "@windicss/plugin-utils": ^1.6.3
+    "@windicss/plugin-utils": ^1.7.0
     consola: ^2.15.3
     defu: ^5.0.1
     fs-extra: ^10.0.0
@@ -14317,11 +14343,11 @@ __metadata:
     pathe: ^0.2.0
     read-cache: ^1.0.0
     sirv: ^2.0.2
-    vite-plugin-windicss: ^1.6.3
+    vite-plugin-windicss: ^1.7.0
     windicss: ^3.4.3
     windicss-analysis: ^0.3.5
-    windicss-webpack-plugin: ^1.6.4
-  checksum: 19ecc36a0b0b82be8df2230dfbd8de9f2cfc076feaab42fb9bd7154e5d69280b488b2d184a1144f117eaea670e4f052aa76b5dbf497039b4bb8c8fb1f4a0c1e1
+    windicss-webpack-plugin: ^1.6.5
+  checksum: d71bfb4eed4ebdc982bc34773a60336485d5189d37ddd8e06c46aa8b2a3fbc2b5bfac6df028e043789d7dbe62d646ca68b976f35538b18f56563b6b9dd3bc1db
   languageName: node
   linkType: hard
 
@@ -17356,7 +17382,7 @@ __metadata:
     lint-staged: 12.3.4
     nuxi: ^0.10.1
     nuxt-edge: 2.16.0-27358576.777a4b7f
-    nuxt-windicss: 2.2.4
+    nuxt-windicss: 2.2.5
     postcss-html: 1.3.0
     postcss-nested: 5.0.6
     prettier: 2.5.1
@@ -20042,17 +20068,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-windicss@npm:^1.6.3":
-  version: 1.6.3
-  resolution: "vite-plugin-windicss@npm:1.6.3"
+"vite-plugin-windicss@npm:^1.7.0":
+  version: 1.7.1
+  resolution: "vite-plugin-windicss@npm:1.7.1"
   dependencies:
-    "@windicss/plugin-utils": 1.6.3
+    "@windicss/plugin-utils": 1.7.1
     debug: ^4.3.3
     kolorist: ^1.5.1
     windicss: ^3.4.3
   peerDependencies:
     vite: ^2.0.1
-  checksum: 841a4113c0939586bf548311ea737bb3a2d02416c7007084c5518a8af7824e56efba82941b3b5088ece252481ad1178d85c559f06187b696e296566b59252f29
+  checksum: 273d40adb0fb1f02c4b04fce7d7820c159588a35c4770253c99b74bfd653aebe9af21b64bb026d3595c821b00ce6c06ae1de8d4d00dc3103fe8897f5c482127d
   languageName: node
   linkType: hard
 
@@ -20594,18 +20620,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"windicss-webpack-plugin@npm:^1.6.4":
-  version: 1.6.4
-  resolution: "windicss-webpack-plugin@npm:1.6.4"
+"windicss-webpack-plugin@npm:^1.6.5":
+  version: 1.6.5
+  resolution: "windicss-webpack-plugin@npm:1.6.5"
   dependencies:
-    "@windicss/plugin-utils": ^1.6.3
+    "@windicss/plugin-utils": ^1.7.0
     debug: ^4.3.3
     loader-utils: ^2.0.0
     lodash: ^4.17.21
     pathe: ^0.2.0
     webpack-virtual-modules: ^0.4.3
     windicss: ^3.4.3
-  checksum: a17509e2cc44ecc7082ba590708cb5a5c9841e39968c6ba60a82f39d062a505234c7346879ed26a5c55c71b7aa4bad909cf52484931d4dec462d428a37d01ecd
+  checksum: 32b82b494e8ae4d5f60413371a9f00c934bedf7dc5041f21673ae00911f06a35d0d58759efffe6fc1bc7e4ae7638605906625c3ae781d07c6ebc61db431326d7
   languageName: node
   linkType: hard
 
