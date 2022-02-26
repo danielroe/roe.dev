@@ -1,6 +1,6 @@
 <template>
   <footer :class="$style.footer">
-    <small>&copy; 2019-2020 Daniel Roe. All rights reserved.</small>
+    <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
     <ul>
       <li v-for="{ link, name, icon } in links" :key="name">
         <a :href="link">

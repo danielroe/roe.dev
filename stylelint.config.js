@@ -7,6 +7,12 @@ module.exports = {
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
+    'function-no-unknown': [
+      true,
+      {
+        ignoreFunctions: ['theme'],
+      },
+    ],
     'at-rule-no-unknown': [
       true,
       {
