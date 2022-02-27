@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 
-const axios = require('axios')
+import { $fetch } from 'ohmyfetch'
 
-const { iterateOnDirectory, getMatchOrReturn } = require('./global')
+import { iterateOnDirectory, getMatchOrReturn } from './global.mjs'
 
 const url = 'https://dev.to/api'
 const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
@@ -24,21 +24,20 @@ async function getMarkdownArticles() {
   return articles
 }
 
-async function getArticles() {
-  const { data } = await axios.get(`${url}/articles/me`, {
+function getArticles() {
+  return $fetch(`${url}/articles/me`, {
     headers: {
       'api-key': token,
     },
   })
-  return data
 }
 
 // eslint-disable-next-line
 async function postArticle({ title, body_markdown, canonical_url }) {
   try {
-    const { data } = await axios.post(
-      `${url}/articles`,
-      {
+    return await $fetch(`${url}/articles`, {
+      method: 'POST',
+      body: {
         article: {
           published: true,
           title,
@@ -46,13 +45,10 @@ async function postArticle({ title, body_markdown, canonical_url }) {
           body_markdown,
         },
       },
-      {
-        headers: {
-          'api-key': token,
-        },
-      }
-    )
-    return data
+      headers: {
+        'api-key': token,
+      },
+    })
   } catch (e) {
     console.log(e)
   }
@@ -61,9 +57,9 @@ async function postArticle({ title, body_markdown, canonical_url }) {
 // eslint-disable-next-line
 async function updateArticle(id, { title, body_markdown, canonical_url }) {
   try {
-    const { data } = await axios.put(
-      `${url}/articles/${id}`,
-      {
+    return await $fetch(`${url}/articles/${id}`, {
+      method: 'PUT',
+      body: {
         article: {
           published: true,
           title,
@@ -71,13 +67,10 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
           canonical_url,
         },
       },
-      {
-        headers: {
-          'api-key': token,
-        },
-      }
-    )
-    return data
+      headers: {
+        'api-key': token,
+      },
+    })
   } catch (e) {
     console.log(e)
   }

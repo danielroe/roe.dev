@@ -1,5 +1,5 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 
 /**
  * @type {(dir: string, callback: (path: string) => any)} walkDir
@@ -15,7 +15,7 @@ function walkDir(dir, callback) {
 /**
  * @type {(directory: string, callback: (path: string, contents: string) => any)} iterateOnDirectory
  */
-function iterateOnDirectory(directory, callback) {
+export function iterateOnDirectory(directory, callback) {
   walkDir(directory, path =>
     callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8'))
   )
@@ -24,7 +24,7 @@ function iterateOnDirectory(directory, callback) {
 /**
  * @type {(haystack: string, needle: string | RegExp, index: number ) => string} getMatchOrReturn
  */
-function getMatchOrReturn(haystack, needle, index = 0) {
+export function getMatchOrReturn(haystack, needle, index = 0) {
   const matches = haystack.match(needle)
   if (!matches || !matches.length || matches.length < index + 1) return ''
   return matches[index]
@@ -33,14 +33,8 @@ function getMatchOrReturn(haystack, needle, index = 0) {
 /**
  * @type {(message: string, filename: string, contents: string) => void} writeFile
  */
-function writeFile(_message, filename, contents) {
+export function writeFile(_message, filename, contents) {
   if (fs && fs.writeFileSync) {
     return fs.writeFileSync(filename, contents)
   }
-}
-
-module.exports = {
-  iterateOnDirectory,
-  getMatchOrReturn,
-  writeFile,
 }

@@ -22,6 +22,6 @@ jobs:
         run: yarn
 
       - name: Update blogs on dev.to
-        run: node scripts/publish.js
+        run: node scripts/publish.mjs
         env:
           DEVTO_TOKEN: ${{ secrets.DEVTO_TOKEN }}

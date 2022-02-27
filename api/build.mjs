@@ -1,10 +1,10 @@
-const grayMatter = require('gray-matter')
+import grayMatter from 'gray-matter'
 
-const {
+import {
   iterateOnDirectory,
   getMatchOrReturn,
   writeFile,
-} = require('../scripts/global')
+} from '../scripts/global.mjs'
 
 const metadata = {}
 
