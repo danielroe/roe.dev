@@ -87,7 +87,7 @@ export default defineComponent({
     svg {
       height: 1em;
       width: 1em;
-      fill: currentColor;
+      fill: currentcolor;
     }
 
     article > :first-child {

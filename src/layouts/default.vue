@@ -177,7 +177,7 @@ a {
 
       a:not([href^='#']) {
         &::after {
-          border-color: currentColor;
+          border-color: currentcolor;
           opacity: 0.1;
         }
 
