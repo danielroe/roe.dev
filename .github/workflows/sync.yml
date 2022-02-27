@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "src/content/**"
+      - ".github/workflows/test.yml"
 
 jobs:
   sync_devto:
