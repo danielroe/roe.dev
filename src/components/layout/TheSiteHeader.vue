@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const colorMode = useColorMode()
+</script>
+
 <template>
   <nav :class="$style.header">
     <ul>
@@ -17,9 +21,9 @@
       aria-label="Change site theme"
       type="button"
       @click="
-        $colorMode.value === 'dark'
-          ? ($colorMode.preference = 'light')
-          : ($colorMode.preference = 'dark')
+        colorMode.value === 'dark'
+          ? (colorMode.preference = 'light')
+          : (colorMode.preference = 'dark')
       "
     >
       <span />
@@ -27,7 +31,7 @@
   </nav>
 </template>
 
-<style lang="postcss" module>
+<style module>
 .header {
   @apply p-2 uppercase bg-gray-900 flex flex-row justify-between items-center;
   @apply text-white;
@@ -50,7 +54,7 @@
     }
   }
 
-  :global(.nuxt-link-exact-active) {
+  :global(.router-link-exact-active) {
     &::after {
       @apply border-gray-800;
     }

@@ -3,7 +3,7 @@
     <NuxtLink
       v-for="{ title, slug, date, formattedDate } in entries.slice(0, limit)"
       :key="slug"
-      :to="`/blog/${slug}`"
+      :to="slug.replace('articles', 'blog')"
       :title="title"
     >
       <article>
@@ -21,11 +21,7 @@
   </ItemList>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
-import { formatDateField } from '~/utils/dates'
-
+<script lang="ts" setup>
 interface Entry {
   title: string
   date: string
@@ -33,25 +29,25 @@ interface Entry {
   formattedDate: string
 }
 
-export default defineComponent({
-  props: {
-    limit: {
-      type: Number as () => number,
-      default: Infinity,
-    },
-  },
-  data: () => ({
-    entries: [] as Entry[],
-  }),
-  async fetch() {
-    const entries: Entry[] = (
-      await this.$content('articles').only(['title', 'date', 'slug']).fetch()
-    ).map(formatDateField)
-
-    entries.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
-    this.entries = entries
+defineProps({
+  limit: {
+    type: Number as () => number,
+    default: Infinity,
   },
 })
+
+const { only } = useContentQuery('/articles')
+const { data: entries } = await useAsyncData(
+  'blog',
+  () => only(['title', 'date', 'slug']).find(),
+  {
+    transform: (entries: any[]) => {
+      entries = entries.map(formatDateField)
+      entries.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+      return entries as Entry[]
+    },
+  }
+)
 </script>

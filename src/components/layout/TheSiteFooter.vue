@@ -1,10 +1,14 @@
 <template>
-  <footer :class="$style.footer">
+  <footer :class="$style.footer" class="relative">
     <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
-    <ul>
-      <li v-for="{ link, name, icon } in links" :key="name">
+    <ul class="flex flex-row justify-center gap-4 my-4 items-center">
+      <li
+        v-for="{ link, name, icon } in links"
+        :key="name"
+        class="inline-flex items-center"
+      >
         <a :href="link">
-          <component :is="icon" alt="" />
+          <component :is="icon" alt="" class="w-4 h-4 fill-current" />
           <span class="visually-hidden">
             {{ name }}
           </span>
@@ -14,9 +18,7 @@
   </footer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
+<script lang="ts" setup>
 import GitHubIcon from '~/components/icons/github.vue'
 import LinkedInIcon from '~/components/icons/linkedin.vue'
 import TwitterIcon from '~/components/icons/twitter.vue'
@@ -38,38 +40,14 @@ const links = [
     link: 'https://twitter.com/danielcroe',
   },
 ]
-
-export default defineComponent({
-  setup() {
-    return {
-      links,
-    }
-  },
-})
 </script>
 
-<style lang="postcss" module>
-.footer {
-  @apply relative;
+<style module>
+.footer::before {
+  @apply block mx-auto my-4;
 
-  &::before {
-    @apply block mx-auto my-4;
-
-    border-top: 2px solid theme('colors.gray.700');
-    width: 1rem;
-    content: '';
-  }
-
-  ul {
-    @apply flex flex-row justify-center gap-4 my-4 items-center;
-  }
-
-  li {
-    @apply inline-flex items-center;
-  }
-
-  svg {
-    @apply w-4 h-4 fill-current;
-  }
+  border-top: 2px solid theme('colors.gray.700');
+  width: 1rem;
+  content: '';
 }
 </style>

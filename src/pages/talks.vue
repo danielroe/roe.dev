@@ -33,11 +33,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
-import { formatDateField } from '~/utils/dates'
-
+<script lang="ts" setup>
 interface Talk {
   title: string
   name: string
@@ -49,19 +45,16 @@ interface Talk {
   formattedDate: string
 }
 
-export default defineComponent({
-  data: () => ({
-    talks: [] as Talk[],
-  }),
-  async fetch() {
-    const talks: Talk[] = (await this.$content('talks').fetch()) as any
-    talks.sort(
+useMeta({
+  title: 'Talks',
+})
+const { find } = useContentQuery('/talks')
+const { data: talks } = await useAsyncData('talks', find, {
+  transform: (talks: Talk[]) => {
+    talks?.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
-    this.talks = talks.map(formatDateField)
-  },
-  head: {
-    title: 'Talks',
+    return talks?.map(formatDateField)
   },
 })
 </script>

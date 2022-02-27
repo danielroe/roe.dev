@@ -1,18 +1,16 @@
-import { defineNuxtConfig } from '@nuxt/bridge'
+import { defineNuxtConfig } from 'nuxt3'
 
 export default defineNuxtConfig({
-  bridge: {
-    nitro: false,
-    capi: {
-      legacy: false,
-    },
-  },
-
-  target: 'static',
-
   srcDir: 'src',
 
-  head: {
+  components: {
+    global: true,
+    dirs: ['~/components'],
+  },
+
+  css: ['~/assets/css/tailwind.css'],
+
+  meta: {
     title: 'roe.dev',
     htmlAttrs: {
       lang: 'en',
@@ -23,7 +21,6 @@ export default defineNuxtConfig({
       { name: 'msapplication-TileColor', content: '#1a202c' },
       { name: 'theme-color', content: '#1a202c' },
       {
-        hid: 'og:image',
         property: 'og:image',
         content: `https://roe.dev/og/og.jpg`,
       },
@@ -32,12 +29,10 @@ export default defineNuxtConfig({
       {
         name: 'description',
         content: `The personal website of Daniel Roe`,
-        hid: 'description',
       },
       {
         property: 'og:description',
         content: `The personal website of Daniel Roe`,
-        hid: 'og:description',
       },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@danielcroe' },
@@ -68,13 +63,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  components: true,
-
-  buildModules: [
-    '@nuxtjs/html-validator',
-    'nuxt-windicss',
-    '@nuxtjs/color-mode',
-  ],
+  modules: ['nuxt-windicss', '@nuxtjs/color-mode', '@nuxt/content'],
 
   content: {
     markdown: {
@@ -83,16 +72,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
-  modern: process.env.NODE_ENV !== 'development',
-
-  build: {
-    postcss: {
-      plugins: {
-        'postcss-nested': {},
-      },
-    },
-  },
-
-  modules: ['@nuxt/content'],
 })

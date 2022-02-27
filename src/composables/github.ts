@@ -1,8 +1,5 @@
-import { computed } from '#imports'
-import { useFetch } from 'vue-use-web'
-
 export function useGithub(repo: string) {
-  const { response } = useFetch(`https://api.github.com/repos/${repo}`, {})
+  const { data: response } = useFetch(`https://api.github.com/repos/${repo}`)
 
   const stars = computed(
     () => response.value && response.value.stargazers_count

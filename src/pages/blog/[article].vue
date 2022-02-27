@@ -1,86 +1,61 @@
 <template>
   <article :class="$style.blog">
-    <header v-if="title">
-      <h2>{{ title }}</h2>
-      <dl v-if="date && formattedDate">
+    <header v-if="page.title">
+      <h2>{{ page.title }}</h2>
+      <dl v-if="page.date && formattedDate">
         <dt>Published</dt>
         <dd>
-          <time :datetime="date">{{ formattedDate }}</time>
+          <time :datetime="page.date">{{ formattedDate }}</time>
         </dd>
-        <template v-if="tags && tags.length">
+        <template v-if="page.tags && page.tags.length">
           <dt>Tags</dt>
           <dd>
-            <span v-for="tag in tags" :key="tag" v-text="tag" />
+            <span v-for="tag in page.tags" :key="tag" v-text="tag" />
           </dd>
         </template>
       </dl>
     </header>
     <section v-if="page">
-      <nuxt-content :document="page" />
+      <Content :id="page.id" />
     </section>
   </article>
 </template>
 
-<script lang="ts">
-import { Route } from 'vue-router'
-import { defineComponent } from '#imports'
+<script lang="ts" setup>
+const route = useRoute()
+const slug = route.params.article
+if (!slug) navigateTo('/blog')
 
-import { getMatchOrReturn } from '~/utils/global'
+const { findOne } = useContentQuery(route.path.replace('blog', 'articles'))
+const { data: page } = await useAsyncData('page-content', findOne)
+const d = new Date(page.value.date)
+const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
-export default defineComponent({
-  data: () => ({
-    page: null as any,
-    tags: [],
-    date: '',
-    title: '',
-    description: '',
-    formattedDate: '',
-  }),
-  async fetch() {
-    const slug = this.$route.params.article
-    if (!slug) this.$router.push('/blog')
-
-    const page: Record<string, any> = await this.$content(
-      `articles/${slug}`
-    ).fetch()
-    const d = new Date(page.date)
-
-    this.page = page
-
-    this.title = page.title
-    this.tags = page.tags || []
-    this.date = page.date || ''
-    this.description = page.description
-    this.formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
-  },
-  head(this: { title: string; description: string; $route: Route }) {
-    const slug = getMatchOrReturn(this.$route.fullPath, /\/([^/]*)\/?$/, 1)
-    return {
-      title: this.title,
-      meta: [
-        {
-          name: 'description',
-          content: this.description,
-          hid: 'description',
-        },
-        {
-          hid: 'og:image',
-          property: 'og:image',
-          content: `https://roe.dev/og/${slug}.jpg`,
-        },
-        { hid: 'og:title', property: 'og:title', content: this.title },
-        {
-          hid: 'og:description',
-          property: 'og:description',
-          content: this.description,
-        },
-      ],
-    }
-  },
+const ogSlug = getMatchOrReturn(route.fullPath, /\/([^/]*)\/?$/, 1)
+useMeta({
+  title: page.value.title,
+  meta: [
+    {
+      name: 'description',
+      content: page.value.description,
+      hid: 'description',
+    },
+    {
+      hid: 'og:image',
+      property: 'og:image',
+      content: `https://roe.dev/og/${ogSlug}.jpg`,
+    },
+    { hid: 'og:title', property: 'og:title', content: page.value.title },
+    {
+      hid: 'og:description',
+      property: 'og:description',
+      content: page.value.description,
+    },
+  ],
 })
 </script>
 
-<style lang="postcss" module>
+<style module>
 .blog {
   h3 {
     @apply text-xl;
