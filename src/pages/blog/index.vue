@@ -7,12 +7,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
-export default defineComponent({
-  head: {
-    title: 'Blog',
-  },
-})
+<script setup lang="ts">
+useMeta({ title: 'Blog' })
 </script>
