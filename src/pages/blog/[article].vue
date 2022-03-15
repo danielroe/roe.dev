@@ -57,6 +57,11 @@ useMeta({
 
 <style module>
 .blog {
+  :global(.line) {
+    padding: 0 !important;
+    display: flex !important;
+  }
+
   h3 {
     @apply text-xl;
   }
@@ -72,7 +77,7 @@ useMeta({
     @apply mt-8;
   }
 
-  :global(.nuxt-content-highlight) {
+  div + div {
     @apply mb-6;
   }
 
@@ -86,7 +91,7 @@ useMeta({
     background-color: theme('colors.gray.900') !important;
     margin-left: -50vw;
     margin-right: -50vw;
-    padding: 1rem 50vw;
+    padding: 1rem 50vw !important;
     @media (width < 767px) {
       white-space: pre-wrap;
     }
@@ -152,7 +157,7 @@ useMeta({
     background-color: var(--text-base, theme('colors.white'));
   }
 
-  p + div:not(:global(.nuxt-content-highlight)) {
+  p + div {
     @apply mt-6 py-1 uppercase text-xs font-bold text-gray-600;
 
     letter-spacing: 0.15rem;

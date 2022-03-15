@@ -70,12 +70,4 @@ export default defineNuxtConfig({
   },
 
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/content'],
-
-  content: {
-    markdown: {
-      prism: {
-        theme: 'prism-themes/themes/prism-material-dark.css',
-      },
-    },
-  },
 })

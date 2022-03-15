@@ -108,6 +108,8 @@ export default {
 
 Now we have a basic working component that will serve as a foundation for extension. For example:
 
+<div>Editor.vue</div>
+
 ```ts
 // Here we can handle keyboard shortcuts.
 handleKeydown(e: KeyboardEvent) {
