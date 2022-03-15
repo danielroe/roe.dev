@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="font-sans overflow-x-hidden min-h-screen flex flex-col">
+  <div id="app">
     <TheSiteHeader v-once />
     <NuxtPage />
     <TheSiteFooter v-once />
@@ -94,6 +94,8 @@ a {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @apply font-sans overflow-x-hidden min-h-screen flex flex-col;
 
   /* Body of site */
   > nav + * {

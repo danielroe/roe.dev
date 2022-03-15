@@ -1,14 +1,10 @@
 <template>
   <footer :class="$style.footer" class="relative">
     <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
-    <ul class="flex flex-row justify-center gap-4 my-4 items-center">
-      <li
-        v-for="{ link, name, icon } in links"
-        :key="name"
-        class="inline-flex items-center"
-      >
+    <ul>
+      <li v-for="{ link, name, icon } in links" :key="name">
         <a :href="link">
-          <component :is="icon" alt="" class="w-4 h-4 fill-current" />
+          <component :is="icon" alt="" :class="$style.icon" />
           <span class="visually-hidden">
             {{ name }}
           </span>
@@ -49,5 +45,17 @@ const links = [
   border-top: 2px solid theme('colors.gray.700');
   width: 1rem;
   content: '';
+}
+
+.footer ul {
+  @apply flex flex-row justify-center gap-4 my-4 items-center;
+
+  > li {
+    @apply inline-flex items-center;
+  }
+}
+
+.icon {
+  @apply w-4 h-4 fill-current;
 }
 </style>

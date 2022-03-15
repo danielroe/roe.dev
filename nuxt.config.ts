@@ -63,7 +63,13 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ['nuxt-windicss', '@nuxtjs/color-mode', '@nuxt/content'],
+  postcss: {
+    plugins: {
+      'tailwindcss/nesting': 'postcss-nested',
+    },
+  },
+
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/content'],
 
   content: {
     markdown: {

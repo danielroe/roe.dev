@@ -1,11 +1,13 @@
 <template>
-  <section :class="$style.list" class="flex flex-row flex-wrap -mx-2">
+  <section :class="$style.list">
     <slot />
   </section>
 </template>
 
 <style module>
 .list {
+  @apply flex flex-row flex-wrap -mx-2;
+
   a:not([href]) {
     opacity: 0.5;
     pointer-events: none;
