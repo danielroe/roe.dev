@@ -8,7 +8,7 @@
     >
       <article>
         <span>
-          <IconsGithub v-once />
+          <IconsGithub />
         </span>
         <header>
           {{ repo }}
