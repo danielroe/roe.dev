@@ -89,13 +89,15 @@ a {
 }
 
 #app {
+  @apply font-sans;
+  @apply overflow-x-hidden min-h-screen;
+  @apply flex flex-col;
+
   background-color: var(--background, theme('colors.gray.800'));
   color: var(--text-base, theme('colors.white'));
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @apply font-sans overflow-x-hidden min-h-screen flex flex-col;
 
   /* Body of site */
   > nav + * {

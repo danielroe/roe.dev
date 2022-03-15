@@ -1,5 +1,5 @@
 <template>
-  <footer :class="$style.footer" class="relative">
+  <footer :class="$style.footer">
     <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
     <ul>
       <li v-for="{ link, name, icon } in links" :key="name">
@@ -39,23 +39,27 @@ const links = [
 </script>
 
 <style module>
-.footer::before {
-  @apply block mx-auto my-4;
+.footer {
+  @apply relative;
 
-  border-top: 2px solid theme('colors.gray.700');
-  width: 1rem;
-  content: '';
-}
+  &::before {
+    @apply block mx-auto my-4;
 
-.footer ul {
-  @apply flex flex-row justify-center gap-4 my-4 items-center;
+    border-top: 2px solid theme('colors.gray.700');
+    width: 1rem;
+    content: '';
+  }
 
-  > li {
+  ul {
+    @apply flex flex-row justify-center gap-4 my-4 items-center;
+  }
+
+  li {
     @apply inline-flex items-center;
   }
-}
 
-.icon {
-  @apply w-4 h-4 fill-current;
+  svg {
+    @apply w-4 h-4 fill-current;
+  }
 }
 </style>
