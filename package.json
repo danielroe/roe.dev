@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
+    "vercel-build": "nuxi prepare",
     "start": "nuxi start",
     "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
