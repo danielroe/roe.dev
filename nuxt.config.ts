@@ -63,11 +63,5 @@ export default defineNuxtConfig({
     ],
   },
 
-  postcss: {
-    plugins: {
-      'tailwindcss/nesting': 'postcss-nested',
-    },
-  },
-
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/content'],
 })
