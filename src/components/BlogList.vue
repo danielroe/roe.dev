@@ -45,8 +45,9 @@ const { data: entries } = await useAsyncData(
       entries.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       )
-      return entries as Entry[]
+      return (entries as Entry[]) || []
     },
   }
 )
+console.log({ entries })
 </script>

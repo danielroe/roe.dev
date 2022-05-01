@@ -59,8 +59,9 @@ const { data: talks } = await useAsyncData(
       talks?.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       )
-      return talks?.map(formatDateField) as Talk[]
+      return (talks?.map(formatDateField) as Talk[]) || []
     },
   }
 )
+console.log({ talks })
 </script>
