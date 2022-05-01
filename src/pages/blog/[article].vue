@@ -30,8 +30,10 @@ const { data: page } = await useAsyncData(route.path, () =>
   queryContent(route.path.replace('blog', 'articles'))
     // .only(['title', 'type', 'body', 'date', 'tags'])
     .findOne()
+    .then(async r =>
+      process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
+    )
 )
-console.log({ page: page.value })
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 

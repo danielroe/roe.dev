@@ -48,18 +48,17 @@ interface Talk {
 useHead({
   title: 'Talks',
 })
-const { data: talks, error } = await useAsyncData(
+const { data: talks } = await useAsyncData(
   'talks',
   () =>
-    Promise.resolve(
-      queryContent('/talks')
-        // .only(['title', 'source', 'link', 'date', 'formattedDate'])
-        .find() as unknown as Promise<Talk[]>
-    ),
+    queryContent('/talks')
+      // .only(['title', 'source', 'link', 'date', 'formattedDate'])
+      .find()
+      .then(async r =>
+        process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
+      ) as unknown as Promise<Talk[]>,
   {
-    initialCache: false,
     transform: talks => {
-      console.log({ talks })
       talks?.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       )
@@ -67,5 +66,4 @@ const { data: talks, error } = await useAsyncData(
     },
   }
 )
-console.log({ talks: talks.value, error: error.value })
 </script>
