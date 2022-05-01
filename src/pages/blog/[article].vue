@@ -28,9 +28,10 @@ if (!slug) navigateTo('/blog')
 
 const { data: page } = await useAsyncData(route.path, () =>
   queryContent(route.path.replace('blog', 'articles'))
-    .only(['title', 'type', 'body', 'date', 'tags'])
+    // .only(['title', 'type', 'body', 'date', 'tags'])
     .findOne()
 )
+console.log({ page: page.value })
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 

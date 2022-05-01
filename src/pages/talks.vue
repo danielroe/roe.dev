@@ -55,6 +55,7 @@ const { data: talks } = await useAsyncData(
       .only(['title', 'source', 'link', 'date', 'formattedDate'])
       .find() as unknown as Promise<Talk[]>,
   {
+    initialCache: false,
     transform: talks => {
       talks?.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -63,5 +64,5 @@ const { data: talks } = await useAsyncData(
     },
   }
 )
-console.log({ talks })
+console.log({ talks: talks.value })
 </script>
