@@ -16,7 +16,10 @@ useHead({
 })
 
 const { data: page } = await useAsyncData('home', () =>
-  queryContent('/').where({ slug: '/' }).findOne()
+  queryContent('/')
+    .where({ slug: '/' })
+    .only(['title', 'type', 'body'])
+    .findOne()
 )
 </script>
 
