@@ -7,13 +7,6 @@ export default defineNuxtConfig({
     transpile: [/content-edge/],
   },
 
-  content: {
-    highlight: {
-      preload: ['typescript', 'javascript', 'vue'],
-      theme: 'material-palenight',
-    },
-  },
-
   css: ['~/assets/css/tailwind.css'],
 
   app: {
