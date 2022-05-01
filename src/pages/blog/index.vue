@@ -8,5 +8,5 @@
 </template>
 
 <script setup lang="ts">
-useMeta({ title: 'Blog' })
+useHead({ title: 'Blog' })
 </script>

@@ -13,7 +13,7 @@ import TheSiteFooter from '~/components/layout/TheSiteFooter.vue'
 const route = useRoute()
 const path = getMatchOrReturn(route.fullPath, /(.*[^/])\/?$/, 1)
 const url = `https://roe.dev${path}`
-useMeta({
+useHead({
   meta: [{ property: 'og:url', content: url }],
   link: [{ rel: 'canonical', href: url }],
 })

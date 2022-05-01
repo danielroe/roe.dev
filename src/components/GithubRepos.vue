@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-useMeta({
+useHead({
   link: [
     {
       rel: 'preconnect',
@@ -45,10 +45,10 @@ useMeta({
 const repos = [
   'nuxt/framework',
   'nuxt/nuxt.js',
-  'nuxt/vercel-builder',
+  // 'nuxt/vercel-builder',
+  'danielroe/typed-vuex',
   'nuxt-community/composition-api',
   // 'nuxt-community/sanity-module',
-  // 'danielroe/typed-vuex',
   // 'danielroe/sanity-typed-queries',
 ].map(repo => ({
   repo,

@@ -43,7 +43,7 @@ const clients = {
   'Imperial Enterprise Lab': ImperialEnterpriseLab,
 }
 
-useMeta({
+useHead({
   title: 'Work',
 })
 </script>

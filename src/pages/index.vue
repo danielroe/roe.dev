@@ -4,19 +4,20 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <Content v-if="page" :id="page.id" />
+      <Content v-if="page" :document="page" />
     </main>
   </div>
 </template>
 
 <script lang="ts" setup>
-useMeta({
+useHead({
   title: 'Daniel Roe',
   meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
 })
 
-const { findOne } = useContentQuery('/')
-const { data: page } = await useAsyncData('page-content', findOne)
+const { data: page } = await useAsyncData('home', () =>
+  queryContent('/').where({ slug: '/' }).findOne()
+)
 </script>
 
 <style module>

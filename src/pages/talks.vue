@@ -45,16 +45,19 @@ interface Talk {
   formattedDate: string
 }
 
-useMeta({
+useHead({
   title: 'Talks',
 })
-const { find } = useContentQuery('/talks')
-const { data: talks } = await useAsyncData('talks', find, {
-  transform: (talks: Talk[]) => {
-    talks?.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
-    return talks?.map(formatDateField)
-  },
-})
+const { data: talks } = await useAsyncData(
+  'talks',
+  () => queryContent('/talks').find() as unknown as Promise<Talk[]>,
+  {
+    transform: talks => {
+      talks?.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+      return talks?.map(formatDateField) as Talk[]
+    },
+  }
+)
 </script>

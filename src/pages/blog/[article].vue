@@ -16,7 +16,7 @@
       </dl>
     </header>
     <section v-if="page">
-      <Content :id="page.id" />
+      <Content :document="page" />
     </section>
   </article>
 </template>
@@ -26,13 +26,14 @@ const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
-const { findOne } = useContentQuery(route.path.replace('blog', 'articles'))
-const { data: page } = await useAsyncData('page-content', findOne)
+const { data: page } = await useAsyncData(route.path, () =>
+  queryContent(route.path.replace('blog', 'articles')).findOne()
+)
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
 const ogSlug = getMatchOrReturn(route.fullPath, /\/([^/]*)\/?$/, 1)
-useMeta({
+useHead({
   title: page.value.title,
   meta: [
     {
