@@ -10,7 +10,7 @@
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
     "test": "vitest",
-    "prepare": "nuxt prepare && husky install"
+    "postinstall": "nuxt prepare && husky install"
   },
   "lint-staged": {
     "*.{js,vue}": [
