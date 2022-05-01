@@ -1,14 +1,14 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { parseReqs, ParsedReqs } from './parser'
-import { getHtml } from './template'
-import { writeTempFile } from './file'
-import { getScreenshot } from './chromium'
+import { parseReqs, ParsedReqs } from './_parser'
+import { getHtml } from './_template'
+import { writeTempFile } from './_file'
+import { getScreenshot } from './_chromium'
 
 const isDev = process.env.NOW_REGION === 'dev1'
 
 export default async function handler(
   req: IncomingMessage,
-  res: ServerResponse,
+  res: ServerResponse
 ) {
   try {
     let parsedReqs: ParsedReqs
@@ -17,7 +17,7 @@ export default async function handler(
     } catch (e) {
       res.setHeader(
         'Cache-Control',
-        'public,immutable,no-transform,s-max-age=21600,max-age=21600',
+        'public,immutable,no-transform,s-max-age=21600,max-age=21600'
       )
       res.statusCode = 404
       return res.end()
@@ -39,7 +39,7 @@ export default async function handler(
       res.setHeader('Content-Type', 'image/jpeg')
       res.setHeader(
         'Cache-Control',
-        'public,immutable,no-transform,s-max-age=21600,max-age=21600',
+        'public,immutable,no-transform,s-max-age=21600,max-age=21600'
       )
       res.end(file)
     } else {

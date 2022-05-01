@@ -3,9 +3,18 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "lib": ["esnext", "dom"],
-    "types": ["node"]
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ]
   },
-  "include": ["api/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "api/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
