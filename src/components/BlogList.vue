@@ -36,9 +36,12 @@ defineProps({
   },
 })
 
-const { data: entries } = await useAsyncData(
+const { data: entries, error } = await useAsyncData(
   'blog',
-  () => queryContent('/articles').only(['title', 'date', 'slug']).find(),
+  () =>
+    queryContent('/articles')
+      // .only(['title', 'date', 'slug'])
+      .find(),
   {
     transform: (entries: any[]) => {
       entries = entries.map(formatDateField)
@@ -49,5 +52,5 @@ const { data: entries } = await useAsyncData(
     },
   }
 )
-console.log({ entries })
+console.log({ entries: entries.value, error: error.value })
 </script>

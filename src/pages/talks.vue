@@ -48,11 +48,11 @@ interface Talk {
 useHead({
   title: 'Talks',
 })
-const { data: talks } = await useAsyncData(
+const { data: talks, error } = await useAsyncData(
   'talks',
   () =>
     queryContent('/talks')
-      .only(['title', 'source', 'link', 'date', 'formattedDate'])
+      // .only(['title', 'source', 'link', 'date', 'formattedDate'])
       .find() as unknown as Promise<Talk[]>,
   {
     initialCache: false,
@@ -64,5 +64,5 @@ const { data: talks } = await useAsyncData(
     },
   }
 )
-console.log({ talks: talks.value })
+console.log({ talks: talks.value, error: error.value })
 </script>
