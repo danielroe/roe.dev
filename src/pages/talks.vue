@@ -50,7 +50,10 @@ useHead({
 })
 const { data: talks } = await useAsyncData(
   'talks',
-  () => queryContent('/talks').find() as unknown as Promise<Talk[]>,
+  () =>
+    queryContent('/talks')
+      .only(['title', 'source', 'link', 'date', 'formattedDate'])
+      .find() as unknown as Promise<Talk[]>,
   {
     transform: talks => {
       talks?.sort(
