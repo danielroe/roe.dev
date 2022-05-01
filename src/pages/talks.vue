@@ -51,12 +51,15 @@ useHead({
 const { data: talks, error } = await useAsyncData(
   'talks',
   () =>
-    queryContent('/talks')
-      // .only(['title', 'source', 'link', 'date', 'formattedDate'])
-      .find() as unknown as Promise<Talk[]>,
+    Promise.resolve(
+      queryContent('/talks')
+        // .only(['title', 'source', 'link', 'date', 'formattedDate'])
+        .find() as unknown as Promise<Talk[]>
+    ),
   {
     initialCache: false,
     transform: talks => {
+      console.log({ talks })
       talks?.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       )
