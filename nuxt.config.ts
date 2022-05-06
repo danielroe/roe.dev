@@ -9,6 +9,13 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/tailwind.css'],
 
+  content: {
+    highlight: {
+      // preload: ['javascript', 'typescript', 'vue', 'vue-html'],
+      theme: 'material-palenight',
+    } as any,
+  },
+
   app: {
     head: {
       title: 'roe.dev',
