@@ -18,7 +18,7 @@ useHead({
 const { data: page } = await useAsyncData('home', () =>
   queryContent('/')
     .where({ slug: '/' })
-    // .only(['title', 'type', 'body'])
+    .only(['title', 'type', 'body'])
     .findOne()
     .then(async r =>
       process.client && r instanceof Blob ? JSON.parse(await r.text()) : r

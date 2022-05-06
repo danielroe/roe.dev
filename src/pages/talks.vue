@@ -52,7 +52,7 @@ const { data: talks } = await useAsyncData(
   'talks',
   () =>
     queryContent('/talks')
-      // .only(['title', 'source', 'link', 'date', 'formattedDate'])
+      .only(['title', 'source', 'link', 'date', 'formattedDate'])
       .find()
       .then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r

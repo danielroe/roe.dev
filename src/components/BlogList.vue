@@ -40,7 +40,7 @@ const { data: entries } = await useAsyncData(
   'blog',
   () =>
     queryContent('/articles')
-      // .only(['title', 'date', 'slug'])
+      .only(['title', 'date', 'slug'])
       .find()
       .then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
