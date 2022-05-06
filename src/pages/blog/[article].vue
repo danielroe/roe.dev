@@ -69,7 +69,7 @@ useHead({
   }
 
   h3 {
-    @apply text-xl;
+    @apply text-xl mb-4;
   }
 
   h4 {
