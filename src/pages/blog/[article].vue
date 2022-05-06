@@ -63,11 +63,6 @@ useHead({
 
 <style module>
 .blog {
-  :global(.line) {
-    padding: 0 !important;
-    display: flex !important;
-  }
-
   h3 {
     @apply text-xl mb-4;
   }
@@ -85,10 +80,6 @@ useHead({
 
   div + div {
     @apply mb-6;
-  }
-
-  p + :global(.nuxt-content-highlight) {
-    @apply mt-6;
   }
 
   pre {
