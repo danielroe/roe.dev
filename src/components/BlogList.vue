@@ -1,9 +1,9 @@
 <template>
   <ItemList>
     <NuxtLink
-      v-for="{ title, slug, date, formattedDate } in entries.slice(0, limit)"
-      :key="slug"
-      :to="slug.replace('articles', 'blog')"
+      v-for="{ title, path, date, formattedDate } in entries.slice(0, limit)"
+      :key="path"
+      :to="path"
       :title="title"
     >
       <article>
@@ -22,13 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-interface Entry {
-  title: string
-  date: string
-  slug: string
-  formattedDate: string
-}
-
 defineProps({
   limit: {
     type: Number as () => number,
@@ -39,19 +32,22 @@ defineProps({
 const { data: entries } = await useAsyncData(
   'blog',
   () =>
-    queryContent('/articles')
-      .only(['title', 'date', 'slug'])
+    queryContent('/blog')
+      .only(['title', 'date', '_path'])
       .find()
       .then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
       ),
   {
-    transform: (entries: any[]) => {
-      entries = entries.map(formatDateField)
-      entries.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      )
-      return (entries as Entry[]) || []
+    transform: (
+      result: Array<{ title: string; date: string; _path: string }>
+    ) => {
+      return result
+        .map(e => ({
+          ...formatDateField(e),
+          path: e._path,
+        }))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     },
   }
 )

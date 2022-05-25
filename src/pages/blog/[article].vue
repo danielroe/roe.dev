@@ -16,7 +16,7 @@
       </dl>
     </header>
     <section v-if="page">
-      <Content :document="page" />
+      <ContentDoc :document="page" />
     </section>
   </article>
 </template>
@@ -27,7 +27,7 @@ const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
 const { data: page } = await useAsyncData(route.path, () =>
-  queryContent(route.path.replace('blog', 'articles'))
+  queryContent(route.path)
     .only(['title', 'type', 'body', 'date', 'tags'])
     .findOne()
     .then(async r =>

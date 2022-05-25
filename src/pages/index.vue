@@ -4,7 +4,7 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <Content v-if="page" :document="page" />
+      <ContentDoc v-if="page" :document="page" />
     </main>
   </div>
 </template>
@@ -17,7 +17,6 @@ useHead({
 
 const { data: page } = await useAsyncData('home', () =>
   queryContent('/')
-    .where({ slug: '/' })
     .only(['title', 'type', 'body'])
     .findOne()
     .then(async r =>
