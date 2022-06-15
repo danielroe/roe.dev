@@ -7,15 +7,15 @@ const colorMode = useColorMode()
     <ul>
       <li>
         <h1>
-          <NuxtLink to="/" title="Daniel Roe">DCR</NuxtLink>
+          <PrefetchLink to="/" title="Daniel Roe">DCR</PrefetchLink>
         </h1>
       </li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/work">Work</NuxtLink></li>
+      <li><PrefetchLink to="/work">Work</PrefetchLink></li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/talks">Talks</NuxtLink></li>
+      <li><PrefetchLink to="/talks">Talks</PrefetchLink></li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/blog">Blog</NuxtLink></li>
+      <li><PrefetchLink to="/blog">Blog</PrefetchLink></li>
     </ul>
     <button
       aria-label="Change site theme"

@@ -1,6 +1,6 @@
 <template>
   <ItemList>
-    <NuxtLink
+    <PrefetchLink
       v-for="{ title, path, date, formattedDate } in entries.slice(0, limit)"
       :key="path"
       :to="path"
@@ -17,7 +17,7 @@
           </dl>
         </header>
       </article>
-    </NuxtLink>
+    </PrefetchLink>
   </ItemList>
 </template>
 
