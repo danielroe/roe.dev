@@ -52,7 +52,7 @@ const { data: entries } = await useAsyncData(
   }
 )
 
-function prefetchBlogLinks() {
+onIdle(() => {
   for (const entry of entries.value) {
     useAsyncData(entry.path, () =>
       queryContent(entry.path)
@@ -63,7 +63,5 @@ function prefetchBlogLinks() {
         )
     )
   }
-}
-
-usePrefetch(prefetchBlogLinks)
+})
 </script>

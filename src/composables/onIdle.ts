@@ -1,4 +1,4 @@
-export const usePrefetch = (fn: () => any) => {
+export const onIdle = (fn: () => any) => {
   let id: number
   onBeforeMount(() => {
     id = requestIdleCallback(fn)
