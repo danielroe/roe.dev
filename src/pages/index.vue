@@ -11,7 +11,6 @@
 
 <script lang="ts" setup>
 useHead({
-  title: 'Daniel Roe',
   meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
 })
 

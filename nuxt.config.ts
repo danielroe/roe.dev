@@ -18,7 +18,6 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'roe.dev',
       htmlAttrs: {
         lang: 'en',
       },
