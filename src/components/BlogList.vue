@@ -51,4 +51,19 @@ const { data: entries } = await useAsyncData(
     },
   }
 )
+
+function prefetchBlogLinks() {
+  for (const entry of entries.value) {
+    useAsyncData(entry.path, () =>
+      queryContent(entry.path)
+        .only(['title', 'type', 'body', 'date', 'tags'])
+        .findOne()
+        .then(async r =>
+          process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
+        )
+    )
+  }
+}
+
+usePrefetch(prefetchBlogLinks)
 </script>

@@ -16,7 +16,7 @@
       </dl>
     </header>
     <section v-if="page">
-      <ContentDoc :document="page" />
+      <MarkdownRenderer :value="page.body" />
     </section>
   </article>
 </template>
