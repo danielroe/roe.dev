@@ -46,6 +46,11 @@ export default defineNuxtConfig({
         { name: 'twitter:creator', content: '@danielcroe' },
       ],
       link: [
+        ...[
+          '/fonts/barlow-7cHpv4kjgoGqM7E_Ass52Hs.woff2',
+          '/fonts/firacode-uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7Ng.woff2',
+          '/fonts/barlow-7cHpv4kjgoGqM7E_DMs5.woff2',
+        ].map(href => ({ rel: 'prefetch', href })),
         { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
         {

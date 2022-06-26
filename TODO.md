@@ -1,0 +1,2 @@
+- [ ] legacy app plugin in nuxt
+- [ ] useHead issue on index page
