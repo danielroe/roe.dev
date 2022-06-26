@@ -12,9 +12,9 @@ export default defineNuxtConfig({
 
   content: {
     highlight: {
-      // preload: ['javascript', 'typescript', 'vue', 'vue-html'],
+      preload: ['js', 'ts', 'json', 'vue'],
       theme: 'material-palenight',
-    } as any,
+    },
   },
 
   app: {
