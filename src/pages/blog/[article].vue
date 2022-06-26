@@ -1,6 +1,6 @@
 <template>
   <article :class="$style.blog">
-    <header v-if="page.title">
+    <header v-if="page">
       <h2>{{ page.title }}</h2>
       <dl v-if="page.date && formattedDate">
         <dt>Published</dt>
@@ -16,7 +16,7 @@
       </dl>
     </header>
     <section v-if="page">
-      <MarkdownRenderer :value="page.body" />
+      <StaticMarkdownRender :cache-key="page.title" :value="page" />
     </section>
   </article>
 </template>

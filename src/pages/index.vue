@@ -4,7 +4,7 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <ContentDoc v-if="page" :document="page" />
+      <StaticMarkdownRender v-if="page" :value="page" />
     </main>
   </div>
 </template>
