@@ -262,6 +262,15 @@ export function defineNuxtLink(options: NuxtLinkOptions) {
           prefetcheds.add(component)
         })
 
+        // Add API prefetches
+        promises.push(
+          usePageData(
+            typeof to.value === 'string'
+              ? to.value
+              : router.resolve(to.value).path
+          )
+        )
+
         Promise.all(promises).then(() => {
           prefetched.value = true
         })

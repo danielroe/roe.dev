@@ -26,14 +26,7 @@ const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
-const { data: page } = await useAsyncData(route.path, () =>
-  queryContent(route.path)
-    .only(['title', 'type', 'body', 'date', 'tags'])
-    .findOne()
-    .then(async r =>
-      process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
-    )
-)
+const { data: page } = await usePageData()
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
