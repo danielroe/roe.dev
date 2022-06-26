@@ -21,4 +21,4 @@ globalThis.cancelIdleCallback = process.client
     }
   : () => {}
 
-export default () => {}
+export default defineNuxtPlugin(() => {})
