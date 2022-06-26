@@ -4,7 +4,7 @@
     <ul>
       <li v-for="{ link, name, icon } in links" :key="name">
         <a :href="link">
-          <component :is="icon" alt="" />
+          <component :is="icon" alt="" :class="$style.icon" />
           <span class="visually-hidden">
             {{ name }}
           </span>
@@ -14,9 +14,7 @@
   </footer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
+<script lang="ts" setup>
 import GitHubIcon from '~/components/icons/github.vue'
 import LinkedInIcon from '~/components/icons/linkedin.vue'
 import TwitterIcon from '~/components/icons/twitter.vue'
@@ -38,17 +36,9 @@ const links = [
     link: 'https://twitter.com/danielcroe',
   },
 ]
-
-export default defineComponent({
-  setup() {
-    return {
-      links,
-    }
-  },
-})
 </script>
 
-<style lang="postcss" module>
+<style module>
 .footer {
   @apply relative;
 

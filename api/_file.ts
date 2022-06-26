@@ -8,9 +8,7 @@ const promiseWriteFile = promisify(writeFile)
 
 export async function writeTempFile(fileName: string, html: string) {
   const hashedFileName =
-    createHash('md5')
-      .update(fileName)
-      .digest('hex') + '.html'
+    createHash('md5').update(fileName).digest('hex') + '.html'
 
   const filePath = join(tmpdir(), hashedFileName)
 

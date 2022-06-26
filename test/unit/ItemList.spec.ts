@@ -1,7 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment happy-dom
  */
 import { shallowMount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 import ItemList from '~/components/ItemList.vue'
 
 describe('ItemList.vue', () => {

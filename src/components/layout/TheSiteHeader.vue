@@ -1,25 +1,29 @@
+<script setup lang="ts">
+const colorMode = useColorMode()
+</script>
+
 <template>
   <nav :class="$style.header">
     <ul>
       <li>
         <h1>
-          <NuxtLink to="/" title="Daniel Roe">DCR</NuxtLink>
+          <PrefetchLink to="/" title="Daniel Roe">DCR</PrefetchLink>
         </h1>
       </li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/work">Work</NuxtLink></li>
+      <li><PrefetchLink to="/work">Work</PrefetchLink></li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/talks">Talks</NuxtLink></li>
+      <li><PrefetchLink to="/talks">Talks</PrefetchLink></li>
       <li aria-hidden="true" />
-      <li><NuxtLink to="/blog">Blog</NuxtLink></li>
+      <li><PrefetchLink to="/blog">Blog</PrefetchLink></li>
     </ul>
     <button
       aria-label="Change site theme"
       type="button"
       @click="
-        $colorMode.value === 'dark'
-          ? ($colorMode.preference = 'light')
-          : ($colorMode.preference = 'dark')
+        colorMode.value === 'dark'
+          ? (colorMode.preference = 'light')
+          : (colorMode.preference = 'dark')
       "
     >
       <span />
@@ -27,7 +31,7 @@
   </nav>
 </template>
 
-<style lang="postcss" module>
+<style module>
 .header {
   @apply p-2 uppercase bg-gray-900 flex flex-row justify-between items-center;
   @apply text-white;
@@ -50,7 +54,7 @@
     }
   }
 
-  :global(.nuxt-link-exact-active) {
+  :global(.router-link-exact-active) {
     &::after {
       @apply border-gray-800;
     }

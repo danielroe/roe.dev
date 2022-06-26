@@ -4,27 +4,20 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <NuxtContent :document="page" />
+      <StaticMarkdownRender v-if="page" :value="page" />
     </main>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
-export default defineComponent({
-  data: () => ({ page: null as any }),
-  async fetch() {
-    this.page = await this.$content(`index`).fetch()
-  },
-  head: {
-    title: 'Daniel Roe',
-    meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
-  },
+<script lang="ts" setup>
+useHead({
+  meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
 })
+
+const { data: page } = await usePageData()
 </script>
 
-<style lang="postcss" module>
+<style module>
 .home {
   p + p {
     @apply mt-4;

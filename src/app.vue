@@ -1,41 +1,25 @@
 <template>
   <div id="app">
     <TheSiteHeader v-once />
-    <Nuxt />
+    <NuxtPage />
     <TheSiteFooter v-once />
   </div>
 </template>
 
-<script lang="ts">
-import { Route } from 'vue-router'
-import { defineComponent } from '#imports'
-
+<script lang="ts" setup>
 import TheSiteHeader from '~/components/layout/TheSiteHeader.vue'
 import TheSiteFooter from '~/components/layout/TheSiteFooter.vue'
 
-import { getMatchOrReturn } from '~/utils/global'
-
-export default defineComponent({
-  components: { TheSiteHeader, TheSiteFooter },
-  head(this: { $route: Route }) {
-    const path = getMatchOrReturn(this.$route.fullPath, /(.*[^/])\/?$/, 1)
-    const url = `https://roe.dev${path}`
-
-    return {
-      meta: [{ hid: 'ogurl', property: 'og:url', content: url }],
-      link: [
-        {
-          hid: 'canonical',
-          rel: 'canonical',
-          href: url,
-        },
-      ],
-    }
-  },
+const route = useRoute()
+const path = getMatchOrReturn(route.fullPath, /(.*[^/])\/?$/, 1)
+const url = `https://roe.dev${path}`
+useHead({
+  meta: [{ property: 'og:url', content: url }],
+  link: [{ rel: 'canonical', href: url }],
 })
 </script>
 
-<style lang="postcss">
+<style>
 /* latin-ext */
 @font-face {
   font-family: Barlow;
@@ -43,8 +27,7 @@ export default defineComponent({
   font-weight: 400;
   font-display: swap;
   src: local('Barlow Regular'), local('Barlow-Regular'),
-    url('https://fonts.gstatic.com/s/barlow/v5/7cHpv4kjgoGqM7E_Ass52Hs.woff2')
-      format('woff2');
+    url('/fonts/barlow-7cHpv4kjgoGqM7E_Ass52Hs.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
     U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
@@ -56,8 +39,7 @@ export default defineComponent({
   font-weight: 400;
   font-display: swap;
   src: local('Barlow Regular'), local('Barlow-Regular'),
-    url('https://fonts.gstatic.com/s/barlow/v5/7cHpv4kjgoGqM7E_DMs5.woff2')
-      format('woff2');
+    url('/fonts/barlow-7cHpv4kjgoGqM7E_DMs5.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
     U+FEFF, U+FFFD;
@@ -69,7 +51,7 @@ export default defineComponent({
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7Ng.woff2')
+  src: url('/fonts/firacode-uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7Ng.woff2')
     format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
@@ -201,7 +183,7 @@ a {
   }
 }
 
-.visually-hidden:not(:focus):not(:active) {
+.visually-hidden:not(:focus, :active) {
   position: absolute !important;
   width: 1px;
   height: 1px;

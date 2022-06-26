@@ -8,7 +8,7 @@ import {
 
 const metadata = {}
 
-iterateOnDirectory('../src/content/articles', (path, contents) => {
+iterateOnDirectory('../src/content/blog', (path, contents) => {
   const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
   const { data } = grayMatter(contents)
   const date = new Date(data.date)

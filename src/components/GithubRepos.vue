@@ -8,7 +8,7 @@
     >
       <article>
         <span>
-          <GithubIcon v-once />
+          <IconsGithub />
         </span>
         <header>
           {{ repo }}
@@ -32,54 +32,31 @@
   </ItemList>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
-
-import GithubIcon from '~/components/icons/github.vue'
-import ItemList from '~/components/ItemList.vue'
-
-import { useGithub } from '~/utils/github'
-
+<script lang="ts" setup>
+useHead({
+  link: [
+    {
+      rel: 'preconnect',
+      href: '//api.github.com',
+      crossorigin: 'use-credentials',
+    },
+  ],
+})
 const repos = [
   'nuxt/framework',
   'nuxt/nuxt.js',
-  'nuxt/vercel-builder',
+  // 'nuxt/vercel-builder',
+  'danielroe/typed-vuex',
   'nuxt-community/composition-api',
   // 'nuxt-community/sanity-module',
-  // 'danielroe/typed-vuex',
   // 'danielroe/sanity-typed-queries',
-]
-
-export default defineComponent({
-  components: {
-    GithubIcon,
-    ItemList,
-  },
-  setup() {
-    const enrichedRepos = repos.map(repo => ({
-      repo,
-      ...useGithub(repo),
-    }))
-    return {
-      repos: enrichedRepos,
-    }
-  },
-  head() {
-    return {
-      link: [
-        {
-          hid: 'github',
-          rel: 'preconnect',
-          href: '//api.github.com',
-          crossorigin: 'use-credentials',
-        },
-      ],
-    }
-  },
-})
+].map(repo => ({
+  repo,
+  ...useGithub(repo),
+}))
 </script>
 
-<style lang="postcss" module>
+<style module>
 .list {
   > * {
     @apply overflow-hidden;

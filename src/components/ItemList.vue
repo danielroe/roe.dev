@@ -1,10 +1,10 @@
-<template functional>
-  <section :class="[$style.list, data.staticClass, data.class]">
+<template>
+  <section :class="$style.list">
     <slot />
   </section>
 </template>
 
-<style lang="postcss" module>
+<style module>
 .list {
   @apply flex flex-row flex-wrap -mx-2;
 

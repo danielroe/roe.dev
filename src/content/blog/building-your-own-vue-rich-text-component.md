@@ -51,8 +51,6 @@ So here's our basic Vue template:
 </template>
 ```
 
-<!-- I've cheated a bit by adding `v-on="listener"` -- that just means we have to specify all the events we listen to in object format, rather than enumerating them individually in the template. Why? It gives us the flexibility to decide -->
-
 It's beautifully simple. (If you need to support IE, you can listen to `keyup` instead.) Note that we haven't bound the innerHTML to `value` because that would have the effect of resetting the cursor position on keystroke.
 
 We're going to use `execCommand` to control the formatting of the HTML within the `contenteditable` element. Bear in mind that `execCommand` is [deprecated](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) and may behave inconsistently across browsers -- but for simple things like we need here, it's fine.
@@ -107,6 +105,8 @@ export default {
 ```
 
 Now we have a basic working component that will serve as a foundation for extension. For example:
+
+<div>Editor.vue</div>
 
 ```ts
 // Here we can handle keyboard shortcuts.

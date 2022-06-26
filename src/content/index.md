@@ -1,9 +1,6 @@
----
----
-
 Daniel is on the [Framework team at Nuxt](https://nuxtjs.org). He believes in the power of combining clear
 brand, beautiful design and leading technology to engage users and drive business growth.
-He founded and successfully grew a creative agency, launched an HR-tech SaaS startup, and 
+He founded and successfully grew a creative agency, launched an HR-tech SaaS startup, and
 continues to contribute to the developer community in the North East.
 
 He was identified as One to Watch by FreshMinds, has delivered a TEDx talk on the importance of

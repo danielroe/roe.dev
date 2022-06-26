@@ -9,7 +9,7 @@ const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
 
 async function getMarkdownArticles() {
   const articles = []
-  await iterateOnDirectory('./src/content/articles', (path, contents) => {
+  await iterateOnDirectory('./src/content/blog', (path, contents) => {
     if (!/\.md$/.test(path)) return
     const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
     articles.push({

@@ -18,35 +18,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '#imports'
+<script lang="ts" setup>
+import Comcast from '~/assets/images/work/comcast.svg'
+import DurhamUniversity from '~/assets/images/work/durham-university.svg'
+import ParentScheme from '~/assets/images/work/parentscheme.svg'
+import Concision from '~/assets/images/work/concision.svg'
+import NELEP from '~/assets/images/work/nelep.png'
+import Convoke from '~/assets/images/work/convoke.png'
+import AcadianSoftware from '~/assets/images/work/acadian-software.svg'
+import NuxtLabs from '~/assets/images/work/nuxtlabs.svg'
+import Canvas8 from '~/assets/images/work/canvas8.svg'
+import ImperialEnterpriseLab from '~/assets/images/work/imperial-enterprise-lab.svg'
 
 const clients = {
-  Comcast: require('~/assets/images/work/comcast.svg'),
-  'Durham University': require('~/assets/images/work/durham-university.svg'),
-  'Parent Scheme': require('~/assets/images/work/parentscheme.svg'),
-  Concision: require('~/assets/images/work/concision.svg'),
-  'North East Local Enterprise Partnership': require('~/assets/images/work/nelep.png'),
-  Convoke: require('~/assets/images/work/convoke.png'),
-  'Acadian Software': require('~/assets/images/work/acadian-software.svg'),
-  NuxtLabs: require('~/assets/images/work/nuxtlabs.svg'),
-  Canvas8: require('~/assets/images/work/canvas8.svg'),
-  'Imperial Enterprise Lab': require('~/assets/images/work/imperial-enterprise-lab.svg'),
+  Comcast,
+  'Durham University': DurhamUniversity,
+  'Parent Scheme': ParentScheme,
+  Concision,
+  'North East Local Enterprise Partnership': NELEP,
+  Convoke,
+  'Acadian Software': AcadianSoftware,
+  NuxtLabs,
+  Canvas8,
+  'Imperial Enterprise Lab': ImperialEnterpriseLab,
 }
 
-export default defineComponent({
-  setup() {
-    return {
-      clients,
-    }
-  },
-  head: {
-    title: 'Work',
-  },
+useHead({
+  title: 'Work',
 })
 </script>
 
-<style lang="postcss" module>
+<style module>
 .logos {
   @apply flex flex-row flex-wrap justify-center items-center my-12;
 
