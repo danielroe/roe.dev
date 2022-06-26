@@ -2,10 +2,12 @@ export const usePageData = (path = useRoute().path) => {
   switch (path) {
     case '/':
       return useAsyncHome()
-    case '/blog':
-      return useAsyncBlogIndex()
+    case '/work':
+      return
     case '/talks':
       return useAsyncTalks()
+    case '/blog':
+      return useAsyncBlogIndex()
     default:
       return useAsyncBlogArticle(path)
   }
