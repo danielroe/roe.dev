@@ -76,15 +76,21 @@ export default defineNuxtConfig({
     },
   },
 
+  plausible: {
+    domain: 'roe.dev',
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',
+    'vue-plausible',
     defineNuxtModule({
       setup(_options, nuxt) {
         const { dst } = addTemplate({
           filename: 'legacy-app-stub.mjs',
-          getContents: () => `export const legacyPlugin = () => {}`,
+          getContents: () =>
+            `export const legacyPlugin = (nuxtApp) => { nuxtApp._legacyContext = nuxtApp }`,
         })
         nuxt.options.alias['./compat/legacy-app.mjs'] = dst
         nuxt.hook('app:templates', app => {
