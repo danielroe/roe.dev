@@ -84,8 +84,7 @@ export default defineNuxtConfig({
       setup(_options, nuxt) {
         const { dst } = addTemplate({
           filename: 'legacy-app-stub.mjs',
-          getContents: () =>
-            `export const legacyPlugin = () => console.log('running legacy plugin')`,
+          getContents: () => `export const legacyPlugin = () => {}`,
         })
         nuxt.options.alias['./compat/legacy-app.mjs'] = dst
         nuxt.hook('app:templates', app => {
