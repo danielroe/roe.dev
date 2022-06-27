@@ -6,7 +6,7 @@ const CacheHTMLDirective: Directive<any, string> = {
   created(el, binding) {
     if (cache[binding.value]) {
       el.innerHTML = cache[binding.value]
-    } else if (el.innerHTML) {
+    } else if (el.innerHTML && el.innerHTML !== '<!---->') {
       cache[binding.value] = el.innerHTML
     }
   },
@@ -34,7 +34,7 @@ export default defineComponent({
         createElementBlock(
           'div',
           process.client && shouldSkipRender()
-            ? { innerHTML: cache[key] || '<!-- -->' }
+            ? { innerHTML: cache[key] || '<!---->' }
             : null,
           process.client && shouldSkipRender()
             ? []
