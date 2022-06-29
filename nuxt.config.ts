@@ -76,6 +76,12 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    prerender: {
+      routes: ['/', '/uses'],
+    },
+  },
+
   plausible: {
     domain: 'roe.dev',
   },
