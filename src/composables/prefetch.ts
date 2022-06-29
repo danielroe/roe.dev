@@ -1,3 +1,6 @@
+const normalizeVercelResponse = async (r: unknown) =>
+  process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
+
 export const usePageData = (path = useRoute().path) => {
   switch (path) {
     case '/':
@@ -8,6 +11,8 @@ export const usePageData = (path = useRoute().path) => {
       return useAsyncTalks()
     case '/blog':
       return useAsyncBlogIndex()
+    case '/uses':
+      return useAsyncUses()
     default:
       return useAsyncBlogArticle(path)
   }
@@ -18,9 +23,15 @@ const useAsyncHome = () =>
     queryContent('/')
       .only(['title', 'type', 'body'])
       .findOne()
-      .then(async r =>
-        process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
-      )
+      .then(normalizeVercelResponse)
+  )
+
+const useAsyncUses = () =>
+  useAsyncData('uses', () =>
+    queryContent('/uses')
+      .only(['title', 'type', 'body'])
+      .findOne()
+      .then(normalizeVercelResponse)
   )
 
 const useAsyncBlogIndex = () =>
@@ -84,7 +95,5 @@ const useAsyncBlogArticle = (path: string) =>
     queryContent(path)
       .only(['title', 'type', 'body', 'date', 'tags'])
       .findOne()
-      .then(async r =>
-        process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
-      )
+      .then(normalizeVercelResponse)
   )
