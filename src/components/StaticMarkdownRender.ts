@@ -39,8 +39,8 @@ export default defineComponent({
           process.client && shouldSkipRender()
             ? []
             : [
-                h(resolveComponent('LazyMarkdownRenderer'), {
-                  value: props.value.body,
+                h(resolveComponent('LazyContentRendererMarkdown'), {
+                  value: props.value,
                 }),
               ]
         ),
