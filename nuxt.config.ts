@@ -1,5 +1,4 @@
 import { defineNuxtConfig } from 'nuxt'
-import { addTemplate, defineNuxtModule } from '@nuxt/kit'
 
 export default defineNuxtConfig({
   srcDir: 'src',
@@ -76,12 +75,6 @@ export default defineNuxtConfig({
     },
   },
 
-  nitro: {
-    prerender: {
-      routes: ['/', '/uses'],
-    },
-  },
-
   plausible: {
     domain: 'roe.dev',
   },
@@ -91,20 +84,5 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    defineNuxtModule({
-      setup(_options, nuxt) {
-        const { dst } = addTemplate({
-          filename: 'legacy-app-stub.mjs',
-          getContents: () =>
-            `export const legacyPlugin = (nuxtApp) => { nuxtApp._legacyContext = nuxtApp }`,
-        })
-        nuxt.options.alias['./compat/legacy-app.mjs'] = dst
-        nuxt.hook('app:templates', app => {
-          app.plugins = app.plugins.filter(
-            p => !p.src.includes('components.plugin.mjs')
-          )
-        })
-      },
-    }),
   ],
 })
