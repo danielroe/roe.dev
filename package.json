@@ -9,7 +9,7 @@
     "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "test": "vitest",
+    "test": "vitest run test/unit",
     "test:e2e": "playwright test test/e2e",
     "postinstall": "nuxt prepare && husky install"
   },

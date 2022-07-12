@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Install chromium
-        run: npx playwright install-deps chromium
+        run: npx playwright install --with-deps chromium
       - run: pnpm test:e2e
         env:
           BASE_URL: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.target_url }}
