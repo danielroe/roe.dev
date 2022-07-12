@@ -18,7 +18,7 @@ console.log(metadata)
 
 writeFile(
   'Saving metadata.',
-  './metadata.json',
+  './src/server/metadata.json',
   JSON.stringify({
     metadata,
   })

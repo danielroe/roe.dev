@@ -1,6 +1,4 @@
-import { IncomingMessage } from 'http'
-
-import { metadata } from './metadata.json'
+import { metadata } from '../metadata.json'
 
 export interface ParsedReqs {
   title: string
@@ -8,9 +6,7 @@ export interface ParsedReqs {
   tags: string[]
 }
 
-export function parseReqs(req: IncomingMessage) {
-  const slug = req.url?.match(/\/([^/]*).jpg$/)?.[1]
-
+export function parseReqs (slug: string) {
   if (slug === 'og') {
     return {
       date: '',

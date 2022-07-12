@@ -11,6 +11,16 @@ export default defineNuxtConfig({
     transpile: [/content-edge/],
   },
 
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/uses'],
+    },
+    routes: {
+      '/og**': { swr: true },
+    },
+  },
+
   css: ['~/assets/css/tailwind.css'],
 
   content: {
