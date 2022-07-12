@@ -11,7 +11,10 @@ export default defineNuxtConfig({
     transpile: [/content-edge/],
   },
 
+  sourcemap: false,
+
   nitro: {
+    sourceMap: false,
     prerender: {
       crawlLinks: true,
       routes: ['/', '/uses'],
