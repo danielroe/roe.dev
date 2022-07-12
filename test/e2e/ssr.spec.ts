@@ -17,7 +17,7 @@ const pages = [
   '/blog/building-your-own-vue-rich-text-component',
 ]
 
-test.describe(`pages on ${baseURL}`, () => {
+test.describe(`pages`, () => {
   for (const path of pages) {
     test(`renders ${path}`, async ({ page }) => {
       await page.goto(url(path))
