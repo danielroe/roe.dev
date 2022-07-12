@@ -16,6 +16,8 @@ jobs:
       url: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.target_url }}
     if: github.event.deployment_status.state == 'success' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.23.1-focal
 
     steps:
       - uses: actions/checkout@v3
@@ -27,52 +29,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      # Figures out the version of playwright that's installed.
-      # 1. Because we don't know what version yarn will resolve it to, we have
-      #    to use `yarn why` to get the actually installed version.
-      # 2. Because we're in a workspace, we need to make sure we get the version
-      #    for the root and not any children, hence the `grep`. If not using
-      #    workspaces, this can be skipped.
-      # 3. jq comes pre-installed in the Ubuntu runner, so we use that to get
-      #    the correct version string.
-      # 4. Finally, we use sed to extract just the version number (eg; '1.22.0')
-      # The result is stored in steps.playwright-version.outputs.version
-      - name: Get installed Playwright version
-        id: playwright-version
-        run: echo "::set-output name=version::$(pnpm why --json @playwright/test | jq --raw-output '.[0].devDependencies["@playwright/test"].version')"
-
-      # Attempt to restore the correct Playwright browser binaries based on the
-      # currently installed version of Playwright (The browser binary versions
-      # may change with Playwright versions).
-      # Note: Playwright's cache directory is hard coded because that's what it
-      # says to do in the docs. There doesn't appear to be a command that prints
-      # it out for us.
-      - uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: "~/.cache/ms-playwright"
-          key: "${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}"
-          # As a fallback, if the Playwright version has changed, try use the
-          # most recently cached version. There's a good chance that at least one
-          # of the browser binary versions haven't been updated, so Playwright can
-          # skip installing that in the next step.
-          # Note: When falling back to an old cache, `cache-hit` (used below)
-          # will be `false`. This allows us to restore the potentially out of
-          # date cache, but still let Playwright decide if it needs to download
-          # new binaries or not.
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      # If the Playwright browser binaries weren't able to be restored, we tell
-      # paywright to install everything for us.
-      - name: Install Playwright with dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
-
-      - name: Install Playwright's dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps
 
       - run: pnpm test:e2e
         env:
