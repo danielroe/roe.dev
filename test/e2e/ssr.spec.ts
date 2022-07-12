@@ -25,7 +25,7 @@ test.describe(`pages`, () => {
       const title = page.locator('title')
       expect(await title.textContent()).toContain('Daniel Roe')
 
-      await expect(page).toHaveScreenshot()
+      await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.05 })
     })
 
     test(`image for ${path}`, async ({ page }) => {
