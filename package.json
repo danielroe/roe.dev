@@ -6,7 +6,7 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "start": "nuxt start",
-    "now-build": "node scripts/build.mjs",
+    "now-build": "node scripts/build.mjs && nuxt build",
     "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
