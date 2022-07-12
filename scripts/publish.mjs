@@ -3,7 +3,7 @@
 import { $fetch } from 'ohmyfetch'
 
 import { iterateOnDirectory } from './global.mjs'
-import { getMatchOrReturn } from './api/_utils.mjs'
+import { getMatchOrReturn } from './api/_utils.js'
 
 const url = 'https://dev.to/api'
 const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
