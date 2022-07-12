@@ -1,5 +1,4 @@
 import chrome from 'chrome-aws-lambda'
-import { launch } from 'puppeteer-core'
 
 const exePath = '/usr/bin/google-chrome-unstable'
 
@@ -35,7 +34,7 @@ function sleep(ms: number) {
 
 export async function getScreenshot(url: string, isDev: boolean) {
   const options = await getOptions(isDev)
-  const browser = await launch(options)
+  const browser = await chrome.puppeteer.launch(options)
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 630 })
   await page.goto(url)
