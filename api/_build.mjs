@@ -1,10 +1,7 @@
 import grayMatter from 'gray-matter'
 
-import {
-  iterateOnDirectory,
-  getMatchOrReturn,
-  writeFile,
-} from '../scripts/global.mjs'
+import { iterateOnDirectory, writeFile } from '../scripts/global.mjs'
+import { getMatchOrReturn } from './_utils.js'
 
 const metadata = {}
 
