@@ -1,5 +1,6 @@
 import chrome from 'chrome-aws-lambda'
-import * as puppeteer from 'puppeteer-core'
+// eslint-disable-next-line
+import puppeteer from 'puppeteer-core'
 
 const localChromePath =
   '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev'
@@ -36,9 +37,7 @@ function sleep (ms: number) {
 
 export async function getScreenshot (url: string, isDev: boolean) {
   const options = await getOptions(isDev)
-  // @ts-ignore
-  // eslint-disable-next-line import/namespace
-  const browser = await (puppeteer.default || puppeteer).launch(options)
+  const browser = await puppeteer.launch(options)
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 630 })
   await page.goto(url)
