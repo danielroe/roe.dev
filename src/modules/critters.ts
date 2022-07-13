@@ -26,8 +26,12 @@ export default defineNuxtModule<ModuleOptions>({
         publicPath: nuxt.options.app.baseURL,
         ...options.config,
       })
-      nitro.hooks.hook('prerender:route', async route => {
+      nitro.hooks.hook('prerender:generate', async route => {
         if (!route.contents || !route.fileName.endsWith('.html')) return
+        route.contents = route.contents.replace(
+          /<link rel="prefetch" as="script"[^>]+>/gm,
+          ''
+        )
         route.contents = await critters.process(route.contents)
       })
     })
