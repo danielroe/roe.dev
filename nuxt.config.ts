@@ -77,10 +77,18 @@ export default defineNuxtConfig({
     domain: 'roe.dev',
   },
 
+  critters: {
+    config: {
+      inlineFonts: true,
+      pruneSource: true,
+    },
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
+    '~/modules/critters',
   ],
 })
