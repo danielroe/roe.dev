@@ -1,5 +1,8 @@
 export function useGithub(repo: string) {
-  const { data: response } = useFetch(`https://api.github.com/repos/${repo}`)
+  const { data: response } = useFetch(`https://api.github.com/repos/${repo}`, {
+    key: repo,
+    lazy: true,
+  })
 
   const stars = computed(
     () => response.value && response.value.stargazers_count
