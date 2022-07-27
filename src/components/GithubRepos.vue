@@ -46,8 +46,9 @@ const repos = [
   'nuxt/framework',
   'nuxt/nuxt.js',
   // 'nuxt/vercel-builder',
+  'danielroe/magic-regexp',
   'danielroe/typed-vuex',
-  'nuxt-community/composition-api',
+  // 'nuxt-community/composition-api',
   // 'nuxt-community/sanity-module',
   // 'danielroe/sanity-typed-queries',
 ].map(repo => ({
