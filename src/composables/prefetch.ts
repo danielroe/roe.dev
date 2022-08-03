@@ -80,7 +80,6 @@ const useAsyncTalks = () =>
       ) as unknown as Promise<Talk[]>,
     {
       transform: talks => {
-        console.log(talks)
         return (
           (talks
             ?.sort(
