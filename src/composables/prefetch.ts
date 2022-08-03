@@ -62,8 +62,6 @@ const useAsyncBlogIndex = () =>
 
 interface Talk {
   title: string
-  name: string
-  type: string
   source: string
   tags: string
   link: string
@@ -74,18 +72,22 @@ const useAsyncTalks = () =>
   useAsyncData(
     'talks',
     () =>
-      queryContent('/talks')
-        .only(['title', 'source', 'link', 'date', 'formattedDate'])
-        .find()
-        .then(async r =>
-          process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
-        ) as unknown as Promise<Talk[]>,
+      (process.server
+        ? import('../public/talks.json').then(r => r.default)
+        : $fetch('/talks.json')
+      ).then(async r =>
+        process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
+      ) as unknown as Promise<Talk[]>,
     {
       transform: talks => {
-        talks?.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        console.log(talks)
+        return (
+          (talks
+            ?.sort(
+              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            )
+            .map(formatDateField) as Talk[]) || []
         )
-        return (talks?.map(formatDateField) as Talk[]) || []
       },
     }
   )
