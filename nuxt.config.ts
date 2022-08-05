@@ -85,6 +85,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'magic-regexp/nuxt',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',

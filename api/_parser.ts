@@ -1,7 +1,5 @@
 import { IncomingMessage } from 'http'
 
-import { getMatchOrReturn } from './_utils'
-
 import { metadata } from './metadata.json'
 
 export interface ParsedReqs {
@@ -11,7 +9,7 @@ export interface ParsedReqs {
 }
 
 export function parseReqs(req: IncomingMessage) {
-  const slug = getMatchOrReturn(req.url || '', /\/([^/]*).jpg$/, 1)
+  const slug = req.url?.match(/\/([^/]*).jpg$/)?.[1]
 
   if (slug === 'og') {
     return {

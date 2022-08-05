@@ -25,6 +25,7 @@ importers:
       happy-dom: ^6.0.4
       husky: 8.0.1
       lint-staged: 13.0.3
+      magic-regexp: ^0.4.1
       nuxt: npm:nuxt3@3.0.0-rc.6-27661960.60656df
       postcss-html: 1.5.0
       prettier: 2.7.1
@@ -60,6 +61,7 @@ importers:
       happy-dom: 6.0.4
       husky: 8.0.1
       lint-staged: 13.0.3
+      magic-regexp: 0.4.1
       nuxt: /nuxt3/3.0.0-rc.6-27661960.60656df
       postcss-html: 1.5.0
       prettier: 2.7.1
@@ -5615,6 +5617,21 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+
+  /magic-regexp/0.4.1:
+    resolution: {integrity: sha512-JNwUo8+mV7yYUz3z6YDac4qhKMKVYOiEMU1DkW+EwG+BADaXCZpdh0wNFk1+7B2wrMGF4V6jrARWBitFZW2gGw==}
+    dependencies:
+      estree-walker: 3.0.1
+      magic-string: 0.26.2
+      mlly: 0.5.7
+      ufo: 0.8.5
+      unplugin: 0.8.1
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: true
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}

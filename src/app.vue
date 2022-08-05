@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-    <TheSiteHeader v-once />
+    <LayoutTheSiteHeader v-once />
     <NuxtPage />
-    <TheSiteFooter v-once />
+    <LayoutTheSiteFooter v-once />
   </div>
 </template>
 
 <script lang="ts" setup>
-import TheSiteHeader from '~/components/layout/TheSiteHeader.vue'
-import TheSiteFooter from '~/components/layout/TheSiteFooter.vue'
-
 const route = useRoute()
-const path = getMatchOrReturn(route.fullPath, /(.*[^/])\/?$/, 1)
+const PATH_RE = createRegExp(
+  exactly(char.times.any().and(charNotIn('/')))
+    .as('path')
+    .and(exactly('/').optionally())
+    .at.lineEnd()
+)
+
+const { path = '/' } = (route.fullPath as string).match(PATH_RE)?.groups ?? {}
 const url = `https://roe.dev${path}`
+
 useHead({
   meta: [{ property: 'og:url', content: url }],
   link: [{ rel: 'canonical', href: url }],

@@ -30,7 +30,14 @@ const { data: page } = await usePageData()
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
-const ogSlug = getMatchOrReturn(route.fullPath, /\/([^/]*)\/?$/, 1)
+const SLUG_RE = createRegExp(
+  exactly('/')
+    .and(charNotIn('/').times.any().as('slug'))
+    .and(exactly('/').optionally())
+    .at.lineEnd()
+)
+
+const { slug: ogSlug } = (route.fullPath as string).match(SLUG_RE)?.groups ?? {}
 useHead({
   title: page.value.title,
   meta: [

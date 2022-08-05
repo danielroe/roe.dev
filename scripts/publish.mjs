@@ -2,7 +2,6 @@
 
 import { $fetch } from 'ohmyfetch'
 
-import { getMatchOrReturn } from '../api/_utils.js'
 import { iterateOnDirectory } from './global.mjs'
 
 const url = 'https://dev.to/api'
@@ -12,12 +11,12 @@ async function getMarkdownArticles() {
   const articles = []
   await iterateOnDirectory('./src/content/blog', (path, contents) => {
     if (!/\.md$/.test(path)) return
-    const slug = getMatchOrReturn(path, /\/[^/]*$/, 0).slice(1, -3)
+    const slug = path.match(/\/[^/]*$/)?.[0].slice(1, -3)
     articles.push({
       body_markdown: contents
         .replace(/\(\//g, '(https://roe.dev/')
         .replace(/ ---? /g, ' — '),
-      title: getMatchOrReturn(contents, /title: (.*)/, 1),
+      title: contents.match(/title: (.*)/)?.[1],
       slug,
       canonical_url: `https://roe.dev/blog/${slug}/`,
     })
