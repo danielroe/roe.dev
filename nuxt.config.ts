@@ -1,3 +1,4 @@
+import { useNuxt } from '@nuxt/kit'
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
@@ -85,10 +86,43 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'magic-regexp/nuxt',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
     '~/modules/critters',
+    function () {
+      const nuxt = useNuxt()
+      let dirs: string[]
+      nuxt.hook('components:dirs', _dirs => {
+        dirs = _dirs.map(d => (typeof d === 'string' ? d : d.path))
+      })
+      // Exclude non-prose content components
+      nuxt.hook('components:extend', components => {
+        for (const component of components) {
+          if (
+            'filePath' in component &&
+            component.filePath.includes('@nuxt/content')
+          ) {
+            if (!component.filePath.includes('/Prose/')) {
+              components.splice(components.indexOf(component), 1)
+            }
+          }
+        }
+      })
+      // Use single components chunk
+      nuxt.hook('vite:extendConfig', config => {
+        if (Array.isArray(config.build.rollupOptions.output)) return
+        config.build.rollupOptions.output.manualChunks = id => {
+          if (
+            id.includes('@nuxt/content') &&
+            dirs.some(dir => id.includes(dir))
+          ) {
+            return 'components-chunk'
+          }
+        }
+      })
+    },
   ],
 })
