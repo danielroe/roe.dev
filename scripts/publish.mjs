@@ -2,8 +2,8 @@
 
 import { $fetch } from 'ohmyfetch'
 
+import { getMatchOrReturn } from '../api/_utils.js'
 import { iterateOnDirectory } from './global.mjs'
-import { getMatchOrReturn } from './api/_utils.js'
 
 const url = 'https://dev.to/api'
 const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
