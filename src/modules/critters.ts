@@ -27,7 +27,12 @@ export default defineNuxtModule<ModuleOptions>({
         ...options.config,
       })
       nitro.hooks.hook('prerender:generate', async route => {
-        if (!route.contents || !route.fileName.endsWith('.html')) return
+        if (
+          !route.contents ||
+          !route.fileName.endsWith('.html') ||
+          route.route.endsWith('.json')
+        )
+          return
         route.contents = await critters.process(route.contents)
       })
     })
