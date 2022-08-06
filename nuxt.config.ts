@@ -86,8 +86,13 @@ export default defineNuxtConfig({
     },
   },
 
+  image: {
+    provider: 'vercel',
+  },
+
   modules: [
     'magic-regexp/nuxt',
+    '@nuxt/image-edge',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',

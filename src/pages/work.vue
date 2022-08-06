@@ -7,7 +7,7 @@
     <main>
       <GithubRepos />
       <section :class="$style.logos">
-        <img
+        <nuxt-img
           v-for="(image, name) in clients"
           :key="name"
           :alt="name"
@@ -19,28 +19,17 @@
 </template>
 
 <script lang="ts" setup>
-import Comcast from '~/assets/images/work/comcast.svg'
-import DurhamUniversity from '~/assets/images/work/durham-university.svg'
-import ParentScheme from '~/assets/images/work/parentscheme.svg'
-import Concision from '~/assets/images/work/concision.svg'
-import NELEP from '~/assets/images/work/nelep.png'
-import Convoke from '~/assets/images/work/convoke.png'
-import AcadianSoftware from '~/assets/images/work/acadian-software.svg'
-import NuxtLabs from '~/assets/images/work/nuxtlabs.svg'
-import Canvas8 from '~/assets/images/work/canvas8.svg'
-import ImperialEnterpriseLab from '~/assets/images/work/imperial-enterprise-lab.svg'
-
 const clients = {
-  Comcast,
-  'Durham University': DurhamUniversity,
-  'Parent Scheme': ParentScheme,
-  Concision,
-  'North East Local Enterprise Partnership': NELEP,
-  Convoke,
-  'Acadian Software': AcadianSoftware,
-  NuxtLabs,
-  Canvas8,
-  'Imperial Enterprise Lab': ImperialEnterpriseLab,
+  Comcast: '/img/work/comcast.svg',
+  'Durham University': '/img/work/durham-university.svg',
+  'Parent Scheme': '/img/work/parentscheme.svg',
+  Concision: '/img/work/concision.svg',
+  'North East Local Enterprise Partnership': '/img/work/nelep.png',
+  Convoke: '/img/work/convoke.png',
+  'Acadian Software': '/img/work/acadian-software.svg',
+  NuxtLabs: '/img/work/nuxtlabs.svg',
+  Canvas8: '/img/work/canvas8.svg',
+  'Imperial Enterprise Lab': '/img/work/imperial-enterprise-lab.svg',
 }
 
 useHead({
