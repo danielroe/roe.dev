@@ -1,4 +1,3 @@
-import { useNuxt } from '@nuxt/kit'
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
@@ -19,9 +18,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: {
-        lang: 'en',
-      },
+      htmlAttrs: { lang: 'en' },
       meta: [
         { name: 'msapplication-TileColor', content: '#1a202c' },
         { name: 'theme-color', content: '#1a202c' },
@@ -93,5 +90,6 @@ export default defineNuxtConfig({
     'vue-plausible',
     '~/modules/critters',
     '~/modules/components-chunk',
+    '~/modules/sitemap',
   ],
 })
