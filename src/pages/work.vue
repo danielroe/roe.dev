@@ -7,13 +7,13 @@
     <main>
       <GithubRepos />
       <section :class="$style.logos">
-        <nuxt-img
+        <nuxt-picture
           v-for="(image, name) in clients"
           :key="name"
           :alt="name"
           :src="image"
-          height="16"
-          width="40"
+          height="32"
+          width="80"
         />
       </section>
     </main>
@@ -47,15 +47,8 @@ useHead({
     @apply mx-4 my-4;
     @apply h-full w-auto flex-grow-0 flex-shrink;
 
-    flex-basis: 3rem;
     max-height: 2rem;
     max-width: 5rem;
-  }
-
-  @media (width < 767px) {
-    > * {
-      flex-basis: 33%;
-    }
   }
 }
 
