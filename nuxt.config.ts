@@ -1,6 +1,10 @@
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    githubToken: '',
+  },
+
   srcDir: 'src',
 
   build: {
@@ -91,5 +95,6 @@ export default defineNuxtConfig({
     '~/modules/critters',
     '~/modules/components-chunk',
     '~/modules/sitemap',
+    '~/modules/full-static/index',
   ],
 })

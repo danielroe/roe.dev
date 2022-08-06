@@ -2,6 +2,7 @@ const normalizeVercelResponse = async (r: unknown) =>
   process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
 
 export const usePageData = (path = useRoute().path) => {
+  path = path.replace(/(index)?\.json$/, '')
   switch (path) {
     case '/':
       return useAsyncHome()
@@ -19,25 +20,32 @@ export const usePageData = (path = useRoute().path) => {
 }
 
 const useAsyncHome = () =>
-  useAsyncData('home', () =>
-    queryContent('/')
-      .only(['title', 'type', 'body'])
-      .findOne()
-      .then(normalizeVercelResponse)
+  useAsyncData(
+    'home',
+    () =>
+      process.server &&
+      queryContent('/')
+        .only(['title', 'type', 'body'])
+        .findOne()
+        .then(normalizeVercelResponse)
   )
 
 const useAsyncUses = () =>
-  useAsyncData('uses', () =>
-    queryContent('/uses')
-      .only(['title', 'type', 'body'])
-      .findOne()
-      .then(normalizeVercelResponse)
+  useAsyncData(
+    'uses',
+    () =>
+      process.server &&
+      queryContent('/uses')
+        .only(['title', 'type', 'body'])
+        .findOne()
+        .then(normalizeVercelResponse)
   )
 
 const useAsyncBlogIndex = () =>
   useAsyncData(
     'blog',
     () =>
+      process.server &&
       queryContent('/blog')
         .only(['title', 'date', '_path'])
         .find()
@@ -72,9 +80,8 @@ const useAsyncTalks = () =>
   useAsyncData(
     'talks',
     () =>
-      (process.server
-        ? import('../public/talks.json').then(r => r.default)
-        : $fetch('/talks.json')
+      (
+        process.server && import('../content/talks.json').then(r => r.default)
       ).then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
       ) as unknown as Promise<Talk[]>,
@@ -92,9 +99,12 @@ const useAsyncTalks = () =>
   )
 
 const useAsyncBlogArticle = (path: string) =>
-  useAsyncData(path, () =>
-    queryContent(path)
-      .only(['title', 'type', 'body', 'date', 'tags'])
-      .findOne()
-      .then(normalizeVercelResponse)
+  useAsyncData(
+    path,
+    () =>
+      process.server &&
+      queryContent(path)
+        .only(['title', 'type', 'body', 'date', 'tags'])
+        .findOne()
+        .then(normalizeVercelResponse)
   )

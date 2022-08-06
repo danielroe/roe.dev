@@ -190,6 +190,7 @@ export function defineNuxtLink(options: NuxtLinkOptions) {
     },
     setup(props, { slots }) {
       const router = useRouter() as Router | undefined
+      const nuxtApp = useNuxtApp()
 
       const nodeRef = ref<HTMLElement>(null)
       const setNodeRef = (ref: object | null) => {
@@ -263,13 +264,7 @@ export function defineNuxtLink(options: NuxtLinkOptions) {
         })
 
         // Add API prefetches
-        promises.push(
-          usePageData(
-            typeof to.value === 'string'
-              ? to.value
-              : router.resolve(to.value).path
-          )
-        )
+        promises.push(nuxtApp.$static.prefetch(to.value))
 
         Promise.all(promises).then(() => {
           prefetched.value = true

@@ -13,16 +13,16 @@
         <header>
           {{ repo }}
           <dl>
-            <template v-if="stars.value">
+            <template v-if="stars">
               <dt>Stars</dt>
               <dd>
-                {{ stars.value }}
+                {{ stars }}
               </dd>
             </template>
-            <template v-if="language.value">
+            <template v-if="language">
               <dt>Language</dt>
               <dd>
-                {{ language.value }}
+                {{ language }}
               </dd>
             </template>
           </dl>
@@ -42,19 +42,38 @@ useHead({
     },
   ],
 })
-const repos = [
-  'nuxt/framework',
-  'nuxt/nuxt.js',
-  // 'nuxt/vercel-builder',
-  'danielroe/magic-regexp',
-  'danielroe/typed-vuex',
-  // 'nuxt-community/composition-api',
-  // 'nuxt-community/sanity-module',
-  // 'danielroe/sanity-typed-queries',
-].map(repo => ({
-  repo,
-  ...useGithub(repo),
-}))
+const config = useRuntimeConfig()
+const { data: repos } = await useAsyncData('repos', () => {
+  if (process.client) return
+  const repos = [
+    'nuxt/framework',
+    'nuxt/nuxt.js',
+    // 'nuxt/vercel-builder',
+    'danielroe/magic-regexp',
+    'danielroe/typed-vuex',
+    // 'nuxt-community/composition-api',
+    // 'nuxt-community/sanity-module',
+    // 'danielroe/sanity-typed-queries',
+  ]
+  return Promise.all(
+    repos.map(async repo => {
+      const { stargazers_count: stars, language } = await $fetch(
+        `https://api.github.com/repos/${repo}`,
+        {
+          headers: {
+            Accept: 'application/vnd.github.v3+json',
+            Authorization: `Bearer ${config.githubToken}`,
+          },
+        }
+      )
+      return {
+        repo,
+        stars,
+        language,
+      }
+    })
+  )
+})
 </script>
 
 <style module>
