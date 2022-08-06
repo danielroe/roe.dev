@@ -12,6 +12,8 @@
           :key="name"
           :alt="name"
           :src="image"
+          height="16"
+          width="40"
         />
       </section>
     </main>
