@@ -17,6 +17,7 @@ export default defineNuxtModule({
         }
       })
       nitro.hooks.hook('close', async () => {
+        if (!routes.length) return
         const timestamp = new Date().toISOString()
         const sitemap = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
