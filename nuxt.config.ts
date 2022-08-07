@@ -95,6 +95,6 @@ export default defineNuxtConfig({
     '~/modules/critters',
     '~/modules/components-chunk',
     '~/modules/sitemap',
-    '~/modules/full-static/index',
+    'nuxt-full-static',
   ],
 })
