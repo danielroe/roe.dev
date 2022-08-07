@@ -31,7 +31,7 @@ export default defineNuxtModule({
       if (Array.isArray(config.build.rollupOptions.output)) return
       config.build.rollupOptions.output.manualChunks = id => {
         if (
-          id.includes('@nuxt/content') &&
+          (id.includes('@nuxt/content') || id.includes('ProseImg')) &&
           dirs.some(dir => id.includes(dir))
         ) {
           return 'components-chunk'
