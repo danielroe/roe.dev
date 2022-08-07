@@ -1,0 +1,42 @@
+diff --git a/dist/runtime.cjs b/dist/runtime.cjs
+index c8663e119852eaf0e1106da94eca9cf45998669a..75087195c1e56581994b5a53092ff85bab05b5d0 100644
+--- a/dist/runtime.cjs
++++ b/dist/runtime.cjs
+@@ -105,11 +105,11 @@ function getAllDependencies(ids, rendererContext) {
+       delete allDeps.prefetch[id];
+     }
+   }
+-  for (const id in allDeps.styles) {
+-    if (id in allDeps.preload) {
+-      delete allDeps.preload[id];
+-    }
+-  }
++  // for (const id in allDeps.styles) {
++  //   if (id in allDeps.preload) {
++  //     delete allDeps.preload[id];
++  //   }
++  // }
+   rendererContext._dependencySets[cacheKey] = allDeps;
+   return allDeps;
+ }
+diff --git a/dist/runtime.mjs b/dist/runtime.mjs
+index 609e8506184ba2fd268c7a37192d724dc5e4dc07..3e5fb082a6c5419bb6924dda1a2982c9db0cfb44 100644
+--- a/dist/runtime.mjs
++++ b/dist/runtime.mjs
+@@ -101,11 +101,11 @@ function getAllDependencies(ids, rendererContext) {
+       delete allDeps.prefetch[id];
+     }
+   }
+-  for (const id in allDeps.styles) {
+-    if (id in allDeps.preload) {
+-      delete allDeps.preload[id];
+-    }
+-  }
++  // for (const id in allDeps.styles) {
++  //   if (id in allDeps.preload) {
++  //     delete allDeps.preload[id];
++  //   }
++  // }
+   rendererContext._dependencySets[cacheKey] = allDeps;
+   return allDeps;
+ }

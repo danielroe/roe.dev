@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  vue-bundle-renderer@0.4.0:
+    hash: vskyuspflc2xdyz76fm7remaym
+    path: patches/vue-bundle-renderer@0.4.0.patch
+
 importers:
 
   .:
@@ -1078,7 +1083,7 @@ packages:
       vite-node: 0.20.3
       vite-plugin-checker: 0.4.9_vite@3.0.4
       vue: 3.2.37
-      vue-bundle-renderer: 0.4.0
+      vue-bundle-renderer: 0.4.0_vskyuspflc2xdyz76fm7remaym
     transitivePeerDependencies:
       - less
       - sass
@@ -6667,7 +6672,7 @@ packages:
       unplugin: 0.8.1
       untyped: 0.4.5
       vue: 3.2.37
-      vue-bundle-renderer: 0.4.0
+      vue-bundle-renderer: 0.4.0_vskyuspflc2xdyz76fm7remaym
       vue-router: 4.1.3_vue@3.2.37
     transitivePeerDependencies:
       - bufferutil
@@ -9714,11 +9719,12 @@ packages:
     resolution: {integrity: sha512-EcswR2S8bpR7fD0YPeS7r2xXExrScVMxg4MedACaWHEtx9ftCF/qHG1xGkolzTPcEmjTavCQgbVzHUIdTMzFGA==}
     dev: true
 
-  /vue-bundle-renderer/0.4.0:
+  /vue-bundle-renderer/0.4.0_vskyuspflc2xdyz76fm7remaym:
     resolution: {integrity: sha512-khOw2T2KgViDmpfmAJ2r/LWqMm73Cib1fQZRc1eNP6TtWQntnXCvkeWbQBJ2M+33Swo7yLFagr8QccnDRgSBLA==}
     dependencies:
       ufo: 0.8.5
     dev: true
+    patched: true
 
   /vue-eslint-parser/8.3.0_eslint@8.21.0:
     resolution: {integrity: sha512-dzHGG3+sYwSf6zFBa0Gi9ZDshD7+ad14DGOdTLjruRVgZXe2J+DcZ9iUhyR48z5g1PqRa20yt3Njna/veLJL/g==}
