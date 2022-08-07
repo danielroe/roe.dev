@@ -87,7 +87,6 @@ export default defineNuxtConfig({
   },
 
   image: {
-    provider: 'vercel',
     screens: {
       logo: 40,
     },
