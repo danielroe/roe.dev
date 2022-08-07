@@ -99,7 +99,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    '~/modules/critters',
+    // '~/modules/critters',
     '~/modules/components-chunk',
     '~/modules/sitemap',
     'nuxt-full-static',
