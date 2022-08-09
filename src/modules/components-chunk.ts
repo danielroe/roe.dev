@@ -27,8 +27,8 @@ export default defineNuxtModule({
     })
 
     // Use single components chunk
-    nuxt.hook('vite:extendConfig', config => {
-      if (Array.isArray(config.build.rollupOptions.output)) return
+    nuxt.hook('vite:extendConfig', (config, { isServer }) => {
+      if (Array.isArray(config.build.rollupOptions.output) || isServer) return
       config.build.rollupOptions.output.manualChunks = id => {
         if (
           (id.includes('@nuxt/content') || id.includes('ProseImg')) &&

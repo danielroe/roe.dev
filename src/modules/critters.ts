@@ -23,16 +23,11 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('nitro:init', nitro => {
       const critters = new Critters({
         path: nitro.options.output.publicDir,
-        publicPath: nuxt.options.app.baseURL,
+        publicPath: nitro.options.baseURL,
         ...options.config,
       })
       nitro.hooks.hook('prerender:generate', async route => {
-        if (
-          !route.contents ||
-          !route.fileName.endsWith('.html') ||
-          route.route.endsWith('.json')
-        )
-          return
+        if (!route.contents || !route.fileName?.endsWith('.html')) return
         route.contents = await critters.process(route.contents)
       })
     })
