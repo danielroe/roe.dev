@@ -21,7 +21,6 @@ export const usePageData = (path = useRoute().path) => {
 
 const useAsyncHome = () =>
   useAsyncData(
-    'home',
     () =>
       process.server &&
       queryContent('/')
@@ -32,7 +31,6 @@ const useAsyncHome = () =>
 
 const useAsyncUses = () =>
   useAsyncData(
-    'uses',
     () =>
       process.server &&
       queryContent('/uses')
@@ -43,7 +41,6 @@ const useAsyncUses = () =>
 
 const useAsyncBlogIndex = () =>
   useAsyncData(
-    'blog',
     () =>
       process.server &&
       queryContent('/blog')
@@ -78,7 +75,6 @@ interface Talk {
 }
 const useAsyncTalks = () =>
   useAsyncData(
-    'talks',
     () =>
       (
         process.server && import('../content/talks.json').then(r => r.default)

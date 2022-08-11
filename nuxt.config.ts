@@ -87,7 +87,6 @@ export default defineNuxtConfig({
   },
 
   image: {
-    provider: 'vercel',
     screens: {
       logo: 40,
     },
@@ -100,7 +99,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    '~/modules/critters',
+    '@nuxtjs/critters',
     '~/modules/components-chunk',
     '~/modules/sitemap',
     'nuxt-full-static',
