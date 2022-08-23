@@ -21,9 +21,15 @@
   },
   "packageRules": [
     {
-      "packagePatterns": ["lint"],
+      "matchPackagePatterns": ["lint"],
       "groupName": "all lint dependencies",
       "groupSlug": "all-lint"
+    },
+    {
+      "groupName": "nuxt framework",
+      "groupSlug": "nuxt",
+      "matchPackageNames": ["nuxt", "nuxt3"],
+      "matchPackagePatterns": ["^@nuxt/"]
     }
   ]
 }
