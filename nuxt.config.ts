@@ -104,4 +104,8 @@ export default defineNuxtConfig({
     '~/modules/sitemap',
     'nuxt-full-static',
   ],
+
+  experimental: {
+    externalVue: true,
+  },
 })
