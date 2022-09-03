@@ -11,6 +11,10 @@ export default defineNuxtModule({
         if (!route.fileName.endsWith('.html')) return
 
         route.contents = route.contents.replace(
+          /<link rel="preload" as="style" href="[^"]*">/g,
+          ''
+        )
+        route.contents = route.contents.replace(
           /<link rel="stylesheet" href="([^"]+)">/g,
           `<link rel="stylesheet" href="$1" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="$1"></noscript>`
         )
