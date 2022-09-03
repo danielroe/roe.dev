@@ -99,7 +99,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    '~/modules/components-chunk',
     '~/modules/sitemap',
     '~/modules/lazy-css',
     'nuxt-full-static',
