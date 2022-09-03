@@ -97,16 +97,18 @@ export default defineNuxtConfig({
     '@nuxt/image-edge',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
+    '@nuxtjs/critters',
     '@nuxt/content',
     'vue-plausible',
     '~/modules/components-chunk',
     '~/modules/sitemap',
-    '~/modules/lazy-css',
+    // '~/modules/lazy-css',
     'nuxt-full-static',
-    'nuxt-font-metrics',
+    // 'nuxt-font-metrics',
   ],
 
   experimental: {
+    inlineSSRStyles: false,
     externalVue: true,
   },
 })
