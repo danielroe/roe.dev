@@ -103,7 +103,7 @@ export default defineNuxtConfig({
     '~/modules/sitemap',
     '~/modules/lazy-css',
     'nuxt-full-static',
-    // 'nuxt-font-metrics',
+    'nuxt-font-metrics',
   ],
 
   experimental: {
