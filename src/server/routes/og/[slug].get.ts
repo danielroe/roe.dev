@@ -3,7 +3,7 @@ import { getHtml } from '../../utils/_template'
 import { writeTempFile } from '../../utils/_file'
 import { getScreenshot } from '../../utils/_chromium'
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.VERCEL_ENV === 'development'
 
 export default defineEventHandler(async event => {
   let { slug } = event.context.params
