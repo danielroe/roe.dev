@@ -9,7 +9,7 @@ importers:
       '@nuxt/content': npm:@nuxt/content-edge@2.1.0-27709571.e1c5743
       '@nuxt/image-edge': 1.0.0-27707824.1028381
       '@nuxt/kit': npm:@nuxt/kit-edge@3.0.0-rc.9-27703329.537338f
-      '@nuxtjs/color-mode': 3.1.4
+      '@nuxtjs/color-mode': 3.1.5
       '@nuxtjs/critters': 0.3.3
       '@nuxtjs/eslint-config': 11.0.0
       '@nuxtjs/eslint-config-typescript': 11.0.0
@@ -49,7 +49,7 @@ importers:
     devDependencies:
       '@commitlint/cli': 17.1.2
       '@commitlint/config-conventional': 17.1.0
-      '@nuxtjs/color-mode': 3.1.4
+      '@nuxtjs/color-mode': 3.1.5
       '@nuxtjs/eslint-config': 11.0.0_eslint@8.23.0
       '@nuxtjs/eslint-config-typescript': 11.0.0_eslint@8.23.0
       '@nuxtjs/eslint-module': 3.1.0_eslint@8.23.0
@@ -1145,12 +1145,12 @@ packages:
       - webpack
     dev: true
 
-  /@nuxtjs/color-mode/3.1.4:
-    resolution: {integrity: sha512-3pxZNbZCFCzBgkyJLU/YvC2L2l1yRvITuD91zfJoIGm52PTx66y/Q1/UW8i9YFDVhJvvRd67s6eWvgaKQtTPlw==}
+  /@nuxtjs/color-mode/3.1.5:
+    resolution: {integrity: sha512-i5guOxWn3XkHwVdzLZ7iYGMw9fasj6UjiQYaVtD3PyuFNBY3LtdoipUS7ItkMo89ZnOYwf88dLURwOtx247rRw==}
     dependencies:
       '@nuxt/kit': 3.0.0-rc.9
       lodash.template: 4.5.0
-      pathe: 0.3.5
+      pathe: 0.3.7
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -7181,6 +7181,7 @@ packages:
 
   /pathe/0.3.5:
     resolution: {integrity: sha512-grU/QeYP0ChuE5kjU2/k8VtAeODzbernHlue0gTa27+ayGIu3wqYBIPGfP9r5xSqgCgDd4nWrjKXEfxMillByg==}
+    dev: false
 
   /pathe/0.3.7:
     resolution: {integrity: sha512-yz7GK+kSsS27x727jtXpd5VT4dDfP/JDIQmaowfxyWCnFjOWtE1VIh7i6TzcSfzW0n4+bRQztj1VdKnITNq/MA==}
