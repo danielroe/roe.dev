@@ -105,8 +105,4 @@ export default defineNuxtConfig({
     'nuxt-full-static',
     'nuxt-font-metrics',
   ],
-
-  experimental: {
-    externalVue: true,
-  },
 })
