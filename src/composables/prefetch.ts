@@ -77,7 +77,7 @@ const useAsyncTalks = () =>
   useAsyncData(
     () =>
       (
-        process.server && import('../content/talks.json').then(r => r.default)
+        process.server && import('../data/talks.json').then(r => r.default)
       ).then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
       ) as unknown as Promise<Talk[]>,

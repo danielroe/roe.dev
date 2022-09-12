@@ -14,7 +14,7 @@ import { hasProtocol } from 'ufo'
 
 import { useRouter } from '#app'
 
-const firstNonUndefined = <T>(...args: T[]): T =>
+const firstNonUndefined = <T> (...args: T[]): T =>
   args.find(arg => arg !== undefined)
 
 type CallbackFn = () => void
@@ -22,7 +22,7 @@ type Lazy<T> = () => Promise<T>
 
 let observer: IntersectionObserver | null = null
 const callbacks = new Map<Element, CallbackFn>()
-function observe(element: Element, callback: CallbackFn) {
+function observe (element: Element, callback: CallbackFn) {
   if (!observer) {
     observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -39,7 +39,7 @@ function observe(element: Element, callback: CallbackFn) {
   callbacks.set(element, callback)
   observer.observe(element)
 
-  return function unobserve() {
+  return function unobserve () {
     callbacks.delete(element)
     observer.unobserve(element)
 
@@ -86,7 +86,7 @@ export type NuxtLinkProps = {
   ariaCurrentValue?: string
 }
 
-export function defineNuxtLink(options: NuxtLinkOptions) {
+export function defineNuxtLink (options: NuxtLinkOptions) {
   const componentName = options.componentName || 'NuxtLink'
 
   const checkPropConflicts = (
@@ -188,7 +188,7 @@ export function defineNuxtLink(options: NuxtLinkOptions) {
         required: false,
       },
     },
-    setup(props, { slots }) {
+    setup (props, { slots }) {
       const router = useRouter() as Router | undefined
       const nuxtApp = useNuxtApp()
 
@@ -264,7 +264,7 @@ export function defineNuxtLink(options: NuxtLinkOptions) {
         })
 
         // Add API prefetches
-        promises.push(nuxtApp.$static.prefetch(to.value))
+        promises.push(preloadPayload(to.value as string))
 
         Promise.all(promises).then(() => {
           prefetched.value = true

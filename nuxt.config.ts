@@ -11,6 +11,13 @@ export default defineNuxtConfig({
     transpile: [/content-edge/],
   },
 
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/uses', '/og/og.jpg'],
+    },
+  },
+
   css: ['~/assets/css/tailwind.css'],
 
   content: {
@@ -102,7 +109,6 @@ export default defineNuxtConfig({
     '~/modules/components-chunk',
     '~/modules/sitemap',
     '~/modules/lazy-css',
-    'nuxt-full-static',
     'nuxt-font-metrics',
   ],
 })
