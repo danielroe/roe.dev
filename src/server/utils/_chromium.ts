@@ -22,7 +22,7 @@ async function getOptions (isDev: boolean) {
   } else {
     options = {
       args: chrome.args,
-      executablePath: (await chrome.executablePath) || localChromePath,
+      executablePath: await chrome.executablePath,
       headless: chrome.headless,
     }
   }
@@ -36,6 +36,7 @@ function sleep (ms: number) {
 }
 
 export async function getScreenshot (url: string, isDev: boolean) {
+  console.log({ isDev })
   const options = await getOptions(isDev)
   const browser = await puppeteer.launch(options)
   const page = await browser.newPage()
