@@ -22,6 +22,9 @@
 </template>
 
 <script lang="ts" setup>
+import { appendHeader } from 'h3'
+
+const nuxtApp = useNuxtApp()
 const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
@@ -59,6 +62,13 @@ useHead({
     },
   ],
 })
+if (process.server) {
+  appendHeader(
+    nuxtApp.ssrContext.event,
+    'x-nitro-prerender',
+    `/og/${ogSlug}.jpg`
+  )
+}
 </script>
 
 <style module>

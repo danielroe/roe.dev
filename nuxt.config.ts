@@ -17,10 +17,7 @@ export default defineNuxtConfig({
     sourceMap: false,
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/uses'],
-    },
-    routes: {
-      '/og**': { swr: true },
+      routes: ['/', '/uses', '/og/og.jpg'],
     },
   },
 

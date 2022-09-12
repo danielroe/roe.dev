@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt build",
+    "build": "nuxt generate",
     "start": "nuxt start",
-    "now-build": "node scripts/build.mjs && nuxt build",
+    "now-build": "node scripts/build.mjs",
     "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
