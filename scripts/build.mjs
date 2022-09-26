@@ -4,7 +4,7 @@ import { iterateOnDirectory, writeFile } from '../scripts/global.mjs'
 
 const metadata = {}
 
-iterateOnDirectory('../src/content/blog', (path, contents) => {
+iterateOnDirectory('./src/content/blog', (path, contents) => {
   const slug = path.match(/\/[^/]*$/)?.[0].slice(1, -3)
   const { data } = grayMatter(contents)
   const date = new Date(data.date)
@@ -18,7 +18,7 @@ console.log(metadata)
 
 writeFile(
   'Saving metadata.',
-  './metadata.json',
+  './src/server/metadata.json',
   JSON.stringify({
     metadata,
   })

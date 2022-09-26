@@ -1,5 +1,3 @@
-import { defineNuxtConfig } from 'nuxt'
-
 export default defineNuxtConfig({
   runtimeConfig: {
     githubToken: '',
@@ -9,6 +7,20 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [/content-edge/],
+  },
+
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/uses', '/og/og.jpg'],
+    },
+    hooks: {
+      'prerender:generate' (route) {
+        if (route.error) {
+          process.exit(1)
+        }
+      },
+    },
   },
 
   css: ['~/assets/css/tailwind.css'],
