@@ -1,24 +1,18 @@
-import chrome from 'chrome-aws-lambda'
+import { launch } from 'puppeteer'
 
 const localChromePath =
   '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev'
 
-async function getOptions (isDev: boolean) {
-  let options: Parameters<typeof chrome['puppeteer']['launch']>[0]
+function getOptions (isDev: boolean) {
+  let options: Parameters<typeof launch>[0]
   if (isDev) {
     options = {
-      args: [],
       executablePath: localChromePath,
       headless: true,
     }
   } else {
     options = {
-      args: chrome.args,
-      env: {
-        DISPLAY: ':10.0',
-      },
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless,
+      headless: true,
     }
   }
   return options
@@ -32,7 +26,7 @@ function sleep (ms: number) {
 
 export async function getScreenshot (url: string, isDev: boolean) {
   const options = await getOptions(isDev)
-  const browser = await chrome.puppeteer.launch(options)
+  const browser = await launch(options)
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 630 })
   await page.goto(url)
