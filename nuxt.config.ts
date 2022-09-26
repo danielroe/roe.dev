@@ -14,6 +14,13 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg'],
     },
+    hooks: {
+      'prerender:generate' (route) {
+        if (route.error) {
+          process.exit(1)
+        }
+      },
+    },
   },
 
   css: ['~/assets/css/tailwind.css'],
