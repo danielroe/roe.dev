@@ -7,12 +7,6 @@ export default defineNuxtConfig({
 
   srcDir: 'src',
 
-  vite: {
-    build: {
-      minify: false,
-    },
-  },
-
   build: {
     transpile: [/content-edge/],
   },
