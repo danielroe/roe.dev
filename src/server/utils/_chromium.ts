@@ -12,6 +12,7 @@ function getOptions (isDev: boolean) {
     }
   } else {
     options = {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       headless: true,
     }
   }
