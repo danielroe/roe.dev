@@ -1,5 +1,3 @@
-import { defineNuxtConfig } from 'nuxt'
-
 export default defineNuxtConfig({
   runtimeConfig: {
     githubToken: '',
@@ -11,10 +9,7 @@ export default defineNuxtConfig({
     transpile: [/content-edge/],
   },
 
-  sourcemap: false,
-
   nitro: {
-    sourceMap: false,
     prerender: {
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg'],
@@ -95,14 +90,11 @@ export default defineNuxtConfig({
     },
   },
 
-  vite: { build: { minify: false } },
-
   modules: [
     'magic-regexp/nuxt',
     '@nuxt/image-edge',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
-    'nuxt-full-static',
     '@nuxt/content',
     'vue-plausible',
     'nuxt-font-metrics',
