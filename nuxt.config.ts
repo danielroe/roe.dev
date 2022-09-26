@@ -96,8 +96,4 @@ export default defineNuxtConfig({
     '~/modules/components-chunk',
     '~/modules/sitemap',
   ],
-
-  experimental: {
-    externalVue: true,
-  },
 })
