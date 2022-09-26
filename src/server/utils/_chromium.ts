@@ -3,14 +3,8 @@ import chrome from 'chrome-aws-lambda'
 const localChromePath =
   '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev'
 
-interface Options {
-  args: string[]
-  executablePath: string
-  headless: boolean
-}
-
 async function getOptions (isDev: boolean) {
-  let options: Options
+  let options: Parameters<typeof chrome['puppeteer']['launch']>[0]
   if (isDev) {
     options = {
       args: [],
@@ -20,6 +14,9 @@ async function getOptions (isDev: boolean) {
   } else {
     options = {
       args: chrome.args,
+      env: {
+        DISPLAY: ':10.0',
+      },
       executablePath: await chrome.executablePath,
       headless: chrome.headless,
     }
