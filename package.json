@@ -11,7 +11,7 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "test": "vitest run test/unit",
     "test:e2e": "playwright test test/e2e",
-    "postinstall": "nuxt prepare && husky install"
+    "postinstall": "nuxt prepare && husky install && node ./node_modules/puppeteer-core/install.js"
   },
   "lint-staged": {
     "*.{js,vue}": [
