@@ -11,7 +11,7 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "test": "vitest run test/unit",
     "test:e2e": "playwright test test/e2e",
-    "postinstall": "nuxt prepare && husky install && npx playwright install --with-deps chromium"
+    "postinstall": "nuxt prepare && husky install"
   },
   "lint-staged": {
     "*.{js,vue}": [
