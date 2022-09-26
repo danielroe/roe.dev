@@ -79,13 +79,6 @@ export default defineNuxtConfig({
     domain: 'roe.dev',
   },
 
-  critters: {
-    config: {
-      inlineFonts: true,
-      pruneSource: true,
-    },
-  },
-
   image: {
     screens: {
       logo: 40,
@@ -99,10 +92,9 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    '@nuxtjs/critters',
+    'nuxt-font-metrics',
     '~/modules/components-chunk',
     '~/modules/sitemap',
-    'nuxt-full-static',
   ],
 
   experimental: {

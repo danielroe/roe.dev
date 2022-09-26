@@ -3,7 +3,7 @@
     <header><h2>Articles</h2></header>
     <main>
       <ItemList>
-        <PrefetchLink
+        <NuxtLink
           v-for="{ title, path, date, formattedDate } in entries"
           :key="path"
           :to="path"
@@ -20,7 +20,7 @@
               </dl>
             </header>
           </article>
-        </PrefetchLink>
+        </NuxtLink>
       </ItemList>
     </main>
   </div>

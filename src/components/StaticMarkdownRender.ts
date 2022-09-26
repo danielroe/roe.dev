@@ -23,10 +23,6 @@ export default defineComponent({
     const key = props.cacheKey || useRoute().fullPath
     const nuxtApp = useNuxtApp()
 
-    nuxtApp.hook('app:rendered', () => {
-      delete props.value.body
-    })
-
     const shouldSkipRender = () => !nuxtApp.isIdle || cache[key]
 
     return () => {
