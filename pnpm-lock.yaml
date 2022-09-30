@@ -14,7 +14,7 @@ importers:
       '@nuxtjs/eslint-config-typescript': 11.0.0
       '@nuxtjs/eslint-module': 3.1.0
       '@nuxtjs/tailwindcss': 5.3.3
-      '@playwright/test': 1.26.0
+      '@playwright/test': 1.26.1
       '@types/node': 18.7.17
       '@vitejs/plugin-vue': 3.1.0
       '@vue/test-utils': 2.0.2
@@ -59,7 +59,7 @@ importers:
       '@nuxtjs/eslint-config-typescript': 11.0.0_eslint@8.24.0
       '@nuxtjs/eslint-module': 3.1.0_eslint@8.24.0
       '@nuxtjs/tailwindcss': 5.3.3
-      '@playwright/test': 1.26.0
+      '@playwright/test': 1.26.1
       '@vitejs/plugin-vue': 3.1.0
       '@vue/test-utils': 2.0.2
       c8: 7.12.0
@@ -1143,13 +1143,13 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@playwright/test/1.26.0:
-    resolution: {integrity: sha512-D24pu1k/gQw3Lhbpc38G5bXlBjGDrH5A52MsrH12wz6ohGDeQ+aZg/JFSEsT/B3G8zlJe/EU4EkJK74hpqsjEg==}
+  /@playwright/test/1.26.1:
+    resolution: {integrity: sha512-bNxyZASVt2adSZ9gbD7NCydzcb5JaI0OR9hc7s+nmPeH604gwp0zp17NNpwXY4c8nvuBGQQ9oGDx72LE+cUWvw==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 18.7.23
-      playwright-core: 1.26.0
+      playwright-core: 1.26.1
     dev: true
 
   /@rollup/plugin-alias/3.1.9_rollup@2.79.1:
@@ -2532,7 +2532,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /concat-stream/1.6.2:
@@ -3134,7 +3134,7 @@ packages:
     dev: true
 
   /ee-first/1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
+    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
   /electron-to-chromium/1.4.262:
@@ -6957,6 +6957,12 @@ packages:
 
   /playwright-core/1.26.0:
     resolution: {integrity: sha512-p8huU8eU4gD3VkJd3DA1nA7R3XA6rFvFL+1RYS96cSljCF2yJE9CWEHTPF4LqX8KN9MoWCrAfVKP5381X3CZqg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
+  /playwright-core/1.26.1:
+    resolution: {integrity: sha512-hzFchhhxnEiPc4qVPs9q2ZR+5eKNifY2hQDHtg1HnTTUuphYCBP8ZRb2si+B1TR7BHirgXaPi48LIye5SgrLAA==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
