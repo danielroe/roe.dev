@@ -6,11 +6,14 @@
 
     <main>
       <GithubRepos />
-      <section :class="$style.logos">
+      <section
+        class="flex flex-row flex-wrap justify-center items-center my-12"
+      >
         <nuxt-picture
           v-for="(image, name) in clients"
           :key="name"
           :alt="name"
+          class="mx-4 my-4 h-full w-auto flex-grow-0 flex-shrink max-h-[2rem] max-w-[5rem]"
           :src="image"
           height="32"
           width="80"
@@ -40,18 +43,6 @@ useHead({
 </script>
 
 <style module>
-.logos {
-  @apply flex flex-row flex-wrap justify-center items-center my-12;
-
-  > * {
-    @apply mx-4 my-4;
-    @apply h-full w-auto flex-grow-0 flex-shrink;
-
-    max-height: 2rem;
-    max-width: 5rem;
-  }
-}
-
 :global(.light-mode) .work img {
   filter: invert(1) opacity(0.8);
 }
