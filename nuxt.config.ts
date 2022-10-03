@@ -1,6 +1,15 @@
 export default defineNuxtConfig({
   runtimeConfig: {
+    // JWT claims
+    privateKey: '',
+    publicKey: '',
+    // fetching GH repos in build
     githubToken: '',
+    // oauth flow
+    githubClientSecret: '',
+    public: {
+      githubClientId: '',
+    },
   },
 
   sourcemap: false,

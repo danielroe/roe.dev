@@ -1,3 +1,8 @@
+<script setup lang="ts">
+const config = useRuntimeConfig()
+const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}&redirect_uri=http://localhost:3000/auth/github`
+</script>
+
 <template>
   <nav
     class="p-2 uppercase bg-gray-900 flex flex-row justify-between items-center text-white md:p-4 tracking-[0.15rem]"
@@ -48,7 +53,27 @@
         </NuxtLink>
       </li>
     </ul>
-
-    <ToggleColorMode />
+    <div class="flex gap-2">
+      <div
+        v-if="$auth.status === 'pending'"
+        class="flex items-center justify-center gap-2"
+      >
+        <IconsLoading class="h-6 w-6 ml-2" />
+        <span class="sr-only"> Loading </span>
+      </div>
+      <NuxtLink v-else-if="$auth.status === 'logged-out'" :to="loginURL">
+        <IconsGithub class="h-5 w-5 fill-current" />
+        <span class="sr-only"> Login </span>
+      </NuxtLink>
+      <button
+        v-else-if="$auth.status === 'logged-in'"
+        class="ml-2"
+        @click="$auth.logout"
+      >
+        <img class="h-6 w-6 rounded-full" :src="$auth.user.avatar" />
+        <span class="sr-only"> {{ $auth.user.name }} </span>
+      </button>
+      <ToggleColorMode />
+    </div>
   </nav>
 </template>
