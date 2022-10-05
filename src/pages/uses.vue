@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.uses">
     <header>
-      <h2 class="mt-6">Uses</h2>
+      <h2>Uses</h2>
     </header>
     <main>
       <StaticMarkdownRender v-if="page" :value="page" />
@@ -20,6 +20,11 @@ const { data: page } = await usePageData()
 
 <style module>
 .uses {
+  h2,
+  h3 {
+    @apply mt-6;
+  }
+
   ul {
     @apply mt-4 pl-4;
 

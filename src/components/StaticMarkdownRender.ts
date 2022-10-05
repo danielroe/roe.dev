@@ -29,10 +29,10 @@ export default defineComponent({
       return withDirectives(
         createElementBlock(
           'div',
-          process.client && shouldSkipRender()
+          process.client && !process.dev && shouldSkipRender()
             ? { innerHTML: cache[key] || '<!---->' }
             : null,
-          process.client && shouldSkipRender()
+          process.client && !process.dev && shouldSkipRender()
             ? []
             : [
                 h(resolveComponent('LazyContentRendererMarkdown'), {
