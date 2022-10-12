@@ -1,14 +1,18 @@
 <template>
-  <ItemList :class="$style.list">
+  <ItemList>
     <a
       v-for="{ repo, stars, language } in repos"
       :key="repo"
+      class="overflow-hidden"
       :href="`https://github.com/${repo}`"
       :aria-label="`GitHub repository for ${repo}`"
     >
       <article>
-        <span>
-          <IconsGithub />
+        <span
+          :class="$style.badge"
+          class="absolute flex top-0 right-0 p-1 before:absolute before:block before:w-full before:-mt-4"
+        >
+          <IconsGithub class="z-10 h-4 w-4 fill-current" />
         </span>
         <header>
           {{ repo }}
@@ -44,7 +48,7 @@ useHead({
 })
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
-  if (process.client) return
+  if (process.client && !process.dev) return
   const repos = [
     'nuxt/framework',
     'nuxt/nuxt.js',
@@ -57,6 +61,13 @@ const { data: repos } = await useAsyncData('repos', () => {
   ]
   return Promise.all(
     repos.map(async repo => {
+      if (process.dev) {
+        return {
+          repo,
+          stars: 100,
+          language: 'TypeScript',
+        }
+      }
       const { stargazers_count: stars, language } = await $fetch(
         `https://api.github.com/repos/${repo}`,
         {
@@ -77,35 +88,14 @@ const { data: repos } = await useAsyncData('repos', () => {
 </script>
 
 <style module>
-.list {
-  > * {
-    @apply overflow-hidden;
+.badge {
+  color: var(--text-base, theme('colors.gray.300'));
 
-    svg {
-      height: 1em;
-      width: 1em;
-      fill: currentcolor;
-    }
-
-    article > :first-child {
-      @apply absolute flex top-0 right-0 p-1;
-
-      color: var(--text-base, theme('colors.gray.300'));
-
-      > * {
-        @apply z-10;
-      }
-
-      &::before {
-        @apply absolute block w-full;
-
-        margin-top: -1rem;
-        height: calc(100% + 1rem);
-        content: '';
-        background-color: var(--background, theme('colors.white'));
-        transform: rotate(30deg) scaleX(10);
-      }
-    }
+  &::before {
+    height: calc(100% + 1rem);
+    content: '';
+    background-color: var(--background, theme('colors.white'));
+    transform: rotate(30deg) scaleX(10);
   }
 }
 </style>

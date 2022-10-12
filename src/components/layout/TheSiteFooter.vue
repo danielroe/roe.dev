@@ -1,10 +1,37 @@
+<script lang="ts" setup>
+const links = [
+  {
+    icon: resolveComponent('IconsGithub'),
+    name: 'GitHub',
+    link: 'https://github.com/danielroe/',
+  },
+  {
+    icon: resolveComponent('IconsLinkedin'),
+    name: 'LinkedIn',
+    link: 'https://www.linkedin.com/in/daniel-roe/',
+  },
+  {
+    icon: resolveComponent('IconsTwitter'),
+    name: 'Twitter',
+    link: 'https://twitter.com/danielcroe',
+  },
+]
+</script>
+
 <template>
-  <footer :class="$style.footer">
+  <footer
+    v-once
+    class="relative before:block before:mx-auto before:my-4 before:content before:w-4 before:border-t-2 before:border-solid before:border-gray-700"
+  >
     <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
-    <ul>
-      <li v-for="{ link, name, icon } in links" :key="name">
+    <ul class="flex flex-row justify-center gap-4 my-4 items-center">
+      <li
+        v-for="{ link, name, icon } in links"
+        :key="name"
+        class="inline-flex items-center"
+      >
         <a :href="link">
-          <component :is="icon" alt="" :class="$style.icon" />
+          <component :is="icon" alt="" class="w-4 h-4 fill-current" />
           <span class="visually-hidden">
             {{ name }}
           </span>
@@ -13,53 +40,3 @@
     </ul>
   </footer>
 </template>
-
-<script lang="ts" setup>
-import GitHubIcon from '~/components/icons/github.vue'
-import LinkedInIcon from '~/components/icons/linkedin.vue'
-import TwitterIcon from '~/components/icons/twitter.vue'
-
-const links = [
-  {
-    icon: GitHubIcon,
-    name: 'GitHub',
-    link: 'https://github.com/danielroe/',
-  },
-  {
-    icon: LinkedInIcon,
-    name: 'LinkedIn',
-    link: 'https://www.linkedin.com/in/daniel-roe/',
-  },
-  {
-    icon: TwitterIcon,
-    name: 'Twitter',
-    link: 'https://twitter.com/danielcroe',
-  },
-]
-</script>
-
-<style module>
-.footer {
-  @apply relative;
-
-  &::before {
-    @apply block mx-auto my-4;
-
-    border-top: 2px solid theme('colors.gray.700');
-    width: 1rem;
-    content: '';
-  }
-
-  ul {
-    @apply flex flex-row justify-center gap-4 my-4 items-center;
-  }
-
-  li {
-    @apply inline-flex items-center;
-  }
-
-  svg {
-    @apply w-4 h-4 fill-current;
-  }
-}
-</style>

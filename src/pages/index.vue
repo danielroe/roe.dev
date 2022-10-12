@@ -22,9 +22,5 @@ const { data: page } = await usePageData()
   p + p {
     @apply mt-4;
   }
-
-  h3 {
-    @apply mt-12;
-  }
 }
 </style>

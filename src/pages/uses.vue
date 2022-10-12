@@ -20,7 +20,8 @@ const { data: page } = await usePageData()
 
 <style module>
 .uses {
-  h2 {
+  h2,
+  h3 {
     @apply mt-6;
   }
 

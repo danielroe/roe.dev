@@ -5,12 +5,11 @@
     </header>
     <main>
       <ItemList>
-        <a
+        <NuxtLink
           v-for="{ title, source, link, date, formattedDate } in talks"
           :key="link"
           :alt="title"
           :href="link"
-          rel="noopener"
         >
           <article>
             <header>
@@ -27,7 +26,7 @@
               </dl>
             </header>
           </article>
-        </a>
+        </NuxtLink>
       </ItemList>
     </main>
   </div>
