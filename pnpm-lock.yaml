@@ -29,8 +29,8 @@ importers:
       lint-staged: 13.0.3
       magic-regexp: 0.5.0
       nuxt: npm:nuxt3@3.0.0-rc.12-27736489.2e080c2
-      nuxt-font-metrics: ^0.1.2
-      playwright: ^1.26.0
+      nuxt-font-metrics: 0.1.2
+      playwright: 1.27.1
       postcss-html: 1.5.0
       prettier: 2.7.1
       prism-themes: 1.9.0
@@ -72,7 +72,7 @@ importers:
       lint-staged: 13.0.3
       magic-regexp: 0.5.0
       nuxt: /nuxt3/3.0.0-rc.12-27736489.2e080c2_eslint@8.24.0
-      playwright: 1.26.0
+      playwright: 1.27.1
       postcss-html: 1.5.0
       prettier: 2.7.1
       stylelint: 14.12.1
@@ -2532,7 +2532,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /concat-stream/1.6.2:
@@ -3134,7 +3134,7 @@ packages:
     dev: true
 
   /ee-first/1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
+    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
   /electron-to-chromium/1.4.262:
@@ -6961,13 +6961,19 @@ packages:
     hasBin: true
     dev: true
 
-  /playwright/1.26.0:
-    resolution: {integrity: sha512-XxTVlvFEYHdatxUkh1KiPq9BclNtFKMi3BgQnl/aactmhN4G9AkZUXwt0ck6NDAOrDFlfibhbM7A1kZwQJKSBw==}
+  /playwright-core/1.27.1:
+    resolution: {integrity: sha512-9EmeXDncC2Pmp/z+teoVYlvmPWUC6ejSSYZUln7YaP89Z6lpAaiaAnqroUt/BoLo8tn7WYShcfaCh+xofZa44Q==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
+  /playwright/1.27.1:
+    resolution: {integrity: sha512-xXYZ7m36yTtC+oFgqH0eTgullGztKSRMb4yuwLPl8IYSmgBM88QiB+3IWb1mRIC9/NNwcgbG0RwtFlg+EAFQHQ==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.26.0
+      playwright-core: 1.27.1
     dev: true
 
   /pluralize/8.0.0:
