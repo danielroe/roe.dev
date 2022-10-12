@@ -15,21 +15,37 @@
   "stabilityDays": 3,
   "prCreation": "not-pending",
   "rangeStrategy": "bump",
-  "assignees": ["danielroe"],
+  "assignees": [
+    "danielroe"
+  ],
   "npm": {
     "commitMessageTopic": "{{prettyDepType}} {{depName}}"
   },
   "packageRules": [
     {
-      "matchPackagePatterns": ["lint"],
+      "matchPackagePatterns": [
+        "lint"
+      ],
       "groupName": "all lint dependencies",
       "groupSlug": "all-lint"
     },
     {
+      "groupName": "playwright",
+      "groupSlug": "playwright",
+      "matchPackagePatterns": [
+        "playwright"
+      ]
+    },
+    {
       "groupName": "nuxt framework",
       "groupSlug": "nuxt",
-      "matchPackageNames": ["nuxt", "nuxt3"],
-      "matchPackagePatterns": ["^@nuxt/"]
+      "matchPackageNames": [
+        "nuxt",
+        "nuxt3"
+      ],
+      "matchPackagePatterns": [
+        "^@nuxt/"
+      ]
     }
   ]
 }
