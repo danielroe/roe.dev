@@ -26,7 +26,7 @@ export async function loginUser (
     .setIssuedAt()
     .setIssuer('urn:roe.dev:issuer')
     .setAudience('urn:roe.dev:audience')
-    .setExpirationTime('2h')
+    .setExpirationTime('1w')
     .sign(privateKey)
 
   setCookie(event, 'token', jwt)
