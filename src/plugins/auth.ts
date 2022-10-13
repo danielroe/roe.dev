@@ -2,8 +2,8 @@ type UserStatus = 'pending' | 'logged-in' | 'logged-out'
 type User = {
   avatar?: string
   name?: string
-  sponsor?: string
-  authenticated?: string
+  sponsor?: boolean
+  authenticated?: boolean
 }
 
 export default defineNuxtPlugin(nuxtApp => {

@@ -77,8 +77,12 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         class="ml-2"
         @click="$auth.logout"
       >
-        <img class="h-6 w-6 rounded-full" :src="$auth.user.avatar" />
-        <span class="sr-only"> {{ $auth.user.name }} </span>
+        <img
+          class="h-6 w-6 rounded-full"
+          :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
+          :src="$auth.user.avatar"
+        />
+        <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <ToggleColorMode />
     </div>
