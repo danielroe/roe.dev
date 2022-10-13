@@ -61,7 +61,11 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         <IconsLoading class="h-6 w-6 ml-2" />
         <span class="sr-only"> Loading </span>
       </div>
-      <NuxtLink v-else-if="$auth.status === 'logged-out'" :to="loginURL">
+      <NuxtLink
+        v-else-if="$auth.status === 'logged-out'"
+        :to="loginURL"
+        class="p-2"
+      >
         <IconsGithub class="h-5 w-5 fill-current" />
         <span class="sr-only"> Login </span>
       </NuxtLink>
