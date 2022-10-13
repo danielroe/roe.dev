@@ -47,7 +47,7 @@ useHead({
   ],
 })
 const config = useRuntimeConfig()
-const { data: repos } = await useAsyncData('repos', () => {
+const { data: repos } = await useAsyncData(() => {
   if (process.client && !process.dev) return
   const repos = [
     'nuxt/framework',

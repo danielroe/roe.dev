@@ -6,14 +6,16 @@
 
     <main>
       <GithubRepos />
-      <section :class="$style.logos">
+      <section
+        :class="$style.logos"
+        class="flex flex-row flex-wrap justify-center items-center my-12 gap-8"
+      >
         <nuxt-picture
-          v-for="(image, name) in clients"
+          v-for="([image, dimensions], name) in clients"
           :key="name"
           :alt="name"
-          :src="image"
-          height="32"
-          width="80"
+          :src="`/img/work/${image}`"
+          v-bind="dimensions"
         />
       </section>
     </main>
@@ -22,16 +24,22 @@
 
 <script lang="ts" setup>
 const clients = {
-  Comcast: '/img/work/comcast.svg',
-  'Durham University': '/img/work/durham-university.svg',
-  'Parent Scheme': '/img/work/parentscheme.svg',
-  Concision: '/img/work/concision.svg',
-  'North East Local Enterprise Partnership': '/img/work/nelep.png',
-  Convoke: '/img/work/convoke.png',
-  'Acadian Software': '/img/work/acadian-software.svg',
-  NuxtLabs: '/img/work/nuxtlabs.svg',
-  Canvas8: '/img/work/canvas8.svg',
-  'Imperial Enterprise Lab': '/img/work/imperial-enterprise-lab.svg',
+  Comcast: ['comcast.svg', { height: 32, width: 80 }],
+  'Durham University': ['durham-university.svg', { height: 32, width: 80 }],
+  'Parent Scheme': ['parentscheme.svg', { height: 32, width: 80 }],
+  Concision: ['concision.svg', { height: 32, width: 80 }],
+  'North East Local Enterprise Partnership': [
+    'nelep.png',
+    { height: 32, width: 86 },
+  ],
+  Convoke: ['convoke.png', { height: 32, width: 181 }],
+  'Acadian Software': ['acadian-software.svg', { height: 32, width: 80 }],
+  NuxtLabs: ['nuxtlabs.svg', { height: 32, width: 80 }],
+  Canvas8: ['canvas8.svg', { height: 32, width: 80 }],
+  'Imperial Enterprise Lab': [
+    'imperial-enterprise-lab.svg',
+    { height: 32, width: 80 },
+  ],
 }
 
 useHead({
@@ -40,16 +48,8 @@ useHead({
 </script>
 
 <style module>
-.logos {
-  @apply flex flex-row flex-wrap justify-center items-center my-12;
-
-  > * {
-    @apply mx-4 my-4;
-    @apply h-full w-auto flex-grow-0 flex-shrink;
-
-    max-height: 2rem;
-    max-width: 5rem;
-  }
+.logos > * {
+  @apply h-full w-auto flex-grow-0 flex-shrink max-h-8 max-w-[5rem];
 }
 
 :global(.light-mode) .work img {
