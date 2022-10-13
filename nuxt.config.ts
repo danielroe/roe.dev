@@ -12,6 +12,14 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    vercel: {
+      config: {
+        images: {
+          domains: [],
+          sizes: [40, 320, 640, 768, 1024, 1280, 1536, 1536],
+        },
+      },
+    },
     prerender: {
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg'],
