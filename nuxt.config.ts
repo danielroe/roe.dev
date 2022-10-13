@@ -3,6 +3,8 @@ export default defineNuxtConfig({
     githubToken: '',
   },
 
+  sourcemap: false,
+
   srcDir: 'src',
 
   build: {
