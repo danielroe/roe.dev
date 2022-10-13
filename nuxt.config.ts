@@ -5,6 +5,8 @@ export default defineNuxtConfig({
     publicKey: '',
     // fetching GH repos in build
     githubToken: '',
+    // emailing ideas
+    sendgridApiKey: '',
     // oauth flow
     githubClientSecret: '',
     public: {
@@ -52,6 +54,8 @@ export default defineNuxtConfig({
   },
 
   app: {
+    pageTransition: false,
+    layoutTransition: false,
     head: {
       htmlAttrs: { lang: 'en' },
       meta: [
