@@ -2,7 +2,7 @@ const normalizeVercelResponse = async (r: unknown) =>
   process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
 
 export const usePageData = (path = useRoute().path) => {
-  path = path.replace(/(index)?\.json$/, '')
+  path = path.replace(/(index)?\.json$/, '').replace(/\/$/, '')
   switch (path) {
     case '/':
       return useAsyncHome()
@@ -22,7 +22,7 @@ export const usePageData = (path = useRoute().path) => {
 const useAsyncHome = () =>
   useAsyncData(
     () =>
-      process.server &&
+      (process.server || process.dev) &&
       queryContent('/')
         .only(['title', 'type', 'body'])
         .findOne()
@@ -32,7 +32,7 @@ const useAsyncHome = () =>
 const useAsyncUses = () =>
   useAsyncData(
     () =>
-      process.server &&
+      (process.server || process.dev) &&
       queryContent('/uses')
         .only(['title', 'type', 'body'])
         .findOne()
@@ -42,7 +42,7 @@ const useAsyncUses = () =>
 const useAsyncBlogIndex = () =>
   useAsyncData(
     () =>
-      process.server &&
+      (process.server || process.dev) &&
       queryContent('/blog')
         .only(['title', 'date', '_path'])
         .find()
@@ -77,7 +77,8 @@ const useAsyncTalks = () =>
   useAsyncData(
     () =>
       (
-        process.server && import('../data/talks.json').then(r => r.default)
+        (process.server || process.dev) &&
+        import('../data/talks.json').then(r => r.default)
       ).then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
       ) as unknown as Promise<Talk[]>,
@@ -98,7 +99,7 @@ const useAsyncBlogArticle = (path: string) =>
   useAsyncData(
     path,
     () =>
-      process.server &&
+      (process.server || process.dev) &&
       queryContent(path)
         .only(['title', 'type', 'body', 'date', 'tags'])
         .findOne()
