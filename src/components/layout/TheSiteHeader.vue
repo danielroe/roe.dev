@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
-const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}&redirect_uri=http://localhost:3000/auth/github`
+const redirect = process.dev
+  ? `&redirect_uri=http://localhost:3000/auth/github`
+  : ''
+const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}`
 </script>
 
 <template>
