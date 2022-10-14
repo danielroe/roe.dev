@@ -1,20 +1,8 @@
 /* eslint-disable camelcase */
 
+import { query } from '../../utils/github'
 import { loginUser } from '../../utils/auth'
-const sponsorQuery = `
-query {
-  user(login: "danielroe") {
-    sponsors (first: 100) {
-      edges {
-        node {
-          ...on User {
-            id
-          }
-        }
-    	}
-    }
-  }
-}`
+import { getSponsors } from '~~/src/server/utils/sponsors'
 
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
@@ -45,9 +33,7 @@ export default defineEventHandler(async event => {
       query(access_token, 'query { viewer { id, name, avatarUrl } }').then(
         r => r.data.viewer
       ),
-      query(access_token, sponsorQuery).then(r =>
-        r.data.user.sponsors.edges.map(e => e.node.id)
-      ),
+      getSponsors(),
     ])
 
     // set custom JWT claim
@@ -60,10 +46,3 @@ export default defineEventHandler(async event => {
 
   return sendRedirect(event, '/')
 })
-
-const query = (access_token: string, query: string) =>
-  $fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${access_token}` },
-    body: { query },
-  })
