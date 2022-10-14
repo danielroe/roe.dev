@@ -68,6 +68,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
         class="p-2"
+        @click="$auth.status = 'pending'"
       >
         <IconsGithub class="h-5 w-5 fill-current" />
         <span class="sr-only"> Login </span>
