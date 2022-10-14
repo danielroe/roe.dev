@@ -12,7 +12,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
   >
     <ul
       v-once
-      class="font-semibold flex-grow justify-between flex flex-row items-center md:flex-grow-0"
+      class="font-semibold flex-grow text-xs md:text-base justify-between flex flex-row items-center md:flex-grow-0"
     >
       <li>
         <h1>
@@ -56,7 +56,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         </NuxtLink>
       </li>
     </ul>
-    <div class="flex gap-2">
+    <div class="flex md:gap-2">
       <div
         v-if="$auth.status === 'pending'"
         class="flex items-center justify-center gap-2"
@@ -75,7 +75,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </NuxtLink>
       <button
         v-else-if="$auth.status === 'logged-in'"
-        class="ml-2"
+        class="ml-2 flex-shrink-0"
         @click="$auth.logout"
       >
         <img
