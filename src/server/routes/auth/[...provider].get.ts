@@ -2,7 +2,7 @@
 
 import { query } from '../../utils/github'
 import { loginUser } from '../../utils/auth'
-import { getSponsors } from '~~/src/server/utils/sponsors'
+import { getSponsors } from '../../utils/sponsors'
 
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
@@ -25,15 +25,24 @@ export default defineEventHandler(async event => {
         code,
       },
     }
-  )
+  ).catch(err => {
+    console.log('access', err)
+    return {}
+  })
 
   if (access_token) {
     // Determine if user is a sponsor
     const [viewer, ids] = await Promise.all([
-      query(access_token, 'query { viewer { id, name, avatarUrl } }').then(
-        r => r.data.viewer
-      ),
-      getSponsors(),
+      query(access_token, 'query { viewer { id, name, avatarUrl } }')
+        .then(r => r.data.viewer)
+        .catch(err => {
+          console.log('viewer', err)
+          return {}
+        }),
+      getSponsors().catch(err => {
+        console.log('sponsor', err)
+        return []
+      }),
     ])
 
     // set custom JWT claim
