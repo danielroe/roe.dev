@@ -73,7 +73,7 @@ const { data: repos } = await useAsyncData('repos', () => {
         {
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `Bearer ${config.githubToken}`,
+            Authorization: `Bearer ${config.github.token}`,
           },
         }
       )

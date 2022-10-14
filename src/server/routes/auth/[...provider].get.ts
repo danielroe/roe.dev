@@ -21,12 +21,12 @@ export default defineEventHandler(async event => {
       method: 'POST',
       body: {
         client_id: config.public.githubClientId,
-        client_secret: config.githubClientSecret,
+        client_secret: config.github.clientSecret,
         code,
       },
     }
   ).catch(err => {
-    console.log('access', err)
+    console.error('access', err)
     return {}
   })
 
@@ -36,14 +36,20 @@ export default defineEventHandler(async event => {
       query(access_token, 'query { viewer { id, name, avatarUrl } }')
         .then(r => r.data.viewer)
         .catch(err => {
-          console.log('viewer', err)
+          console.error('viewer', err)
           return {}
         }),
       getSponsors().catch(err => {
-        console.log('sponsor', err)
+        console.error('sponsor', err)
         return []
       }),
     ])
+
+    console.info({
+      sponsor: ids.includes(viewer.id),
+      avatar: viewer.avatarUrl,
+      name: viewer.name,
+    })
 
     // set custom JWT claim
     await loginUser(event, {

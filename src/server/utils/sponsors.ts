@@ -16,12 +16,12 @@ export async function getSponsors (): Promise<string[]> {
   const expired = Date.now() - (entry.mtime || 0) > ttl
   if (!entry.value || expired) {
     entry.value = await query(
-      useRuntimeConfig().githubToken,
+      useRuntimeConfig().github.token,
       sponsorQuery
     ).then(r => r.data.user.sponsors.edges.map(e => e.node.id))
 
     // my ID
-    entry.value.push(useRuntimeConfig().githubID)
+    entry.value.push(useRuntimeConfig().github.id)
 
     entry.mtime = Date.now()
     useStorage()

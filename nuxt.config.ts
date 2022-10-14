@@ -3,14 +3,21 @@ export default defineNuxtConfig({
     // JWT claims
     privateKey: '',
     publicKey: '',
-    // fetching GH repos in build and sponsors when deployed
-    githubToken: '',
-    // my GH ID
-    githubID: 'MDQ6VXNlcjI4NzA2Mzcy',
+    // for logging errors
+    axiom: {
+      dataset: 'roe.dev',
+      accessKey: '',
+    },
     // emailing ideas
     sendgridApiKey: '',
-    // oauth flow
-    githubClientSecret: '',
+    github: {
+      // my GH ID
+      id: 'MDQ6VXNlcjI4NzA2Mzcy',
+      // fetching GH repos in build and sponsors when deployed
+      token: '',
+      // oauth flow
+      clientSecret: '',
+    },
     public: {
       githubClientId: '',
     },
