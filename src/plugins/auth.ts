@@ -10,7 +10,13 @@ export default defineNuxtPlugin(nuxtApp => {
   const auth = reactive({
     user: {} as User,
     login: async () => {
-      auth.user = await $fetch('/api/user').catch(() => ({}))
+      try {
+        auth.user = await $fetch('/api/user')
+      } catch (err) {
+        if (err.name !== 'FetchError') {
+          auth.user = {}
+        }
+      }
       auth.status = auth.user.authenticated ? 'logged-in' : 'logged-out'
     },
     logout: () => {
