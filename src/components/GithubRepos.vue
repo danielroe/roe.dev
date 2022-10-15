@@ -1,6 +1,6 @@
 <template>
-  <ItemList>
-    <a
+  <section class="flex flex-row flex-wrap -mx-2">
+    <GridLink
       v-for="{ repo, stars, language } in repos"
       :key="repo"
       class="overflow-hidden"
@@ -32,8 +32,8 @@
           </dl>
         </header>
       </article>
-    </a>
-  </ItemList>
+    </GridLink>
+  </section>
 </template>
 
 <script lang="ts" setup>

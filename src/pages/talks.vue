@@ -4,8 +4,8 @@
       <h2>Talks</h2>
     </header>
     <main>
-      <ItemList>
-        <NuxtLink
+      <section class="flex flex-row flex-wrap -mx-2">
+        <GridLink
           v-for="{ title, source, link, date, formattedDate } in talks"
           :key="link"
           :alt="title"
@@ -26,8 +26,8 @@
               </dl>
             </header>
           </article>
-        </NuxtLink>
-      </ItemList>
+        </GridLink>
+      </section>
     </main>
   </div>
 </template>

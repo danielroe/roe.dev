@@ -2,8 +2,8 @@
   <div>
     <header><h2>Articles</h2></header>
     <main>
-      <ItemList>
-        <NuxtLink
+      <section class="flex flex-row flex-wrap -mx-2">
+        <GridLink
           v-for="{ title, path, date, formattedDate } in entries"
           :key="path"
           :to="path"
@@ -20,8 +20,8 @@
               </dl>
             </header>
           </article>
-        </NuxtLink>
-      </ItemList>
+        </GridLink>
+      </section>
     </main>
   </div>
 </template>
