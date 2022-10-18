@@ -56,10 +56,10 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         </NuxtLink>
       </li>
     </ul>
-    <div class="flex md:gap-2">
+    <div class="flex md:gap-2 w-14 items-center">
       <div
         v-if="$auth.status === 'pending'"
-        class="flex items-center justify-center gap-2"
+        class="flex items-center justify-center max-w-[2rem]"
       >
         <svg class="h-6 w-6 ml-2" alt="">
           <use xlink:href="#loading" />
@@ -69,7 +69,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
-        class="p-2"
+        class="p-2 max-w-[2rem]"
         @click="$auth.status = 'pending'"
       >
         <svg class="h-5 w-5 fill-current" alt="">
@@ -79,7 +79,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </NuxtLink>
       <button
         v-else-if="$auth.status === 'logged-in'"
-        class="relative ml-2 flex-shrink-0"
+        class="relative ml-2 flex-shrink-0 max-w-[2rem]"
         @click="$auth.logout"
       >
         <img
