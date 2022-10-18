@@ -127,6 +127,7 @@ export default defineNuxtConfig({
     domains: ['avatars.githubusercontent.com'],
     screens: {
       logo: 40,
+      avatar: 70,
     },
   },
 

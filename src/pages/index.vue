@@ -19,9 +19,10 @@
         <div
           class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
         >
-          <nuxt-picture
+          <nuxt-img
             v-for="sponsor of sponsors"
             :key="sponsor"
+            sizes="sm:70px"
             alt=""
             class="rounded-full"
             :class="{
