@@ -137,6 +137,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     'vue-plausible',
     '@nuxtjs/fontaine',
+    '~/modules/tree-shake',
     '~/modules/components-chunk',
     '~/modules/sitemap',
   ],
