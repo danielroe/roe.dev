@@ -79,7 +79,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </NuxtLink>
       <button
         v-else-if="$auth.status === 'logged-in'"
-        class="ml-2 flex-shrink-0"
+        class="relative ml-2 flex-shrink-0"
         @click="$auth.logout"
       >
         <img
@@ -87,6 +87,16 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
           :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
           :src="$auth.user.avatar"
         />
+        <svg
+          v-if="$auth.user.sponsor"
+          class="absolute top-[-0.4rem] right-[-0.65rem] h-5 w-5 text-yellow-400 fill-current"
+          alt=""
+        >
+          <use
+            xlink:href="#star"
+            class="border-solid border-[1px] border-gray-800"
+          />
+        </svg>
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <ToggleColorMode />
