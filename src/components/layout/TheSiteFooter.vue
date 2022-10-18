@@ -1,17 +1,14 @@
 <script lang="ts" setup>
 const links = [
   {
-    icon: resolveComponent('IconsGithub'),
     name: 'GitHub',
     link: 'https://github.com/danielroe/',
   },
   {
-    icon: resolveComponent('IconsLinkedin'),
     name: 'LinkedIn',
     link: 'https://www.linkedin.com/in/daniel-roe/',
   },
   {
-    icon: resolveComponent('IconsTwitter'),
     name: 'Twitter',
     link: 'https://twitter.com/danielcroe',
   },
@@ -26,12 +23,14 @@ const links = [
     <small>&copy; 2019-2022 Daniel Roe. All rights reserved.</small>
     <ul class="flex flex-row justify-center gap-4 my-4 items-center">
       <li
-        v-for="{ link, name, icon } in links"
+        v-for="{ link, name } in links"
         :key="name"
         class="inline-flex items-center"
       >
         <a :href="link">
-          <component :is="icon" alt="" class="w-4 h-4 fill-current" />
+          <svg class="h-4 w-4 fill-current" alt="">
+            <use :xlink:href="`#${name.toLowerCase()}`" />
+          </svg>
           <span class="visually-hidden">
             {{ name }}
           </span>

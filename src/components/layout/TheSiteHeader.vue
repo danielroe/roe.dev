@@ -61,7 +61,9 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         v-if="$auth.status === 'pending'"
         class="flex items-center justify-center gap-2"
       >
-        <IconsLoading class="h-6 w-6 ml-2" />
+        <svg class="h-6 w-6 ml-2" alt="">
+          <use xlink:href="#loading" />
+        </svg>
         <span class="sr-only"> Loading </span>
       </div>
       <NuxtLink
@@ -70,7 +72,9 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         class="p-2"
         @click="$auth.status = 'pending'"
       >
-        <IconsGithub class="h-5 w-5 fill-current" />
+        <svg class="h-5 w-5 fill-current" alt="">
+          <use xlink:href="#github" />
+        </svg>
         <span class="sr-only"> Login </span>
       </NuxtLink>
       <button

@@ -12,7 +12,9 @@
           :class="$style.badge"
           class="absolute flex top-0 right-0 p-1 before:absolute before:block before:w-full before:-mt-4"
         >
-          <IconsGithub class="z-10 h-4 w-4 fill-current" />
+          <svg class="z-10 h-4 w-4 fill-current" alt="">
+            <use xlink:href="#github" />
+          </svg>
         </span>
         <header>
           {{ repo }}
