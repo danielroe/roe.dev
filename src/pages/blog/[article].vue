@@ -47,16 +47,13 @@ useHead({
     {
       name: 'description',
       content: page.value.description,
-      hid: 'description',
     },
     {
-      hid: 'og:image',
       property: 'og:image',
       content: `https://roe.dev/og/${ogSlug}.jpg`,
     },
-    { hid: 'og:title', property: 'og:title', content: page.value.title },
+    { property: 'og:title', content: page.value.title },
     {
-      hid: 'og:description',
       property: 'og:description',
       content: page.value.description,
     },
