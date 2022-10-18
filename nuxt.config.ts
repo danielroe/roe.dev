@@ -136,7 +136,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'vue-plausible',
-    'nuxt-font-metrics',
+    '@nuxtjs/fontaine',
     '~/modules/components-chunk',
     '~/modules/sitemap',
   ],
