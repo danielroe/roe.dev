@@ -1,12 +1,17 @@
 import { query } from './github'
+interface Sponsor {
+  id: string
+  avatarUrl?: string
+  name?: string
+}
 
 interface CacheEntry {
-  value: string[]
+  value: Sponsor[]
   expires: number
   mtime: number
 }
 
-export async function getSponsors (): Promise<string[]> {
+export async function getSponsors (): Promise<Sponsor[]> {
   const entry: CacheEntry =
     ((await useStorage().getItem('sponsors')) as any) || {}
 
@@ -18,10 +23,10 @@ export async function getSponsors (): Promise<string[]> {
     entry.value = await query(
       useRuntimeConfig().github.token,
       sponsorQuery
-    ).then(r => r.data.user.sponsors.edges.map(e => e.node.id))
+    ).then(r => r.data?.user.sponsors.edges.map(e => e.node) || [])
 
     // my ID
-    entry.value.push(useRuntimeConfig().github.id)
+    entry.value.push({ id: useRuntimeConfig().github.id })
 
     entry.mtime = Date.now()
     useStorage()
@@ -32,17 +37,24 @@ export async function getSponsors (): Promise<string[]> {
   return entry.value
 }
 
-const sponsorQuery = `
-query {
+const sponsorQuery = /* graqhql */ `
+{
   user(login: "danielroe") {
-    sponsors (first: 100) {
+    sponsors(first: 100) {
       edges {
         node {
-          ...on User {
+          ... on User {
             id
+            avatarUrl
+            name
           }
+           ... on Organization {
+             id
+             avatarUrl
+             name
+           }
         }
-    	}
+      }
     }
   }
 }`

@@ -4,15 +4,45 @@
       <h2>Welcome!</h2>
     </header>
     <main>
-      <p v-if="$auth.user.sponsor" class="mt-4 mb-4 p-4 bg-gray-900 text-white">
-        Thank you for sponsoring me. ❤️
-      </p>
       <StaticMarkdownRender v-if="page" :value="page" />
+      <template v-if="sponsors.length">
+        <hr
+          class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
+        />
+        <h3 class="text-center font-bold mb-4">
+          special thanks to
+          <template v-if="$auth.user.sponsor">
+            <span class="text-white">you</span>
+            and
+          </template>
+        </h3>
+        <div
+          class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
+        >
+          <img
+            v-for="sponsor of sponsors"
+            :key="sponsor"
+            class="rounded-full"
+            :class="{
+              'border-solid border-[1px] border-yellow-400':
+                $auth.user.avatar === sponsor,
+            }"
+            :src="sponsor"
+            height="35"
+            width="35"
+          />
+        </div>
+      </template>
     </main>
   </div>
 </template>
 
 <script lang="ts" setup>
+const sponsors = useState<string[]>()
+if (!sponsors.value) {
+  sponsors.value = await $fetch('/api/sponsors')
+}
+
 useHead({
   meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
 })

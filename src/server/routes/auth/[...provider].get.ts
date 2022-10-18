@@ -39,10 +39,12 @@ export default defineEventHandler(async event => {
           console.error('viewer', err)
           return {}
         }),
-      getSponsors().catch(err => {
-        console.error('sponsor', err)
-        return []
-      }),
+      getSponsors()
+        .then(r => r.map(s => s.id))
+        .catch(err => {
+          console.error('sponsor', err)
+          return []
+        }),
     ])
 
     console.info({
