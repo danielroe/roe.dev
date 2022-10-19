@@ -57,11 +57,11 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </li>
     </ul>
     <div
-      class="ml-2 flex md:gap-2 w-16 flex-shrink-0 items-center justify-between"
+      class="ml-2 mr-1 flex md:gap-2 w-16 flex-shrink-0 items-center justify-between"
     >
       <div
         v-if="$auth.status === 'pending'"
-        class="flex items-center justify-center max-w-[2rem]"
+        class="flex items-center justify-center w-[2rem] flex-shrink-0"
       >
         <svg class="h-6 w-6" alt="">
           <use xlink:href="#loading" />
@@ -71,7 +71,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
-        class="p-1 max-w-[2rem]"
+        class="p-1 w-[2rem] flex-shrink-0"
         @click="$auth.status = 'pending'"
       >
         <svg class="h-5 w-5 fill-current" alt="">
@@ -81,7 +81,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </NuxtLink>
       <button
         v-else-if="$auth.status === 'logged-in'"
-        class="relative flex-shrink-0 max-w-[2rem]"
+        class="relative flex-shrink-0 w-[2rem]"
         @click="$auth.logout"
       >
         <img
@@ -91,7 +91,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         />
         <svg
           v-if="$auth.user.sponsor"
-          class="absolute top-[-0.4rem] right-[-0.65rem] h-5 w-5 text-yellow-400 fill-current"
+          class="absolute top-[-0.45rem] right-[-0.2rem] h-5 w-5 text-yellow-400 fill-current"
           alt=""
         >
           <use
