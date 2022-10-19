@@ -6,7 +6,7 @@ const colorMode = useColorMode()
   <button
     aria-label="Change site theme"
     type="button"
-    class="h-6 w-6 ml-2 flex items-center justify-center transition-opacity focus:outline-none hover:opacity-70 focus:opacity-70"
+    class="h-7 w-7 ml-2 flex items-center justify-center transition-opacity focus:outline-none hover:opacity-70 focus:opacity-70"
     @click="
       colorMode.value === 'dark'
         ? (colorMode.preference = 'light')
