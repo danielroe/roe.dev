@@ -45,7 +45,7 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg'],
     },
     hooks: {
-      'prerender:generate' (route) {
+      'prerender:generate'(route) {
         if (route.error) {
           process.exit(1)
         }
@@ -93,7 +93,16 @@ export default defineNuxtConfig({
           '/fonts/barlow-7cHpv4kjgoGqM7E_Ass52Hs.woff2',
           '/fonts/firacode-uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7Ng.woff2',
           '/fonts/barlow-7cHpv4kjgoGqM7E_DMs5.woff2',
-        ].map(href => ({ rel: 'prefetch', href })),
+        ].map(
+          href =>
+            ({
+              rel: 'preload',
+              as: 'font',
+              type: 'font/woff2',
+              crossorigin: '',
+              href,
+            } as const)
+        ),
         { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
         {
