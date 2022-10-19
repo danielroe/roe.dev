@@ -28,6 +28,13 @@ export async function getSponsors (): Promise<Sponsor[]> {
     // my ID
     entry.value.push({ id: useRuntimeConfig().github.id })
 
+    // NuxtLabs
+    entry.value.push({
+      name: 'NuxtLabs',
+      id: 'MDEyOk9yZ2FuaXphdGlvbjYyMDE3NDAw',
+      avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
+    })
+
     entry.mtime = Date.now()
     useStorage()
       .setItem('sponsors', entry)
