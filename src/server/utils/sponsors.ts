@@ -38,7 +38,7 @@ export async function getSponsors (): Promise<Sponsor[]> {
     entry.mtime = Date.now()
     useStorage()
       .setItem('sponsors', entry)
-      .catch(error => console.error('[nitro] [cache]', error))
+      .catch((error: any) => console.error('[nitro] [cache]', error))
   }
 
   return entry.value

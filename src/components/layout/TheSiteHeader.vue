@@ -3,7 +3,7 @@ const config = useRuntimeConfig()
 const redirect = process.dev
   ? `&redirect_uri=http://localhost:3000/auth/github`
   : ''
-const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}`
+const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}&scope=read:org`
 </script>
 
 <template>

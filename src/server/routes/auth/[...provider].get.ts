@@ -15,7 +15,7 @@ export default defineEventHandler(async event => {
   }
 
   const config = useRuntimeConfig()
-  const { access_token } = await $fetch(
+  const { access_token } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
       method: 'POST',
@@ -27,14 +27,18 @@ export default defineEventHandler(async event => {
     }
   ).catch(err => {
     console.error('access', err)
-    return {}
+    return {} as { access_token?: string }
   })
 
   if (access_token) {
     // Determine if user is a sponsor
     const [viewer, ids] = await Promise.all([
-      query(access_token, 'query { viewer { id, name, avatarUrl } }')
-        .then(r => r.data.viewer)
+      query(access_token, organisationQuery)
+        .then(r => {
+          const viewer = r.data?.viewer || {}
+          viewer.orgs = viewer.organizations.edges.map(e => e.node.id) || []
+          return viewer
+        })
         .catch(err => {
           console.error('viewer', err)
           return {}
@@ -48,14 +52,16 @@ export default defineEventHandler(async event => {
     ])
 
     console.info({
-      sponsor: ids.includes(viewer.id),
+      sponsor:
+        ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
       avatar: viewer.avatarUrl,
       name: viewer.name,
     })
 
     // set custom JWT claim
     await loginUser(event, {
-      sponsor: ids.includes(viewer.id),
+      sponsor:
+        ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
       avatar: viewer.avatarUrl,
       name: viewer.name,
     })
@@ -63,3 +69,18 @@ export default defineEventHandler(async event => {
 
   return sendRedirect(event, '/')
 })
+
+const organisationQuery = `{
+  viewer {
+    id
+    name
+    avatarUrl
+    organizations(first: 100) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+}`
