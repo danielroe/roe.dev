@@ -40,10 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-const sponsors = useState<string[]>()
-if (!sponsors.value) {
-  sponsors.value = await $fetch('/api/sponsors')
-}
+const { data: sponsors } = await useFetch('/api/sponsors')
 
 useHead({
   meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
