@@ -1,7 +1,7 @@
-import type { CompatibilityEvent } from 'h3'
+import type { H3Event } from 'h3'
 import * as jose from 'jose'
 
-export async function verifyUser (event: CompatibilityEvent) {
+export async function verifyUser (event: H3Event) {
   const { token } = useCookies(event)
   if (!token) return null
 
@@ -14,7 +14,7 @@ export async function verifyUser (event: CompatibilityEvent) {
 }
 
 export async function loginUser (
-  event: CompatibilityEvent,
+  event: H3Event,
   claims: Record<string, string | boolean>
 ) {
   const privateKey = await jose.importPKCS8(

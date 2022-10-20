@@ -10,6 +10,7 @@
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
     "test": "echo 'need some unit tests' || vitest run test/unit",
+    "test:types": "nuxi typecheck",
     "test:e2e": "playwright test test/e2e",
     "postinstall": "nuxt prepare && husky install && node ./node_modules/playwright/install.js"
   },
