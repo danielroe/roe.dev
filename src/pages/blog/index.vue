@@ -28,5 +28,5 @@
 
 <script setup lang="ts">
 useHead({ title: 'Blog' })
-const { data: entries } = await usePageData()
+const { data: entries } = await useAsyncBlogIndex()
 </script>

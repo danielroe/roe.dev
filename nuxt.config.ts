@@ -1,3 +1,5 @@
+import { useNuxt } from '@nuxt/kit'
+
 export default defineNuxtConfig({
   runtimeConfig: {
     // JWT claims
@@ -145,6 +147,12 @@ export default defineNuxtConfig({
   modules: [
     'magic-regexp/nuxt',
     '@nuxt/image-edge',
+    function () {
+      // Hotfix for tailwind
+      const nuxt = useNuxt()
+      // @ts-expect-error Nuxt 2 types
+      nuxt.options.watch = nuxt.options.watch || []
+    },
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',

@@ -46,7 +46,7 @@ useHead({
   meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
 })
 
-const { data: page } = await usePageData()
+const { data: page } = await useAsyncHome()
 </script>
 
 <style module>

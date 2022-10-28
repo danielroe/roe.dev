@@ -15,7 +15,7 @@ const PATH_RE = createRegExp(
     .at.lineEnd()
 )
 
-const { path = '/' } = (route.fullPath as string).match(PATH_RE)?.groups ?? {}
+const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
 const url = `https://roe.dev${path}`
 
 useHead({
