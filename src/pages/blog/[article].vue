@@ -29,7 +29,11 @@ const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
-const { data: page } = await usePageData()
+const { data: page } = await useAsyncBlogArticle(
+  useRoute()
+    .path.replace(/(index)?\.json$/, '')
+    .replace(/\/$/, '')
+)
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
@@ -40,7 +44,7 @@ const SLUG_RE = createRegExp(
     .at.lineEnd()
 )
 
-const { slug: ogSlug } = (route.fullPath as string).match(SLUG_RE)?.groups ?? {}
+const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
 useHead({
   title: page.value.title,
   meta: [
@@ -61,7 +65,7 @@ useHead({
 })
 if (process.server) {
   appendHeader(
-    nuxtApp.ssrContext.event,
+    nuxtApp.ssrContext!.event,
     'x-nitro-prerender',
     `/og/${ogSlug}.jpg`
   )

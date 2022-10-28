@@ -1,48 +1,30 @@
 const normalizeVercelResponse = async (r: unknown) =>
   process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
 
-export const usePageData = (path = useRoute().path) => {
-  path = path.replace(/(index)?\.json$/, '').replace(/\/$/, '')
-  switch (path) {
-    case '/':
-      return useAsyncHome()
-    case '/work':
-      return
-    case '/talks':
-      return useAsyncTalks()
-    case '/blog':
-      return useAsyncBlogIndex()
-    case '/uses':
-      return useAsyncUses()
-    default:
-      return useAsyncBlogArticle(path)
-  }
-}
-
-const useAsyncHome = () =>
+export const useAsyncHome = () =>
   useAsyncData(
     () =>
-      (process.server || process.dev) &&
+      ((process.server || process.dev) as true) &&
       queryContent('/')
         .only(['title', 'type', 'body'])
         .findOne()
         .then(normalizeVercelResponse)
   )
 
-const useAsyncUses = () =>
+export const useAsyncUses = () =>
   useAsyncData(
     () =>
-      (process.server || process.dev) &&
+      ((process.server || process.dev) as true) &&
       queryContent('/uses')
         .only(['title', 'type', 'body'])
         .findOne()
         .then(normalizeVercelResponse)
   )
 
-const useAsyncBlogIndex = () =>
+export const useAsyncBlogIndex = () =>
   useAsyncData(
     () =>
-      (process.server || process.dev) &&
+      ((process.server || process.dev) as true) &&
       queryContent('/blog')
         .only(['title', 'date', '_path'])
         .find()
@@ -73,11 +55,11 @@ interface Talk {
   date: string
   formattedDate: string
 }
-const useAsyncTalks = () =>
+export const useAsyncTalks = () =>
   useAsyncData(
     () =>
       (
-        (process.server || process.dev) &&
+        ((process.server || process.dev) as true) &&
         import('../data/talks.json').then(r => r.default)
       ).then(async r =>
         process.client && r instanceof Blob ? JSON.parse(await r.text()) : r
@@ -95,11 +77,11 @@ const useAsyncTalks = () =>
     }
   )
 
-const useAsyncBlogArticle = (path: string) =>
+export const useAsyncBlogArticle = (path: string) =>
   useAsyncData(
     path,
     () =>
-      (process.server || process.dev) &&
+      ((process.server || process.dev) as true) &&
       queryContent(path)
         .only(['title', 'type', 'body', 'date', 'tags'])
         .findOne()

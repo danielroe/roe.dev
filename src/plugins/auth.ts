@@ -12,7 +12,7 @@ export default defineNuxtPlugin(nuxtApp => {
     login: async () => {
       try {
         auth.user = await $fetch('/api/user')
-      } catch (err) {
+      } catch (err: any) {
         if (err.name !== 'FetchError') {
           auth.user = {}
         }
@@ -20,7 +20,7 @@ export default defineNuxtPlugin(nuxtApp => {
       auth.status = auth.user.authenticated ? 'logged-in' : 'logged-out'
     },
     logout: () => {
-      useCookie('token', { maxAge: -1 }).value = null
+      useCookie('token', { maxAge: -1 }).value = ''
       return auth.login()
     },
     status: ref<UserStatus>('pending'),

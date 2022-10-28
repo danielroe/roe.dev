@@ -36,5 +36,5 @@
 useHead({
   title: 'Talks',
 })
-const { data: talks } = await usePageData()
+const { data: talks } = await useAsyncTalks()
 </script>
