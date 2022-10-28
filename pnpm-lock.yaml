@@ -6,7 +6,7 @@ overrides:
 specifiers:
   '@commitlint/cli': 17.1.2
   '@commitlint/config-conventional': 17.1.0
-  '@nuxt/content': npm:@nuxt/content-edge@2.2.0-27777064.6463e46
+  '@nuxt/content': npm:@nuxt/content-edge@2.2.0-27781098.a7e4f27
   '@nuxt/image-edge': 1.0.0-27769790.4b27db3
   '@nuxt/kit': npm:@nuxt/kit-edge@3.0.0-rc.13-27781436.1f6b3be
   '@nuxtjs/color-mode': 3.1.8
@@ -44,7 +44,7 @@ specifiers:
   vitest: 0.24.3
 
 dependencies:
-  '@nuxt/content': /@nuxt/content-edge/2.2.0-27777064.6463e46
+  '@nuxt/content': /@nuxt/content-edge/2.2.0-27781098.a7e4f27
   '@nuxt/image-edge': 1.0.0-27769790.4b27db3
   '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.13-27781436.1f6b3be
   '@nuxtjs/fontaine': 0.2.2
@@ -730,8 +730,8 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@nuxt/content-edge/2.2.0-27777064.6463e46:
-    resolution: {integrity: sha512-JQ4MJk6Uut18KC9wxvRXrg4OVTr55GwsqT5Kq3Efrz7WI7VaJgzdI8SSKxj7P37SmvkuBKKqLb3Iihgj+q0thw==}
+  /@nuxt/content-edge/2.2.0-27781098.a7e4f27:
+    resolution: {integrity: sha512-m37Hr3kWSg/GMb02qrYnUpb+A4JzvE+obo293nEKUjtoAk4TYa+hwEP/WeWZj5SRnywBqb3awkPXQUlzUD+wkw==}
     dependencies:
       '@nuxt/kit': 3.0.0-rc.12
       consola: 2.15.3
@@ -1832,12 +1832,12 @@ packages:
       negotiator: 0.6.3
     dev: true
 
-  /acorn-jsx/5.3.2_acorn@8.8.0:
+  /acorn-jsx/5.3.2_acorn@8.8.1:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.8.0
+      acorn: 8.8.1
     dev: true
 
   /acorn-node/1.8.2:
@@ -1860,12 +1860,6 @@ packages:
 
   /acorn/7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-    dev: true
-
-  /acorn/8.8.0:
-    resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
@@ -2223,7 +2217,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001422
+      caniuse-lite: 1.0.30001426
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -2351,10 +2345,10 @@ packages:
 
   /caniuse-lite/1.0.30001422:
     resolution: {integrity: sha512-hSesn02u1QacQHhaxl/kNMZwqVG35Sz/8DgvmgedxSH8z9UUpcDYSPYgsj3x5dQNRcNp6BwpSfQfVzYUTm+fog==}
+    dev: true
 
   /caniuse-lite/1.0.30001426:
     resolution: {integrity: sha512-n7cosrHLl8AWt0wwZw/PJZgUg3lV0gk9LMI7ikGJwhyhgsd2Nb65vKvmSexCqq/J7rbH3mFG6yZZiPR5dLPW5A==}
-    dev: true
 
   /caseless/0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
@@ -4083,8 +4077,8 @@ packages:
     resolution: {integrity: sha512-DQmnRpLj7f6TgN/NYb0MTzJXL+vJF9h3pHy4JhCIs3zwcgez8xmGg3sXHcEO97BrmO2OSvCwMdfdlyl+E9KjOw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.8.0
-      acorn-jsx: 5.3.2_acorn@8.8.0
+      acorn: 8.8.1
+      acorn-jsx: 5.3.2_acorn@8.8.1
       eslint-visitor-keys: 3.3.0
     dev: true
 
