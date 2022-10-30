@@ -12,6 +12,10 @@ const links = [
     name: 'Twitter',
     link: 'https://twitter.com/danielcroe',
   },
+  {
+    link: 'https://mas.to/@danielroe',
+    name: 'Mastodon',
+  },
 ]
 </script>
 
@@ -27,7 +31,7 @@ const links = [
         :key="name"
         class="inline-flex items-center"
       >
-        <a :href="link">
+        <a :href="link" rel="me">
           <svg class="h-4 w-4 fill-current" alt="">
             <use :xlink:href="`#${name.toLowerCase()}`" />
           </svg>
