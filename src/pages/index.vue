@@ -5,7 +5,7 @@
     </header>
     <main>
       <StaticMarkdownRender v-if="page" :value="page" />
-      <template v-if="sponsors.length">
+      <template v-if="sponsors && sponsors.length">
         <hr
           class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
         />

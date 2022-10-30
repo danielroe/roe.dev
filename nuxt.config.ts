@@ -1,5 +1,3 @@
-import { useNuxt } from '@nuxt/kit'
-
 export default defineNuxtConfig({
   runtimeConfig: {
     // JWT claims
@@ -70,7 +68,6 @@ export default defineNuxtConfig({
     pageTransition: false,
     layoutTransition: false,
     head: {
-      htmlAttrs: { lang: 'en' },
       meta: [
         { name: 'msapplication-TileColor', content: '#1a202c' },
         { name: 'theme-color', content: '#1a202c' },
@@ -144,20 +141,27 @@ export default defineNuxtConfig({
     },
   },
 
+  htmlValidator: {
+    // failOnError: true,
+    options: {
+      rules: {
+        'wcag/h37': 'warn',
+        'element-required-attributes': 'warn',
+        'attribute-empty-style': 'off',
+      },
+    },
+  },
+
   modules: [
     'magic-regexp/nuxt',
     '@nuxt/image-edge',
-    function () {
-      // Hotfix for tailwind
-      const nuxt = useNuxt()
-      // @ts-expect-error Nuxt 2 types
-      nuxt.options.watch = nuxt.options.watch || []
-    },
+    '@nuxtjs/html-validator',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',
     'nuxt-plausible',
     '@nuxtjs/fontaine',
+    '~/modules/spa-head',
     '~/modules/tree-shake',
     '~/modules/components-chunk',
     '~/modules/sitemap',

@@ -19,6 +19,7 @@ const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
 const url = `https://roe.dev${path}`
 
 useHead({
+  htmlAttrs: { lang: 'en' },
   meta: [{ property: 'og:url', content: url }],
   link: [{ rel: 'canonical', href: url }],
 })
