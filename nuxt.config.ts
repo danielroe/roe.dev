@@ -17,6 +17,7 @@ export default defineNuxtConfig({
       token: '',
       // oauth flow
       clientSecret: '',
+      inviteToken: '',
     },
     public: {
       githubClientId: '',
