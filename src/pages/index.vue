@@ -30,6 +30,7 @@
                 $auth.user.avatar === sponsor,
             }"
             :src="sponsor"
+            format="webp"
             height="35"
             width="35"
           />
