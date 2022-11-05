@@ -165,6 +165,7 @@ export default defineNuxtConfig({
     '~/modules/spa-head',
     '~/modules/tree-shake',
     '~/modules/components-chunk',
+    '~/modules/dedupe-hoisted',
     '~/modules/sitemap',
   ],
 })
