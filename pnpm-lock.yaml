@@ -11,7 +11,7 @@ specifiers:
   '@nuxtjs/eslint-config-typescript': 11.0.0
   '@nuxtjs/eslint-module': 3.1.0
   '@nuxtjs/fontaine': 0.2.2
-  '@nuxtjs/html-validator': 1.1.0
+  '@nuxtjs/html-validator': 1.1.1
   '@nuxtjs/tailwindcss': 6.1.2
   '@playwright/test': 1.27.1
   '@types/node': 18.11.9
@@ -59,7 +59,7 @@ devDependencies:
   '@nuxtjs/eslint-config': 11.0.0_eslint@8.26.0
   '@nuxtjs/eslint-config-typescript': 11.0.0_eslint@8.26.0
   '@nuxtjs/eslint-module': 3.1.0_eslint@8.26.0
-  '@nuxtjs/html-validator': 1.1.0
+  '@nuxtjs/html-validator': 1.1.1
   '@nuxtjs/tailwindcss': 6.1.2
   '@playwright/test': 1.27.1
   '@types/node': 18.11.9
@@ -1178,12 +1178,12 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxtjs/html-validator/1.1.0:
-    resolution: {integrity: sha512-g4SvV0JtbX6RMYV+aLpfQoPKr1s3ODfDILkvn42Xn4B9Bnsz7/DrhWxKMaYIeTT607iiv3PA3lgfmOf7Dw1WaQ==}
+  /@nuxtjs/html-validator/1.1.1:
+    resolution: {integrity: sha512-QdIsCE99J4lWkaQNjrfDPdoL0J2ocWFmjo4RJLsrMWJ/0hm0nMIRn15kCxeFVIYycBX0ZHo3hzyzkmy1sJsrag==}
     dependencies:
       '@nuxt/kit': 3.0.0-rc.12
       chalk: 5.1.2
-      html-validate: 7.6.0
+      html-validate: 7.7.1
       prettier: 2.7.1
     transitivePeerDependencies:
       - jest
@@ -4888,8 +4888,8 @@ packages:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
     engines: {node: '>=8'}
 
-  /html-validate/7.6.0:
-    resolution: {integrity: sha512-6Ib433N0/ou2/0oLjfUmFjaAVFW8KKU/fOBBhrZXNuPcYCUsZExAD3xOqKl1bp5ANHb4PItXEK9vcKL/L7Da0Q==}
+  /html-validate/7.7.1:
+    resolution: {integrity: sha512-pCPbFHygd8YCKcQcyQnEwIWKVtA37f0snQP65EsS9ap4JrnG0HdIevJl90p8ZAhGjLsex5P0nI+n6v4pSov97Q==}
     engines: {node: '>= 14.0'}
     hasBin: true
     peerDependencies:
