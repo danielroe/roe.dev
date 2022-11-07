@@ -56,8 +56,6 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/tailwind.css'],
-
   content: {
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],

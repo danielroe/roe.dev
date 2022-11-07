@@ -1,5 +1,5 @@
 <template>
-  <article class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
+  <main class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
     <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
       <h2 class="text-2xl">{{ page.title }}</h2>
       <dl
@@ -28,7 +28,7 @@
     <section v-if="page" :class="$style.blog">
       <StaticMarkdownRender :cache-key="page.title" :value="page" />
     </section>
-  </article>
+  </main>
 </template>
 
 <script lang="ts" setup>

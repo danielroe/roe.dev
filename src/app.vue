@@ -26,6 +26,10 @@ useHead({
 </script>
 
 <style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* latin-ext */
 @font-face {
   font-family: Barlow;
@@ -78,6 +82,13 @@ useHead({
   --text-muted: theme('colors.gray.700');
 }
 
+:root {
+  background-color: var(--background, theme('colors.gray.800'));
+  color: var(--text-base, theme('colors.white'));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 a {
   @apply relative inline-block;
 
@@ -92,34 +103,28 @@ a {
   }
 }
 
-#app {
-  background-color: var(--background, theme('colors.gray.800'));
-  color: var(--text-base, theme('colors.white'));
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+a:not([href]) {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-  /* Body of site */
-  > nav + * {
-    main {
-      color: var(--text-muted, theme('colors.gray.300'));
+main {
+  color: var(--text-muted, theme('colors.gray.300'));
+}
 
-      a:not([href^='#']) {
-        &::after {
-          border-color: currentcolor;
-          opacity: 0.1;
-        }
+main a:not([href^='#']) {
+  &::after {
+    border-color: currentcolor;
+    opacity: 0.1;
+  }
 
-        &:hover,
-        &:active,
-        &:focus {
-          @apply outline-none;
+  &:hover,
+  &:active,
+  &:focus {
+    @apply outline-none;
 
-          &::after {
-            opacity: 0.2;
-          }
-        }
-      }
+    &::after {
+      opacity: 0.2;
     }
   }
 }
