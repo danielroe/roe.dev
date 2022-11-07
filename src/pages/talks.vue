@@ -4,7 +4,7 @@
       <h2 class="text-2xl">Talks</h2>
     </header>
     <main>
-      <section class="flex flex-row flex-wrap -mx-2">
+      <section class="flex flex-row flex-wrap gap-4">
         <GridLink
           v-for="{ title, source, link, date, formattedDate } in talks"
           :key="link"
