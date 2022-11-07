@@ -28,5 +28,19 @@
 
 <script setup lang="ts">
 useHead({ title: 'Blog' })
-const { data: entries } = await useAsyncBlogIndex()
+const { data: entries } = await useAsyncData(
+  () =>
+    ((process.server || process.dev) as true) &&
+    queryContent('/blog').only(['title', 'date', '_path']).find(),
+  {
+    transform: result => {
+      return (result as Array<{ title?: string; date: string; _path: string }>)
+        .map(e => ({
+          ...formatDateField(e),
+          path: e._path,
+        }))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    },
+  }
+)
 </script>

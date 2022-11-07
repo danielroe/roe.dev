@@ -36,5 +36,27 @@
 useHead({
   title: 'Talks',
 })
-const { data: talks } = await useAsyncTalks()
+
+interface Talk {
+  title: string
+  source: string
+  tags: string
+  link: string
+  date: string
+  formattedDate: string
+}
+
+const { data: talks } = await useAsyncData(
+  () =>
+    ((process.server || process.dev) as true) &&
+    import('../data/talks.json').then(r => r.default as any as Talk[]),
+  {
+    transform: talks =>
+      (talks
+        ?.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+        .map(formatDateField) as Talk[]) || [],
+  }
+)
 </script>

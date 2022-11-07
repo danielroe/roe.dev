@@ -29,11 +29,24 @@ const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
-const { data: page } = await useAsyncBlogArticle(
-  useRoute()
-    .path.replace(/(index)?\.json$/, '')
-    .replace(/\/$/, '')
+const path = useRoute()
+  .path.replace(/(index)?\.json$/, '')
+  .replace(/\/$/, '')
+
+const { data: page } = await useAsyncData(
+  path,
+  () =>
+    ((process.server || process.dev) as true) &&
+    queryContent(path).only(['title', 'type', 'body', 'date', 'tags']).findOne()
 )
+
+if (!page.value) {
+  throw createError({
+    statusCode: 404,
+    fatal: true,
+  })
+}
+
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
@@ -63,6 +76,7 @@ useHead({
     },
   ],
 })
+
 if (process.server) {
   appendHeader(
     nuxtApp.ssrContext!.event,
