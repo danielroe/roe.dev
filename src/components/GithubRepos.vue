@@ -3,7 +3,7 @@
     <GridLink
       v-for="{ repo, stars, language } in repos"
       :key="repo"
-      class="overflow-hidden md:min-h-[10rem] md:flex-[40%]"
+      class="overflow-hidden md:min-h-[8rem] md:flex-[40%]"
       :href="`https://github.com/${repo}`"
       :aria-label="`GitHub repository for ${repo}`"
     >

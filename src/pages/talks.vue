@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <header>
+  <div class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
+    <header class="leading-none mt-[5vw] mb-[1vw]">
       <h2 class="text-2xl">Talks</h2>
     </header>
-    <main>
+    <main class="text-lg">
       <section class="flex flex-row flex-wrap gap-4">
         <GridLink
           v-for="{ title, source, link, date, formattedDate } in talks"

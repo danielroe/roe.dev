@@ -1,9 +1,9 @@
 <template>
-  <div :class="$style.uses">
-    <header>
+  <div class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
+    <header class="leading-none mt-[5vw] mb-[1vw]">
       <h2 class="text-2xl">Uses</h2>
     </header>
-    <main>
+    <main class="text-lg" :class="$style.uses">
       <StaticMarkdownRender v-if="page" :value="page" />
     </main>
   </div>
