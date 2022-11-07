@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <header><h2 class="text-2xl">Articles</h2></header>
-    <main>
+  <div class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
+    <header class="leading-none mt-[5vw] mb-[1vw]">
+      <h2 class="text-2xl">Articles</h2>
+    </header>
+    <main class="text-lg">
       <section class="flex flex-row flex-wrap gap-4">
         <GridLink
           v-for="{ title, path, date, formattedDate } in entries"
@@ -31,6 +33,7 @@
 
 <script setup lang="ts">
 useHead({ title: 'Blog' })
+
 const { data: entries } = await useAsyncData(
   () =>
     ((process.server || process.dev) as true) &&

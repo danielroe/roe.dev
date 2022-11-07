@@ -101,19 +101,7 @@ a {
 
   /* Body of site */
   > nav + * {
-    @apply flex-grow mx-auto p-4 w-full;
-
-    max-width: 70ch;
-
-    header {
-      @apply leading-none;
-
-      margin: 5vw 0 1vw;
-    }
-
     main {
-      @apply text-lg;
-
       color: var(--text-muted, theme('colors.gray.300'));
 
       a:not([href^='#']) {

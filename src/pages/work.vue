@@ -1,10 +1,10 @@
 <template>
-  <div :class="$style.work">
-    <header>
+  <div class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
+    <header class="leading-none mt-[5vw] mb-[1vw]">
       <h2 class="text-2xl">Work</h2>
     </header>
 
-    <main>
+    <main class="text-lg">
       <GithubRepos />
       <form
         v-if="$auth.user.sponsor"
@@ -100,7 +100,7 @@ useHead({
   @apply h-full w-auto flex-grow-0 flex-shrink max-h-8 max-w-[5rem];
 }
 
-:global(.light-mode) .work img {
+:global(.light-mode) .logos img {
   filter: invert(1) opacity(0.8);
 }
 </style>
