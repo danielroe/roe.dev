@@ -5,7 +5,7 @@ export default defineEventHandler(async event => {
   return {
     authenticated: !!payload,
     sponsor: !!payload?.sponsor,
-    avatar: payload?.avatar,
-    name: payload?.name,
+    avatar: payload?.avatar as string | undefined,
+    name: payload?.name as string | undefined,
   }
 })

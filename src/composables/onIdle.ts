@@ -1,4 +1,4 @@
-const requestIdleCallback =
+export const requestIdleCallback =
   globalThis.requestIdleCallback ||
   function (cb) {
     const start = Date.now()
@@ -13,7 +13,7 @@ const requestIdleCallback =
     }, 1)
   }
 
-const cancelIdleCallback =
+export const cancelIdleCallback =
   globalThis.cancelIdleCallback ||
   function (id) {
     clearTimeout(id)

@@ -1,5 +1,5 @@
 export default defineNuxtPlugin(nuxtApp => {
-  window.requestIdleCallback(() => {
+  requestIdleCallback(() => {
     nuxtApp.isIdle = true
   })
 })
