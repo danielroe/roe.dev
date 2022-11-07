@@ -1,16 +1,26 @@
 <template>
   <article :class="$style.blog">
     <header v-if="page">
-      <h2>{{ page.title }}</h2>
-      <dl v-if="page.date && formattedDate">
-        <dt>Published</dt>
-        <dd>
+      <h2 class="text-2xl">{{ page.title }}</h2>
+      <dl
+        v-if="page.date && formattedDate"
+        class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+      >
+        <dt class="float-left md:float-none mr-2">Published</dt>
+        <dd class="font-semibold mr-4">
           <time :datetime="page.date">{{ formattedDate }}</time>
         </dd>
         <template v-if="page.tags && page.tags.length">
-          <dt>Tags</dt>
-          <dd>
-            <span v-for="tag in page.tags" :key="tag" v-text="tag" />
+          <dt class="float-left md:float-none mr-2">Tags</dt>
+          <dd class="font-semibold mr-4">
+            <span
+              v-for="(tag, index) in page.tags"
+              :key="tag"
+              :class="{
+                'before:mx-1 before:inline-block before:font-bold': index,
+              }"
+              v-text="tag"
+            />
           </dd>
         </template>
       </dl>

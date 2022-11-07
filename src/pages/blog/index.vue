@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header><h2>Articles</h2></header>
+    <header><h2 class="text-2xl">Articles</h2></header>
     <main>
       <section class="flex flex-row flex-wrap -mx-2">
         <GridLink
@@ -12,9 +12,12 @@
           <article>
             <header>
               {{ title }}
-              <dl v-if="date">
-                <dt>Published</dt>
-                <dd>
+              <dl
+                v-if="date"
+                class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+              >
+                <dt class="float-left md:float-none mr-2">Published</dt>
+                <dd class="font-semibold mr-4">
                   <time :datetime="date">{{ formattedDate }}</time>
                 </dd>
               </dl>

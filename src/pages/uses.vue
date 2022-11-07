@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.uses">
     <header>
-      <h2>Uses</h2>
+      <h2 class="text-2xl">Uses</h2>
     </header>
     <main>
       <StaticMarkdownRender v-if="page" :value="page" />

@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.home">
     <header>
-      <h2>Welcome!</h2>
+      <h2 class="text-2xl">Welcome!</h2>
     </header>
     <main>
       <StaticMarkdownRender v-if="page" :value="page" />

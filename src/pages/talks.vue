@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <h2>Talks</h2>
+      <h2 class="text-2xl">Talks</h2>
     </header>
     <main>
       <section class="flex flex-row flex-wrap -mx-2">
@@ -14,13 +14,18 @@
           <article>
             <header>
               {{ title }}
-              <dl v-if="date">
-                <dt>Date</dt>
-                <dd>
+              <dl
+                v-if="date"
+                class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+              >
+                <dt class="float-left md:float-none mr-2">Date</dt>
+                <dd class="font-semibold mr-4">
                   <time :datetime="date">{{ formattedDate }}</time>
                 </dd>
-                <dt v-if="source">Where</dt>
-                <dd v-if="source">
+                <dt v-if="source" class="float-left md:float-none mr-2">
+                  Where
+                </dt>
+                <dd v-if="source" class="font-semibold mr-4">
                   {{ source }}
                 </dd>
               </dl>

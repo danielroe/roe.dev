@@ -3,7 +3,7 @@
     <GridLink
       v-for="{ repo, stars, language } in repos"
       :key="repo"
-      class="overflow-hidden"
+      class="overflow-hidden md:min-h-[10rem] md:flex-[40%]"
       :href="`https://github.com/${repo}`"
       :aria-label="`GitHub repository for ${repo}`"
     >
@@ -18,16 +18,18 @@
         </span>
         <header>
           {{ repo }}
-          <dl>
+          <dl
+            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+          >
             <template v-if="stars">
-              <dt>Stars</dt>
-              <dd>
+              <dt class="float-left md:float-none mr-2">Stars</dt>
+              <dd class="font-semibold mr-4">
                 {{ stars }}
               </dd>
             </template>
             <template v-if="language">
-              <dt>Language</dt>
-              <dd>
+              <dt class="float-left md:float-none mr-2">Language</dt>
+              <dd class="font-semibold mr-4">
                 {{ language }}
               </dd>
             </template>
@@ -50,7 +52,7 @@ useHead({
 })
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
-  if (process.client && !process.dev) return
+  if (process.client && !process.dev) return Promise.resolve([])
   const repos = [
     'nuxt/framework',
     'nuxt/nuxt.js',
