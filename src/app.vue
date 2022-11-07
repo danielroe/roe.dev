@@ -181,12 +181,6 @@ a {
       }
     }
   }
-
-  > footer {
-    @apply text-center mx-auto px-4 py-2;
-
-    max-width: 50rem;
-  }
 }
 
 .visually-hidden:not(:focus, :active) {
