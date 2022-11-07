@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.work">
     <header>
-      <h2>Work</h2>
+      <h2 class="text-2xl">Work</h2>
     </header>
 
     <main>

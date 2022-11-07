@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="font-sans overflow-x-hidden min-h-screen flex flex-col">
     <LayoutTheSiteHeader v-once />
     <NuxtPage />
     <LayoutTheSiteFooter v-once />
@@ -93,10 +93,6 @@ a {
 }
 
 #app {
-  @apply font-sans;
-  @apply overflow-x-hidden min-h-screen;
-  @apply flex flex-col;
-
   background-color: var(--background, theme('colors.gray.800'));
   color: var(--text-base, theme('colors.white'));
   font-size: 16px;
@@ -105,9 +101,7 @@ a {
 
   /* Body of site */
   > nav + * {
-    @apply flex-grow;
-
-    @apply mx-auto p-4 w-full;
+    @apply flex-grow mx-auto p-4 w-full;
 
     max-width: 70ch;
 
@@ -115,47 +109,6 @@ a {
       @apply leading-none;
 
       margin: 5vw 0 1vw;
-
-      h2 {
-        @apply text-2xl;
-      }
-
-      dl {
-        @apply flex flex-row flex-wrap mt-1;
-        @apply leading-normal;
-        @apply uppercase text-xs;
-      }
-
-      dt {
-        @apply mr-2;
-      }
-
-      dd {
-        @apply font-semibold mr-4;
-
-        > span {
-          + span {
-            &::before {
-              @apply mx-1 inline-block font-bold;
-
-              content: '•';
-            }
-          }
-        }
-      }
-      @media (width < 767px) {
-        dl {
-          @apply block;
-        }
-
-        dt {
-          @apply float-left mr-2;
-        }
-
-        dd + dt {
-          @apply ml-0;
-        }
-      }
     }
 
     main {
