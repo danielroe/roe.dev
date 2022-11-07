@@ -6,7 +6,7 @@ export default defineNitroPlugin(nitro => {
       htmlContext.htmlAttrs.push(head.htmlAttrs, ' lang="en"')
       htmlContext.head.push(...(head.headTags || []))
       htmlContext.bodyAttrs.push(head.bodyAttrs)
-      htmlContext.bodyPreprend.push(...(head.bodyScriptsPrepend || []))
+      htmlContext.bodyPrepend.push(...(head.bodyScriptsPrepend || []))
       htmlContext.bodyAppend.push(...(head.bodyScripts || []))
     }
   })

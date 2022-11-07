@@ -23,6 +23,6 @@ const sprite =
 
 export default defineNitroPlugin(nitro => {
   nitro.hooks.hook('render:html', htmlContext => {
-    htmlContext.bodyPreprend.push(sprite)
+    htmlContext.bodyPrepend.push(sprite)
   })
 })
