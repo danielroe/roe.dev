@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-row flex-wrap -mx-2">
+  <section class="flex flex-row flex-wrap gap-4">
     <GridLink
       v-for="{ repo, stars, language } in repos"
       :key="repo"
