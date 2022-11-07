@@ -15,7 +15,11 @@ useHead({
   meta: [{ hid: 'og:title', property: 'og:title', content: `Uses` }],
 })
 
-const { data: page } = await useAsyncUses()
+const { data: page } = await useAsyncData(
+  () =>
+    ((process.server || process.dev) as true) &&
+    queryContent('/uses').only(['title', 'type', 'body']).findOne()
+)
 </script>
 
 <style module>
