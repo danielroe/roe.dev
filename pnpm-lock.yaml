@@ -13,6 +13,7 @@ specifiers:
   '@nuxtjs/fontaine': 0.2.2
   '@nuxtjs/html-validator': 1.1.1
   '@nuxtjs/tailwindcss': 6.1.3
+  '@nuxtjs/web-vitals': ^0.1.9
   '@playwright/test': 1.27.1
   '@types/node': 18.11.9
   '@vitejs/plugin-vue': 3.2.0
@@ -46,6 +47,7 @@ dependencies:
   '@nuxt/image-edge': 1.0.0-27769790.4b27db3
   '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.14-27796957.b60f136
   '@nuxtjs/fontaine': 0.2.2
+  '@nuxtjs/web-vitals': 0.1.9
   gray-matter: 4.0.3
   jose: 4.10.4
   nuxt-plausible: 0.1.1
@@ -1214,6 +1216,14 @@ packages:
       - ts-node
       - webpack
     dev: true
+
+  /@nuxtjs/web-vitals/0.1.9:
+    resolution: {integrity: sha512-kFLpT2TWMLKq+4OXeslGx1VQ1g5tCFmgIhrOl9G0t6GIxqR1IWip0fAojwL6oKyo9kk42QwpVl2Y2VF/KAAoig==}
+    dependencies:
+      defu: 6.1.0
+      ufo: 0.8.6
+      web-vitals: 2.1.4
+    dev: false
 
   /@pkgr/utils/2.3.1:
     resolution: {integrity: sha512-wfzX8kc1PMyUILA+1Z/EqoE4UCXGy0iRGMhPwdfae1+f0OXlLqCk+By+aMzgJBzR9AzS4CDizioG6Ss1gvAFJw==}
@@ -2671,7 +2681,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /concat-stream/1.6.2:
@@ -3271,7 +3281,7 @@ packages:
     dev: true
 
   /ee-first/1.1.1:
-    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: true
 
   /electron-to-chromium/1.4.284:
@@ -9833,6 +9843,10 @@ packages:
     resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
     engines: {node: '>= 8'}
     dev: true
+
+  /web-vitals/2.1.4:
+    resolution: {integrity: sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg==}
+    dev: false
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
