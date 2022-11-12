@@ -15,15 +15,13 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       class="font-semibold flex-grow text-xs md:text-base justify-between flex flex-row items-center md:flex-grow-0"
     >
       <li>
-        <h1>
-          <NuxtLink
-            class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
-            to="/"
-            title="Daniel Roe"
-          >
-            DCR
-          </NuxtLink>
-        </h1>
+        <NuxtLink
+          class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
+          to="/"
+          title="Daniel Roe"
+        >
+          DCR
+        </NuxtLink>
       </li>
       <li aria-hidden="true" class="font-bold inline-block">•</li>
       <li>

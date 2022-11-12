@@ -1,7 +1,7 @@
 <template>
   <main class="flex-grow mx-auto p-4 w-full max-w-[70ch]">
     <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
-      <h2 class="text-2xl">{{ page.title }}</h2>
+      <h1 class="text-2xl">{{ page.title }}</h1>
       <dl
         v-if="page.date && formattedDate"
         class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
@@ -98,16 +98,17 @@ if (process.server) {
 
 <style module>
 .blog {
-  h3 {
+  h2 {
     @apply text-xl mb-4;
   }
 
-  h4 {
+  h3 {
     @apply uppercase text-sm;
 
     letter-spacing: 0.1rem;
   }
 
+  * + h2,
   * + h3,
   * + h4 {
     @apply mt-8;
@@ -128,9 +129,14 @@ if (process.server) {
       white-space: pre-wrap;
     }
 
+    + h2,
     + h3,
     + h4 {
       @apply mt-8;
+    }
+
+    + p {
+      @apply mt-6;
     }
   }
 
@@ -165,6 +171,7 @@ if (process.server) {
     content: counter(list);
   }
 
+  /* stylelint-disable-next-line */
   p {
     + pre,
     + p {
