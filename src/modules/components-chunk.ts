@@ -21,6 +21,7 @@ export default defineNuxtModule({
       'ProseLi',
       'ProseOl',
       'ProseUl',
+      'ProseBlockquote',
       'ProseThead',
       'ProseTable',
       'ProseTr',

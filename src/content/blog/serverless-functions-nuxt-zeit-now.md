@@ -1,13 +1,14 @@
 ---
-title: Using serverless functions in Nuxt on ZEIT Now
+title: Using serverless functions in Nuxt on Vercel
 date: '2019-12-19T19:30:00.000Z'
 tags:
   - nuxt
-  - now
   - serverless
-  - zeit
-description: If you are using ZEIT Now to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your Now serverless functions. Here's how.
+  - vercel
+description: If you are using Vercel to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your Vercel serverless functions. Here's how.
 ---
+
+> Note, this article is pretty old. If you're looking to host an app on Vercel or another platform, I'd highly recommend using Nitro instead - which is built-in to Nuxt 3 or Nuxt Bridge.
 
 When building a modern web application, you might want to use serverless functions (or lambdas). For example:
 
@@ -16,12 +17,12 @@ When building a modern web application, you might want to use serverless functio
 
 If you are using [Nuxt](https://nuxtjs.org/) -- a Vue framework for SSR and static generated applications -- you can extract your functions into [server middleware](https://nuxtjs.org/api/configuration-servermiddleware/). As the name suggests, these only run on the server and they are effectively independent of the rest of your application.
 
-If you are using ZEIT Now to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your [Now serverless functions](https://zeit.co/docs/v2/serverless-functions/introduction/). The benefit of setting it up this way is:
+If you are using Vercel to host your Nuxt application, you can use the same entrypoints for Nuxt server middleware and your [Vercel serverless functions](https://zeit.co/docs/v2/serverless-functions/introduction/). The benefit of setting it up this way is:
 
 1. You are not tied to a single hosting provider.
 2. You can use Nuxt to manage your routing in local development, rather than `now dev`.
 
-### Write your functions
+## Write your functions
 
 Now allows you to use `express` as a routing layer -- even though this might seem paradoxical for a serverless framework.
 
@@ -43,9 +44,9 @@ app.post('/api/sample-function', function (req, res) {
 module.exports = app
 ```
 
-### Set up your config for ZEIT Now
+## Set up your config for Vercel
 
-If you have a simple project, very little needs to be done. ZEIT Now's zero-config support is improving daily, and will almost certainly work out-of-the-box.
+If you have a simple project, very little needs to be done. Vercel's zero-config support is improving daily, and will almost certainly work out-of-the-box.
 
 All you need to do is tell Now how to generate a static version of your site.
 
@@ -54,12 +55,12 @@ All you need to do is tell Now how to generate a static version of your site.
 ```json
 {
   "scripts": {
-    "now-build": "yarn generate"
+    "vercel-build": "yarn generate"
   }
 }
 ```
 
-However, if you do want the fine-grained control of adding routes manually, you can go ahead and add the function in a `now.json` file. (Note that the below configuration will not work with `@nuxt/now-builder`. I plan to write a future article about configuring a Nuxt lambda for serverless SSR.)
+However, if you do want the fine-grained control of adding routes manually, you can go ahead and add the function in a `now.json` file. (Note that the below configuration will not work with `@nuxt/vercel-builder`. I plan to write a future article about configuring a Nuxt lambda for serverless SSR.)
 
 <div>~/now.json</div>
 
@@ -79,9 +80,9 @@ However, if you do want the fine-grained control of adding routes manually, you 
 }
 ```
 
-### Integrate your functions as server middleware in Nuxt
+## Integrate your functions as server middleware in Nuxt
 
-You can easily detect whether you are operating within the Now environment using the `NOW_REGION` environment variable, and conditionally load your server middleware -- such as if you are using [@nuxt/now-builder](https://github.com/nuxt/now-builder).
+You can easily detect whether you are operating within the Now environment using the `NOW_REGION` environment variable, and conditionally load your server middleware -- such as if you are using [@nuxt/vercel-builder](https://github.com/nuxt/vercel-builder).
 
 If you are using Nuxt to generate a static site, you will also need to make sure the generated site is placed in a `public` directory.
 
@@ -105,9 +106,9 @@ export default {
 }
 ```
 
-You should now have a Nuxt setup that works equally well when deployed to serverless environment on ZEIT Now, or when server-rendered, such as in local development.
+You should now have a Nuxt setup that works equally well when deployed to serverless environment on Vercel, or when server-rendered, such as in local development.
 
-### Other platforms
+## Other platforms
 
 This approach works with other hosting platforms, such as:
 
