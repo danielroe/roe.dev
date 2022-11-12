@@ -9,32 +9,34 @@
         <hr
           class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
         />
-        <h3 class="text-center font-bold mb-4">
-          special thanks to
-          <template v-if="$auth.user.sponsor">
-            <span class="text-white">you</span>
-            and
-          </template>
-        </h3>
-        <div
-          class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
-        >
-          <nuxt-img
-            v-for="sponsor of sponsors"
-            :key="sponsor"
-            sizes="sm:70px"
-            alt=""
-            class="rounded-full"
-            :class="{
-              'border-solid border-[1px] border-yellow-400':
-                $auth.user.avatar === sponsor,
-            }"
-            :src="sponsor"
-            format="webp"
-            height="35"
-            width="35"
-          />
-        </div>
+        <aside>
+          <header class="text-center font-bold mb-4">
+            special thanks to
+            <template v-if="$auth.user.sponsor">
+              <span class="text-white">you</span>
+              and
+            </template>
+          </header>
+          <div
+            class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
+          >
+            <nuxt-img
+              v-for="sponsor of sponsors"
+              :key="sponsor"
+              sizes="sm:70px"
+              alt=""
+              class="rounded-full"
+              :class="{
+                'border-solid border-[1px] border-yellow-400':
+                  $auth.user.avatar === sponsor,
+              }"
+              :src="sponsor"
+              format="webp"
+              height="35"
+              width="35"
+            />
+          </div>
+        </aside>
       </template>
     </main>
   </div>
