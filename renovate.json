@@ -1,51 +1,7 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    "packages:linters",
-    ":labels(dependencies,devops)",
     ":pinAllExceptPeerDependencies",
-    ":maintainLockFilesWeekly",
-    ":enableVulnerabilityAlerts",
-    ":automergeLinters",
-    ":automergeTypes",
-    ":semanticCommitTypeAll(chore)",
-    ":automergePatch"
-  ],
-  "rebaseStalePrs": true,
-  "stabilityDays": 3,
-  "prCreation": "not-pending",
-  "rangeStrategy": "bump",
-  "assignees": [
-    "danielroe"
-  ],
-  "npm": {
-    "commitMessageTopic": "{{prettyDepType}} {{depName}}"
-  },
-  "packageRules": [
-    {
-      "matchPackagePatterns": [
-        "lint"
-      ],
-      "groupName": "all lint dependencies",
-      "groupSlug": "all-lint"
-    },
-    {
-      "groupName": "playwright",
-      "groupSlug": "playwright",
-      "matchPackagePatterns": [
-        "playwright"
-      ]
-    },
-    {
-      "groupName": "nuxt framework",
-      "groupSlug": "nuxt",
-      "matchPackageNames": [
-        "nuxt",
-        "nuxt3"
-      ],
-      "matchPackagePatterns": [
-        "^@nuxt/"
-      ]
-    }
+    "github>danielroe/renovate"
   ]
 }
