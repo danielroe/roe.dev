@@ -1,4 +1,4 @@
-name: test
+name: e2e
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
   deployment_status:
 
 jobs:
-  e2e:
+  playwright:
     environment:
       name: ${{ github.event.deployment.environment || 'Production' }}
       url: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.target_url }}
