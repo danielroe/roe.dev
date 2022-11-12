@@ -99,10 +99,6 @@ if (process.server) {
 <style module>
 .blog {
   h2 {
-    @apply text-xl mb-4;
-  }
-
-  h3 {
     @apply uppercase text-sm;
 
     letter-spacing: 0.1rem;
@@ -207,7 +203,7 @@ if (process.server) {
   }
 
   blockquote {
-    @apply pl-4 border-l-4;
+    @apply pl-4 border-l-4 mb-4;
   }
 }
 </style>
