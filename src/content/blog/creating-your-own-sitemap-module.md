@@ -14,7 +14,7 @@ When you're dotting the i's and crossing the t's of a shiny new Nuxt website, yo
 
 Here's what we need to achieve for the sitemap I have in mind:
 
-1. **It's for a static site** - so no need to fetch pages at runtime. (If this is something you need, look [below](#building-a-dynamic-sitemap) instead.)
+1. **It's for a static site** - so no need to fetch pages at runtime. (If this is something you need, look [below](#a-different-approach-for-a-dynamic-sitemap) instead.)
 
 2. We want **both raw XML and gzipped sitemaps.**
 
