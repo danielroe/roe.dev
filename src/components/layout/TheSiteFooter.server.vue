@@ -13,7 +13,7 @@ const links = [
     link: 'https://twitter.com/danielcroe',
   },
   {
-    link: 'https://mas.to/@danielroe',
+    link: 'https://mastodon.roe.dev/@daniel',
     name: 'Mastodon',
   },
 ]
