@@ -1,3 +1,5 @@
+import { relative } from 'pathe'
+
 export default defineNuxtConfig({
   runtimeConfig: {
     // JWT claims
@@ -87,6 +89,24 @@ export default defineNuxtConfig({
     screens: {
       logo: 40,
       avatar: 70,
+    },
+  },
+
+  hooks: {
+    'vite:extendConfig' (config, { isClient }) {
+      if (!isClient) return
+      const renderBuiltUrl = config.experimental!.renderBuiltUrl!
+      const r = (filename: string) => './' + relative('_nuxt', filename)
+      config.experimental!.renderBuiltUrl = (path, type) => {
+        if (type.hostType === 'js' && path.endsWith('css')) {
+          return {
+            runtime: `useNuxtApp().isHydrating ? "${r(type.hostId)}" : "./${r(
+              path
+            )}"`,
+          }
+        }
+        return renderBuiltUrl(path, type)
+      }
     },
   },
 

@@ -4,6 +4,12 @@ const redirect = process.dev
   ? `&redirect_uri=http://localhost:3000/auth/github`
   : ''
 const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}&scope=read:org`
+const isIdle = ref(false)
+onMounted(() => {
+  requestIdleCallback(() => {
+    isIdle.value = true
+  })
+})
 </script>
 
 <template>
@@ -16,6 +22,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
     >
       <li>
         <NuxtLink
+          :prefetch="isIdle"
           class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
           to="/"
           title="Daniel Roe"
@@ -26,6 +33,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       <li aria-hidden="true" class="font-bold inline-block">•</li>
       <li>
         <NuxtLink
+          :prefetch="isIdle"
           class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
           exact-active-class="after:border-gray-800"
           to="/work"
@@ -36,6 +44,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       <li aria-hidden="true" class="font-bold inline-block">•</li>
       <li>
         <NuxtLink
+          :prefetch="isIdle"
           class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
           exact-active-class="after:border-gray-800"
           to="/talks"
@@ -46,6 +55,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       <li aria-hidden="true" class="font-bold inline-block">•</li>
       <li>
         <NuxtLink
+          :prefetch="isIdle"
           class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
           exact-active-class="after:border-gray-800"
           to="/blog"
@@ -68,6 +78,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
       </div>
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
+        :prefetch="isIdle"
         :to="loginURL"
         class="p-1 w-[2rem] flex-shrink-0"
         @click="$auth.status = 'pending'"
