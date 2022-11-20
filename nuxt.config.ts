@@ -24,6 +24,8 @@ export default defineNuxtConfig({
     },
   },
 
+  experimental: { payloadExtraction: true },
+
   sourcemap: false,
 
   typescript: { strict: true },
@@ -97,13 +99,13 @@ export default defineNuxtConfig({
           '/fonts/barlow-7cHpv4kjgoGqM7E_DMs5.woff2',
         ].map(
           href =>
-          ({
-            rel: 'preload',
-            as: 'font',
-            type: 'font/woff2',
-            crossorigin: '',
-            href,
-          } as const)
+            ({
+              rel: 'preload',
+              as: 'font',
+              type: 'font/woff2',
+              crossorigin: '',
+              href,
+            } as const)
         ),
         { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
