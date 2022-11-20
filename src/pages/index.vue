@@ -30,6 +30,7 @@
                 'border-solid border-[1px] border-yellow-400':
                   $auth.user.avatar === sponsor,
               }"
+              loading="lazy"
               :src="sponsor"
               format="webp"
               height="35"
