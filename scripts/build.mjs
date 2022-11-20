@@ -14,8 +14,6 @@ iterateOnDirectory('./src/content/blog', (path, contents) => {
   }
 })
 
-console.log(metadata)
-
 writeFile(
   'Saving metadata.',
   './src/server/metadata.json',
