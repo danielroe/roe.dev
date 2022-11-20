@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useServerHead } from '@vueuse/head'
 import { appendHeader } from 'h3'
 
 const nuxtApp = useNuxtApp()
@@ -70,24 +71,26 @@ const SLUG_RE = createRegExp(
 const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
 useHead({
   title: page.value.title,
-  meta: [
-    {
-      name: 'description',
-      content: page.value.description,
-    },
-    {
-      property: 'og:image',
-      content: `https://roe.dev/og/${ogSlug}.jpg`,
-    },
-    { property: 'og:title', content: page.value.title },
-    {
-      property: 'og:description',
-      content: page.value.description,
-    },
-  ],
 })
 
 if (process.server) {
+  useServerHead({
+    meta: [
+      {
+        name: 'description',
+        content: page.value.description,
+      },
+      {
+        property: 'og:image',
+        content: `https://roe.dev/og/${ogSlug}.jpg`,
+      },
+      { property: 'og:title', content: page.value.title },
+      {
+        property: 'og:description',
+        content: page.value.description,
+      },
+    ],
+  })
   appendHeader(
     nuxtApp.ssrContext!.event,
     'x-nitro-prerender',
