@@ -45,10 +45,6 @@
 <script lang="ts" setup>
 const { data: sponsors } = await useFetch('/api/sponsors')
 
-useHead({
-  meta: [{ hid: 'og:title', property: 'og:title', content: `Daniel Roe` }],
-})
-
 const { data: page } = await useAsyncData(
   () =>
     ((process.server || process.dev) as true) &&

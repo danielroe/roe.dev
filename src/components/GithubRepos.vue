@@ -41,15 +41,19 @@
 </template>
 
 <script lang="ts" setup>
-useHead({
-  link: [
-    {
-      rel: 'preconnect',
-      href: '//api.github.com',
-      crossorigin: 'use-credentials',
-    },
-  ],
-})
+import { useServerHead } from '@vueuse/head'
+
+if (process.server) {
+  useServerHead({
+    link: [
+      {
+        rel: 'preconnect',
+        href: '//api.github.com',
+        crossorigin: 'use-credentials',
+      },
+    ],
+  })
+}
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
   if (process.client && !process.dev) return Promise.resolve([])

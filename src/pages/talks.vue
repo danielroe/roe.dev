@@ -38,9 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-useHead({
-  title: 'Talks',
-})
+definePageMeta({ title: 'Talks' })
 
 interface Talk {
   title: string

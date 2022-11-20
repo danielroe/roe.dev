@@ -15,6 +15,7 @@ const pages = [
   '/blog/serverless-functions-nuxt-zeit-now',
   '/blog/good-ux-and-giving-birth',
   '/blog/building-your-own-vue-rich-text-component',
+  '/blog/creating-your-own-sitemap-module',
 ]
 
 test.describe(`pages`, () => {

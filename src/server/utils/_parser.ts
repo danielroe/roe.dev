@@ -26,7 +26,7 @@ export function parseReqs (slug: string) {
     tags,
   }
 
-  console.log(JSON.stringify(parsedReqs))
+  // console.log(JSON.stringify(parsedReqs))
 
   return parsedReqs
 }
