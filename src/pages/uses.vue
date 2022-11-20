@@ -10,10 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-useHead({
-  title: 'Uses',
-  meta: [{ hid: 'og:title', property: 'og:title', content: `Uses` }],
-})
+definePageMeta({ title: 'Uses' })
 
 const { data: page } = await useAsyncData(
   () =>

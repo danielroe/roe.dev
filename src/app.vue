@@ -10,43 +10,51 @@
 import { useServerHead } from '@vueuse/head'
 
 const route = useRoute()
-const PATH_RE = createRegExp(
-  exactly(char.times.any().and(charNotIn('/')))
-    .as('path')
-    .and(exactly('/').optionally())
-    .at.lineEnd()
-)
-
-const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
-const url = `https://roe.dev${path}`
 
 useHead({
-  title: '',
   htmlAttrs: { lang: 'en' },
+  title: (route.meta.title as string) || '',
   titleTemplate: title => (title ? `${title} - Daniel Roe` : 'Daniel Roe'),
-  meta: [
-    { name: 'theme-color', content: '#1a202c' },
-    { name: 'msapplication-TileColor', content: '#1a202c' },
-  ],
 })
 
 if (process.server) {
+  const PATH_RE = createRegExp(
+    exactly(char.times.any().and(charNotIn('/')))
+      .as('path')
+      .and(exactly('/').optionally())
+      .at.lineEnd()
+  )
+
+  const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
+  const url = `https://roe.dev${path}`
+
   useServerHead({
-    meta: [
+    meta: () => [
+      { name: 'theme-color', content: '#1a202c' },
+      { name: 'msapplication-TileColor', content: '#1a202c' },
       { property: 'og:url', content: url },
       {
         property: 'og:image',
         content: `https://roe.dev/og/og.jpg`,
+        key: 'og:image',
       },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       {
+        property: 'og:title',
+        content: (route.meta.title as string) || 'Daniel Roe',
+      },
+      {
         name: 'description',
-        content: `The personal website of Daniel Roe`,
+        content:
+          (route.meta.description as string) ||
+          `The personal website of Daniel Roe`,
       },
       {
         property: 'og:description',
-        content: `The personal website of Daniel Roe`,
+        content:
+          (route.meta.description as string) ||
+          `The personal website of Daniel Roe`,
       },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@danielcroe' },

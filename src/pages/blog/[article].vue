@@ -61,33 +61,23 @@ if (!page.value) {
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
-const SLUG_RE = createRegExp(
-  exactly('/')
-    .and(charNotIn('/').times.any().as('slug'))
-    .and(exactly('/').optionally())
-    .at.lineEnd()
-)
-
-const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
-useHead({
-  title: page.value.title,
-})
+useRoute().meta.title = page.value.title
 
 if (process.server) {
+  const SLUG_RE = createRegExp(
+    exactly('/')
+      .and(charNotIn('/').times.any().as('slug'))
+      .and(exactly('/').optionally())
+      .at.lineEnd()
+  )
+  const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
+  useRoute().meta.description = page.value.description
   useServerHead({
     meta: [
       {
-        name: 'description',
-        content: page.value.description,
-      },
-      {
         property: 'og:image',
         content: `https://roe.dev/og/${ogSlug}.jpg`,
-      },
-      { property: 'og:title', content: page.value.title },
-      {
-        property: 'og:description',
-        content: page.value.description,
+        key: 'og:image',
       },
     ],
   })

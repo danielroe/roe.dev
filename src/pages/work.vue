@@ -56,6 +56,8 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({ title: 'Work' })
+
 const ideaStatus = ref<'ready' | 'submitting' | 'submitted' | 'error'>('ready')
 async function handleSubmission(e: Event) {
   const data = new FormData(e.target as HTMLFormElement)
@@ -89,10 +91,6 @@ const clients = {
     { height: 32, width: 80 },
   ],
 }
-
-useHead({
-  title: 'Work',
-})
 </script>
 
 <style module>
