@@ -6,14 +6,31 @@
     <main class="text-lg">
       <section class="flex flex-row flex-wrap gap-4">
         <GridLink
-          v-for="{ title, source, link, date, formattedDate } in talks"
+          v-for="{
+            title,
+            source,
+            link,
+            date,
+            type,
+            video,
+            formattedDate,
+          } in talks"
           :key="link"
           :alt="title"
-          :href="link"
+          :href="video || link"
         >
           <article>
             <header>
-              {{ title }}
+              <div class="flex flex-row items-center gap-2">
+                <svg
+                  v-if="type === 'podcast' || video"
+                  class="h-4 w-4 fill-current"
+                  :alt="video ? `Play ${title}` : `Listen to ${title}`"
+                >
+                  <use :xlink:href="video ? '#play' : '#audio'" />
+                </svg>
+                {{ title }}
+              </div>
               <dl
                 v-if="date"
                 class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
@@ -46,6 +63,8 @@ interface Talk {
   tags: string
   link: string
   date: string
+  type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
+  video?: string
   formattedDate: string
 }
 
