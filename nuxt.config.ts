@@ -100,7 +100,7 @@ export default defineNuxtConfig({
       config.experimental!.renderBuiltUrl = (path, type) => {
         if (type.hostType === 'js' && path.endsWith('css')) {
           return {
-            runtime: `__unctx__.get('nuxt').tryUse()?.isHydrating ? "${r(
+            runtime: `document.querySelector('#__nuxt').__vue_app__?.$nuxt.isHydrating ? "${r(
               type.hostId
             )}" : "./${r(path)}"`,
           }
