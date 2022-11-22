@@ -23,10 +23,12 @@ export default defineNuxtPlugin(nuxtApp => {
     window.__mounted = true
 
     addEventListener('load', () => {
-      requestIdleCallback(() => {
-        finalise()
-        preloadComponents(componentNames)
-      })
+      setTimeout(() => {
+        requestIdleCallback(() => {
+          finalise()
+          preloadComponents(componentNames)
+        })
+      }, 200)
     })
   })
 })
