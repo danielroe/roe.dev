@@ -1,3 +1,5 @@
+import { componentNames } from '#components'
+
 export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter()
   const resolves: Array<() => void> = []
@@ -21,7 +23,10 @@ export default defineNuxtPlugin(nuxtApp => {
     window.__mounted = true
 
     setTimeout(() => {
-      requestIdleCallback(finalise)
+      requestIdleCallback(() => {
+        finalise()
+        preloadComponents(componentNames)
+      })
     }, 100)
   })
 })
