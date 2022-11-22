@@ -28,7 +28,7 @@ export default defineNuxtPlugin(nuxtApp => {
           finalise()
           preloadComponents(componentNames)
         })
-      }, 200)
+      }, 500)
     })
   })
 })
