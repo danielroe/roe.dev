@@ -26,7 +26,9 @@ export default defineNuxtPlugin(nuxtApp => {
     status: ref<UserStatus>('pending'),
   })
 
-  nuxtApp.hook('app:mounted', auth.login)
+  nuxtApp.hook('app:mounted', () => {
+    auth.login()
+  })
 
   return {
     provide: {
