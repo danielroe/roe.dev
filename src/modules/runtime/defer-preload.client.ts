@@ -11,6 +11,8 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.hook('app:mounted', () => {
     // @ts-expect-error
     window.__mounted = true
-    requestIdleCallback(finalise)
+    setTimeout(() => {
+      requestIdleCallback(finalise)
+    }, 100)
   })
 })
