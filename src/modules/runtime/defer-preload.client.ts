@@ -1,16 +1,23 @@
 export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter()
-  let finalise: () => void
-  const promise = new Promise<void>(resolve => {
-    finalise = resolve
-  })
+  const resolves: Array<() => void> = []
+  const finalise = () => {
+    resolves.forEach(resolve => resolve())
+    resolves.length = 0
+  }
 
   // @ts-expect-error
-  router._preloadPromises = Array.from({ length: 5 }).map(() => promise)
+  router._preloadPromises = Array.from({ length: 5 }).map(
+    () =>
+      new Promise<void>(resolve => {
+        resolves.push(resolve)
+      })
+  )
 
   nuxtApp.hook('app:mounted', () => {
     // @ts-expect-error
     window.__mounted = true
+
     setTimeout(() => {
       requestIdleCallback(finalise)
     }, 100)
