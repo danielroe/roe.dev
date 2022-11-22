@@ -2,10 +2,10 @@ export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter()
   const resolves: Array<() => void> = []
   const finalise = () => {
-    resolves.forEach(resolve => resolve())
-    resolves.length = 0
     // @ts-expect-error
     router._preloadPromises.length = 0
+    resolves.forEach(resolve => resolve())
+    resolves.length = 0
   }
 
   // @ts-expect-error
