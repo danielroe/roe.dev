@@ -1,5 +1,3 @@
-import { relative } from 'pathe'
-
 export default defineNuxtConfig({
   runtimeConfig: {
     // JWT claims
@@ -92,24 +90,6 @@ export default defineNuxtConfig({
     },
   },
 
-  hooks: {
-    'vite:extendConfig' (config, { isClient }) {
-      if (!isClient) return
-      const renderBuiltUrl = config.experimental!.renderBuiltUrl!
-      const r = (filename: string) => './' + relative('_nuxt', filename)
-      config.experimental!.renderBuiltUrl = (path, type) => {
-        if (type.hostType === 'js' && path.endsWith('css')) {
-          return {
-            runtime: `document.querySelector('#__nuxt').__vue_app__?.$nuxt.isHydrating ? "${r(
-              type.hostId
-            )}" : "./${r(path)}"`,
-          }
-        }
-        return renderBuiltUrl(path, type)
-      }
-    },
-  },
-
   htmlValidator: {
     // failOnError: true,
     options: {
@@ -135,5 +115,6 @@ export default defineNuxtConfig({
     '~/modules/components-chunk',
     '~/modules/dedupe-hoisted',
     '~/modules/sitemap',
+    '~/modules/prefetch-fix',
   ],
 })
