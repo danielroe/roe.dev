@@ -31,6 +31,7 @@
                   $auth.user.avatar === sponsor,
               }"
               loading="lazy"
+              decoding="async"
               :src="sponsor"
               format="webp"
               height="35"
