@@ -6,11 +6,11 @@ export default defineNuxtModule({
   },
   setup () {
     const nuxt = useNuxt()
-    // let dirs: string[]
+    let dirs: string[]
 
-    // nuxt.hook('components:dirs', _dirs => {
-    //   dirs = _dirs.map(d => (typeof d === 'string' ? d : d.path))
-    // })
+    nuxt.hook('components:dirs', _dirs => {
+      dirs = _dirs.map(d => (typeof d === 'string' ? d : d.path))
+    })
 
     const usedComponents = [
       'ContentRendererMarkdown',
@@ -52,19 +52,19 @@ export default defineNuxtModule({
     })
 
     // Use single components chunk
-    // nuxt.hook('vite:extendConfig', (config, { isServer }) => {
-    //   config.build ||= {}
-    //   config.build.rollupOptions ||= {}
-    //   config.build.rollupOptions.output ||= {}
-    //   if (Array.isArray(config.build.rollupOptions.output) || isServer) return
-    //   config.build.rollupOptions.output.manualChunks = id => {
-    //     if (
-    //       (id.includes('@nuxt/content') || id.includes('ProseImg')) &&
-    //       dirs.some(dir => id.includes(dir))
-    //     ) {
-    //       return 'components-chunk'
-    //     }
-    //   }
-    // })
+    nuxt.hook('vite:extendConfig', (config, { isServer }) => {
+      config.build ||= {}
+      config.build.rollupOptions ||= {}
+      config.build.rollupOptions.output ||= {}
+      if (Array.isArray(config.build.rollupOptions.output) || isServer) return
+      config.build.rollupOptions.output.manualChunks = id => {
+        if (
+          (id.includes('@nuxt/content') || id.includes('ProseImg')) &&
+          dirs.some(dir => id.includes(dir))
+        ) {
+          return 'components-chunk'
+        }
+      }
+    })
   },
 })
