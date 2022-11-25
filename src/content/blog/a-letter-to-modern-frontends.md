@@ -1,10 +1,10 @@
 ---
-title: A letter about Modern Frontends
+title: A letter to Modern Frontends
 date: '2022-11-25T18:00:00.000Z'
 tags:
   - conference
   - letter
-description: A letter about Modern Frontends
+description: A letter to Modern Frontends
 skip_dev: true
 ---
 
