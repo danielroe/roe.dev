@@ -11,6 +11,7 @@ async function getMarkdownArticles() {
   const articles = []
   await iterateOnDirectory('./src/content/blog', (path, contents) => {
     if (!/\.md$/.test(path)) return
+    if (contents.includes('skip_dev')) return
     const slug = path.match(/\/[^/]*$/)?.[0].slice(1, -3)
     articles.push({
       body_markdown: contents
