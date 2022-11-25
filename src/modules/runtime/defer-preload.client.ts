@@ -22,13 +22,11 @@ export default defineNuxtPlugin(nuxtApp => {
     // @ts-expect-error
     window.__mounted = true
 
-    addEventListener('load', () => {
-      setTimeout(() => {
-        requestIdleCallback(() => {
-          finalise()
-          preloadComponents(componentNames)
-        })
-      }, 500)
+    requestIdleCallback(() => {
+      finalise()
+    })
+    requestIdleCallback(() => {
+      preloadComponents('ContentRendererMarkdown')
     })
   })
 })
