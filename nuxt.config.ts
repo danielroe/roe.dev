@@ -24,6 +24,12 @@ export default defineNuxtConfig({
     },
   },
 
+  vite: {
+    define: {
+      'process.env.prerender': 'false'
+    }
+  },
+
   experimental: { payloadExtraction: true },
 
   sourcemap: false,
@@ -33,7 +39,7 @@ export default defineNuxtConfig({
   srcDir: 'src',
 
   build: {
-    transpile: [/content-edge/],
+    transpile: [/content-edge/, /image-edge/],
   },
 
   nitro: {
