@@ -1,4 +1,4 @@
-import { addPlugin, createResolver, defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { defineNuxtModule, useNuxt } from '@nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
@@ -51,6 +51,7 @@ export default defineNuxtModule({
       }
     })
 
+    // Use single components chunk
     nuxt.hook('vite:extendConfig', (config, { isServer }) => {
       config.build ||= {}
       config.build.rollupOptions ||= {}
@@ -59,29 +60,11 @@ export default defineNuxtModule({
       config.build.rollupOptions.output.manualChunks = id => {
         if (
           (id.includes('@nuxt/content') || id.includes('ProseImg')) &&
-          dirs.some(dir => id.includes(dir)) &&
-          !id.includes('ContentRendererMarkdown')
+          dirs.some(dir => id.includes(dir))
         ) {
           return 'components-chunk'
         }
       }
-    })
-
-    nuxt.hook('build:manifest', manifest => {
-      for (const file in manifest) {
-        manifest[file].imports = manifest[file].imports?.filter(
-          i => !i.includes('ContentRendererMarkdown')
-        )
-        manifest[file].dynamicImports = manifest[file].dynamicImports?.filter(
-          i => !i.includes('ContentRendererMarkdown')
-        )
-      }
-    })
-
-    const { resolve } = createResolver(import.meta.url)
-    addPlugin({
-      src: resolve('./runtime/remove-renderer.server.ts'),
-      mode: 'server',
     })
   },
 })
