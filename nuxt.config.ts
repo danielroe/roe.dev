@@ -26,8 +26,8 @@ export default defineNuxtConfig({
 
   vite: {
     define: {
-      'process.env.prerender': 'false'
-    }
+      'process.env.prerender': 'false',
+    },
   },
 
   experimental: { payloadExtraction: true },
@@ -115,5 +115,6 @@ export default defineNuxtConfig({
     '~/modules/components-chunk',
     '~/modules/dedupe-hoisted',
     '~/modules/sitemap',
+    '~/modules/reduce-chunks',
   ],
 })
