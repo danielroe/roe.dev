@@ -18,7 +18,7 @@ export default defineNuxtPlugin(nuxtApp => {
       })
   )
 
-  nuxtApp.hook('app:mounted', () => {
+  nuxtApp.hook('app:suspense:resolve', () => {
     // @ts-expect-error
     window.__mounted = true
 
