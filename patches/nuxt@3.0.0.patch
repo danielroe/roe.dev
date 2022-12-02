@@ -242,7 +242,7 @@ index 6116282d2527e607b1fe2cce24ebeb9c0a1a67df..79004ec6e447443c2e8ac67a6ade5dee
 +              });
 +            }
 +            if (nuxtApp.isHydrating) {
-+              nuxtApp.hook("app:suspense:resolve", registerCallback);
++              nuxtApp.hook("app:suspense:resolve", () => setTimeout(registerCallback, 50));
 +            } else {
 +              registerCallback();
 +            }
