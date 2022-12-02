@@ -1,5 +1,3 @@
-import { componentNames } from '#components'
-
 export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter()
   const resolves: Array<() => void> = []
@@ -19,14 +17,8 @@ export default defineNuxtPlugin(nuxtApp => {
   )
 
   nuxtApp.hook('app:suspense:resolve', () => {
-    // @ts-expect-error
-    window.__mounted = true
-
     requestIdleCallback(() => {
       finalise()
-    })
-    requestIdleCallback(() => {
-      preloadComponents('ContentRendererMarkdown')
     })
   })
 })
