@@ -27,7 +27,7 @@ specifiers:
   happy-dom: 7.7.2
   husky: 8.0.2
   jose: 4.11.1
-  lint-staged: 13.0.4
+  lint-staged: 13.1.0
   magic-regexp: 0.6.1
   nuxt: npm:nuxt3@3.0.1-rc.0-27833302.52421a9
   nuxt-plausible: 0.1.2
@@ -74,7 +74,7 @@ devDependencies:
   eslint-plugin-prettier: 4.2.1_nrhoyyjffvfyk4vtlt5destxgm
   happy-dom: 7.7.2
   husky: 8.0.2
-  lint-staged: 13.0.4
+  lint-staged: 13.1.0
   magic-regexp: 0.6.1
   nuxt: /nuxt3/3.0.1-rc.0-27833302.52421a9_46loyvnhmqy32fqilthuhuywui
   playwright: 1.28.1
@@ -5712,8 +5712,8 @@ packages:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
 
-  /lint-staged/13.0.4:
-    resolution: {integrity: sha512-HxlHCXoYRsq9QCby5wFozmZW00hMs/9e3l+/dz6Qr8Kle4UH0kJTdABAbqhzG+3pcG6QjL9kz7NgGBfph+a5dw==}
+  /lint-staged/13.1.0:
+    resolution: {integrity: sha512-pn/sR8IrcF/T0vpWLilih8jmVouMlxqXxKuAojmbiGX5n/gDnz+abdPptlj0vYnbfE0SQNl3CY/HwtM0+yfOVQ==}
     engines: {node: ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
@@ -6553,7 +6553,7 @@ packages:
       acorn: 8.8.1
       pathe: 1.0.0
       pkg-types: 1.0.1
-      ufo: 1.0.0
+      ufo: 1.0.1
 
   /mlly/1.0.0:
     resolution: {integrity: sha512-QL108Hwt+u9bXdWgOI0dhzZfACovn5Aen4Xvc8Jasd9ouRH4NjnrXEiyP3nVvJo91zPlYjVRckta0Nt2zfoR6g==}
@@ -7530,7 +7530,7 @@ packages:
     dependencies:
       icss-utils: 5.1.0_postcss@8.4.19
       postcss: 8.4.19
-      postcss-selector-parser: 6.0.10
+      postcss-selector-parser: 6.0.11
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -7541,7 +7541,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.19
-      postcss-selector-parser: 6.0.10
+      postcss-selector-parser: 6.0.11
     dev: true
 
   /postcss-modules-values/4.0.0_postcss@8.4.19:
@@ -8572,6 +8572,7 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /space-separated-tokens/2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
@@ -9324,6 +9325,7 @@ packages:
 
   /ufo/1.0.0:
     resolution: {integrity: sha512-DRty0ZBNlJ2R59y4mEupJRKLbkLQsc4qtxjpQv78AwEDuBkaUogMc2LkeqW3HddFlw6NwnXYfdThEZOiNgkmmQ==}
+    dev: false
 
   /ufo/1.0.1:
     resolution: {integrity: sha512-boAm74ubXHY7KJQZLlXrtMz52qFvpsbOxDcZOnw/Wf+LS4Mmyu7JxmzD4tDLtUQtmZECypJ0FrCz4QIe6dvKRA==}
