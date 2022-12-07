@@ -4,7 +4,7 @@ specifiers:
   '@commitlint/cli': 17.3.0
   '@commitlint/config-conventional': 17.3.0
   '@nuxt/content': 2.2.2
-  '@nuxt/image-edge': 1.0.0-27827328.bc9ddc0
+  '@nuxt/image-edge': 1.0.0-27840416.dc1ed65
   '@nuxt/kit': npm:@nuxt/kit-edge@3.0.1-rc.0-27838776.d0c0cd7
   '@nuxtjs/color-mode': 3.2.0
   '@nuxtjs/eslint-config': 12.0.0
@@ -44,7 +44,7 @@ specifiers:
 
 dependencies:
   '@nuxt/content': 2.2.2
-  '@nuxt/image-edge': 1.0.0-27827328.bc9ddc0
+  '@nuxt/image-edge': 1.0.0-27840416.dc1ed65
   '@nuxt/kit': /@nuxt/kit-edge/3.0.1-rc.0-27838776.d0c0cd7
   '@nuxtjs/fontaine': 0.2.3
   '@nuxtjs/web-vitals': 0.2.2
@@ -794,8 +794,8 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: true
 
-  /@nuxt/image-edge/1.0.0-27827328.bc9ddc0:
-    resolution: {integrity: sha512-8fy6dSJaH9I5FKPK4EA6ddgUWNkxz2Y1AGIKVbAaRKftyK4y66gHmA+pbPPjb1cgYw6pWoWrnA4JxsHKelD8+A==}
+  /@nuxt/image-edge/1.0.0-27840416.dc1ed65:
+    resolution: {integrity: sha512-r+lRkdAeB49wCpYmZAHWrhXNtjTSt3kz8MuPoVPpZB40FOVEpPCIQF8dBI5tXM19YOg76yFCdvpt1TFq3irA7g==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       '@nuxt/kit': 3.0.0
@@ -806,7 +806,7 @@ packages:
       node-fetch-native: 1.0.1
       ohash: 1.0.0
       pathe: 1.0.0
-      ufo: 1.0.0
+      ufo: 1.0.1
     optionalDependencies:
       ipx: 1.0.0-2
     transitivePeerDependencies:
@@ -3130,6 +3130,7 @@ packages:
 
   /destr/1.2.1:
     resolution: {integrity: sha512-ud8w0qMLlci6iFG7CNgeRr8OcbUWMsbfjtWft1eJ5Luqrz/M8Ebqk/KCzne8rKUlIQWWfLv0wD6QHrqOf4GshA==}
+    dev: false
 
   /destr/1.2.2:
     resolution: {integrity: sha512-lrbCJwD9saUQrqUfXvl6qoM+QN3W7tLV5pAOs+OqOmopCCz/JkE05MHedJR1xfk4IAnZuJXPVuN5+7jNA2ZCiA==}
@@ -4691,7 +4692,7 @@ packages:
     resolution: {integrity: sha512-gDCGpRvjchZW2JBlTqbJ9IOs+mdkXXuwSQkSye+jubHAv/UhdamKqoQvd4RFgyBNjHSId8Y+b10UdTcPlP/V+w==}
     dependencies:
       cookie-es: 0.5.0
-      destr: 1.2.1
+      destr: 1.2.2
       radix3: 1.0.0
       ufo: 1.0.1
 
@@ -5153,7 +5154,7 @@ packages:
     dependencies:
       consola: 2.15.3
       defu: 6.1.1
-      destr: 1.2.1
+      destr: 1.2.2
       etag: 1.8.1
       image-meta: 0.1.1
       listhen: 1.0.1
