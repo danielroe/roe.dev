@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@commitlint/cli': 17.3.0
   '@commitlint/config-conventional': 17.3.0
-  '@nuxt/content': 2.2.2
+  '@nuxt/content': 2.3.0
   '@nuxt/image-edge': 1.0.0-27840416.dc1ed65
   '@nuxt/kit': npm:@nuxt/kit-edge@3.0.1-rc.0-27848798.0cb9a4c
   '@nuxtjs/color-mode': 3.2.0
@@ -43,7 +43,7 @@ specifiers:
   vitest: 0.25.8
 
 dependencies:
-  '@nuxt/content': 2.2.2
+  '@nuxt/content': 2.3.0
   '@nuxt/image-edge': 1.0.0-27840416.dc1ed65
   '@nuxt/kit': /@nuxt/kit-edge/3.0.1-rc.0-27848798.0cb9a4c
   '@nuxtjs/fontaine': 0.2.3
@@ -924,18 +924,18 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@nuxt/content/2.2.2:
-    resolution: {integrity: sha512-qHkyeD0cVRjd+KJH82+V4Twn1QTJh43m9VGMjljLUvZVdFGxU/ZAe4gq0rdTbi8CtCZNvcR9vvNApYjOP1LNYA==}
+  /@nuxt/content/2.3.0:
+    resolution: {integrity: sha512-7IudXOiycHXWxRDe7tWFwnIVT6bp0YG5O4wttCYYd7cvyjX3k6d3zD2j1IkjJMhfqU2PWQ/Wd+A2+oeiLNg3gA==}
     dependencies:
       '@nuxt/kit': 3.0.0
       consola: 2.15.3
       defu: 6.1.1
-      destr: 1.2.1
+      destr: 1.2.2
       detab: 3.0.2
       html-tags: 3.2.0
       json5: 2.2.1
       knitwork: 1.0.0
-      listhen: 1.0.0
+      listhen: 1.0.1
       mdast-util-to-hast: 12.2.4
       mdurl: 1.0.1
       ohash: 1.0.0
@@ -948,15 +948,15 @@ packages:
       rehype-sort-attributes: 4.0.0
       remark-emoji: 3.0.2
       remark-gfm: 3.0.1
-      remark-mdc: 1.1.1
+      remark-mdc: 1.1.3
       remark-parse: 10.0.1
       remark-rehype: 10.1.0
       remark-squeeze-paragraphs: 5.0.1
       scule: 1.0.0
       shiki-es: 0.1.2
       slugify: 1.6.5
-      socket.io-client: 4.5.3
-      ufo: 1.0.0
+      socket.io-client: 4.5.4
+      ufo: 1.0.1
       unified: 10.1.2
       unist-builder: 3.0.0
       unist-util-position: 4.0.3
@@ -3310,10 +3310,6 @@ packages:
   /dequal/2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
-    dev: false
-
-  /destr/1.2.1:
-    resolution: {integrity: sha512-ud8w0qMLlci6iFG7CNgeRr8OcbUWMsbfjtWft1eJ5Luqrz/M8Ebqk/KCzne8rKUlIQWWfLv0wD6QHrqOf4GshA==}
     dev: false
 
   /destr/1.2.2:
@@ -5719,19 +5715,6 @@ packages:
       - supports-color
     dev: true
 
-  /listhen/1.0.0:
-    resolution: {integrity: sha512-frdf7TVqT/JSHzRjEuo/vWIgbBYzEuY3oeTq8Yv1XkQVTKDPs2M4yotXICqYZYj2QxbkqKssSo8Wa6QCtBnFhg==}
-    dependencies:
-      clipboardy: 3.0.0
-      colorette: 2.0.19
-      defu: 6.1.1
-      get-port-please: 2.6.1
-      http-shutdown: 1.2.2
-      ip-regex: 5.0.0
-      node-forge: 1.3.1
-      ufo: 1.0.1
-    dev: false
-
   /listhen/1.0.1:
     resolution: {integrity: sha512-RBzBGHMCc5wP8J5Vf8WgF4CAJH8dWHi9LaKB7vfzZt54CiH/0dp01rudy2hFD9wCrTM+UfxFVnn5wTIiY+Qhiw==}
     dependencies:
@@ -8078,8 +8061,8 @@ packages:
       - supports-color
     dev: false
 
-  /remark-mdc/1.1.1:
-    resolution: {integrity: sha512-gqpNtzkJfe+UN6flCD2ByJYK7z5z1Hk6q61P/a5TD15kYEwrGNiXeJjs4rmhp1KhSdCh+dz2knwWQ6A0JYw8ZA==}
+  /remark-mdc/1.1.3:
+    resolution: {integrity: sha512-ilYSkkQJhu5cUCEE2CJEncoMDoarP32ugfJpFWghXbnv3sWI3j2HtJuArc9tZzxN4ID6fngio3d8N87QfQAnRQ==}
     dependencies:
       flat: 5.0.2
       js-yaml: 4.1.0
@@ -8091,7 +8074,7 @@ packages:
       micromark-factory-whitespace: 1.0.0
       micromark-util-character: 1.1.0
       parse-entities: 4.0.0
-      scule: 0.3.2
+      scule: 1.0.0
       stringify-entities: 4.0.3
       unist-util-visit: 4.1.1
       unist-util-visit-parents: 5.1.1
@@ -8504,8 +8487,8 @@ packages:
     resolution: {integrity: sha512-V21+XeNni+tTyiST1MHsa84AQhT1aFZipzPpOFAVB8DkHzwJyjjAmt9bgwnuZiZWnIbMo2duE29wybxv/7HWUw==}
     dev: true
 
-  /socket.io-client/4.5.3:
-    resolution: {integrity: sha512-I/hqDYpQ6JKwtJOf5ikM+Qz+YujZPMEl6qBLhxiP0nX+TfXKhW4KZZG8lamrD6Y5ngjmYHreESVasVCgi5Kl3A==}
+  /socket.io-client/4.5.4:
+    resolution: {integrity: sha512-ZpKteoA06RzkD32IbqILZ+Cnst4xewU7ZYK12aS1mzHftFFjpoMz69IuhP/nL25pJfao/amoPI527KnuhFm01g==}
     engines: {node: '>=10.0.0'}
     dependencies:
       '@socket.io/component-emitter': 3.1.0
