@@ -12,7 +12,7 @@ specifiers:
   '@nuxtjs/eslint-module': 3.1.0
   '@nuxtjs/fontaine': 0.2.3
   '@nuxtjs/html-validator': 1.2.3
-  '@nuxtjs/tailwindcss': 6.1.3
+  '@nuxtjs/tailwindcss': 6.2.0
   '@nuxtjs/web-vitals': 0.2.2
   '@playwright/test': 1.29.0
   '@types/node': 18.11.17
@@ -62,7 +62,7 @@ devDependencies:
   '@nuxtjs/eslint-config-typescript': 12.0.0_eslint@8.30.0
   '@nuxtjs/eslint-module': 3.1.0_eslint@8.30.0
   '@nuxtjs/html-validator': 1.2.3
-  '@nuxtjs/tailwindcss': 6.1.3
+  '@nuxtjs/tailwindcss': 6.2.0
   '@playwright/test': 1.29.0
   '@types/node': 18.11.17
   '@vitejs/plugin-vue': 4.0.0
@@ -559,6 +559,17 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+    dev: true
+
+  /@csstools/selector-specificity/2.0.2_2xshye3abirqjlplmebvmaxyna:
+    resolution: {integrity: sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==}
+    engines: {node: ^12 || ^14 || >=16}
+    peerDependencies:
+      postcss: ^8.2
+      postcss-selector-parser: ^6.0.10
+    dependencies:
+      postcss: 8.4.20
+      postcss-selector-parser: 6.0.11
     dev: true
 
   /@csstools/selector-specificity/2.0.2_tbwh2mpcdwdeb2slx6bobindua:
@@ -1356,20 +1367,19 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxtjs/tailwindcss/6.1.3:
-    resolution: {integrity: sha512-XgoltsFhpX5SCxgUA9cEyLuKyH9xkjlfT+npDQNhSW71/BpeNPmmtjyD+o5ShAvyiZD2AzvZ0/P/eMNDfT33fA==}
+  /@nuxtjs/tailwindcss/6.2.0:
+    resolution: {integrity: sha512-/075zKwpXmRpZlVTlJetb0BY+YCdZuCE0n2JEKP+V0bb64ZuuPRSfq6XHPXiVbo7NRI373OZqYKckJu7VtY/aQ==}
     dependencies:
       '@nuxt/kit': 3.0.0
       '@nuxt/postcss8': 1.1.3
-      autoprefixer: 10.4.13_postcss@8.4.19
-      chalk: 5.1.2
+      autoprefixer: 10.4.13_postcss@8.4.20
+      chalk: 5.2.0
       clear-module: 4.1.2
       consola: 2.15.3
       defu: 6.1.1
-      h3: 0.8.6
-      postcss: 8.4.19
-      postcss-custom-properties: 12.1.10_postcss@8.4.19
-      postcss-nesting: 10.2.0_postcss@8.4.19
+      postcss: 8.4.20
+      postcss-custom-properties: 12.1.10_postcss@8.4.20
+      postcss-nesting: 10.2.0_postcss@8.4.20
       tailwind-config-viewer: 1.7.2_tailwindcss@3.2.4
       tailwindcss: 3.2.4
       ufo: 0.8.6
@@ -2315,22 +2325,6 @@ packages:
   /at-least-node/1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
-    dev: true
-
-  /autoprefixer/10.4.13_postcss@8.4.19:
-    resolution: {integrity: sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg==}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.1.0
-    dependencies:
-      browserslist: 4.21.4
-      caniuse-lite: 1.0.30001431
-      fraction.js: 4.2.0
-      normalize-range: 0.1.2
-      picocolors: 1.0.0
-      postcss: 8.4.19
-      postcss-value-parser: 4.2.0
     dev: true
 
   /autoprefixer/10.4.13_postcss@8.4.20:
@@ -4691,15 +4685,6 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       duplexer: 0.1.2
-    dev: true
-
-  /h3/0.8.6:
-    resolution: {integrity: sha512-CSWNOKa3QGo67rFU2PhbFTp0uPJtilNji2Z0pMiSRQt3+OkIW0u3E1WMJqIycLqaTgb9JyFqH/S4mcTyyGtvyQ==}
-    dependencies:
-      cookie-es: 0.5.0
-      destr: 1.2.2
-      radix3: 0.2.1
-      ufo: 0.8.6
     dev: true
 
   /h3/1.0.1:
@@ -7293,13 +7278,13 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /postcss-custom-properties/12.1.10_postcss@8.4.19:
+  /postcss-custom-properties/12.1.10_postcss@8.4.20:
     resolution: {integrity: sha512-U3BHdgrYhCrwTVcByFHs9EOBoqcKq4Lf3kXwbTi4hhq0qWhl/pDWq2THbv/ICX/Fl9KqeHBb8OVrTf2OaYF07A==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.2
     dependencies:
-      postcss: 8.4.19
+      postcss: 8.4.20
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -7555,14 +7540,14 @@ packages:
       postcss-selector-parser: 6.0.11
     dev: true
 
-  /postcss-nesting/10.2.0_postcss@8.4.19:
+  /postcss-nesting/10.2.0_postcss@8.4.20:
     resolution: {integrity: sha512-EwMkYchxiDiKUhlJGzWsD9b2zvq/r2SSubcRrgP+jujMXFzqvANLt16lJANC+5uZ6hjI7lpRmI6O8JIl+8l1KA==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.2
     dependencies:
-      '@csstools/selector-specificity': 2.0.2_tbwh2mpcdwdeb2slx6bobindua
-      postcss: 8.4.19
+      '@csstools/selector-specificity': 2.0.2_2xshye3abirqjlplmebvmaxyna
+      postcss: 8.4.20
       postcss-selector-parser: 6.0.11
     dev: true
 
@@ -7872,10 +7857,6 @@ packages:
   /quick-lru/5.1.1:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
-    dev: true
-
-  /radix3/0.2.1:
-    resolution: {integrity: sha512-FnhArTl5Tq7dodiLeSPKrDUyCQuJqEncP8cKdyy399g8F/cz7GH6FmzA3Rkosu2IZMkpswFFwXfb2ERSiL06pg==}
     dev: true
 
   /radix3/1.0.0:
