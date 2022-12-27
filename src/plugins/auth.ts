@@ -27,7 +27,8 @@ export default defineNuxtPlugin(nuxtApp => {
   })
 
   nuxtApp.hook('app:mounted', () => {
-    auth.login()
+    if (useCookie('token').value) auth.login()
+    else auth.status = 'logged-out'
   })
 
   return {
