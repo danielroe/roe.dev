@@ -35,7 +35,7 @@ specifiers:
   postcss-html: 1.5.0
   prettier: 2.8.1
   prism-themes: 1.9.0
-  stylelint: 14.16.0
+  stylelint: 14.16.1
   stylelint-config-prettier: 9.0.4
   stylelint-config-recommended-vue: 1.4.0
   stylelint-config-standard: 29.0.0
@@ -76,14 +76,14 @@ devDependencies:
   husky: 8.0.2
   lint-staged: 13.1.0
   magic-regexp: 0.6.1
-  nuxt: /nuxt3/3.0.1-rc.0-27863365.da6fa9a_nrdtckhqc72xwamelyjfe52k7m
+  nuxt: /nuxt3/3.0.1-rc.0-27863365.da6fa9a_offohnstoskmxwfvsg6po5ctde
   playwright: 1.29.1
   postcss-html: 1.5.0
   prettier: 2.8.1
-  stylelint: 14.16.0
-  stylelint-config-prettier: 9.0.4_stylelint@14.16.0
-  stylelint-config-recommended-vue: 1.4.0_bto6pmslw3cibsiuq6smxboytq
-  stylelint-config-standard: 29.0.0_stylelint@14.16.0
+  stylelint: 14.16.1
+  stylelint-config-prettier: 9.0.4_stylelint@14.16.1
+  stylelint-config-recommended-vue: 1.4.0_kbto3rg3njmczth2rrsgfnlsqa
+  stylelint-config-standard: 29.0.0_stylelint@14.16.1
   vitest: 0.26.2_happy-dom@8.1.1
 
 packages:
@@ -569,17 +569,6 @@ packages:
       postcss-selector-parser: ^6.0.10
     dependencies:
       postcss: 8.4.20
-      postcss-selector-parser: 6.0.11
-    dev: true
-
-  /@csstools/selector-specificity/2.0.2_tbwh2mpcdwdeb2slx6bobindua:
-    resolution: {integrity: sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==}
-    engines: {node: ^12 || ^14 || >=16}
-    peerDependencies:
-      postcss: ^8.2
-      postcss-selector-parser: ^6.0.10
-    dependencies:
-      postcss: 8.4.19
       postcss-selector-parser: 6.0.11
     dev: true
 
@@ -1195,7 +1184,7 @@ packages:
     resolution: {integrity: sha512-jfpVHxi1AHfNO3D6iD1RJE6fx/7cAzekvG90poIzVawp/L+I4DNdy8pCgqBScJW4bfWOpHeLYbtQQlL/hPmkjw==}
     dev: true
 
-  /@nuxt/vite-builder-edge/3.0.1-rc.0-27863365.da6fa9a_f325p5ykfy74uylizlswabx5zm:
+  /@nuxt/vite-builder-edge/3.0.1-rc.0-27863365.da6fa9a_su4epdq5xeytqnglyrnx5v5t2m:
     resolution: {integrity: sha512-doj87x5Y7jBQLpKdYae4ch5MhXhbFShfvsULfi+/jsvQlcSbFSYL4LyM8Sajv2bG92nwv791E+qYPpX2ntAM8w==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     peerDependencies:
@@ -1232,7 +1221,7 @@ packages:
       unplugin: 1.0.1
       vite: 4.0.3_@types+node@18.11.18
       vite-node: 0.26.2_@types+node@18.11.18
-      vite-plugin-checker: 0.5.3_5g6hjcrnqjdqtzxeorgyz2v3da
+      vite-plugin-checker: 0.5.3_oqyk6eah6igivwsegab5wd7zq4
       vue: 3.2.45
       vue-bundle-renderer: 1.0.0
     transitivePeerDependencies:
@@ -6824,7 +6813,7 @@ packages:
       - supports-color
     dev: false
 
-  /nuxt3/3.0.1-rc.0-27863365.da6fa9a_nrdtckhqc72xwamelyjfe52k7m:
+  /nuxt3/3.0.1-rc.0-27863365.da6fa9a_offohnstoskmxwfvsg6po5ctde:
     resolution: {integrity: sha512-lg/Z09JyyjWZv5NmcTMXVwhULEj7KnaTAUBqvzPZgHDCiAakv6EV3N6R9tE8V6GKdRV7JNmA/4y4mPQcjTIhlA==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     hasBin: true
@@ -6834,7 +6823,7 @@ packages:
       '@nuxt/schema': /@nuxt/schema-edge/3.0.1-rc.0-27863365.da6fa9a
       '@nuxt/telemetry': 2.1.8
       '@nuxt/ui-templates': 1.0.0
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.1-rc.0-27863365.da6fa9a_f325p5ykfy74uylizlswabx5zm
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.1-rc.0-27863365.da6fa9a_su4epdq5xeytqnglyrnx5v5t2m
       '@unhead/ssr': 1.0.14
       '@vue/reactivity': 3.2.45
       '@vue/shared': 3.2.45
@@ -7697,6 +7686,15 @@ packages:
       postcss: ^8.3.3
     dependencies:
       postcss: 8.4.19
+    dev: true
+
+  /postcss-safe-parser/6.0.0_postcss@8.4.20:
+    resolution: {integrity: sha512-FARHN8pwH+WiS2OPCxJI8FuRJpTVnn6ZNFiqAM2aeW2LwTHWWmWgIyKC6cUo0L8aeKiF/14MNvnpls6R2PBeMQ==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.3.3
+    dependencies:
+      postcss: 8.4.20
     dev: true
 
   /postcss-selector-parser/6.0.10:
@@ -8734,7 +8732,7 @@ packages:
       postcss-selector-parser: 6.0.11
     dev: true
 
-  /stylelint-config-html/1.1.0_bto6pmslw3cibsiuq6smxboytq:
+  /stylelint-config-html/1.1.0_kbto3rg3njmczth2rrsgfnlsqa:
     resolution: {integrity: sha512-IZv4IVESjKLumUGi+HWeb7skgO6/g4VMuAYrJdlqQFndgbj6WJAXPhaysvBiXefX79upBdQVumgYcdd17gCpjQ==}
     engines: {node: ^12 || >=14}
     peerDependencies:
@@ -8742,20 +8740,20 @@ packages:
       stylelint: '>=14.0.0'
     dependencies:
       postcss-html: 1.5.0
-      stylelint: 14.16.0
+      stylelint: 14.16.1
     dev: true
 
-  /stylelint-config-prettier/9.0.4_stylelint@14.16.0:
+  /stylelint-config-prettier/9.0.4_stylelint@14.16.1:
     resolution: {integrity: sha512-38nIGTGpFOiK5LjJ8Ma1yUgpKENxoKSOhbDNSemY7Ep0VsJoXIW9Iq/2hSt699oB9tReynfWicTAoIHiq8Rvbg==}
     engines: {node: '>= 12'}
     hasBin: true
     peerDependencies:
       stylelint: '>=11.0.0'
     dependencies:
-      stylelint: 14.16.0
+      stylelint: 14.16.1
     dev: true
 
-  /stylelint-config-recommended-vue/1.4.0_bto6pmslw3cibsiuq6smxboytq:
+  /stylelint-config-recommended-vue/1.4.0_kbto3rg3njmczth2rrsgfnlsqa:
     resolution: {integrity: sha512-DVJqyX2KvMCn9U0+keL12r7xlsH26K4Vg8NrIZuq5MoF7g82DpMp326Om4E0Q+Il1o+bTHuUyejf2XAI0iD04Q==}
     engines: {node: ^12 || >=14}
     peerDependencies:
@@ -8764,34 +8762,34 @@ packages:
     dependencies:
       postcss-html: 1.5.0
       semver: 7.3.8
-      stylelint: 14.16.0
-      stylelint-config-html: 1.1.0_bto6pmslw3cibsiuq6smxboytq
-      stylelint-config-recommended: 9.0.0_stylelint@14.16.0
+      stylelint: 14.16.1
+      stylelint-config-html: 1.1.0_kbto3rg3njmczth2rrsgfnlsqa
+      stylelint-config-recommended: 9.0.0_stylelint@14.16.1
     dev: true
 
-  /stylelint-config-recommended/9.0.0_stylelint@14.16.0:
+  /stylelint-config-recommended/9.0.0_stylelint@14.16.1:
     resolution: {integrity: sha512-9YQSrJq4NvvRuTbzDsWX3rrFOzOlYBmZP+o513BJN/yfEmGSr0AxdvrWs0P/ilSpVV/wisamAHu5XSk8Rcf4CQ==}
     peerDependencies:
       stylelint: ^14.10.0
     dependencies:
-      stylelint: 14.16.0
+      stylelint: 14.16.1
     dev: true
 
-  /stylelint-config-standard/29.0.0_stylelint@14.16.0:
+  /stylelint-config-standard/29.0.0_stylelint@14.16.1:
     resolution: {integrity: sha512-uy8tZLbfq6ZrXy4JKu3W+7lYLgRQBxYTUUB88vPgQ+ZzAxdrvcaSUW9hOMNLYBnwH+9Kkj19M2DHdZ4gKwI7tg==}
     peerDependencies:
       stylelint: ^14.14.0
     dependencies:
-      stylelint: 14.16.0
-      stylelint-config-recommended: 9.0.0_stylelint@14.16.0
+      stylelint: 14.16.1
+      stylelint-config-recommended: 9.0.0_stylelint@14.16.1
     dev: true
 
-  /stylelint/14.16.0:
-    resolution: {integrity: sha512-X6uTi9DcxjzLV8ZUAjit1vsRtSwcls0nl07c9rqOPzvpA8IvTX/xWEkBRowS0ffevRrqkHa/ThDEu86u73FQDg==}
+  /stylelint/14.16.1:
+    resolution: {integrity: sha512-ErlzR/T3hhbV+a925/gbfc3f3Fep9/bnspMiJPorfGEmcBbXdS+oo6LrVtoUZ/w9fqD6o6k7PtUlCOsCRdjX/A==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
-      '@csstools/selector-specificity': 2.0.2_tbwh2mpcdwdeb2slx6bobindua
+      '@csstools/selector-specificity': 2.0.2_2xshye3abirqjlplmebvmaxyna
       balanced-match: 2.0.0
       colord: 2.9.3
       cosmiconfig: 7.1.0
@@ -8804,7 +8802,7 @@ packages:
       globby: 11.1.0
       globjoin: 0.1.4
       html-tags: 3.2.0
-      ignore: 5.2.1
+      ignore: 5.2.4
       import-lazy: 4.0.0
       imurmurhash: 0.1.4
       is-plain-object: 5.0.0
@@ -8814,10 +8812,10 @@ packages:
       micromatch: 4.0.5
       normalize-path: 3.0.0
       picocolors: 1.0.0
-      postcss: 8.4.19
+      postcss: 8.4.20
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.1
-      postcss-safe-parser: 6.0.0_postcss@8.4.19
+      postcss-safe-parser: 6.0.0_postcss@8.4.20
       postcss-selector-parser: 6.0.11
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
@@ -9595,7 +9593,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-checker/0.5.3_5g6hjcrnqjdqtzxeorgyz2v3da:
+  /vite-plugin-checker/0.5.3_oqyk6eah6igivwsegab5wd7zq4:
     resolution: {integrity: sha512-upPESKsQTypC2S7LPjxu9HknOymNSToAAHTYSFHb0at5GKLcN1QGMAR5Hb+7KqZclGMVniXAj7QdhZv+fTx83Q==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -9634,7 +9632,7 @@ packages:
       lodash.pick: 4.4.0
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
-      stylelint: 14.16.0
+      stylelint: 14.16.1
       tiny-invariant: 1.3.1
       vite: 4.0.3_@types+node@18.11.18
       vscode-languageclient: 7.0.0
