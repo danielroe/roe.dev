@@ -108,7 +108,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/content',
-    'nuxt-plausible',
+    '@nuxtjs/plausible',
     '@nuxtjs/fontaine',
     '~/modules/spa-head',
     '~/modules/tree-shake',
