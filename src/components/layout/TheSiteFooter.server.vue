@@ -17,7 +17,7 @@ const links = [
     name: 'Mastodon',
   },
   {
-    link: 'https://roe.dev/feed.xml',
+    link: '/feed.xml',
     name: 'RSS',
   },
 ]
