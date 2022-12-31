@@ -79,6 +79,8 @@ if (process.server) {
       { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
       { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
       { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml' },
+      { rel: 'webmention', href: 'https://webmention.io/roe.dev/webmention' },
+      { rel: 'pingback', href: 'https://webmention.io/roe.dev/xmlrpc' },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',

@@ -28,6 +28,7 @@
     <section v-if="page" :class="$style.blog">
       <StaticMarkdownRender :cache-key="page.title" :value="page" />
     </section>
+    <WebMentions />
   </main>
 </template>
 
