@@ -1,4 +1,5 @@
-import { metadata } from '../metadata.json'
+// @ts-expect-error virtual file
+import { metadata } from '#metadata.json'
 
 export interface ParsedReqs {
   title: string

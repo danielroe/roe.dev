@@ -115,6 +115,7 @@ export default defineNuxtConfig({
     '~/modules/components-chunk',
     '~/modules/dedupe-hoisted',
     '~/modules/sitemap',
+    '~/modules/metadata',
     '~/modules/reduce-chunks',
   ],
 })

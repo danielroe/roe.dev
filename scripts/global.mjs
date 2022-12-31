@@ -20,12 +20,3 @@ export function iterateOnDirectory(directory, callback) {
     callback(path, fs.existsSync(path) && fs.readFileSync(path, 'utf8'))
   )
 }
-
-/**
- * @type {(message: string, filename: string, contents: string) => void} writeFile
- */
-export function writeFile(_message, filename, contents) {
-  if (fs && fs.writeFileSync) {
-    return fs.writeFileSync(filename, contents)
-  }
-}
