@@ -23,10 +23,11 @@ interface WebMention {
 }
 
 const path = `https://roe.dev${useRoute().path}`
-const { data: mentions, pending } = await useFetch(
+const { data: mentions, pending } = useFetch(
   `https://webmention.io/api/mentions.jf2?target=${path}`,
   {
     key: path,
+    lazy: true,
     default: () => [],
     server: false,
     transform: (r: any) => r.children as WebMention[],
