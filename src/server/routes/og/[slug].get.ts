@@ -6,6 +6,8 @@ import { getScreenshot } from '../../utils/_chromium'
 const isDev = process.env.VERCEL_ENV === 'development'
 
 export default defineEventHandler(async event => {
+  if (!process.dev && !process.env.prerender) return
+
   let { slug } = event.context.params
   slug = slug?.replace(/\.jpg$/, '')
 

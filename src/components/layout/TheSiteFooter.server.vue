@@ -16,6 +16,10 @@ const links = [
     link: 'https://mastodon.roe.dev/@daniel',
     name: 'Mastodon',
   },
+  {
+    link: 'https://roe.dev/feed/rss',
+    name: 'RSS',
+  },
 ]
 
 const year = new Date().getFullYear()

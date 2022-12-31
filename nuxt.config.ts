@@ -53,10 +53,13 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/uses', '/og/og.jpg'],
+      routes: ['/', '/uses', '/og/og.jpg', '/feed.xml'],
     },
     hooks: {
       'prerender:generate' (route) {
+        if (route.fileName)
+          route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
+
         if (route.error) {
           process.exit(1)
         }
