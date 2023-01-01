@@ -78,7 +78,7 @@ if (process.server) {
       { rel: 'canonical', href: url },
       { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
       { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
-      { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml' },
+      { rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml' },
       { rel: 'webmention', href: 'https://webmention.io/roe.dev/webmention' },
       { rel: 'pingback', href: 'https://webmention.io/roe.dev/xmlrpc' },
       {

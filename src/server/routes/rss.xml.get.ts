@@ -9,6 +9,7 @@ export default defineEventHandler(async () => {
   const feed = new Feed({
     title: 'Daniel Roe',
     description: 'The personal website of Daniel Roe',
+    feed: 'https://roe.dev/rss.xml',
     id: 'https://roe.dev/',
     link: 'https://roe.dev/blog',
     language: 'en',
@@ -30,10 +31,9 @@ export default defineEventHandler(async () => {
     const blog = metadata[slug]
     feed.addItem({
       title: blog.title,
-      id: slug,
       link: `https://roe.dev/blog/${slug}`,
       description: blog.description,
-      content: blog.html,
+      content: blog.html.replace(/<img src="\//g, '<img src="https://roe.dev/'),
       category: blog.tags.map((tag: string) => ({ name: tag })),
       author: [
         {

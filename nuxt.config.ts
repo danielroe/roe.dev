@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/uses', '/og/og.jpg', '/feed.xml'],
+      routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
     hooks: {
       'prerender:generate' (route) {
@@ -65,6 +65,10 @@ export default defineNuxtConfig({
         }
       },
     },
+  },
+
+  routeRules: {
+    '/feed.xml': { redirect: '/rss.xml' },
   },
 
   content: {
