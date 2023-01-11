@@ -43,7 +43,7 @@ specifiers:
   stylelint-config-recommended-vue: 1.4.0
   stylelint-config-standard: 29.0.0
   tslib: 2.4.1
-  vitest: 0.27.0
+  vitest: 0.27.1
 
 dependencies:
   '@nuxt/content': 2.3.0
@@ -90,7 +90,7 @@ devDependencies:
   stylelint-config-prettier: 9.0.4_stylelint@14.16.1
   stylelint-config-recommended-vue: 1.4.0_kbto3rg3njmczth2rrsgfnlsqa
   stylelint-config-standard: 29.0.0_stylelint@14.16.1
-  vitest: 0.27.0_happy-dom@8.1.3
+  vitest: 0.27.1_happy-dom@8.1.3
 
 packages:
 
@@ -1067,7 +1067,7 @@ packages:
       jiti: 1.16.1
       knitwork: 1.0.0
       lodash.template: 4.5.0
-      mlly: 1.0.0
+      mlly: 1.1.0
       pathe: 1.0.0
       pkg-types: 1.0.1
       scule: 1.0.0
@@ -1229,7 +1229,7 @@ packages:
       ufo: 1.0.1
       unplugin: 1.0.1
       vite: 4.0.4_@types+node@18.11.18
-      vite-node: 0.27.0_@types+node@18.11.18
+      vite-node: 0.27.1_@types+node@18.11.18
       vite-plugin-checker: 0.5.3_iogxmr3r4vdsa3pitircwcmeyu
       vue: 3.2.45
       vue-bundle-renderer: 1.0.0
@@ -1837,12 +1837,6 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@unhead/dom/1.0.14:
-    resolution: {integrity: sha512-AMOOMUNbybHrvtuddy5aEkDibL3grwUCoUT1aHHqfvtEy86t/ftRGKT4T9znx54IxlXN9FnoNpeSOg4D8OP/5w==}
-    dependencies:
-      '@unhead/schema': 1.0.14
-    dev: false
-
   /@unhead/dom/1.0.15:
     resolution: {integrity: sha512-W3P9eGazfQPMZTG4ryb5oOA02Z4o16Jxo8DAihF/7Xmg/FVYY5Up9p9et7Nbb6AKNgt1PEz3Sp0xBaw+F6Uyjw==}
     dependencies:
@@ -2054,8 +2048,8 @@ packages:
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/dom': 1.0.14
-      '@unhead/schema': 1.0.14
+      '@unhead/dom': 1.0.15
+      '@unhead/schema': 1.0.15
       '@unhead/ssr': 1.0.15
       '@unhead/vue': 1.0.14_vue@3.2.45
       vue: 3.2.45
@@ -6528,15 +6522,6 @@ packages:
       ufo: 1.0.1
     dev: false
 
-  /mlly/1.0.0:
-    resolution: {integrity: sha512-QL108Hwt+u9bXdWgOI0dhzZfACovn5Aen4Xvc8Jasd9ouRH4NjnrXEiyP3nVvJo91zPlYjVRckta0Nt2zfoR6g==}
-    dependencies:
-      acorn: 8.8.1
-      pathe: 1.0.0
-      pkg-types: 1.0.1
-      ufo: 1.0.1
-    dev: false
-
   /mlly/1.1.0:
     resolution: {integrity: sha512-cwzBrBfwGC1gYJyfcy8TcZU1f+dbH/T+TuOhtYP2wLv/Fb51/uV7HJQfBPtEupZ2ORLRU1EKFS/QfS3eo9+kBQ==}
     dependencies:
@@ -8386,6 +8371,10 @@ packages:
       get-intrinsic: 1.1.3
       object-inspect: 1.12.2
 
+  /siginfo/2.0.0:
+    resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
+    dev: true
+
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
@@ -8540,6 +8529,10 @@ packages:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
     dev: false
+
+  /stackback/0.0.2:
+    resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
+    dev: true
 
   /standard-as-callback/2.1.0:
     resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
@@ -9472,8 +9465,8 @@ packages:
       vfile-message: 3.1.3
     dev: false
 
-  /vite-node/0.27.0_@types+node@18.11.18:
-    resolution: {integrity: sha512-O1o9joT0qCGx5Om6W0VNLr7M00ttrnFlfZX2d+oxt2T9oZ9DvYSv8kDRhNJDVhAgNgUm3Tc0h/+jppNf3mVKbA==}
+  /vite-node/0.27.1_@types+node@18.11.18:
+    resolution: {integrity: sha512-d6+ue/3NzsfndWaPbYh/bFkHbmAWfDXI4B874zRx+WREnG6CUHUbBC8lKaRYZjeR6gCPN5m1aVNNRXBYICA9XA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     dependencies:
@@ -9575,8 +9568,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.27.0_happy-dom@8.1.3:
-    resolution: {integrity: sha512-BnOa7T6CnXVC6UgcAsvFOZ2Dtvqkt+/Nl6CRgh4qVT70vElf65XwEL6zMRyTF+h2QXJziEkxYdrLo5WCxckMLQ==}
+  /vitest/0.27.1_happy-dom@8.1.3:
+    resolution: {integrity: sha512-1sIpQ1DVFTEn7c1ici1XHcVfdU4nKiBmPtPAtGKJJJLuJjojTv/OHGgcf69P57alM4ty8V4NMv+7Yoi5Cxqx9g==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -9614,7 +9607,8 @@ packages:
       tinypool: 0.3.0
       tinyspy: 1.0.2
       vite: 4.0.4_@types+node@18.11.18
-      vite-node: 0.27.0_@types+node@18.11.18
+      vite-node: 0.27.1_@types+node@18.11.18
+      why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
       - sass
@@ -9811,6 +9805,15 @@ packages:
     hasBin: true
     dependencies:
       isexe: 2.0.0
+
+  /why-is-node-running/2.2.2:
+    resolution: {integrity: sha512-6tSwToZxTOcotxHeA+qGCq1mVzKR3CwcJGmVcY+QE8SHy6TnpFnh8PAvPNHYr7EcuVeG0QSMxtYCuO1ta/G/oA==}
+    engines: {node: '>=8'}
+    hasBin: true
+    dependencies:
+      siginfo: 2.0.0
+      stackback: 0.0.2
+    dev: true
 
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
