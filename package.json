@@ -9,7 +9,7 @@
     "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "test": "echo 'need some unit tests' || vitest run test/unit",
+    "test": "vitest run test/unit",
     "test:types": "nuxi typecheck",
     "test:e2e": "playwright test test/e2e",
     "postinstall": "nuxt prepare && husky install && node ./node_modules/playwright/install.js"
@@ -66,7 +66,8 @@
     "stylelint-config-prettier": "9.0.4",
     "stylelint-config-recommended-vue": "1.4.0",
     "stylelint-config-standard": "29.0.0",
-    "vitest": "0.27.2"
+    "vitest": "0.27.2",
+    "vitest-environment-nuxt": "0.4.2"
   },
   "packageManager": "pnpm@7.25.0"
 }
