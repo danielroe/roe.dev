@@ -44,7 +44,7 @@ specifiers:
   stylelint-config-standard: 29.0.0
   tslib: 2.4.1
   vitest: 0.27.3
-  vitest-environment-nuxt: 0.4.2
+  vitest-environment-nuxt: 0.4.3
 
 dependencies:
   '@nuxt/content': 2.3.0
@@ -92,7 +92,7 @@ devDependencies:
   stylelint-config-recommended-vue: 1.4.0_kbto3rg3njmczth2rrsgfnlsqa
   stylelint-config-standard: 29.0.0_stylelint@14.16.1
   vitest: 0.27.3_happy-dom@8.1.5
-  vitest-environment-nuxt: 0.4.2_vitest@0.27.3
+  vitest-environment-nuxt: 0.4.3_vitest@0.27.3
 
 packages:
 
@@ -4301,10 +4301,6 @@ packages:
   /estree-walker/3.0.1:
     resolution: {integrity: sha512-woY0RUD87WzMBUiZLx8NsYr23N5BKsOMZHhu2hoNRVh6NXGfoiT1KOL8G3UHlJAnEDGmfa5ubNA/AacfG+Kb0g==}
     dev: false
-
-  /estree-walker/3.0.2:
-    resolution: {integrity: sha512-C03BvXCQIH/po+PNPONx/zSM9ziPr9weX8xNhYb/IJtdJ9z+L4z9VKPTB+UTHdmhnIopA2kc419ueyVyHVktwA==}
-    dev: true
 
   /estree-walker/3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
@@ -9713,15 +9709,15 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt/0.4.2_vitest@0.27.3:
-    resolution: {integrity: sha512-Nei9YiGkZaKrpl/r6psWiZqUmqv+lgpv2RILj8q10mkshLh45ouHwxpzPPsf1T/djsjv+IAeJ2UFJSQT+e3cdw==}
+  /vitest-environment-nuxt/0.4.3_vitest@0.27.3:
+    resolution: {integrity: sha512-GyzP9M6m7C85XMW3V3KuLWNXeWU7RXrg68kcvYfT4zPTklsV18rHPFyMoHgzOHEr9BsdYNaqM8tEKfmuR/mKIQ==}
     peerDependencies:
       vitest: ^0.24.5 || ^0.26.0 || ^0.27.0
       vue: ^3.2.45
     dependencies:
       '@nuxt/kit': 3.0.0
       '@vue/test-utils': 2.2.7
-      estree-walker: 3.0.2
+      estree-walker: 3.0.3
       h3: 1.0.2
       happy-dom: 8.1.5
       magic-string: 0.27.0
