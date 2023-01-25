@@ -56,7 +56,7 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
     hooks: {
-      'prerender:generate' (route) {
+      'prerender:generate'(route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
 
@@ -109,6 +109,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'nuxt-vitest',
     'magic-regexp/nuxt',
     '@nuxt/image-edge',
     '@nuxtjs/html-validator',
