@@ -32,7 +32,7 @@ specifiers:
   lint-staged: 13.1.0
   magic-regexp: 0.6.1
   nuxt: npm:nuxt3@3.0.1-rc.0-27909581.f711046
-  nuxt-vitest: 0.6.1
+  nuxt-vitest: 0.6.2
   playwright: 1.30.0
   postcss-html: 1.5.0
   prettier: 2.8.3
@@ -85,7 +85,7 @@ devDependencies:
   happy-dom: 8.1.5
   husky: 8.0.3
   lint-staged: 13.1.0
-  nuxt-vitest: 0.6.1_happy-dom@8.1.5
+  nuxt-vitest: 0.6.2_happy-dom@8.1.5
   postcss-html: 1.5.0
   prettier: 2.8.3
   stylelint: 14.16.1
@@ -2425,12 +2425,12 @@ packages:
       negotiator: 0.6.3
     dev: false
 
-  /acorn-jsx/5.3.2_acorn@8.8.1:
+  /acorn-jsx/5.3.2_acorn@8.8.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.8.1
+      acorn: 8.8.2
 
   /acorn-node/1.8.2:
     resolution: {integrity: sha512-8mt+fslDufLYntIoPAaIMUe/lrbrehIiwmR3t2k9LljIzoigEPF27eLk2hy8zSGzmR/ogr7zbRKINMo1u0yh5A==}
@@ -2688,7 +2688,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001448
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2781,7 +2781,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001448
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -2903,12 +2903,8 @@ packages:
       lodash.uniq: 4.5.0
     dev: false
 
-  /caniuse-lite/1.0.30001444:
-    resolution: {integrity: sha512-ecER9xgJQVMqcrxThKptsW0pPxSae8R2RB87LNa+ivW9ppNWRHEplXcDzkCOP4LYWGj8hunXLqaiC41iBATNyg==}
-
   /caniuse-lite/1.0.30001448:
     resolution: {integrity: sha512-tq2YI+MJnooG96XpbTRYkBxLxklZPOdLmNIOdIhvf7SNJan6u5vCKum8iT7ZfCt70m1GPkuC7P3TtX6UuhupuA==}
-    dev: false
 
   /ccount/2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -4421,8 +4417,8 @@ packages:
     resolution: {integrity: sha512-XwctdmTO6SIvCzd9810yyNzIrOrqNYV9Koizx4C/mRhf9uq0o4yHoCEU/670pOxOL/MSraektvSAji79kX90Vg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.8.1
-      acorn-jsx: 5.3.2_acorn@8.8.1
+      acorn: 8.8.2
+      acorn-jsx: 5.3.2_acorn@8.8.2
       eslint-visitor-keys: 3.3.0
 
   /esprima/4.0.1:
@@ -4903,7 +4899,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 5.1.2
+      minimatch: 5.1.6
       once: 1.4.0
     dev: false
 
@@ -6793,13 +6789,6 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
 
-  /minimatch/5.1.2:
-    resolution: {integrity: sha512-bNH9mmM9qsJ2X4r2Nat1B//1dJVcn3+iBLa3IgqJ7EbGaDNepL9QSHOxN4ng33s52VMMhhIfgCYDk3C4ZmlDAg==}
-    engines: {node: '>=10'}
-    dependencies:
-      brace-expansion: 2.0.1
-    dev: false
-
   /minimatch/5.1.6:
     resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
     engines: {node: '>=10'}
@@ -7143,8 +7132,8 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /nuxt-vitest/0.6.1_happy-dom@8.1.5:
-    resolution: {integrity: sha512-uv9j4Ed6t0Vpj/56WtlqKITLDhKwXM15lPQd2pwzuUBaAqCK8bJq62sdzbAViGz0ECIsD2fQvM4ge96bdpta6Q==}
+  /nuxt-vitest/0.6.2_happy-dom@8.1.5:
+    resolution: {integrity: sha512-6qlK3TaJqwIP+r7pDrC4PbnrXNPrFhsohhwYzBzrVF+3oqOSwOjAgkqWFBYkXps0qcp9HQXubVBWzb9gXZ2JRw==}
     peerDependencies:
       vite: '*'
     dependencies:
@@ -7152,7 +7141,7 @@ packages:
       '@vitest/ui': 0.28.2
       get-port-please: 3.0.1
       vitest: 0.28.2_jzyorot7bkwsrvvc4c7ihp72my
-      vitest-environment-nuxt: 0.6.1_vitest@0.28.2
+      vitest-environment-nuxt: 0.6.2_vitest@0.28.2
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@vitest/browser'
@@ -9048,7 +9037,7 @@ packages:
   /strip-literal/1.0.0:
     resolution: {integrity: sha512-5o4LsH1lzBzO9UFH63AJ2ad2/S2AVx6NtjOcaz+VTT2h1RiRvbipW72z8M/lxEhcPHDBQwpDrnTF7sXy/7OwCQ==}
     dependencies:
-      acorn: 8.8.1
+      acorn: 8.8.2
 
   /style-search/0.1.0:
     resolution: {integrity: sha512-Dj1Okke1C3uKKwQcetra4jSuk0DqbzbYtXipzFlFMZtowbF1x7BKJwB9AayVMyFARvU8EDrZdcax4At/452cAg==}
@@ -9453,7 +9442,7 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 18.11.18
-      acorn: 8.8.1
+      acorn: 8.8.2
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
@@ -9793,7 +9782,7 @@ packages:
       anymatch: 3.1.3
       chokidar: 3.5.3
       destr: 1.2.2
-      h3: 1.0.2
+      h3: 1.1.0
       ioredis: 5.2.4
       listhen: 1.0.2
       mkdir: 0.0.2
@@ -10026,8 +10015,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt/0.6.1_vitest@0.28.2:
-    resolution: {integrity: sha512-kOUbcwWCYlq+0vF+NspZ47NMJMjdh7fLctEf+geyy3OJkNuWgz6CI3U3OUSdHSeIIoF14TjLCO6GlCWDzZE7mA==}
+  /vitest-environment-nuxt/0.6.2_vitest@0.28.2:
+    resolution: {integrity: sha512-l+M+75+cs7flpwEUIZdzLKU+bGOPMeGZfrZb2ggGu2IKG9S71SDowr6KxqM/vX97Lewq9oCFeVAmkwyn/x+fPw==}
     peerDependencies:
       vitest: ^0.24.5 || ^0.26.0 || ^0.27.0 || ^0.28.0
       vue: ^3.2.45
