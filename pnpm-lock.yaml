@@ -45,7 +45,7 @@ specifiers:
   stylelint-config-standard: 29.0.0
   tslib: 2.4.1
   vitest: 0.28.2
-  vitest-environment-nuxt: 0.5.0
+  vitest-environment-nuxt: 0.6.1
 
 dependencies:
   '@nuxt/content': 2.4.0
@@ -94,7 +94,7 @@ devDependencies:
   stylelint-config-recommended-vue: 1.4.0_kbto3rg3njmczth2rrsgfnlsqa
   stylelint-config-standard: 29.0.0_stylelint@14.16.1
   vitest: 0.28.2_happy-dom@8.1.5
-  vitest-environment-nuxt: 0.5.0_vitest@0.28.2
+  vitest-environment-nuxt: 0.6.1_vitest@0.28.2
 
 packages:
 
@@ -1195,7 +1195,7 @@ packages:
     resolution: {integrity: sha512-wvSjj36blN2XzENFbsRWL9JkcvJljBv2HywftxYQ95uSYmWJYi+hgEgShFj2SMFo7lVYOb9sweXMo2CiZxgS1w==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       consola: 2.15.3
       defu: 6.1.1
       h3: 1.0.2
@@ -1317,6 +1317,7 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
+    dev: false
 
   /@nuxt/kit/3.1.1:
     resolution: {integrity: sha512-wmqVCIuD/te6BKf3YiqWyMumKI5JIpkiv0li/1Y3QHnTkoxyIhLkbFgNcQHuBxJ3eMlk2UjAjAqWiqBHTX54vQ==}
@@ -1444,6 +1445,7 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
+    dev: false
 
   /@nuxt/schema/3.1.1:
     resolution: {integrity: sha512-/KuoCDVGrLD9W7vwuYhu4HbdT/BpbrhA4Pm9dGn7Jah40kHDGqUnJxugvMjt+4suq53rLQyTA0LRDWfFxfxAOQ==}
@@ -1560,7 +1562,7 @@ packages:
   /@nuxtjs/color-mode/3.2.0:
     resolution: {integrity: sha512-isDR01yfadopiHQ/VEVUpyNSPrk5PCjUHS4t1qYRZwuRGefU4s9Iaxf6H9nmr1QFzoMgTm+3T0r/54jLwtpZbA==}
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       lodash.template: 4.5.0
       pathe: 1.0.0
     transitivePeerDependencies:
@@ -1658,7 +1660,7 @@ packages:
   /@nuxtjs/html-validator/1.2.3:
     resolution: {integrity: sha512-SDoqoi3QqcaoFl8yW5Kdqon5rbAgUWZu1cDUEZR85WBl3T2BddXJazrkIg7gq0r2G/hrxSVDHUtaVYvKhq+ILw==}
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       chalk: 5.2.0
       html-validate: 7.10.1
       pathe: 1.0.0
@@ -1675,7 +1677,7 @@ packages:
   /@nuxtjs/plausible/0.2.0:
     resolution: {integrity: sha512-mke+eW94PCca7zK0kNpNA9ULat5JCrBP2JUCmas6ZKpskU3+IaBv2OzWYzWJb/SsungfV9a/dukKbjAJeBTzhQ==}
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       defu: 6.1.1
       pathe: 1.0.0
       plausible-tracker: 0.3.8
@@ -1711,7 +1713,7 @@ packages:
   /@nuxtjs/web-vitals/0.2.2:
     resolution: {integrity: sha512-UfIxBJGDXYnCgchPKt3rN1Tf66gUpRtOyo8gk9V9S2VWp8Q9ylHrwTB+y6ZPW+HRIC4B+KRh+LBIHv9ELycAJQ==}
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       defu: 6.1.1
       pathe: 1.0.0
       ufo: 1.0.1
@@ -7112,7 +7114,7 @@ packages:
     peerDependencies:
       vite: '*'
     dependencies:
-      '@nuxt/kit': 3.1.0
+      '@nuxt/kit': 3.1.1
       '@vitest/ui': 0.28.2
       get-port-please: 3.0.1
       vitest: 0.28.2_jzyorot7bkwsrvvc4c7ihp72my
@@ -9551,7 +9553,7 @@ packages:
   /unenv/1.0.1:
     resolution: {integrity: sha512-08MoQ5+Edg9ckEP5y6vT8R6sOgCsNPxwPA1mKIOyergTtPOOuSyyJnbmF8CdnUplO2TUqSm0s1IysCkylxmndw==}
     dependencies:
-      defu: 6.1.1
+      defu: 6.1.2
       mime: 3.0.0
       node-fetch-native: 1.0.1
       pathe: 1.1.0
@@ -9990,27 +9992,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt/0.5.0_vitest@0.28.2:
-    resolution: {integrity: sha512-jHBw+bDKBNqZo/dJZCGjJn5EzadJHyAOg2NFQZODM/VQZLzL4CczgAXGULOxXOpSQ+F11z6HKWtZslu/WvoorQ==}
-    peerDependencies:
-      vitest: ^0.24.5 || ^0.26.0 || ^0.27.0 || ^0.28.0
-      vue: ^3.2.45
-    dependencies:
-      '@nuxt/kit': 3.1.0
-      '@vue/test-utils': 2.2.7
-      estree-walker: 3.0.3
-      h3: 1.0.2
-      happy-dom: 8.1.5
-      magic-string: 0.27.0
-      ofetch: 1.0.0
-      unenv: 1.0.1
-      vitest: 0.28.2_happy-dom@8.1.5
-    transitivePeerDependencies:
-      - encoding
-      - rollup
-      - supports-color
-    dev: true
-
   /vitest-environment-nuxt/0.6.1_vitest@0.28.2:
     resolution: {integrity: sha512-kOUbcwWCYlq+0vF+NspZ47NMJMjdh7fLctEf+geyy3OJkNuWgz6CI3U3OUSdHSeIIoF14TjLCO6GlCWDzZE7mA==}
     peerDependencies:
@@ -10025,7 +10006,7 @@ packages:
       magic-string: 0.27.0
       ofetch: 1.0.0
       unenv: 1.0.1
-      vitest: 0.28.2_jzyorot7bkwsrvvc4c7ihp72my
+      vitest: 0.28.2_happy-dom@8.1.5
     transitivePeerDependencies:
       - encoding
       - rollup
