@@ -32,7 +32,7 @@ specifiers:
   lint-staged: 13.1.0
   magic-regexp: 0.6.1
   nuxt: npm:nuxt3@3.0.1-rc.0-27909581.f711046
-  nuxt-vitest: 0.6.2
+  nuxt-vitest: 0.6.3
   playwright: 1.30.0
   postcss-html: 1.5.0
   prettier: 2.8.3
@@ -85,7 +85,7 @@ devDependencies:
   happy-dom: 8.1.5
   husky: 8.0.3
   lint-staged: 13.1.0
-  nuxt-vitest: 0.6.2_happy-dom@8.1.5
+  nuxt-vitest: 0.6.3_happy-dom@8.1.5
   postcss-html: 1.5.0
   prettier: 2.8.3
   stylelint: 14.16.1
@@ -7108,16 +7108,17 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /nuxt-vitest/0.6.2_happy-dom@8.1.5:
-    resolution: {integrity: sha512-6qlK3TaJqwIP+r7pDrC4PbnrXNPrFhsohhwYzBzrVF+3oqOSwOjAgkqWFBYkXps0qcp9HQXubVBWzb9gXZ2JRw==}
+  /nuxt-vitest/0.6.3_happy-dom@8.1.5:
+    resolution: {integrity: sha512-XBALiEqvnY/QLmMWCMknUoDFQ6Fj2q0L+OGu34KOSNnQ8sBt29DGnSFq8JmjbVaB+BUv0g7mHk1qWDS3l2CXGg==}
     peerDependencies:
       vite: '*'
     dependencies:
       '@nuxt/kit': 3.1.1
       '@vitest/ui': 0.28.2
       get-port-please: 3.0.1
+      perfect-debounce: 0.1.3
       vitest: 0.28.3_jzyorot7bkwsrvvc4c7ihp72my
-      vitest-environment-nuxt: 0.6.2_vitest@0.28.3
+      vitest-environment-nuxt: 0.6.3_vitest@0.28.3
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@vitest/browser'
@@ -7497,7 +7498,6 @@ packages:
 
   /perfect-debounce/0.1.3:
     resolution: {integrity: sha512-NOT9AcKiDGpnV/HBhI22Str++XWcErO/bALvHCuhv33owZW/CjH8KAFLZDCmu3727sihe0wTxpDhyGc6M8qacQ==}
-    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -10004,8 +10004,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt/0.6.2_vitest@0.28.3:
-    resolution: {integrity: sha512-l+M+75+cs7flpwEUIZdzLKU+bGOPMeGZfrZb2ggGu2IKG9S71SDowr6KxqM/vX97Lewq9oCFeVAmkwyn/x+fPw==}
+  /vitest-environment-nuxt/0.6.3_vitest@0.28.3:
+    resolution: {integrity: sha512-LMj/jzmIDn3ouCr3Wi3eak8fvgp4v1wNe0ba81kQgPuZuNznS7FIjmcQHU4s/ateeQXryoKrhPe+mRr6qPt7bg==}
     peerDependencies:
       vitest: ^0.24.5 || ^0.26.0 || ^0.27.0 || ^0.28.0
       vue: ^3.2.45
