@@ -32,7 +32,7 @@ specifiers:
   lint-staged: 13.1.0
   magic-regexp: 0.6.2
   nuxt: npm:nuxt3@3.0.1-rc.0-27909581.f711046
-  nuxt-vitest: 0.6.4
+  nuxt-vitest: 0.6.5
   playwright: 1.30.0
   postcss-html: 1.5.0
   prettier: 2.8.3
@@ -85,7 +85,7 @@ devDependencies:
   happy-dom: 8.2.2
   husky: 8.0.3
   lint-staged: 13.1.0
-  nuxt-vitest: 0.6.4_happy-dom@8.2.2
+  nuxt-vitest: 0.6.5_happy-dom@8.2.2
   postcss-html: 1.5.0
   prettier: 2.8.3
   stylelint: 14.16.1
@@ -7098,8 +7098,8 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /nuxt-vitest/0.6.4_happy-dom@8.2.2:
-    resolution: {integrity: sha512-38hQlqs1Fx6PjBnxnAk2la+z7KFaU4aTNTas0GcvSJ2GoPdVXienPTkLeiYeNWr0/2cQ1LGfR8ZVXFlldvJIFA==}
+  /nuxt-vitest/0.6.5_happy-dom@8.2.2:
+    resolution: {integrity: sha512-rhdHap2xN2c79+mghkzi7ZTGk6ez2XI5J16TmI0fTAZ6533aIPihmd8ROyjZzej2YBtDD/hNcrQkK9x1tnf3PA==}
     peerDependencies:
       vite: '*'
     dependencies:
@@ -7109,7 +7109,7 @@ packages:
       perfect-debounce: 0.1.3
       std-env: 3.3.1
       vitest: 0.28.3_7a6c7gpnjx73z6osq5wydhvu7e
-      vitest-environment-nuxt: 0.6.4_vitest@0.28.3
+      vitest-environment-nuxt: 0.6.5_vitest@0.28.3
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@vitest/browser'
@@ -9994,8 +9994,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt/0.6.4_vitest@0.28.3:
-    resolution: {integrity: sha512-cM65pFMFf6xJzF7pTwGKd092yV96brzaK7PoYs60DzL1pe8WJNPKuoQTtf2409mlA07dI7U4MxS5Pnwe4hWbzQ==}
+  /vitest-environment-nuxt/0.6.5_vitest@0.28.3:
+    resolution: {integrity: sha512-iIk441UciR/Tc6Bk2SM3n93UqrkGpmx6+IsMUNG7yEbjMgab2HrhE3UB0D+qTYqgu4iTC34Gtm2JPfIf4L2u5A==}
     peerDependencies:
       vitest: ^0.24.5 || ^0.26.0 || ^0.27.0 || ^0.28.0
       vue: ^3.2.45
