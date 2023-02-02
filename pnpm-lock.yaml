@@ -18,7 +18,7 @@ specifiers:
   '@playwright/test': 1.30.0
   '@types/node': 18.11.18
   '@vitejs/plugin-vue': 4.0.0
-  '@vue/test-utils': 2.2.8
+  '@vue/test-utils': 2.2.9
   c8: 7.12.0
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0
@@ -76,7 +76,7 @@ devDependencies:
   '@playwright/test': 1.30.0
   '@types/node': 18.11.18
   '@vitejs/plugin-vue': 4.0.0
-  '@vue/test-utils': 2.2.8
+  '@vue/test-utils': 2.2.9
   c8: 7.12.0
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
@@ -2255,14 +2255,12 @@ packages:
       '@vue/shared': 3.2.45
       estree-walker: 2.0.2
       source-map: 0.6.1
-    dev: false
 
   /@vue/compiler-dom/3.2.45:
     resolution: {integrity: sha512-tyYeUEuKqqZO137WrZkpwfPCdiiIeXYCcJ8L4gWz9vqaxzIQRccTSwSWZ/Axx5YR2z+LvpUbmPNXxuBU45lyRw==}
     dependencies:
       '@vue/compiler-core': 3.2.45
       '@vue/shared': 3.2.45
-    dev: false
 
   /@vue/compiler-sfc/3.2.45:
     resolution: {integrity: sha512-1jXDuWah1ggsnSAOGsec8cFjT/K6TMZ0sPL3o3d84Ft2AYZi2jWJgRMjw4iaK0rBfA89L5gw427H4n1RZQBu6Q==}
@@ -2333,15 +2331,15 @@ packages:
 
   /@vue/shared/3.2.45:
     resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
-    dev: false
 
-  /@vue/test-utils/2.2.8:
-    resolution: {integrity: sha512-/R8DKzp41Ip/RqTt1jvOVi5gxby3EwNWiYHNYsG9FAjEvt0gzDvYN55lCKzX7IdnI5zVIOo5tHtts0SLT+JrWw==}
+  /@vue/test-utils/2.2.9:
+    resolution: {integrity: sha512-WP2gmUX9hucNGCE+FMqdTwisRQcPkY+f9oaZOcUP/xdJbIbTwdCGeOpQzXe8h+W218SC7RPzfTFc6r8T3tkggg==}
     peerDependencies:
-      '@vue/compiler-dom': ^3.0.1
       vue: ^3.0.1
     dependencies:
       js-beautify: 1.14.6
+    optionalDependencies:
+      '@vue/compiler-dom': 3.2.45
     dev: true
 
   /@vueuse/head/1.0.23_vue@3.2.45:
@@ -7115,7 +7113,6 @@ packages:
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@vitest/browser'
-      - '@vue/compiler-dom'
       - encoding
       - happy-dom
       - jsdom
@@ -10004,7 +10001,7 @@ packages:
       vue: ^3.2.45
     dependencies:
       '@nuxt/kit': 3.1.1
-      '@vue/test-utils': 2.2.8
+      '@vue/test-utils': 2.2.9
       estree-walker: 3.0.3
       h3: 1.1.0
       happy-dom: 8.2.2
@@ -10013,7 +10010,6 @@ packages:
       unenv: 1.0.2
       vitest: 0.28.3_7a6c7gpnjx73z6osq5wydhvu7e
     transitivePeerDependencies:
-      - '@vue/compiler-dom'
       - encoding
       - rollup
       - supports-color
