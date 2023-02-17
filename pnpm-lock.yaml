@@ -13,7 +13,7 @@ specifiers:
   '@nuxtjs/fontaine': 0.2.4
   '@nuxtjs/html-validator': 1.2.3
   '@nuxtjs/plausible': 0.2.0
-  '@nuxtjs/tailwindcss': 6.3.1
+  '@nuxtjs/tailwindcss': 6.4.1
   '@nuxtjs/web-vitals': 0.2.2
   '@playwright/test': 1.30.0
   '@types/node': 18.13.0
@@ -54,7 +54,7 @@ dependencies:
   '@nuxtjs/fontaine': 0.2.4
   '@nuxtjs/html-validator': 1.2.3
   '@nuxtjs/plausible': 0.2.0
-  '@nuxtjs/tailwindcss': 6.3.1
+  '@nuxtjs/tailwindcss': 6.4.1
   '@nuxtjs/web-vitals': 0.2.2
   feed: 4.2.2
   gray-matter: 4.0.3
@@ -1643,8 +1643,8 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxtjs/tailwindcss/6.3.1:
-    resolution: {integrity: sha512-UH8GwAGPty+OFiaIQeNIWdSOOqS7pThqN11RmRjigi5xBOVg2LpO0HtrOhcKn7v9+IwuXPWK67m067lNB4HITQ==}
+  /@nuxtjs/tailwindcss/6.4.1:
+    resolution: {integrity: sha512-b8c6h+iiHJJ/rw/IirmYlF0RaIGVIVFmZXdHYPuDW/Mf6WAEz8IkAicyO5gRL3jYKp98kld067XPGsumDhaVVg==}
     dependencies:
       '@nuxt/kit': 3.2.2
       '@nuxt/postcss8': 1.1.3
@@ -1656,11 +1656,11 @@ packages:
       defu: 6.1.2
       pathe: 1.1.0
       postcss: 8.4.21
-      postcss-custom-properties: 13.1.0_postcss@8.4.21
-      postcss-nesting: 11.0.0_postcss@8.4.21
-      tailwind-config-viewer: 1.7.2_tailwindcss@3.2.4
-      tailwindcss: 3.2.4
-      ufo: 1.0.1
+      postcss-custom-properties: 13.1.3_postcss@8.4.21
+      postcss-nesting: 11.2.1_postcss@8.4.21
+      tailwind-config-viewer: 1.7.2_tailwindcss@3.2.7
+      tailwindcss: 3.2.7
+      ufo: 1.1.0
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -6899,7 +6899,7 @@ packages:
       acorn: 8.8.2
       pathe: 1.1.0
       pkg-types: 1.0.1
-      ufo: 1.0.1
+      ufo: 1.1.0
     dev: false
 
   /mlly/1.1.1:
@@ -7677,8 +7677,8 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
-  /postcss-custom-properties/13.1.0_postcss@8.4.21:
-    resolution: {integrity: sha512-O0Lg0CuHwADctEMBgGtaeams7eFES8pXo/9zBClTbRVdU3LFAkFluw1l9eYnJ3rtidp80EGbAIuiisEIu1Z+uA==}
+  /postcss-custom-properties/13.1.3_postcss@8.4.21:
+    resolution: {integrity: sha512-15equAsfqtnr7jyzes6vyaGdAiNmKd+50FZ35/E/huBNBt7PgGMSNL/4o765nnNoP2dmaMJklb3FwJf3fdRcpA==}
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss: ^8.4
@@ -7941,8 +7941,8 @@ packages:
       postcss-selector-parser: 6.0.11
     dev: false
 
-  /postcss-nesting/11.0.0_postcss@8.4.21:
-    resolution: {integrity: sha512-Y+jmDpQuSSoM/Qq+rqDc4D3E8Cn84qUmJLFS/M5u0YgM+5adLi9qFApbz5XzjzXjGAzItTUCP7RikLGy06ebiA==}
+  /postcss-nesting/11.2.1_postcss@8.4.21:
+    resolution: {integrity: sha512-E6Jq74Jo/PbRAtZioON54NPhUNJYxVWhwxbweYl1vAoBYuGlDIts5yhtKiZFLvkvwT73e/9nFrW3oMqAtgG+GQ==}
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss: ^8.4
@@ -9311,7 +9311,7 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  /tailwind-config-viewer/1.7.2_tailwindcss@3.2.4:
+  /tailwind-config-viewer/1.7.2_tailwindcss@3.2.7:
     resolution: {integrity: sha512-3JJCeAAlvG+i/EBj+tQb0x4weo30QjdSAo4hlcnVbtD+CkpzHi/UwU9InbPMcYH+ESActoa2kCyjpLEyjEkn0Q==}
     engines: {node: '>=8'}
     hasBin: true
@@ -9326,13 +9326,13 @@ packages:
       open: 7.4.2
       portfinder: 1.0.32
       replace-in-file: 6.3.5
-      tailwindcss: 3.2.4
+      tailwindcss: 3.2.7
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /tailwindcss/3.2.4:
-    resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
+  /tailwindcss/3.2.7:
+    resolution: {integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     dependencies:
