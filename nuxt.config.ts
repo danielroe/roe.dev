@@ -43,6 +43,13 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    publicAssets: [
+      {
+        baseURL: '/_nuxt',
+        maxAge: 31536000,
+        dir: '~/.nuxt/dist/client/_nuxt',
+      },
+    ],
     vercel: {
       config: {
         images: {
