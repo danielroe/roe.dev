@@ -18,7 +18,7 @@ specifiers:
   '@playwright/test': 1.30.0
   '@types/node': 18.13.0
   '@vitejs/plugin-vue': 4.0.0
-  '@vue/test-utils': 2.2.10
+  '@vue/test-utils': 2.3.0
   c8: 7.13.0
   eslint: 8.34.0
   eslint-config-prettier: 8.6.0
@@ -76,7 +76,7 @@ devDependencies:
   '@playwright/test': 1.30.0
   '@types/node': 18.13.0
   '@vitejs/plugin-vue': 4.0.0
-  '@vue/test-utils': 2.2.10
+  '@vue/test-utils': 2.3.0
   c8: 7.13.0
   eslint: 8.34.0
   eslint-config-prettier: 8.6.0_eslint@8.34.0
@@ -2361,7 +2361,6 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.2.47
       '@vue/shared': 3.2.47
-    dev: false
 
   /@vue/devtools-api/6.5.0:
     resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
@@ -2398,6 +2397,16 @@ packages:
       csstype: 2.6.21
     dev: false
 
+  /@vue/server-renderer/3.2.47:
+    resolution: {integrity: sha512-dN9gc1i8EvmP9RCzvneONXsKfBRgqFeFZLurmHOveL7oH6HiFXJw5OGu294n1nHc/HMgTy6LulU/tv5/A7f/LA==}
+    peerDependencies:
+      vue: 3.2.47
+    dependencies:
+      '@vue/compiler-ssr': 3.2.47
+      '@vue/shared': 3.2.47
+    dev: true
+    optional: true
+
   /@vue/server-renderer/3.2.47_vue@3.2.47:
     resolution: {integrity: sha512-dN9gc1i8EvmP9RCzvneONXsKfBRgqFeFZLurmHOveL7oH6HiFXJw5OGu294n1nHc/HMgTy6LulU/tv5/A7f/LA==}
     peerDependencies:
@@ -2411,14 +2420,15 @@ packages:
   /@vue/shared/3.2.47:
     resolution: {integrity: sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==}
 
-  /@vue/test-utils/2.2.10:
-    resolution: {integrity: sha512-UPY+VdWST5vYZ/Qhl+sLuJAv596e6kTbrOPgdGY82qd9kGN/MfjzLT5KXlmpChkiCbPP3abZ8XT25u1n5h+mRg==}
+  /@vue/test-utils/2.3.0:
+    resolution: {integrity: sha512-S8/9Z+B4VSsTUNtZtzS7J1TfxJbf10n+gcH9X8cASbG0Tp7qD6vqs/sUNlmpzk6i7+pP00ptauJp9rygyW89Ww==}
     peerDependencies:
       vue: ^3.0.1
     dependencies:
       js-beautify: 1.14.6
     optionalDependencies:
       '@vue/compiler-dom': 3.2.47
+      '@vue/server-renderer': 3.2.47
     dev: true
 
   /@vueuse/head/1.1.9_vue@3.2.47:
@@ -10157,7 +10167,7 @@ packages:
       vue: ^3.2.45
     dependencies:
       '@nuxt/kit': 3.2.3
-      '@vue/test-utils': 2.2.10
+      '@vue/test-utils': 2.3.0
       estree-walker: 3.0.3
       h3: 1.5.0
       happy-dom: 8.9.0
