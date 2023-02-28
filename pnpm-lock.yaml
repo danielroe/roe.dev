@@ -4,7 +4,7 @@ specifiers:
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
   '@nuxt/content': 2.4.3
-  '@nuxt/image-edge': 1.0.0-27919678.2f5b64b
+  '@nuxt/image-edge': 1.0.0-27954023.4cee565
   '@nuxt/kit': 3.2.3
   '@nuxtjs/color-mode': 3.2.0
   '@nuxtjs/eslint-config': 12.0.0
@@ -48,7 +48,7 @@ specifiers:
 
 dependencies:
   '@nuxt/content': 2.4.3
-  '@nuxt/image-edge': 1.0.0-27919678.2f5b64b
+  '@nuxt/image-edge': 1.0.0-27954023.4cee565
   '@nuxt/kit': 3.2.3
   '@nuxtjs/color-mode': 3.2.0
   '@nuxtjs/fontaine': 0.2.4
@@ -1196,19 +1196,19 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: false
 
-  /@nuxt/image-edge/1.0.0-27919678.2f5b64b:
-    resolution: {integrity: sha512-MvQ8NJyOTO4n8x+KU+Fyn7H+FegAb+ZN+7cwTAquOy41ev+c1mKn2EYGjkrYEoY/jKMaKSgK/jMtQjOeOhiQXA==}
+  /@nuxt/image-edge/1.0.0-27954023.4cee565:
+    resolution: {integrity: sha512-HBanm2MKV1Ac1hQYJz49ajUCJRIol5clbgrYTiScWAM0UXCyk5YIHGTb4x2w3aj3BRsWZlrB0UtA1O/QmSPu8Q==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       '@nuxt/kit': 3.2.3
       consola: 2.15.3
       defu: 6.1.2
-      h3: 1.1.0
+      h3: 1.5.0
       image-meta: 0.1.1
-      node-fetch-native: 1.0.1
+      node-fetch-native: 1.0.2
       ohash: 1.0.0
       pathe: 1.1.0
-      ufo: 1.0.1
+      ufo: 1.1.1
     optionalDependencies:
       ipx: 1.0.0-2
     transitivePeerDependencies:
@@ -5050,15 +5050,6 @@ packages:
       duplexer: 0.1.2
     dev: false
 
-  /h3/1.1.0:
-    resolution: {integrity: sha512-kx3u+RMzY963fU8NNT2ePWgsryAn9DNztPqbHia/M7HgA+rtXKjHjED9/uidcYPmImNwAfJsCachCzh2T3QH2A==}
-    dependencies:
-      cookie-es: 0.5.0
-      destr: 1.2.2
-      radix3: 1.0.0
-      ufo: 1.1.1
-    dev: false
-
   /h3/1.5.0:
     resolution: {integrity: sha512-M+T6P4iOB0ipkC/ZCdw2w8iTF7yY6phmkILOwlrtcPuVv+KW9BilOspYlvnblpKx1nnNl+3iBsZIvZ8pvKM8Nw==}
     dependencies:
@@ -7092,10 +7083,6 @@ packages:
     resolution: {integrity: sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==}
     dependencies:
       lodash: 4.17.21
-    dev: false
-
-  /node-fetch-native/1.0.1:
-    resolution: {integrity: sha512-VzW+TAk2wE4X9maiKMlT+GsPU4OMmR1U9CrHSmd3DFLn2IcZ9VJ6M6BBugGfYUnPCLSYxXdZy17M0BEJyhUTwg==}
     dev: false
 
   /node-fetch-native/1.0.2:
