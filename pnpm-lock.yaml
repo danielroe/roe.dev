@@ -30,7 +30,7 @@ specifiers:
   husky: 8.0.3
   jose: 4.12.0
   lint-staged: 13.1.2
-  magic-regexp: 0.6.2
+  magic-regexp: 0.6.3
   nuxt: 3.2.3
   nuxt-vitest: 0.6.6
   playwright: 1.31.1
@@ -59,7 +59,7 @@ dependencies:
   feed: 4.2.2
   gray-matter: 4.0.3
   jose: 4.12.0
-  magic-regexp: 0.6.2
+  magic-regexp: 0.6.3
   nuxt: 3.2.3_cp4tx73slkdnor23zdoq7puiim
   playwright: 1.31.1
   prism-themes: 1.9.0
@@ -4703,7 +4703,7 @@ packages:
     dependencies:
       '@capsizecss/metrics': 0.3.0
       '@capsizecss/unpack': 0.1.0
-      magic-regexp: 0.6.2
+      magic-regexp: 0.6.3
       magic-string: 0.26.7
       pathe: 0.3.9
       scule: 0.3.2
@@ -6278,14 +6278,14 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /magic-regexp/0.6.2:
-    resolution: {integrity: sha512-TU7mogmbA7W9YjGybLmCBJU6C2IGgLgRfr76ILmgWlM/fNGrYOxrZC9AeKzii/DCyFddgBB3t9B6BLzUHrxwxg==}
+  /magic-regexp/0.6.3:
+    resolution: {integrity: sha512-RQJGOUham95/bqe9KaaQDxSP5txZoySk1omZCY7ZiG6/mqRY1t0w8Mmv9TV3XE0VkAD84pjUXs8jFFNLIzf5ow==}
     dependencies:
       estree-walker: 3.0.3
-      magic-string: 0.27.0
-      mlly: 1.1.0
-      ufo: 1.0.1
-      unplugin: 1.0.1
+      magic-string: 0.30.0
+      mlly: 1.1.1
+      ufo: 1.1.1
+      unplugin: 1.1.0
     dev: false
 
   /magic-string/0.25.9:
@@ -6922,15 +6922,6 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
-
-  /mlly/1.1.0:
-    resolution: {integrity: sha512-cwzBrBfwGC1gYJyfcy8TcZU1f+dbH/T+TuOhtYP2wLv/Fb51/uV7HJQfBPtEupZ2ORLRU1EKFS/QfS3eo9+kBQ==}
-    dependencies:
-      acorn: 8.8.2
-      pathe: 1.1.0
-      pkg-types: 1.0.2
-      ufo: 1.1.1
-    dev: false
 
   /mlly/1.1.1:
     resolution: {integrity: sha512-Jnlh4W/aI4GySPo6+DyTN17Q75KKbLTyFK8BrGhjNP4rxuUjbRWhE6gHg3bs33URWAF44FRm7gdQA348i3XxRw==}
@@ -9869,15 +9860,6 @@ packages:
       chokidar: 3.5.3
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.6
-    dev: false
-
-  /unplugin/1.0.1:
-    resolution: {integrity: sha512-aqrHaVBWW1JVKBHmGo33T5TxeL0qWzfvjWokObHA9bYmN7eNDkwOxmLjhioHl9878qDFMAaT51XNroRyuz7WxA==}
-    dependencies:
-      acorn: 8.8.2
-      chokidar: 3.5.3
-      webpack-sources: 3.2.3
-      webpack-virtual-modules: 0.5.0
     dev: false
 
   /unplugin/1.1.0:
