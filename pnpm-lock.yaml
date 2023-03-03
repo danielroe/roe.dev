@@ -15,7 +15,7 @@ specifiers:
   '@nuxtjs/plausible': 0.2.0
   '@nuxtjs/tailwindcss': 6.4.1
   '@nuxtjs/web-vitals': 0.2.2
-  '@playwright/test': 1.31.1
+  '@playwright/test': 1.31.2
   '@types/node': 18.14.4
   '@vitejs/plugin-vue': 4.0.0
   '@vue/test-utils': 2.3.0
@@ -33,7 +33,7 @@ specifiers:
   magic-regexp: 0.6.3
   nuxt: 3.2.3
   nuxt-vitest: 0.6.6
-  playwright: 1.31.1
+  playwright: 1.31.2
   postcss-html: 1.5.0
   prettier: 2.8.4
   prism-themes: 1.9.0
@@ -61,7 +61,7 @@ dependencies:
   jose: 4.13.1
   magic-regexp: 0.6.3
   nuxt: 3.2.3_d2yy3kqadegxz4nagn23eysbry
-  playwright: 1.31.1
+  playwright: 1.31.2
   prism-themes: 1.9.0
   remark: 14.0.2
   remark-html: 15.0.2
@@ -73,7 +73,7 @@ devDependencies:
   '@nuxtjs/eslint-config': 12.0.0_eslint@8.35.0
   '@nuxtjs/eslint-config-typescript': 12.0.0_eslint@8.35.0
   '@nuxtjs/eslint-module': 3.1.0_eslint@8.35.0
-  '@playwright/test': 1.31.1
+  '@playwright/test': 1.31.2
   '@types/node': 18.14.4
   '@vitejs/plugin-vue': 4.0.0
   '@vue/test-utils': 2.3.0
@@ -2043,13 +2043,13 @@ packages:
     dev: false
     optional: true
 
-  /@playwright/test/1.31.1:
-    resolution: {integrity: sha512-IsytVZ+0QLDh1Hj83XatGp/GsI1CDJWbyDaBGbainsh0p2zC7F4toUocqowmjS6sQff2NGT3D9WbDj/3K2CJiA==}
+  /@playwright/test/1.31.2:
+    resolution: {integrity: sha512-BYVutxDI4JeZKV1+ups6dt5WiqKhjBtIYowyZIJ3kBDmJgsuPKsqqKNIMFbUePLSCmp2cZu+BDL427RcNKTRYw==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 18.14.4
-      playwright-core: 1.31.1
+      playwright-core: 1.31.2
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -8112,18 +8112,18 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /playwright-core/1.31.1:
-    resolution: {integrity: sha512-JTyX4kV3/LXsvpHkLzL2I36aCdml4zeE35x+G5aPc4bkLsiRiQshU5lWeVpHFAuC8xAcbI6FDcw/8z3q2xtJSQ==}
+  /playwright-core/1.31.2:
+    resolution: {integrity: sha512-a1dFgCNQw4vCsG7bnojZjDnPewZcw7tZUNFN0ZkcLYKj+mPmXvg4MpaaKZ5SgqPsOmqIf2YsVRkgqiRDxD+fDQ==}
     engines: {node: '>=14'}
     hasBin: true
 
-  /playwright/1.31.1:
-    resolution: {integrity: sha512-zKJabsIA2rvOwJ12lGTqWv4HVJzlfw2JtUvO4hAr7J8UXQZ1qEPpX20E1vcz/9fotnTkwgqp3CVdIBwptBN3Fg==}
+  /playwright/1.31.2:
+    resolution: {integrity: sha512-jpC47n2PKQNtzB7clmBuWh6ftBRS/Bt5EGLigJ9k2QAKcNeYXZkEaDH5gmvb6+AbcE0DO6GnXdbl9ogG6Eh+og==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.31.1
+      playwright-core: 1.31.2
     dev: false
 
   /pluralize/8.0.0:
