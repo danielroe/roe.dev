@@ -13,7 +13,7 @@
           <header class="text-center font-bold mb-4">
             special thanks to
             <template v-if="$auth.user.sponsor">
-              <span class="text-white">you</span>
+              <span class="text-[var(--text-base)]">you</span>
               and
             </template>
           </header>
