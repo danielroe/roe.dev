@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 
 import { iterateOnDirectory } from './global.mjs'
 
