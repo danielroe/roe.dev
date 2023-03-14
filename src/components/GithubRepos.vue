@@ -41,8 +41,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useServerHead } from '@vueuse/head'
-
 if (process.server) {
   useServerHead({
     link: [

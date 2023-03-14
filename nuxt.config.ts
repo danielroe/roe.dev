@@ -125,12 +125,5 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/plausible',
     '@nuxtjs/fontaine',
-    '~/modules/spa-head',
-    '~/modules/tree-shake',
-    '~/modules/components-chunk',
-    '~/modules/dedupe-hoisted',
-    '~/modules/sitemap',
-    '~/modules/metadata',
-    '~/modules/reduce-chunks',
   ],
 })

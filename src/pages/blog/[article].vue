@@ -33,9 +33,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useServerHead } from '@vueuse/head'
-import { appendHeader } from 'h3'
-
 const nuxtApp = useNuxtApp()
 const route = useRoute()
 const slug = route.params.article

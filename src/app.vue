@@ -7,8 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useServerHead } from '@vueuse/head'
-
 const route = useRoute()
 
 useHead({
