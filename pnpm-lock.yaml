@@ -13,7 +13,7 @@ specifiers:
   '@nuxtjs/fontaine': 0.2.4
   '@nuxtjs/html-validator': 1.2.4
   '@nuxtjs/plausible': 0.2.0
-  '@nuxtjs/tailwindcss': 6.4.1
+  '@nuxtjs/tailwindcss': 6.5.0
   '@nuxtjs/web-vitals': 0.2.2
   '@playwright/test': 1.31.2
   '@types/node': 18.15.2
@@ -55,7 +55,7 @@ dependencies:
   '@nuxtjs/fontaine': 0.2.4
   '@nuxtjs/html-validator': 1.2.4
   '@nuxtjs/plausible': 0.2.0
-  '@nuxtjs/tailwindcss': 6.4.1
+  '@nuxtjs/tailwindcss': 6.5.0
   '@nuxtjs/web-vitals': 0.2.2
   feed: 4.2.2
   gray-matter: 4.0.3
@@ -1671,7 +1671,7 @@ packages:
   /@nuxt/postcss8/1.1.3:
     resolution: {integrity: sha512-CdHtErhvQwueNZPBOmlAAKrNCK7aIpZDYhtS7TzXlSgPHHox1g3cSlf+Ke9oB/8t4mNNjdB+prclme2ibuCOEA==}
     dependencies:
-      autoprefixer: 10.4.13_postcss@8.4.21
+      autoprefixer: 10.4.14_postcss@8.4.21
       css-loader: 5.2.7
       defu: 3.2.2
       postcss: 8.4.21
@@ -1790,7 +1790,7 @@ packages:
       '@rollup/plugin-replace': 5.0.2_rollup@3.17.3
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.1.4+vue@3.2.47
-      autoprefixer: 10.4.13_postcss@8.4.21
+      autoprefixer: 10.4.14_postcss@8.4.21
       chokidar: 3.5.3
       cssnano: 5.1.15_postcss@8.4.21
       defu: 6.1.2
@@ -1969,12 +1969,12 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxtjs/tailwindcss/6.4.1:
-    resolution: {integrity: sha512-b8c6h+iiHJJ/rw/IirmYlF0RaIGVIVFmZXdHYPuDW/Mf6WAEz8IkAicyO5gRL3jYKp98kld067XPGsumDhaVVg==}
+  /@nuxtjs/tailwindcss/6.5.0:
+    resolution: {integrity: sha512-Ilkph6jH+eQxuSaZ7DDx3eIHLaGz+9Nbs5qOKpwgGBFKnilqMpvxE9V5ji4V0aH2vZBN3HSlpxbrIr07t6uy8Q==}
     dependencies:
       '@nuxt/kit': 3.2.3
       '@nuxt/postcss8': 1.1.3
-      autoprefixer: 10.4.13_postcss@8.4.21
+      autoprefixer: 10.4.14_postcss@8.4.21
       chalk: 5.2.0
       chokidar: 3.5.3
       clear-module: 4.1.2
@@ -3069,15 +3069,15 @@ packages:
     engines: {node: '>= 4.0.0'}
     dev: false
 
-  /autoprefixer/10.4.13_postcss@8.4.21:
-    resolution: {integrity: sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg==}
+  /autoprefixer/10.4.14_postcss@8.4.21:
+    resolution: {integrity: sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001458
+      caniuse-lite: 1.0.30001465
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -3168,7 +3168,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001458
+      caniuse-lite: 1.0.30001465
       electron-to-chromium: 1.4.314
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
@@ -3291,13 +3291,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001458
+      caniuse-lite: 1.0.30001465
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
 
-  /caniuse-lite/1.0.30001458:
-    resolution: {integrity: sha512-lQ1VlUUq5q9ro9X+5gOEyH7i3vm+AYVT1WDCVB69XOZ17KZRhnZ9J0Sqz7wTHQaLBJccNCHq8/Ww5LlOIZbB0w==}
+  /caniuse-lite/1.0.30001465:
+    resolution: {integrity: sha512-HvjgL3MYAJjceTDCcjRnQGjwUz/5qec9n7JPOzUursUoOTIsYCSDOb1l7RsnZE8mjbxG78zVRCKfrBXyvChBag==}
 
   /ccount/2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
