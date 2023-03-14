@@ -1,9 +1,5 @@
 /* eslint-disable camelcase */
 
-import { query } from '../../utils/github'
-import { loginUser } from '../../utils/auth'
-import { getSponsors } from '../../utils/sponsors'
-
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
 
