@@ -33,6 +33,7 @@
 </template>
 
 <script lang="ts" setup>
+import { appendHeader } from 'h3'
 const nuxtApp = useNuxtApp()
 const route = useRoute()
 const slug = route.params.article
