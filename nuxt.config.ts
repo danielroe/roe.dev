@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     },
     // emailing ideas
     sendgridApiKey: '',
+    resendApiKey: '',
     github: {
       // my GH ID
       id: 'MDQ6VXNlcjI4NzA2Mzcy',
