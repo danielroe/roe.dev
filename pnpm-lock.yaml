@@ -46,7 +46,7 @@ specifiers:
   remark: ^14.0.2
   remark-html: ^15.0.1
   slugify: ^1.6.5
-  stylelint: 15.2.0
+  stylelint: 15.3.0
   stylelint-config-prettier: 9.0.5
   stylelint-config-recommended-vue: 1.4.0
   stylelint-config-standard: 30.0.1
@@ -73,7 +73,7 @@ dependencies:
   magic-regexp: 0.6.3
   magic-string: 0.30.0
   mlly: 1.2.0
-  nuxt: 3.3.1_bkwu6b3dtljwitxfqobgocbtgi
+  nuxt: 3.3.1_lhwp2fu6smdkbn52fqfe5aekry
   pathe: 1.1.0
   playwright: 1.31.2
   prism-themes: 1.9.0
@@ -106,10 +106,10 @@ devDependencies:
   ofetch: 1.0.1
   postcss-html: 1.5.0
   prettier: 2.8.4
-  stylelint: 15.2.0
-  stylelint-config-prettier: 9.0.5_stylelint@15.2.0
-  stylelint-config-recommended-vue: 1.4.0_x2qzl5lwlwnkkekx7bj2y4o6y4
-  stylelint-config-standard: 30.0.1_stylelint@15.2.0
+  stylelint: 15.3.0
+  stylelint-config-prettier: 9.0.5_stylelint@15.3.0
+  stylelint-config-recommended-vue: 1.4.0_o7z2z2yv565o3a3uaodintvte4
+  stylelint-config-standard: 30.0.1_stylelint@15.3.0
   vitest: 0.29.3_happy-dom@8.9.0
 
 packages:
@@ -1845,7 +1845,7 @@ packages:
     resolution: {integrity: sha512-PjVETP7+iZXAs5Q8O4ivl4t6qjWZMZqwiTVogUXHoHGZZcw7GZW3u3tzfYfE1HbzyYJfr236IXqQ02MeR8Fz2w==}
     dev: false
 
-  /@nuxt/vite-builder/3.3.1_pzbobvrd5hswvpo6dxzzzmu7qi:
+  /@nuxt/vite-builder/3.3.1_vg6crvqkctgrgnegfi5pfbln7q:
     resolution: {integrity: sha512-YDPDqMWRcZfI6ou2nfxj+IEaxfZXRoyoeMV917h7LbhmnqMBn1prJzFF+Li8br97emL958XANZ7GVZ9OVXgayA==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     peerDependencies:
@@ -1885,7 +1885,7 @@ packages:
       unplugin: 1.3.0
       vite: 4.1.4_@types+node@18.15.3
       vite-node: 0.29.3_@types+node@18.15.3
-      vite-plugin-checker: 0.5.6_rzude4b3lxomcvk3ztmusddici
+      vite-plugin-checker: 0.5.6_p6gxsuhbgzq64ncxfu2xokbqda
       vue: 3.2.47
       vue-bundle-renderer: 1.0.2
     transitivePeerDependencies:
@@ -6596,8 +6596,8 @@ packages:
   /knitwork/1.0.0:
     resolution: {integrity: sha512-dWl0Dbjm6Xm+kDxhPQJsCBTxrJzuGl0aP9rhr+TG8D3l+GL90N8O8lYUi7dTSAN2uuDqCtNgb6aEuQH5wsiV8Q==}
 
-  /known-css-properties/0.26.0:
-    resolution: {integrity: sha512-5FZRzrZzNTBruuurWpvZnvP9pum+fe0HcK8z/ooo+U+Hmp4vtbyp1/QDsqmufirXy4egGzbaH/y2uCZf+6W5Kg==}
+  /known-css-properties/0.27.0:
+    resolution: {integrity: sha512-uMCj6+hZYDoffuvAJjFAPz56E9uoowFHmTkqRtRq5WyC5Q6Cu/fTZKNQpX/RbzChBYLLl3lo8CjFZBAZXq9qFg==}
 
   /koa-compose/4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
@@ -7852,7 +7852,7 @@ packages:
       - vue
     dev: true
 
-  /nuxt/3.3.1_bkwu6b3dtljwitxfqobgocbtgi:
+  /nuxt/3.3.1_lhwp2fu6smdkbn52fqfe5aekry:
     resolution: {integrity: sha512-1DTFXEr+FlZO/hyw765cb9a/AiGysHIGLNl8NGJtURwUWC4gd+Z3y5DnL04PE5fVJ08yB/KJwc0t6StijbL8wQ==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     hasBin: true
@@ -7862,7 +7862,7 @@ packages:
       '@nuxt/schema': 3.3.1
       '@nuxt/telemetry': 2.1.10
       '@nuxt/ui-templates': 1.1.1
-      '@nuxt/vite-builder': 3.3.1_pzbobvrd5hswvpo6dxzzzmu7qi
+      '@nuxt/vite-builder': 3.3.1_vg6crvqkctgrgnegfi5pfbln7q
       '@unhead/ssr': 1.1.23
       '@unhead/vue': 1.1.23_vue@3.2.47
       '@vue/reactivity': 3.2.47
@@ -9813,7 +9813,7 @@ packages:
       postcss-selector-parser: 6.0.11
     dev: false
 
-  /stylelint-config-html/1.1.0_x2qzl5lwlwnkkekx7bj2y4o6y4:
+  /stylelint-config-html/1.1.0_o7z2z2yv565o3a3uaodintvte4:
     resolution: {integrity: sha512-IZv4IVESjKLumUGi+HWeb7skgO6/g4VMuAYrJdlqQFndgbj6WJAXPhaysvBiXefX79upBdQVumgYcdd17gCpjQ==}
     engines: {node: ^12 || >=14}
     peerDependencies:
@@ -9821,20 +9821,20 @@ packages:
       stylelint: '>=14.0.0'
     dependencies:
       postcss-html: 1.5.0
-      stylelint: 15.2.0
+      stylelint: 15.3.0
     dev: true
 
-  /stylelint-config-prettier/9.0.5_stylelint@15.2.0:
+  /stylelint-config-prettier/9.0.5_stylelint@15.3.0:
     resolution: {integrity: sha512-U44lELgLZhbAD/xy/vncZ2Pq8sh2TnpiPvo38Ifg9+zeioR+LAkHu0i6YORIOxFafZoVg0xqQwex6e6F25S5XA==}
     engines: {node: '>= 12'}
     hasBin: true
     peerDependencies:
       stylelint: '>= 11.x < 15'
     dependencies:
-      stylelint: 15.2.0
+      stylelint: 15.3.0
     dev: true
 
-  /stylelint-config-recommended-vue/1.4.0_x2qzl5lwlwnkkekx7bj2y4o6y4:
+  /stylelint-config-recommended-vue/1.4.0_o7z2z2yv565o3a3uaodintvte4:
     resolution: {integrity: sha512-DVJqyX2KvMCn9U0+keL12r7xlsH26K4Vg8NrIZuq5MoF7g82DpMp326Om4E0Q+Il1o+bTHuUyejf2XAI0iD04Q==}
     engines: {node: ^12 || >=14}
     peerDependencies:
@@ -9843,30 +9843,30 @@ packages:
     dependencies:
       postcss-html: 1.5.0
       semver: 7.3.8
-      stylelint: 15.2.0
-      stylelint-config-html: 1.1.0_x2qzl5lwlwnkkekx7bj2y4o6y4
-      stylelint-config-recommended: 10.0.1_stylelint@15.2.0
+      stylelint: 15.3.0
+      stylelint-config-html: 1.1.0_o7z2z2yv565o3a3uaodintvte4
+      stylelint-config-recommended: 10.0.1_stylelint@15.3.0
     dev: true
 
-  /stylelint-config-recommended/10.0.1_stylelint@15.2.0:
+  /stylelint-config-recommended/10.0.1_stylelint@15.3.0:
     resolution: {integrity: sha512-TQ4xQ48tW4QSlODcti7pgSRqBZcUaBzuh0jPpfiMhwJKBPkqzTIAU+IrSWL/7BgXlOM90DjB7YaNgFpx8QWhuA==}
     peerDependencies:
       stylelint: ^15.0.0
     dependencies:
-      stylelint: 15.2.0
+      stylelint: 15.3.0
     dev: true
 
-  /stylelint-config-standard/30.0.1_stylelint@15.2.0:
+  /stylelint-config-standard/30.0.1_stylelint@15.3.0:
     resolution: {integrity: sha512-NbeHOmpRQhjZh5XB1B/S4MLRWvz4xxAxeDBjzl0tY2xEcayNhLbaRGF0ZQzq+DQZLCcPpOHeS2Ru1ydbkhkmLg==}
     peerDependencies:
       stylelint: ^15.0.0
     dependencies:
-      stylelint: 15.2.0
-      stylelint-config-recommended: 10.0.1_stylelint@15.2.0
+      stylelint: 15.3.0
+      stylelint-config-recommended: 10.0.1_stylelint@15.3.0
     dev: true
 
-  /stylelint/15.2.0:
-    resolution: {integrity: sha512-wjg5OLn8zQwjlj5cYUgyQpMWKzct42AG5dYlqkHRJQJqsystFFn3onqEc263KH4xfEI0W3lZCnlIhFfS64uwSA==}
+  /stylelint/15.3.0:
+    resolution: {integrity: sha512-9UYBYk7K9rtlKcTUDZrtntE840sZM00qyYBQHHe7tjwMNUsPsGvR6Fd43IxHEAhRrDLzpy3TVaHb6CReBB3eFg==}
     engines: {node: ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
@@ -9891,7 +9891,7 @@ packages:
       import-lazy: 4.0.0
       imurmurhash: 0.1.4
       is-plain-object: 5.0.0
-      known-css-properties: 0.26.0
+      known-css-properties: 0.27.0
       mathml-tag-names: 2.1.3
       meow: 9.0.0
       micromatch: 4.0.5
@@ -9907,7 +9907,7 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       style-search: 0.1.0
-      supports-hyperlinks: 2.3.0
+      supports-hyperlinks: 3.0.0
       svg-tags: 1.0.0
       table: 6.8.1
       v8-compile-cache: 2.3.0
@@ -9934,9 +9934,9 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /supports-hyperlinks/2.3.0:
-    resolution: {integrity: sha512-RpsAZlpWcDwOPQA22aCH4J0t7L8JmAvsCxfOSEwm7cQs3LshN36QaTkwd70DnBOXDWGssw2eUoc8CaRWT0XunA==}
-    engines: {node: '>=8'}
+  /supports-hyperlinks/3.0.0:
+    resolution: {integrity: sha512-QBDPHyPQDRTy9ku4URNGY5Lah8PAaXs6tAAwp55sL5WCsSW7GIfdf6W5ixfziW+t7wh3GVvHyHHyQ1ESsoRvaA==}
+    engines: {node: '>=14.18'}
     dependencies:
       has-flag: 4.0.0
       supports-color: 7.2.0
@@ -10703,7 +10703,7 @@ packages:
       - supports-color
       - terser
 
-  /vite-plugin-checker/0.5.6_rzude4b3lxomcvk3ztmusddici:
+  /vite-plugin-checker/0.5.6_p6gxsuhbgzq64ncxfu2xokbqda:
     resolution: {integrity: sha512-ftRyON0gORUHDxcDt2BErmsikKSkfvl1i2DoP6Jt2zDO9InfvM6tqO1RkXhSjkaXEhKPea6YOnhFaZxW3BzudQ==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -10746,7 +10746,7 @@ packages:
       lodash.pick: 4.4.0
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
-      stylelint: 15.2.0
+      stylelint: 15.3.0
       tiny-invariant: 1.3.1
       vite: 4.1.4_@types+node@18.15.3
       vscode-languageclient: 7.0.0
