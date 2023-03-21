@@ -44,20 +44,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    vercel: {
-      config: {
-        images: {
-          domains: [],
-          sizes: [40, 320, 640, 768, 1024, 1280, 1536, 1536],
-        },
-      },
-    },
     prerender: {
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
     hooks: {
-      'prerender:generate'(route) {
+      'prerender:generate' (route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
 
