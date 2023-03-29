@@ -48,20 +48,23 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const res = await $fetch(
-    `https://api.github.com/repos/danielroe/nailing-it-cityjs-2023/collaborators/${username}`,
-    {
-      method: 'PUT',
-      body: { permission: 'push' },
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${config.github.inviteToken}`,
-      },
-    }
-  )
+  try {
+    const res = await $fetch(
+      `https://api.github.com/repos/danielroe/nailing-it-cityjs-2023/collaborators/${username}`,
+      {
+        method: 'PUT',
+        body: { permission: 'push' },
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${config.github.inviteToken}`,
+        },
+      }
+    )
 
-  console.log({ res })
-
+    console.log({ res })
+  } catch (err) {
+    console.log('could not add collaborator', err)
+  }
   return sendRedirect(
     event,
     'https://github.com/danielroe/nailing-it-cityjs-2023/invitations'
