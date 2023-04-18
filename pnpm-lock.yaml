@@ -1,5 +1,10 @@
 lockfileVersion: '6.0'
 
+patchedDependencies:
+  nuxt@3.4.1:
+    hash: p3dlpif5f4gg7lo5gtug4uww74
+    path: patches/nuxt@3.4.1.patch
+
 dependencies:
   '@nuxt/content':
     specifier: 2.5.2
@@ -54,7 +59,7 @@ dependencies:
     version: 1.2.0
   nuxt:
     specifier: 3.4.1
-    version: 3.4.1(@types/node@18.15.11)(eslint@8.38.0)(stylelint@15.5.0)(typescript@5.0.4)
+    version: 3.4.1(patch_hash=p3dlpif5f4gg7lo5gtug4uww74)(@types/node@18.15.11)(eslint@8.38.0)(stylelint@15.5.0)(typescript@5.0.4)
   pathe:
     specifier: ^1.1.0
     version: 1.1.0
@@ -7196,7 +7201,7 @@ packages:
       - webdriverio
     dev: true
 
-  /nuxt@3.4.1(@types/node@18.15.11)(eslint@8.38.0)(stylelint@15.5.0)(typescript@5.0.4):
+  /nuxt@3.4.1(patch_hash=p3dlpif5f4gg7lo5gtug4uww74)(@types/node@18.15.11)(eslint@8.38.0)(stylelint@15.5.0)(typescript@5.0.4):
     resolution: {integrity: sha512-wKT5iZebO1D7QtAN1fDNNsjaTFbAC5pO4kWzw2qX2OOg2SWP/k42sCfxbcz/JkLL4FJVwpya+9OD9/2MwEdt1g==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     hasBin: true
@@ -7277,6 +7282,7 @@ packages:
       - vti
       - vue-tsc
     dev: false
+    patched: true
 
   /nypm@0.2.0:
     resolution: {integrity: sha512-auBv78LkHyU9TywBE91N+RTkanVyFLsVayZaHW+YYvJDJ3u2PCwLaYB3eecPQD9tgCIXGuH871HlHTdKSf6rtw==}
