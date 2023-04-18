@@ -1,0 +1,13 @@
+diff --git a/dist/core/runtime/nitro/renderer.js b/dist/core/runtime/nitro/renderer.js
+index d5f7a85a416452506140eb5ed70c1a9d8c4804cf..6a316352d218098dbe33d7eca03a537b49bfc62a 100644
+--- a/dist/core/runtime/nitro/renderer.js
++++ b/dist/core/runtime/nitro/renderer.js
+@@ -162,7 +162,7 @@ export default defineRenderHandler(async (event) => {
+     htmlAttrs: normalizeChunks([renderedMeta.htmlAttrs]),
+     head: normalizeChunks([
+       renderedMeta.headTags,
+-      process.env.NUXT_JSON_PAYLOADS ? _PAYLOAD_EXTRACTION ? `<link rel="modulepreload" href="${payloadURL}">` : null : _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null,
++      process.env.NUXT_JSON_PAYLOADS ? _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null : _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null,
+       NO_SCRIPTS ? null : _rendered.renderResourceHints(),
+       _rendered.renderStyles(),
+       inlinedStyles,
