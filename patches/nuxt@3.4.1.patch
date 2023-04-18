@@ -7,7 +7,7 @@ index d5f7a85a416452506140eb5ed70c1a9d8c4804cf..6a316352d218098dbe33d7eca03a537b
      head: normalizeChunks([
        renderedMeta.headTags,
 -      process.env.NUXT_JSON_PAYLOADS ? _PAYLOAD_EXTRACTION ? `<link rel="modulepreload" href="${payloadURL}">` : null : _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null,
-+      process.env.NUXT_JSON_PAYLOADS ? _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null : _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null,
++      process.env.NUXT_JSON_PAYLOADS ? _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="use-credentials" href="${payloadURL}">` : null : _PAYLOAD_EXTRACTION ? `<link rel="preload" as="fetch" crossorigin="anonymous" href="${payloadURL}">` : null,
        NO_SCRIPTS ? null : _rendered.renderResourceHints(),
        _rendered.renderStyles(),
        inlinedStyles,
