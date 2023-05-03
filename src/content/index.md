@@ -1,5 +1,5 @@
-Daniel leads the [Nuxt core team](https://nuxt.com). He believes in the power of combining clear
-brand, beautiful design and leading technology to engage users and drive business growth.
+Daniel leads the [Nuxt core team](https://nuxt.com).
+
 He founded and successfully grew a creative agency, launched an HR-tech SaaS startup, and
 continues to contribute to the developer community in the North East.
 
