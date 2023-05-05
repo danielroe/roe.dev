@@ -47,8 +47,8 @@ dependencies:
     specifier: 4.14.4
     version: 4.14.4
   magic-regexp:
-    specifier: 0.6.3
-    version: 0.6.3
+    specifier: 0.7.0
+    version: 0.7.0
   magic-string:
     specifier: ^0.30.0
     version: 0.30.0
@@ -1697,7 +1697,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.1
@@ -4433,7 +4433,7 @@ packages:
   /estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
 
   /esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -5685,7 +5685,7 @@ packages:
   /is-reference@1.2.1:
     resolution: {integrity: sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
     dev: false
 
   /is-regex@1.1.4:
@@ -6276,6 +6276,17 @@ packages:
       estree-walker: 3.0.3
       magic-string: 0.30.0
       mlly: 1.2.0
+      ufo: 1.1.1
+      unplugin: 1.3.1
+    dev: false
+
+  /magic-regexp@0.7.0:
+    resolution: {integrity: sha512-C9m5/JqFV1/CMrMFDf1PqmvMc8ohrssmlF5bdgea7nUqqn6D9xzKVTa6DIm0LReCqvEPS35o1UElmb7PmoSfHQ==}
+    dependencies:
+      estree-walker: 3.0.3
+      magic-string: 0.30.0
+      mlly: 1.2.0
+      type-level-regexp: 0.1.16
       ufo: 1.1.1
       unplugin: 1.3.1
     dev: false
@@ -9764,6 +9775,10 @@ packages:
     dependencies:
       media-typer: 0.3.0
       mime-types: 2.1.35
+    dev: false
+
+  /type-level-regexp@0.1.16:
+    resolution: {integrity: sha512-/I0EfCQFR3fcRhSutqyc496s2DY9wPJDRNpV4qe3CNuOyMOna3a2OAGVb5pmMx1aOyNL5JSGmqG7EAYnb6UaFA==}
     dev: false
 
   /typed-array-length@1.0.4:
