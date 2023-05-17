@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"208k"'
+      '"209k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -73,12 +73,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"710k"'
+      '"713k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32857k"'
+      '"32155k"'
     )
 
     const packages = modules.files
@@ -89,10 +89,8 @@ describe('project sizes', () => {
       [
         "@babel/parser",
         "@unhead/dom",
-        "@unhead/dom/node_modules/@unhead/shared",
         "@unhead/shared",
         "@unhead/ssr",
-        "@unhead/ssr/node_modules/@unhead/shared",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/compiler-ssr",
@@ -130,7 +128,6 @@ describe('project sizes', () => {
         "flat",
         "github-slugger",
         "h3",
-        "h3/node_modules/ufo",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -144,7 +141,6 @@ describe('project sizes', () => {
         "html-void-elements",
         "image-meta",
         "ipx",
-        "ipx/node_modules/ufo",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -207,7 +203,6 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "ofetch",
-        "ofetch/node_modules/ufo",
         "ohash",
         "parse-entities",
         "parse5",
@@ -234,7 +229,7 @@ describe('project sizes', () => {
         "shiki-es",
         "simple-swizzle",
         "slugify",
-        "source-map",
+        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
         "trim-lines",
@@ -244,7 +239,6 @@ describe('project sizes', () => {
         "unctx",
         "unenv",
         "unhead",
-        "unhead/node_modules/@unhead/shared",
         "unified",
         "unist-builder",
         "unist-util-generated",
@@ -259,7 +253,6 @@ describe('project sizes', () => {
         "vfile-message",
         "vue",
         "vue-bundle-renderer",
-        "vue-bundle-renderer/node_modules/ufo",
         "vue-router",
         "web-namespaces",
         "xml-js",
