@@ -73,12 +73,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"711k"'
+      '"710k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32598k"'
+      '"32857k"'
     )
 
     const packages = modules.files
