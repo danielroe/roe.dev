@@ -35,7 +35,14 @@ export default defineNuxtConfig({
 
   sourcemap: false,
 
-  typescript: { strict: true },
+  typescript: {
+    strict: true,
+    tsConfig: {
+      compilerOptions: {
+        moduleResolution: 'bundler',
+      },
+    },
+  },
 
   srcDir: 'src',
 
