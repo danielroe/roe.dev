@@ -100,8 +100,8 @@ devDependencies:
     specifier: 12.0.0
     version: 12.0.0(eslint@8.40.0)(typescript@5.0.4)
   '@nuxtjs/eslint-module':
-    specifier: 4.0.2
-    version: 4.0.2(eslint@8.40.0)(vite@4.3.7)(webpack@5.81.0)
+    specifier: 4.1.0
+    version: 4.1.0(eslint@8.40.0)(vite@4.3.7)(webpack@5.81.0)
   '@playwright/test':
     specifier: 1.33.0
     version: 1.33.0
@@ -1472,14 +1472,16 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxtjs/eslint-module@4.0.2(eslint@8.40.0)(vite@4.3.7)(webpack@5.81.0):
-    resolution: {integrity: sha512-Lss37KjO9EZwlrxHcvXWiLZnd/kvw40htqhwKJiA8/IwuVWAFJ6Tu5Hl8iz2V0BN4RU1DIaS1ULQOQycndu3dw==}
+  /@nuxtjs/eslint-module@4.1.0(eslint@8.40.0)(vite@4.3.7)(webpack@5.81.0):
+    resolution: {integrity: sha512-lW9ozEjOrnU8Uot3GOAZ/0ThNAds0d6UAp9n46TNxcTvH/MOcAggGbMNs16c0HYT2HlyPQvXORCHQ5+9p87mmw==}
     peerDependencies:
       eslint: '>=7'
     dependencies:
       '@nuxt/kit': 3.5.0
+      chokidar: 3.5.3
       eslint: 8.40.0
       eslint-webpack-plugin: 4.0.1(eslint@8.40.0)(webpack@5.81.0)
+      pathe: 1.1.0
       vite-plugin-eslint: 1.8.1(eslint@8.40.0)(vite@4.3.7)
     transitivePeerDependencies:
       - rollup
