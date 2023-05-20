@@ -29,6 +29,10 @@ const menu = [
     path: '/uses',
   },
 ]
+
+useRouter().afterEach(() => {
+  showMenu.value = false
+})
 </script>
 
 <template>
