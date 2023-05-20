@@ -23,7 +23,7 @@ export async function getSponsors (): Promise<Sponsor[]> {
     entry.value = await query(
       useRuntimeConfig().github.token,
       sponsorQuery
-    ).then(r => r.data?.user.sponsors.edges.map(e => e.node) || [])
+    ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
 
     // my ID
     entry.value.push({ id: useRuntimeConfig().github.id })

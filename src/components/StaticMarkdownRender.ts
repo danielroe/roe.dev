@@ -3,7 +3,7 @@ import { createElementBlock } from 'vue'
 
 const cache: Record<string, string> = {}
 const CacheHTMLDirective: Directive<any, string> = {
-  created(el, binding) {
+  created (el, binding) {
     if (cache[binding.value]) {
       el.innerHTML = cache[binding.value]
     } else if (el.innerHTML && el.innerHTML !== '<!---->') {
@@ -14,12 +14,10 @@ const CacheHTMLDirective: Directive<any, string> = {
 
 export default defineComponent({
   props: {
-    // eslint-disable-next-line vue/require-default-prop
     cacheKey: String,
-    // eslint-disable-next-line vue/require-default-prop
     value: Object,
   },
-  setup(props) {
+  setup (props) {
     const key = props.cacheKey || useRoute().fullPath
     const nuxtApp = useNuxtApp()
 
@@ -35,10 +33,10 @@ export default defineComponent({
           process.client && !process.dev && shouldSkipRender()
             ? []
             : [
-                h(resolveComponent('LazyContentRendererMarkdown'), {
-                  value: props.value,
-                }),
-              ]
+              h(resolveComponent('LazyContentRendererMarkdown'), {
+                value: props.value,
+              }),
+            ]
         ),
         [[CacheHTMLDirective, key]]
       )

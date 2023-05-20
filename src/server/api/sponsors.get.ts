@@ -1,6 +1,9 @@
 import { getSponsors } from '../utils/sponsors'
 
 export default defineCachedEventHandler(
-  () => getSponsors().then(r => r.map(s => s.avatarUrl).filter(Boolean)),
+  async () => {
+    const sponsors = await getSponsors()
+    return sponsors.map(s => s.avatarUrl).filter((r): r is string => !!r)
+  },
   { maxAge: 60 }
 )

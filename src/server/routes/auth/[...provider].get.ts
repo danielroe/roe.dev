@@ -32,7 +32,8 @@ export default defineEventHandler(async event => {
       query(access_token, organisationQuery)
         .then(r => {
           const viewer = r.data?.viewer || {}
-          viewer.orgs = viewer.organizations.edges.map(e => e.node.id) || []
+          viewer.orgs =
+            viewer.organizations.edges.map((e: any) => e.node.id) || []
           return viewer
         })
         .catch(err => {
@@ -49,6 +50,7 @@ export default defineEventHandler(async event => {
 
     console.info({
       sponsor:
+        // @ts-expect-error no typings for gh api response
         ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
       avatar: viewer.avatarUrl,
       name: viewer.name,
@@ -57,6 +59,7 @@ export default defineEventHandler(async event => {
     // set custom JWT claim
     await loginUser(event, {
       sponsor:
+        // @ts-expect-error no typings for gh api response
         ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
       avatar: viewer.avatarUrl,
       name: viewer.name,

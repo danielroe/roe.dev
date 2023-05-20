@@ -18,7 +18,7 @@ function getOptions (isDev: boolean) {
 }
 
 export async function getScreenshot (url: string, isDev?: boolean) {
-  const browser = await chromium.launch(getOptions(isDev))
+  const browser = await chromium.launch(getOptions(!!isDev))
   const page = await browser.newPage()
   await page.setViewportSize({ width: 1200, height: 630 })
   await page.goto(url)

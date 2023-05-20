@@ -74,6 +74,7 @@ const { data: repos } = await useAsyncData('repos', () => {
           language: 'TypeScript',
         }
       }
+      // @ts-expect-error No typings for GH API
       const { stargazers_count: stars, language } = await $fetch(
         `https://api.github.com/repos/${repo}`,
         {

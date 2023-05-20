@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import { appendHeader } from 'h3'
 const nuxtApp = useNuxtApp()
-const route = useRoute()
+const route = useRoute('blog-article')
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
