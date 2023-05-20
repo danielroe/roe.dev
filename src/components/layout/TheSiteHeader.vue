@@ -4,6 +4,31 @@ const redirect = process.dev
   ? `&redirect_uri=http://localhost:3000/auth/github`
   : ''
 const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}&scope=read:org`
+
+const showMenu = ref(false)
+
+const menu = [
+  {
+    name: 'Home',
+    path: '/',
+  },
+  {
+    name: 'Work',
+    path: '/work',
+  },
+  {
+    name: 'Talks',
+    path: '/talks',
+  },
+  {
+    name: 'Blog',
+    path: '/blog',
+  },
+  {
+    name: 'Uses',
+    path: '/uses',
+  },
+]
 </script>
 
 <template>
@@ -23,36 +48,18 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
           DCR
         </NuxtLink>
       </li>
-      <li aria-hidden="true" class="font-bold inline-block">•</li>
-      <li>
-        <NuxtLink
-          class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
-          exact-active-class="after:border-gray-800"
-          to="/work"
-        >
-          Work
-        </NuxtLink>
-      </li>
-      <li aria-hidden="true" class="font-bold inline-block">•</li>
-      <li>
-        <NuxtLink
-          class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
-          exact-active-class="after:border-gray-800"
-          to="/talks"
-        >
-          Talks
-        </NuxtLink>
-      </li>
-      <li aria-hidden="true" class="font-bold inline-block">•</li>
-      <li>
-        <NuxtLink
-          class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
-          exact-active-class="after:border-gray-800"
-          to="/blog"
-        >
-          Blog
-        </NuxtLink>
-      </li>
+      <template v-for="link in menu" :key="link.name">
+        <li aria-hidden="true" class="hidden md:inline-block font-bold">•</li>
+        <li>
+          <NuxtLink
+            class="hidden md:inline-block outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
+            exact-active-class="after:border-gray-800"
+            :to="link.path"
+          >
+            {{ link.name }}
+          </NuxtLink>
+        </li>
+      </template>
     </ul>
     <div
       class="ml-2 mr-1 flex md:gap-2 w-16 flex-shrink-0 items-center justify-between"
@@ -99,7 +106,44 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
         </svg>
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
-      <ToggleColorMode />
+      <div class="md:hidden">
+        <button @click="showMenu = !showMenu">
+          <svg class="h-6 w-6" alt="">
+            <use xlink:href="#menu" />
+          </svg>
+          <span class="sr-only"> Open mobile navigation menu </span>
+        </button>
+        <Teleport v-if="showMenu" to="body">
+          <nav
+            class="inset-0 fixed bg-[--accent] text-[--text-muted] z-10 flex flex-col justify-center items-center"
+          >
+            <button
+              class="top-0 right-0 fixed p-8"
+              @click="showMenu = !showMenu"
+            >
+              <svg class="h-8 w-8" alt="">
+                <use xlink:href="#close" />
+              </svg>
+              <span class="sr-only"> Close mobile navigation menu </span>
+            </button>
+            <ul
+              class="uppercase font-semibold tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
+            >
+              <li v-for="link in menu" :key="link.name">
+                <NuxtLink
+                  class="outline-none px-2 py-2 hover:after:border-[--background] focus:after:border-[--background]"
+                  exact-active-class="after:border-[--background]"
+                  :to="link.path"
+                >
+                  {{ link.name }}
+                </NuxtLink>
+              </li>
+              <li><ToggleColorMode /></li>
+            </ul>
+          </nav>
+        </Teleport>
+      </div>
+      <ToggleColorMode class="hidden md:flex" />
     </div>
   </nav>
 </template>
