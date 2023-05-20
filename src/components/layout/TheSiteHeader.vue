@@ -52,7 +52,7 @@ useRouter().afterEach(() => {
           DCR
         </NuxtLink>
       </li>
-      <template v-for="link in menu" :key="link.name">
+      <template v-for="link in menu.slice(1)" :key="link.name">
         <li aria-hidden="true" class="hidden md:inline-block font-bold">•</li>
         <li>
           <NuxtLink
