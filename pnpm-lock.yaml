@@ -1181,33 +1181,6 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxt/kit@3.4.3:
-    resolution: {integrity: sha512-aQyzplYFCL292UsVZzlOZOC51ZKYFL0PBihbcPzxTzXQvAfMF8/DQ539kqzqXzxTCcmnUB9ROhIaNUrAeUkFYA==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-    dependencies:
-      '@nuxt/schema': 3.4.3
-      c12: 1.4.1
-      consola: 3.1.0
-      defu: 6.1.2
-      globby: 13.1.4
-      hash-sum: 2.0.0
-      ignore: 5.2.4
-      jiti: 1.18.2
-      knitwork: 1.0.0
-      lodash.template: 4.5.0
-      mlly: 1.2.1
-      pathe: 1.1.0
-      pkg-types: 1.0.3
-      scule: 1.0.0
-      semver: 7.5.1
-      unctx: 2.3.0
-      unimport: 3.0.6(rollup@3.22.0)
-      untyped: 1.3.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-    dev: false
-
   /@nuxt/kit@3.5.0:
     resolution: {integrity: sha512-QqhOPTan5cpaYCksSWdmtpldCGfnsqTd55blztMSF+OPxfGav4GE4BrBD3ZSMn2/5MxieF3GU/w5/tgcDXE3bA==}
     engines: {node: ^14.18.0 || >=16.10.0}
@@ -1284,24 +1257,6 @@ packages:
       pkg-types: 1.0.3
       postcss-import-resolver: 2.0.0
       scule: 1.0.0
-      std-env: 3.3.3
-      ufo: 1.1.2
-      unimport: 3.0.6(rollup@3.22.0)
-      untyped: 1.3.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-    dev: false
-
-  /@nuxt/schema@3.4.3:
-    resolution: {integrity: sha512-8bv0/mRDw6THQguSz+cKG5FzDZc2XBkjcc5VZ7yET84r4aWzW9/R274cjlEagFKrw9BDaPEQhnkwpg+kZnpOUA==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-    dependencies:
-      defu: 6.1.2
-      hookable: 5.5.3
-      pathe: 1.1.0
-      pkg-types: 1.0.3
-      postcss-import-resolver: 2.0.0
       std-env: 3.3.3
       ufo: 1.1.2
       unimport: 3.0.6(rollup@3.22.0)
@@ -1524,7 +1479,7 @@ packages:
   /@nuxtjs/plausible@0.2.1:
     resolution: {integrity: sha512-1AyV9woFeZKBhwYy05S7NBk4jeAXzWcF/SIK/S/GZ8C86G8x7f2hR2eJi9FRRQYGwHutBx2guU4tZAW4J71Azg==}
     dependencies:
-      '@nuxt/kit': 3.4.3
+      '@nuxt/kit': 3.5.0
       defu: 6.1.2
       pathe: 1.1.0
       plausible-tracker: 0.3.8
