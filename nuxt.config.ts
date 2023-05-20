@@ -42,7 +42,8 @@ export default defineNuxtConfig({
     strict: true,
     tsConfig: {
       compilerOptions: {
-        moduleResolution: 'bundler',
+        // moduleResolution: 'bundler',
+        // resolveJsonModule: false,
       },
     },
   },
