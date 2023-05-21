@@ -32,8 +32,8 @@ dependencies:
     specifier: 0.2.6
     version: 0.2.6
   '@unhead/vue':
-    specifier: ^1.1.26
-    version: 1.1.26(vue@3.3.4)
+    specifier: ^1.1.27
+    version: 1.1.27(vue@3.3.4)
   feed:
     specifier: ^4.2.2
     version: 4.2.2
@@ -94,8 +94,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@nuxt/test-utils':
-    specifier: ^npm:@nuxt/test-utils-edge@latest
-    version: link:^npm:@nuxt/test-utils-edge@latest
+    specifier: npm:@nuxt/test-utils-edge@latest
+    version: /@nuxt/test-utils-edge@3.5.1-28077041.98072827(playwright@1.33.0)(vitest@0.31.1)(vue@3.3.4)
   '@nuxtjs/eslint-config':
     specifier: 12.0.0
     version: 12.0.0(@typescript-eslint/parser@5.59.6)(eslint-import-resolver-typescript@3.5.5)(eslint@8.41.0)
@@ -1168,7 +1168,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: false
 
   /@nuxt/kit@3.4.0:
     resolution: {integrity: sha512-CBS1wyyGnXpmzIDINnL96WPLvTjf2IQXrgz/hSKTUWra9h/iO/crLjqcuJWpIIMS420qiRoTnHDFALAXY8ktsw==}
@@ -1178,13 +1177,13 @@ packages:
       c12: 1.4.1
       consola: 3.1.0
       defu: 6.1.2
-      globby: 13.1.3
+      globby: 13.1.4
       hash-sum: 2.0.0
       ignore: 5.2.4
       jiti: 1.18.2
       knitwork: 1.0.0
       lodash.template: 4.5.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       pkg-types: 1.0.3
       scule: 1.0.0
@@ -1211,7 +1210,7 @@ packages:
       jiti: 1.18.2
       knitwork: 1.0.0
       lodash.template: 4.5.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       pkg-types: 1.0.3
       scule: 1.0.0
@@ -1281,7 +1280,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: false
 
   /@nuxt/schema@3.4.0:
     resolution: {integrity: sha512-i04UuprxtMaBK1qCaAupJEIkUUJDt6vyMpBTJ0aajAxehL6O6xV3xqHB5iqDBmtOWlsRL8vGM+M/E/5E+lKuPg==}
@@ -1372,6 +1370,39 @@ packages:
       - rollup
       - supports-color
     dev: false
+
+  /@nuxt/test-utils-edge@3.5.1-28077041.98072827(playwright@1.33.0)(vitest@0.31.1)(vue@3.3.4):
+    resolution: {integrity: sha512-F57mJiQ7IdL0zrezSakWUxeS0wc1gylENae57KsPg4ddo/e0VqQnGHwWcNZnFa1GSuL/DkL8nMzhuWO0uKKBUA==}
+    engines: {node: ^14.18.0 || >=16.10.0}
+    peerDependencies:
+      '@jest/globals': ^29.5.0
+      playwright: ^1.34.0
+      vitest: ^0.31.1
+      vue: ^3.3.4
+    peerDependenciesMeta:
+      '@jest/globals':
+        optional: true
+      playwright:
+        optional: true
+      vitest:
+        optional: true
+    dependencies:
+      '@nuxt/kit': /@nuxt/kit-edge@3.5.1-28077041.98072827
+      '@nuxt/schema': /@nuxt/schema-edge@3.5.1-28077041.98072827
+      consola: 3.1.0
+      defu: 6.1.2
+      execa: 7.1.1
+      get-port-please: 3.0.1
+      ofetch: 1.0.1
+      pathe: 1.1.0
+      playwright: 1.33.0
+      ufo: 1.1.2
+      vitest: 0.31.1(happy-dom@9.19.2)(playwright@1.33.0)
+      vue: 3.3.4
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+    dev: true
 
   /@nuxt/ui-templates@1.1.1:
     resolution: {integrity: sha512-PjVETP7+iZXAs5Q8O4ivl4t6qjWZMZqwiTVogUXHoHGZZcw7GZW3u3tzfYfE1HbzyYJfr236IXqQ02MeR8Fz2w==}
@@ -2053,13 +2084,6 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
-  /@unhead/dom@1.1.26:
-    resolution: {integrity: sha512-6I8z170OAO19h/AslASN4Xw0hqItQFMKhRJQtplQs1BZ62LsDmNKuqJiYueX39U+IfIvIV3j/q1mQwt9lgMwTw==}
-    dependencies:
-      '@unhead/schema': 1.1.26
-      '@unhead/shared': 1.1.26
-    dev: false
-
   /@unhead/dom@1.1.27:
     resolution: {integrity: sha512-sUrzpKIVvFp8TFx1mgp5t0k5ts1+KmgjMgRRuvRTZMBMVeGQRLSuL3uo34iwuFmKxeI6BXT5lVBk5H02c1XdGg==}
     dependencies:
@@ -2067,24 +2091,11 @@ packages:
       '@unhead/shared': 1.1.27
     dev: false
 
-  /@unhead/schema@1.1.26:
-    resolution: {integrity: sha512-l93zaizm+pu36uMssdtzSC2Y61ncZaBBouZn0pB8rVI14V0hPxeXuSNIuPh2WjAm8wfb8EnCSE3LNguoqTar7g==}
-    dependencies:
-      hookable: 5.5.3
-      zhead: 2.0.4
-    dev: false
-
   /@unhead/schema@1.1.27:
     resolution: {integrity: sha512-S+xhPoBxBXDrsW9ltcF9Cv3cntMbSx+dfSmE7RNyDhogqHd3+lDEV2dnQpHKWTGjujwwMCALV5SADunAn785bw==}
     dependencies:
       hookable: 5.5.3
       zhead: 2.0.4
-    dev: false
-
-  /@unhead/shared@1.1.26:
-    resolution: {integrity: sha512-gnUfNrl8w7hQHke9P0au7klcG9bHVOXqbDvya2uARA/8TyxNz87i0uakraO+P6/+zf484dw3b3MYkXq0thK2eg==}
-    dependencies:
-      '@unhead/schema': 1.1.26
     dev: false
 
   /@unhead/shared@1.1.27:
@@ -2098,18 +2109,6 @@ packages:
     dependencies:
       '@unhead/schema': 1.1.27
       '@unhead/shared': 1.1.27
-    dev: false
-
-  /@unhead/vue@1.1.26(vue@3.3.4):
-    resolution: {integrity: sha512-UpxQ0KGmOoiN+Dg19zto5KTcnGV5chBmgiVJTDqUF4BPfr24vRrR65sZGdMoNV7weuD3AD/K0osk2ru+vXxRrA==}
-    peerDependencies:
-      vue: '>=2.7 || >=3'
-    dependencies:
-      '@unhead/schema': 1.1.26
-      '@unhead/shared': 1.1.26
-      hookable: 5.5.3
-      unhead: 1.1.26
-      vue: 3.3.4
     dev: false
 
   /@unhead/vue@1.1.27(vue@3.3.4):
@@ -2938,7 +2937,7 @@ packages:
       dotenv: 16.0.3
       giget: 1.1.2
       jiti: 1.18.2
-      mlly: 1.2.0
+      mlly: 1.2.1
       ohash: 1.1.2
       pathe: 1.1.0
       perfect-debounce: 0.1.3
@@ -4192,7 +4191,7 @@ packages:
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.59.6)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.5)(eslint@8.41.0)
       eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.59.6)(eslint-import-resolver-typescript@3.5.5)(eslint@8.41.0)
       get-tsconfig: 4.5.0
-      globby: 13.1.3
+      globby: 13.1.4
       is-core-module: 2.12.1
       is-glob: 4.0.3
       synckit: 0.8.5
@@ -4623,7 +4622,7 @@ packages:
     resolution: {integrity: sha512-MAU9ci3XdpqOX1aoIoyL2DMzW97P8LYeJxIUkfXhOfsrkH4KLHFaYDwKN0B2l6tqedVJWiTIJtWmxmZfa05vOQ==}
     dependencies:
       enhanced-resolve: 5.14.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       ufo: 1.1.2
     dev: false
@@ -5010,7 +5009,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.8
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -5093,6 +5092,7 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
+    dev: false
 
   /globby@13.1.4:
     resolution: {integrity: sha512-iui/IiiW+QrJ1X1hKH5qwlMQyv34wJAYwH1vrf8b9kBA4sNiif3gKsMHa+BrdnOpEudWjpotfa7LrTzB1ERS/g==}
@@ -6411,9 +6411,9 @@ packages:
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       ufo: 1.1.2
-      unplugin: 1.3.0
+      unplugin: 1.3.1
     dev: false
 
   /magic-regexp@0.7.0:
@@ -6421,10 +6421,10 @@ packages:
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       type-level-regexp: 0.1.17
       ufo: 1.1.2
-      unplugin: 1.3.0
+      unplugin: 1.3.1
     dev: false
 
   /magic-string-ast@0.1.2:
@@ -7073,6 +7073,7 @@ packages:
       pathe: 1.1.0
       pkg-types: 1.0.3
       ufo: 1.1.2
+    dev: false
 
   /mlly@1.2.1:
     resolution: {integrity: sha512-1aMEByaWgBPEbWV2BOPEMySRrzl7rIHXmQxam4DM8jVjalTQDjpN2ZKOLUrwyhfZQO7IXHml2StcHMhooDeEEQ==}
@@ -7838,7 +7839,7 @@ packages:
     resolution: {integrity: sha512-nN7pYi0AQqJnoLPC9eHFQ8AcyaixBUOwvqc5TDnIKCMEE6I0y8P7OKA7fPexsXGCGxQDl/cmrLAp26LhcwxZ4A==}
     dependencies:
       jsonc-parser: 3.2.0
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
 
   /plausible-tracker@0.3.8:
@@ -9999,15 +10000,6 @@ packages:
       node-fetch-native: 1.1.1
       pathe: 1.1.0
 
-  /unhead@1.1.26:
-    resolution: {integrity: sha512-MshcPoPLXSGRgYtczddGvMgLUISTbt2pxihqD5kZVXKmY2FZLj1OQIY111aX45Xq47XJxjvYavvoyeUFroKQcg==}
-    dependencies:
-      '@unhead/dom': 1.1.26
-      '@unhead/schema': 1.1.26
-      '@unhead/shared': 1.1.26
-      hookable: 5.5.3
-    dev: false
-
   /unhead@1.1.27:
     resolution: {integrity: sha512-KnE4xeV/mZLxnXG1VAp1nsaO2vzMq9Ch5uN4Y2SJAG4fXLEBi/A8evr3Vd81c+oAwQZjDXKFW60HDCJCkwo/Cw==}
     dependencies:
@@ -10123,7 +10115,7 @@ packages:
       fast-glob: 3.2.12
       json5: 2.2.3
       local-pkg: 0.4.3
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       scule: 1.0.0
       unplugin: 1.3.1
@@ -10311,7 +10303,7 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       picocolors: 1.0.0
       vite: 4.3.8(@types/node@18.16.13)
@@ -10332,7 +10324,7 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
-      mlly: 1.2.0
+      mlly: 1.2.1
       pathe: 1.1.0
       picocolors: 1.0.0
       vite: 4.3.8(@types/node@18.16.13)
