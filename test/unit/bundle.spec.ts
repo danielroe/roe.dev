@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"212k"'
+      '"213k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -73,12 +73,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"715k"'
+      '"718k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32415k"'
+      '"32488k"'
     )
 
     const packages = modules.files
@@ -89,8 +89,10 @@ describe('project sizes', () => {
       [
         "@babel/parser",
         "@unhead/dom",
+        "@unhead/dom/node_modules/@unhead/shared",
         "@unhead/shared",
         "@unhead/ssr",
+        "@unhead/ssr/node_modules/@unhead/shared",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/compiler-ssr",
@@ -113,6 +115,7 @@ describe('project sizes', () => {
         "comma-separated-tokens",
         "cookie-es",
         "cssfilter",
+        "debug",
         "decode-named-character-reference",
         "defu",
         "destr",
@@ -128,6 +131,7 @@ describe('project sizes', () => {
         "flat",
         "github-slugger",
         "h3",
+        "has-flag",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -139,6 +143,7 @@ describe('project sizes', () => {
         "hastscript",
         "hookable",
         "html-void-elements",
+        "http-graceful-shutdown",
         "image-meta",
         "ipx",
         "iron-webcrypto",
@@ -200,6 +205,7 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "ms",
         "node-emoji",
         "node-fetch-native",
         "ofetch",
@@ -232,6 +238,7 @@ describe('project sizes', () => {
         "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
+        "supports-color",
         "trim-lines",
         "trough",
         "ufo",
@@ -239,6 +246,7 @@ describe('project sizes', () => {
         "unctx",
         "unenv",
         "unhead",
+        "unhead/node_modules/@unhead/shared",
         "unified",
         "unist-builder",
         "unist-util-generated",
