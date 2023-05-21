@@ -11,6 +11,7 @@ export default defineNuxtPlugin(nuxtApp => {
     user: {} as User,
     login: async () => {
       try {
+        // @ts-expect-error TODO: fix 'excessive stack depth comparing types' error
         auth.user = await $fetch('/api/user')
       } catch (err: any) {
         if (err.name !== 'FetchError') {

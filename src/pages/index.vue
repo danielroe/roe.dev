@@ -45,7 +45,9 @@
 </template>
 
 <script lang="ts" setup>
-const { data: sponsors } = await useAsyncData(() => $fetch('/api/sponsors'))
+const { data: sponsors } = await useAsyncData(() =>
+  $fetch<string[]>('/api/sponsors')
+)
 
 const { data: page } = await useAsyncData(
   () =>
