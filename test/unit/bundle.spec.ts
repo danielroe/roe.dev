@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"213k"'
+      '"212k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -78,7 +78,7 @@ describe('project sizes', () => {
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32488k"'
+      '"32478k"'
     )
 
     const packages = modules.files
@@ -89,10 +89,8 @@ describe('project sizes', () => {
       [
         "@babel/parser",
         "@unhead/dom",
-        "@unhead/dom/node_modules/@unhead/shared",
         "@unhead/shared",
         "@unhead/ssr",
-        "@unhead/ssr/node_modules/@unhead/shared",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/compiler-ssr",
@@ -246,7 +244,6 @@ describe('project sizes', () => {
         "unctx",
         "unenv",
         "unhead",
-        "unhead/node_modules/@unhead/shared",
         "unified",
         "unist-builder",
         "unist-util-generated",
