@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+const repo = 'danielroe/nailing-it-vueconf-us-2023'
+
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
 
@@ -50,7 +52,7 @@ export default defineEventHandler(async event => {
 
   try {
     const res = await $fetch(
-      `https://api.github.com/repos/danielroe/nailing-it-cityjs-2023/collaborators/${username}`,
+      `https://api.github.com/repos/${repo}/collaborators/${username}`,
       {
         method: 'PUT',
         body: { permission: 'push' },
@@ -65,8 +67,5 @@ export default defineEventHandler(async event => {
   } catch (err) {
     console.log('could not add collaborator', err)
   }
-  return sendRedirect(
-    event,
-    'https://github.com/danielroe/nailing-it-cityjs-2023/invitations'
-  )
+  return sendRedirect(event, `https://github.com/${repo}/invitations`)
 })
