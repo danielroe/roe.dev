@@ -32,7 +32,10 @@ const sprite =
   </symbol>
   <symbol viewBox="0 0 24 24" id="rss">
     <path fill="currentColor" d="M3 17a4 4 0 0 1 4 4H3v-4zm0-7c6.075 0 11 4.925 11 11h-2a9 9 0 0 0-9-9v-2zm0-7c9.941 0 18 8.059 18 18h-2c0-8.837-7.163-16-16-16V3z"></path>
-    </symbol>
+  </symbol>
+  <symbol viewBox="0 0 32 32" id="bluesky">
+    <path fill="currentColor" d="M4 1a3 3 0 0 0-3 3v24a3 3 0 0 0 3 3h24a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H4Z"></path>
+  </symbol>
 </svg>
 `.replace(/\s+/g, ' ')
 

@@ -17,6 +17,10 @@ const links = [
     name: 'Mastodon',
   },
   {
+    link: 'https://bsky.app/profile/danielroe.dev',
+    name: 'Bluesky',
+  },
+  {
     link: '/rss.xml',
     name: 'RSS',
   },
