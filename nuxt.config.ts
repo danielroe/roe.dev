@@ -102,10 +102,11 @@ export default defineNuxtConfig({
   },
 
   htmlValidator: {
-    // failOnError: true,
+    failOnError: true,
     options: {
       rules: {
         'wcag/h37': 'warn',
+        'element-permitted-content': 'warn',
         'element-required-attributes': 'warn',
         'attribute-empty-style': 'off',
       },
