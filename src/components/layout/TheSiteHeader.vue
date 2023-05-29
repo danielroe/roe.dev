@@ -21,12 +21,12 @@ const menu = [
     path: '/talks',
   },
   {
-    name: 'Blog',
-    path: '/blog',
-  },
-  {
     name: 'Uses',
     path: '/uses',
+  },
+  {
+    name: 'Blog',
+    path: '/blog',
   },
 ]
 
