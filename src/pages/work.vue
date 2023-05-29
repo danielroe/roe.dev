@@ -24,6 +24,7 @@
           />
         </label>
         <button
+          type="submit"
           class="px-2 py-1 font-semibold tracking-[0.15rem] text-sm uppercase"
           :class="{
             'bg-green-900': ideaStatus === 'submitted',

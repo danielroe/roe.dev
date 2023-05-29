@@ -90,6 +90,7 @@ useRouter().afterEach(() => {
       </NuxtLink>
       <button
         v-else-if="$auth.status === 'logged-in'"
+        type="button"
         class="relative flex-shrink-0 w-[2rem]"
         @click="$auth.logout"
       >
@@ -111,7 +112,7 @@ useRouter().afterEach(() => {
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <div class="md:hidden">
-        <button @click="showMenu = !showMenu">
+        <button type="button" @click="showMenu = !showMenu">
           <svg class="h-6 w-6" alt="">
             <use xlink:href="#menu" />
           </svg>
@@ -122,6 +123,7 @@ useRouter().afterEach(() => {
             class="inset-0 fixed bg-[--accent] text-[--text-muted] z-10 flex flex-col justify-center items-center"
           >
             <button
+              type="button"
               class="top-0 right-0 fixed p-8"
               @click="showMenu = !showMenu"
             >
