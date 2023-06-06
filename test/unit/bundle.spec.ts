@@ -73,12 +73,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"716k"'
+      '"472k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32465k"'
+      '"30487k"'
     )
 
     const packages = modules.files
@@ -87,20 +87,7 @@ describe('project sizes', () => {
       .sort()
     expect(packages).toMatchInlineSnapshot(`
       [
-        "@babel/parser",
         "@fastify/accept-negotiator",
-        "@unhead/dom",
-        "@unhead/shared",
-        "@unhead/ssr",
-        "@vue/compiler-core",
-        "@vue/compiler-dom",
-        "@vue/compiler-ssr",
-        "@vue/devtools-api",
-        "@vue/reactivity",
-        "@vue/runtime-core",
-        "@vue/runtime-dom",
-        "@vue/server-renderer",
-        "@vue/shared",
         "bail",
         "ccount",
         "character-entities",
@@ -120,10 +107,8 @@ describe('project sizes', () => {
         "destr",
         "detab",
         "detect-libc",
-        "devalue",
         "emoticon",
         "escape-string-regexp",
-        "estree-walker",
         "etag",
         "extend",
         "feed",
@@ -159,7 +144,6 @@ describe('project sizes', () => {
         "klona",
         "lodash",
         "longest-streak",
-        "magic-regexp",
         "markdown-table",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
@@ -231,16 +215,13 @@ describe('project sizes', () => {
         "shiki-es",
         "simple-swizzle",
         "slugify",
-        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
         "trim-lines",
         "trough",
         "ufo",
         "uncrypto",
-        "unctx",
         "unenv",
-        "unhead",
         "unified",
         "unist-builder",
         "unist-util-generated",
@@ -253,9 +234,6 @@ describe('project sizes', () => {
         "vfile",
         "vfile-location",
         "vfile-message",
-        "vue",
-        "vue-bundle-renderer",
-        "vue-router",
         "web-namespaces",
         "xml-js",
         "xss",
