@@ -24,6 +24,7 @@
               v-for="sponsor of sponsors"
               :key="sponsor"
               sizes="sm:70px"
+              provider="ipx"
               alt=""
               class="rounded-full"
               :class="{
