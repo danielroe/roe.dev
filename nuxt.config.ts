@@ -34,6 +34,7 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: true,
     typedPages: true,
+    noVueServer: true,
   },
 
   sourcemap: false,
@@ -60,7 +61,7 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
     hooks: {
-      'prerender:generate' (route) {
+      'prerender:generate'(route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
 
