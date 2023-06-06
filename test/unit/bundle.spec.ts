@@ -19,7 +19,7 @@ describe('project sizes', () => {
   }
 
   beforeAll(async () => {
-    await execa('pnpm', ['nuxi', 'build', rootDir])
+    await execa('pnpm', ['nuxi', 'build'], { cwd: rootDir })
   }, 120 * 1000)
 
   afterAll(async () => {
@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"212k"'
+      '"213k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -73,12 +73,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"715k"'
+      '"716k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"32442k"'
+      '"32201k"'
     )
 
     const packages = modules.files
@@ -88,6 +88,7 @@ describe('project sizes', () => {
     expect(packages).toMatchInlineSnapshot(`
       [
         "@babel/parser",
+        "@fastify/accept-negotiator",
         "@unhead/dom",
         "@unhead/shared",
         "@unhead/ssr",
@@ -111,6 +112,7 @@ describe('project sizes', () => {
         "color-name",
         "color-string",
         "comma-separated-tokens",
+        "consola",
         "cookie-es",
         "cssfilter",
         "decode-named-character-reference",
