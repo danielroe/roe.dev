@@ -116,7 +116,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-vitest',
     'magic-regexp/nuxt',
-    '@nuxt/image-edge',
+    '@nuxt/image',
     '@nuxtjs/html-validator',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
