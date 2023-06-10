@@ -117,7 +117,7 @@ export default defineNuxtConfig({
   fontMetrics: {
     fonts: [
       {
-        overrideName: 'Barlow fallback',
+        fallbackName: 'Barlow fallback',
         family: 'Barlow',
         fallbacks: ['Arial'],
       },
