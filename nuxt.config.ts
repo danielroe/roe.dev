@@ -114,6 +114,16 @@ export default defineNuxtConfig({
     },
   },
 
+  fontMetrics: {
+    fonts: [
+      {
+        overrideName: 'Barlow fallback',
+        family: 'Barlow',
+        fallbacks: ['Arial'],
+      },
+    ],
+  },
+
   modules: [
     'nuxt-vitest',
     'magic-regexp/nuxt',
