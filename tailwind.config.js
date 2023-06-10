@@ -1,7 +1,7 @@
 module.exports = {
   theme: {
     fontFamily: {
-      sans: ['Barlow', 'Barlow override', 'sans-serif'],
+      sans: ['Barlow', 'Barlow fallback', 'sans-serif'],
       code: ['Fira Code'],
       serif: ['Vollkorn', 'serif'],
     },
