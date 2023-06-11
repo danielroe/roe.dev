@@ -1,4 +1,9 @@
 export default defineNuxtConfig({
+  $production: {
+    experimental: {
+      noVueServer: true,
+    }
+  },
   runtimeConfig: {
     // JWT claims
     privateKey: '',
@@ -34,7 +39,6 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: true,
     typedPages: true,
-    noVueServer: true,
   },
 
   sourcemap: false,
