@@ -61,7 +61,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
+a, .link {
   @apply relative inline-block;
 
   &::after {
@@ -84,7 +84,7 @@ main {
   color: var(--text-muted, theme('colors.gray.300'));
 }
 
-main a:not([href^='#']) {
+main a:not([href^='#']), main .link {
   &::after {
     border-color: currentcolor;
     opacity: 0.1;

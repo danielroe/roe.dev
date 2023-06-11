@@ -19,6 +19,7 @@ export default defineNuxtModule({
       'ProseH2',
       'ProseH3',
       'ProseLi',
+      'ProseEm',
       'ProseOl',
       'ProseUl',
       'ProseStrong',

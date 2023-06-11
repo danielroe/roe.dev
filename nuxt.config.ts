@@ -129,6 +129,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'nuxt-time',
     'nuxt-vitest',
     'magic-regexp/nuxt',
     '@nuxt/image',

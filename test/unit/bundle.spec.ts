@@ -32,17 +32,19 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"213k"'
+      '"217k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
+          "_nuxt/CalSchedule.js",
           "_nuxt/ContentRendererMarkdown.js",
           "_nuxt/GridLink.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
           "_nuxt/ProseCodeInline.js",
+          "_nuxt/ProseEm.js",
           "_nuxt/ProseH2.js",
           "_nuxt/ProseH3.js",
           "_nuxt/ProseLi.js",
@@ -56,6 +58,7 @@ describe('project sizes', () => {
           "_nuxt/ProseThead.js",
           "_nuxt/ProseTr.js",
           "_nuxt/ProseUl.js",
+          "_nuxt/SocialPost.js",
           "_nuxt/StaticMarkdownRender.js",
           "_nuxt/_article_.js",
           "_nuxt/components-chunk.js",
@@ -73,12 +76,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"472k"'
+      '"480k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"30488k"'
+      '"30489k"'
     )
 
     const packages = modules.files
