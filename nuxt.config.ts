@@ -84,6 +84,7 @@ export default defineNuxtConfig({
     '/feed.xml': { redirect: '/rss.xml' },
   },
 
+  // @ts-expect-error Remove when Nuxt 3.6 is released
   content: {
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],
