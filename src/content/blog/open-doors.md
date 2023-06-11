@@ -1,10 +1,10 @@
 ---
-title: Keeping the door open
+title: An open invitation
 date: '2023-06-11T18:00:00.000Z'
 tags:
   - communication
   - contact
-description: Keeping the door open
+description: If you want to have a 10-minute chat about anything, then I would love to talk to you.
 ---
 
 A few months ago I tweeted out an open invitation for anyone new to contributing to open source.
@@ -25,7 +25,7 @@ I was honestly astounded at how many people wanted to chat. People I had never m
 
 1. I absolutely want to have an open-door policy in future.
 
-## An open door
+## An open invitation
 
 <!-- I've thrown [a few thoughts together here](/blog/contributing-to-nuxt) about how to get started with contributing to open source (or Nuxt, in particular). -->
 
