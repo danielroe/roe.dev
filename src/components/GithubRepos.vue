@@ -41,26 +41,15 @@
 </template>
 
 <script lang="ts" setup>
-if (process.server) {
-  useServerHead({
-    link: [
-      {
-        rel: 'preconnect',
-        href: '//api.github.com',
-        crossorigin: 'use-credentials',
-      },
-    ],
-  })
-}
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
   if (process.client && !process.dev) return Promise.resolve([])
   const repos = [
-    'nuxt/framework',
-    'nuxt/nuxt.js',
+    'nuxt/nuxt',
     // 'nuxt/vercel-builder',
     'danielroe/magic-regexp',
-    'danielroe/typed-vuex',
+    'danielroe/fontaine',
+    'danielroe/nuxt-vitest',
     // 'nuxt-community/composition-api',
     // 'nuxt-community/sanity-module',
     // 'danielroe/sanity-typed-queries',
