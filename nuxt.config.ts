@@ -72,7 +72,7 @@ export default defineNuxtConfig({
           route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
 
         if (route.error) {
-          console.error(route.error)
+          console.error(route.route, route.error)
           process.exit(1)
         }
       },
@@ -105,7 +105,10 @@ export default defineNuxtConfig({
   },
 
   image: {
-    domains: ['avatars.githubusercontent.com'],
+    domains: [
+      'avatars.githubusercontent.com',
+      'https://avatars.githubusercontent.com',
+    ],
     screens: {
       logo: 40,
       avatar: 70,
