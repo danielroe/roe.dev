@@ -44,6 +44,10 @@
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
   if (process.client && !process.dev) return Promise.resolve([])
+  const formatter = new Intl.NumberFormat('en-GB', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
   const repos = [
     'nuxt/nuxt',
     // 'nuxt/vercel-builder',
@@ -59,7 +63,7 @@ const { data: repos } = await useAsyncData('repos', () => {
       if (process.dev) {
         return {
           repo,
-          stars: 100,
+          stars: formatter.format(1400),
           language: 'TypeScript',
         }
       }
@@ -75,7 +79,7 @@ const { data: repos } = await useAsyncData('repos', () => {
       )
       return {
         repo,
-        stars,
+        stars: formatter.format(stars),
         language,
       }
     })
