@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   $production: {
     experimental: {
       noVueServer: true,
-    }
+    },
   },
   runtimeConfig: {
     // JWT claims
@@ -30,9 +30,11 @@ export default defineNuxtConfig({
     },
   },
 
-  vite: {
-    define: {
-      'process.env.prerender': 'false',
+  hooks: {
+    'vite:extendConfig'(config, { isClient }) {
+      if (isClient) {
+        config.define!['process.env.prerender'] = 'false'
+      }
     },
   },
 
@@ -70,6 +72,7 @@ export default defineNuxtConfig({
           route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
 
         if (route.error) {
+          console.error(route.error)
           process.exit(1)
         }
       },
@@ -90,6 +93,9 @@ export default defineNuxtConfig({
   css: ['~/assets/main.css'],
 
   app: {
+    head: {
+      title: 'Daniel Roe',
+    },
     pageTransition: false,
     layoutTransition: false,
   },
