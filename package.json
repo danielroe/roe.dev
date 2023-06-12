@@ -13,7 +13,7 @@
     "test:types": "nuxi prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.33.0-focal npx playwright test test/e2e --update-snapshots",
-    "postinstall": "nuxt prepare && husky install && node ./node_modules/playwright/install.js"
+    "postinstall": "nuxt prepare && pnpm simple-git-hooks install && node ./node_modules/playwright/install.js"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -69,12 +69,12 @@
     "eslint-plugin-nuxt": "4.0.0",
     "eslint-plugin-prettier": "4.2.1",
     "happy-dom": "9.20.3",
-    "husky": "8.0.3",
     "lint-staged": "13.2.2",
     "nuxt-vitest": "0.8.5",
     "ofetch": "1.1.0",
     "postcss-html": "1.5.0",
     "prettier": "2.8.8",
+    "simple-git-hooks": "^2.8.1",
     "stylelint": "15.7.0",
     "stylelint-config-prettier": "9.0.5",
     "stylelint-config-recommended-vue": "1.4.0",
@@ -85,6 +85,10 @@
   },
   "resolutions": {
     "consola": "3.1.0"
+  },
+  "simple-git-hooks": {
+    "commit-msg": "pnpm commitlint --edit $1",
+    "pre-commit": "pnpm lint-staged"
   },
   "packageManager": "pnpm@8.6.2"
 }
