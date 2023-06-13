@@ -30,7 +30,10 @@ const { data: mentions, pending } = useFetch(
     lazy: true,
     default: () => [],
     server: false,
-    transform: (r: any) => r.children as WebMention[],
+    transform: (r: any) =>
+      (r.children as WebMention[]).filter(
+        c => !c.url.startsWith('https://geek.ds3783.com')
+      ),
   }
 )
 </script>
