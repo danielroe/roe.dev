@@ -32,43 +32,23 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"217k"'
+      '"2295k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
-          "_nuxt/CalSchedule.js",
-          "_nuxt/ContentRendererMarkdown.js",
-          "_nuxt/GridLink.js",
-          "_nuxt/ProseA.js",
-          "_nuxt/ProseBlockquote.js",
-          "_nuxt/ProseCode.js",
-          "_nuxt/ProseCodeInline.js",
-          "_nuxt/ProseEm.js",
-          "_nuxt/ProseH2.js",
-          "_nuxt/ProseH3.js",
-          "_nuxt/ProseLi.js",
-          "_nuxt/ProseOl.js",
-          "_nuxt/ProseP.js",
-          "_nuxt/ProseStrong.js",
-          "_nuxt/ProseTable.js",
-          "_nuxt/ProseTbody.js",
-          "_nuxt/ProseTd.js",
-          "_nuxt/ProseTh.js",
-          "_nuxt/ProseThead.js",
-          "_nuxt/ProseTr.js",
-          "_nuxt/ProseUl.js",
-          "_nuxt/SocialPost.js",
-          "_nuxt/StaticMarkdownRender.js",
-          "_nuxt/_article_.js",
-          "_nuxt/components-chunk.js",
-          "_nuxt/dates.js",
-          "_nuxt/entry.js",
-          "_nuxt/index.js",
-          "_nuxt/index.js",
-          "_nuxt/talks.js",
-          "_nuxt/uses.js",
-          "_nuxt/work.js",
+          "_chunks/0:10:15:16:17:18:21:27:28:29:36:37:45:46:47:48:52.js",
+          "_chunks/0:10:15:16:27:28:29:36:37:45:46:47:48:52.js",
+          "_chunks/0:10:15:17:18:21:27:28:29:30:37:45:46:47:48:52.js",
+          "_chunks/0:10:15:17:18:2:21:29:37:43:44:45:46:47:48:52.js",
+          "_chunks/0:10:15:21:27:36:41:45:46:47:52.js",
+          "_chunks/0:10:15:29:39:44:45:46:47:52.js",
+          "_chunks/0:10:15:2:21:29:3:31:32:33:34:35:37:43:44:45:46:47:48:52.js",
+          "_chunks/0:10:29:37:45:46:47:48:52.js",
+          "_chunks/0:1:10:15:19:21:27:28:29:37:4:45:46:47:48:52.js",
+          "_chunks/0:38:47:53:54.js",
+          "_chunks/0:40:47:53:54.js",
+          "_chunks/0:42:43:44:47:53.js",
         ]
       `)
   })
@@ -76,12 +56,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"507k"'
+      '"799k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"30489k"'
+      '"31603k"'
     )
 
     const packages = modules.files
@@ -145,6 +125,7 @@ describe('project sizes', () => {
         "js-yaml",
         "json5",
         "klona",
+        "knitwork",
         "lodash",
         "longest-streak",
         "markdown-table",
@@ -211,6 +192,8 @@ describe('project sizes', () => {
         "remark-parse",
         "remark-rehype",
         "remark-squeeze-paragraphs",
+        "rollup",
+        "rollup/dist/es",
         "sax",
         "scule",
         "semver",
