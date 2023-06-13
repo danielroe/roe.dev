@@ -138,6 +138,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'nuxt-on-demand',
     'nuxt-time',
     'nuxt-vitest',
     'magic-regexp/nuxt',
