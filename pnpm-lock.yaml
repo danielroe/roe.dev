@@ -125,8 +125,8 @@ devDependencies:
     specifier: 2.3.2
     version: 2.3.2(vue@3.3.4)
   c8:
-    specifier: 7.14.0
-    version: 7.14.0
+    specifier: 8.0.0
+    version: 8.0.0
   eslint:
     specifier: 8.42.0
     version: 8.42.0
@@ -2830,9 +2830,9 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /c8@7.14.0:
-    resolution: {integrity: sha512-i04rtkkcNcCf7zsQcSv/T9EbUn4RXQ6mropeMcjFOsQXQ0iGLAr/xT6TImQg4+U9hmNpN9XdvPkjUL1IzbgxJw==}
-    engines: {node: '>=10.12.0'}
+  /c8@8.0.0:
+    resolution: {integrity: sha512-XHA5vSfCLglAc0Xt8eLBZMv19lgiBSjnb1FLAQgnwkuhJYEonpilhEB4Ea3jPAbm0FhD6VVJrc0z73jPe7JyGQ==}
+    engines: {node: '>=12'}
     hasBin: true
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
@@ -4863,7 +4863,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.8
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
