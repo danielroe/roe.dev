@@ -19,6 +19,7 @@
 - Launcher: [Raycast](https://www.raycast.com/).
 - Desktop: [Plash](https://sindresorhus.com/plash).
 - Time tracking: [Toggl](https://toggl.com/).
+- Code pairing: [Tuple](https://tuple.app).
 
 ## Hardware
 
