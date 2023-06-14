@@ -30,8 +30,8 @@ dependencies:
     specifier: 0.2.1
     version: 0.2.1
   '@nuxtjs/tailwindcss':
-    specifier: 6.6.8
-    version: 6.6.8(ts-node@10.9.1)(webpack@5.86.0)
+    specifier: 6.7.2
+    version: 6.7.2(ts-node@10.9.1)(webpack@5.86.0)
   '@nuxtjs/web-vitals':
     specifier: 0.2.6
     version: 0.2.6
@@ -1460,8 +1460,8 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxtjs/tailwindcss@6.6.8(ts-node@10.9.1)(webpack@5.86.0):
-    resolution: {integrity: sha512-U0wnBLFStrhpY1pqFOdro8AptXDsSFFjYEF5Rp306dbDlDs6ukZrnoDZQOAor/x+w12S7lUdQUN3j8L5YuXyKQ==}
+  /@nuxtjs/tailwindcss@6.7.2(ts-node@10.9.1)(webpack@5.86.0):
+    resolution: {integrity: sha512-Zd4fm+o8bXcu+kc4JtegWAHXVms8pud8fhkJDZjKUa9CpawaWdnIf0fSzYyXdm2dWpDlH4YUdjN0HDaFRFQMDw==}
     dependencies:
       '@nuxt/kit': 3.5.3
       '@nuxt/postcss8': 1.1.3(webpack@5.86.0)
@@ -1471,10 +1471,10 @@ packages:
       colorette: 2.0.20
       cookie-es: 1.0.0
       defu: 6.1.2
-      destr: 1.2.2
+      destr: 2.0.0
       h3: 1.6.6
       iron-webcrypto: 0.7.0
-      minimatch: 9.0.1
+      micromatch: 4.0.5
       pathe: 1.1.1
       postcss: 8.4.24
       postcss-custom-properties: 13.2.0(postcss@8.4.24)
@@ -3682,6 +3682,10 @@ packages:
 
   /destr@1.2.2:
     resolution: {integrity: sha512-lrbCJwD9saUQrqUfXvl6qoM+QN3W7tLV5pAOs+OqOmopCCz/JkE05MHedJR1xfk4IAnZuJXPVuN5+7jNA2ZCiA==}
+
+  /destr@2.0.0:
+    resolution: {integrity: sha512-FJ9RDpf3GicEBvzI3jxc2XhHzbqD8p4ANw/1kPsFBfTvP1b7Gn/Lg1vO7R9J4IVgoMbyUmFrFGZafJ1hPZpvlg==}
+    dev: false
 
   /destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
