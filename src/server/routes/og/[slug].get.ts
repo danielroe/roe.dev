@@ -1,7 +1,10 @@
-import { parseReqs, ParsedReqs } from '../../utils/_parser'
-import { getHtml } from '../../utils/_template'
-import { writeTempFile } from '../../utils/_file'
-import { getScreenshot } from '../../utils/_chromium'
+import type { ParsedReqs } from '../../open-graph/index'
+import {
+  parseReqs,
+  getHtml,
+  writeTempFile,
+  getScreenshot,
+} from '../../open-graph/index'
 
 const isDev = process.env.VERCEL_ENV === 'development'
 

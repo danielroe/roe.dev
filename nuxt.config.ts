@@ -1,3 +1,4 @@
+import type { InputPluginOption } from 'rollup'
 export default defineNuxtConfig({
   $production: {
     experimental: {
@@ -31,6 +32,22 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    // TODO: this is a hack that we surely do not need
+    'nitro:config'(config) {
+      ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
+        name: 'purge-the-handler',
+        transform(_code, id) {
+          if (id.includes('og/[slug]')) {
+            return 'export default defineEventHandler(() => {})'
+          }
+        },
+      })
+    },
+    'nitro:init'(nitro) {
+      nitro.options._config.rollupConfig!.plugins = (
+        nitro.options._config.rollupConfig!.plugins as InputPluginOption[]
+      ).filter(p => !p || !('name' in p) || p.name !== 'purge-the-handler')
+    },
     'vite:extendConfig'(config, { isClient }) {
       if (isClient) {
         config.define!['process.env.prerender'] = 'false'
