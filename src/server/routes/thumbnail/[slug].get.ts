@@ -13,7 +13,10 @@ export default defineEventHandler(async event => {
     'content-type': 'image/jpeg',
   })
 
-  if (cache[event.path]) return cache[event.path]
+  if (cache[event.path]) {
+    event.node.res.end(cache[event.path])
+    return
+  }
 
   const website = getQuery(event).website as string
   if (!website || typeof website !== 'string')
