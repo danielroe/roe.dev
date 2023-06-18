@@ -86,10 +86,13 @@ export default defineNuxtConfig({
     hooks: {
       'prerender:generate'(route) {
         if (route.fileName)
-          route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
+          route.fileName = route.fileName.replace(
+            /(\.\w{3})\/index.html$/,
+            '$1'
+          )
 
         if (route.error) {
-          console.error(route.route, route.error)
+          console.error(route.route, route.error, route)
           process.exit(1)
         }
       },
