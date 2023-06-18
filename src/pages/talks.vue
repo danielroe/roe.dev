@@ -137,10 +137,13 @@ const upcomingConferences = [
 
 if (process.env.prerender) {
   for (const conference of upcomingConferences) {
+    await $fetch(
+      '/thumbnail/' + conference.image + '?website=' + conference.link
+    )
     appendHeader(
       useRequestEvent(),
       'x-nitro-prerender',
-      '/thumbnail/' + conference.image + '?website=' + conference.link
+      '/thumbnail/' + conference.image
     )
   }
 }

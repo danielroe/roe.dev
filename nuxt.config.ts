@@ -101,6 +101,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/feed.xml': { redirect: '/rss.xml' },
+    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
   },
 
   content: {
