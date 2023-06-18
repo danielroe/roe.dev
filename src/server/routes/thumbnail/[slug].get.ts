@@ -22,5 +22,5 @@ export default defineEventHandler(async event => {
   const file = await getScreenshot(website, isDev)
   cache[event.path.replace(/\?.*$/, '')] = file
 
-  return file
+  event.node.res.end(file)
 })
