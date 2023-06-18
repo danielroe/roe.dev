@@ -76,12 +76,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"527k"'
+      '"513k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25173k"'
+      '"30489k"'
     )
 
     const packages = modules.files
@@ -196,6 +196,8 @@ describe('project sizes', () => {
         "parse-entities",
         "parse5",
         "pathe",
+        "playwright",
+        "playwright-core",
         "property-information",
         "radix3",
         "rehype-external-links",
