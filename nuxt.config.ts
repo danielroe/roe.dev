@@ -37,7 +37,7 @@ export default defineNuxtConfig({
       ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
         transform(_code, id) {
-          if (id.includes('og/[slug]')) {
+          if (id.includes('og/[slug]') || id.includes('thumbnail/[slug]')) {
             return 'export default defineEventHandler(() => {})'
           }
         },
