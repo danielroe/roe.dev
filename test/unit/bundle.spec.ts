@@ -81,7 +81,7 @@ describe('project sizes', () => {
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"30489k"'
+      '"25437k"'
     )
 
     const packages = modules.files
@@ -196,8 +196,6 @@ describe('project sizes', () => {
         "parse-entities",
         "parse5",
         "pathe",
-        "playwright",
-        "playwright-core",
         "property-information",
         "radix3",
         "rehype-external-links",
