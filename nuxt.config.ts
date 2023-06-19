@@ -37,7 +37,7 @@ export default defineNuxtConfig({
       ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
         transform(_code, id) {
-          if (id.includes('og/[slug]')) {
+          if (id.includes('og/[slug]') || id.includes('thumbnail/[slug]')) {
             return 'export default defineEventHandler(() => {})'
           }
         },
@@ -86,10 +86,13 @@ export default defineNuxtConfig({
     hooks: {
       'prerender:generate'(route) {
         if (route.fileName)
-          route.fileName = route.fileName.replace(/\.xml\/index.html$/, '.xml')
+          route.fileName = route.fileName.replace(
+            /(\.\w{3})\/index.html$/,
+            '$1'
+          )
 
         if (route.error) {
-          console.error(route.route, route.error)
+          console.error(route.route, route.error, route)
           process.exit(1)
         }
       },
@@ -98,6 +101,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/feed.xml': { redirect: '/rss.xml' },
+    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
   },
 
   content: {

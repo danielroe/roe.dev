@@ -5,6 +5,42 @@
     </header>
     <main class="text-lg">
       <section class="flex flex-row flex-wrap gap-4">
+        <h2 class="uppercase text-sm font-bold tracking-widest">
+          Upcoming conferences
+        </h2>
+        <GridLink
+          v-for="conference of upcomingConferences"
+          :key="conference.name"
+          :href="conference.link"
+        >
+          <article class="flex flex-row gap-4">
+            <!-- <img
+              class="aspect-[1.9] w-[150px] -ml-4 my-[-.88rem]"
+              width="1200"
+              height="630"
+              :alt="'Home page of ' + conference.name"
+              :src="'/thumbnail/' + conference.image"
+            /> -->
+            <header class="flex-grow">
+              {{ conference.name }}
+              <dl
+                class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+              >
+                <dt class="float-left md:float-none mr-2">When</dt>
+                <dd class="font-semibold mr-4">
+                  {{ conference.dates }}
+                </dd>
+                <dt class="float-left md:float-none mr-2">Where</dt>
+                <dd class="font-semibold mr-4">
+                  {{ conference.location }}
+                </dd>
+              </dl>
+            </header>
+          </article>
+        </GridLink>
+      </section>
+      <section class="mt-12 flex flex-row flex-wrap gap-4">
+        <h2 class="uppercase text-sm font-bold tracking-widest">Past talks</h2>
         <GridLink
           v-for="{
             title,
@@ -67,6 +103,48 @@ interface Talk {
   video?: string
   formattedDate: string
 }
+
+const upcomingConferences = [
+  {
+    name: 'WeAreDevs World Congress',
+    dates: '27-28 July, 2023',
+    link: 'https://www.wearedevelopers.com/world-congress',
+    location: 'Berlin, Germany',
+    image: 'wearedevs-world-congress.jpg',
+  },
+  {
+    name: 'Digital Labin',
+    dates: '22-23 September, 2023',
+    link: 'https://digital-labin.com/',
+    location: 'Labin, Istria, Croatia',
+    image: 'digital-labin.jpg',
+  },
+  {
+    name: 'Armada JS',
+    dates: '5-6 October, 2023',
+    link: 'https://armada-js.com/',
+    location: 'Novi Sad, Serbia',
+    image: 'armada-js.jpg',
+  },
+  {
+    name: 'VueFes Japan',
+    dates: '28 October, 2023',
+    link: 'https://vuefes.jp/2023/',
+    location: 'Nakano, Tokyo',
+    image: 'vuefes-japan.jpg',
+  },
+]
+
+// if (process.env.prerender && process.server) {
+//   for (const conference of upcomingConferences) {
+//     await useStorage().setItem(conference.image, conference.link)
+//     appendHeader(
+//       useRequestEvent(),
+//       'x-nitro-prerender',
+//       '/thumbnail/' + conference.image
+//     )
+//   }
+// }
 
 const { data: talks } = await useAsyncData(
   () =>
