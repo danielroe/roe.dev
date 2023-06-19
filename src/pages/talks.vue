@@ -14,13 +14,13 @@
           :href="conference.link"
         >
           <article class="flex flex-row gap-4">
-            <img
+            <!-- <img
               class="aspect-[1.9] w-[150px] -ml-4 my-[-.88rem]"
               width="1200"
               height="630"
               :alt="'Home page of ' + conference.name"
               :src="'/thumbnail/' + conference.image"
-            />
+            /> -->
             <header class="flex-grow">
               {{ conference.name }}
               <dl
@@ -135,16 +135,16 @@ const upcomingConferences = [
   },
 ]
 
-if (process.env.prerender && process.server) {
-  for (const conference of upcomingConferences) {
-    await useStorage().setItem(conference.image, conference.link)
-    appendHeader(
-      useRequestEvent(),
-      'x-nitro-prerender',
-      '/thumbnail/' + conference.image
-    )
-  }
-}
+// if (process.env.prerender && process.server) {
+//   for (const conference of upcomingConferences) {
+//     await useStorage().setItem(conference.image, conference.link)
+//     appendHeader(
+//       useRequestEvent(),
+//       'x-nitro-prerender',
+//       '/thumbnail/' + conference.image
+//     )
+//   }
+// }
 
 const { data: talks } = await useAsyncData(
   () =>
