@@ -119,6 +119,7 @@ export default defineNuxtConfig({
 
   plausible: {
     domain: 'roe.dev',
+    apiHost: 'https://v.roe.dev',
   },
 
   image: {
