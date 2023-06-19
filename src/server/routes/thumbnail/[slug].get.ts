@@ -2,8 +2,6 @@ import { getScreenshot } from '../../open-graph/index'
 
 const isDev = process.env.VERCEL_ENV === 'development'
 
-const cache: Record<string, any> = {}
-
 export default defineEventHandler(async event => {
   if (!process.dev && !process.env.prerender) return
 
@@ -13,17 +11,13 @@ export default defineEventHandler(async event => {
     'content-type': 'image/jpeg',
   })
 
-  if (cache[event.path]) {
-    event.node.res.end(cache[event.path])
-    return
-  }
-
-  const website = getQuery(event).website as string
+  const website =
+    (getQuery(event).website as string) ||
+    (await useStorage().getItem(getRouterParam(event, 'slug')))
   if (!website || typeof website !== 'string')
     throw createError('Missing website query parameter')
 
   const file = await getScreenshot(website, isDev)
-  cache[event.path.replace(/\?.*$/, '')] = file
 
-  event.node.res.end(file)
+  return file
 })
