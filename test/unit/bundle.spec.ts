@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"218k"'
+      '"220k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -76,12 +76,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"512k"'
+      '"514k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25437k"'
+      '"25484k"'
     )
 
     const packages = modules.files
@@ -105,6 +105,7 @@ describe('project sizes', () => {
         "consola",
         "cookie-es",
         "cssfilter",
+        "debug",
         "decode-named-character-reference",
         "defu",
         "destr",
@@ -118,6 +119,8 @@ describe('project sizes', () => {
         "flat",
         "github-slugger",
         "h3",
+        "h3/node_modules/destr",
+        "has-flag",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -129,8 +132,10 @@ describe('project sizes', () => {
         "hastscript",
         "hookable",
         "html-void-elements",
+        "http-graceful-shutdown",
         "image-meta",
         "ipx",
+        "ipx/node_modules/destr",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -189,9 +194,11 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "ms",
         "node-emoji",
         "node-fetch-native",
         "ofetch",
+        "ofetch/node_modules/destr",
         "ohash",
         "parse-entities",
         "parse5",
@@ -218,6 +225,7 @@ describe('project sizes', () => {
         "slugify",
         "space-separated-tokens",
         "stringify-entities",
+        "supports-color",
         "trim-lines",
         "trough",
         "ufo",
@@ -232,6 +240,7 @@ describe('project sizes', () => {
         "unist-util-visit",
         "unist-util-visit-parents",
         "unstorage",
+        "unstorage/node_modules/destr",
         "vfile",
         "vfile-location",
         "vfile-message",
