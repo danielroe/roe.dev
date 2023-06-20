@@ -23,5 +23,6 @@ export async function getScreenshot(url: string, isDev?: boolean) {
   await page.setViewportSize({ width: 1200, height: 630 })
   await page.goto(url)
   await page.waitForLoadState('domcontentloaded')
+  await new Promise(resolve => setTimeout(resolve, 1000))
   return page.screenshot({ type: 'jpeg', quality: 100 })
 }
