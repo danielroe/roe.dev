@@ -13,9 +13,9 @@
 definePageMeta({ title: 'Blog' })
 
 function handleNavigation(e: MouseEvent | KeyboardEvent) {
-  const target = e.target as HTMLElement
-  if (target.tagName === 'A') {
-    const href = target.getAttribute('href')
+  const anchor = (e.target as HTMLElement).closest('a')
+  if (anchor) {
+    const href = anchor.getAttribute('href')
     if (href) navigateTo(href)
   }
 }
