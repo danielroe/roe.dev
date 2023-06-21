@@ -4,11 +4,26 @@
       <h1 class="text-2xl">Articles</h1>
     </header>
     <main class="text-lg">
-      <TheBlogIndex />
+      <TheBlogIndex @click.prevent="handleNavigation" />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({ title: 'Blog' })
+
+function handleNavigation(e: MouseEvent | KeyboardEvent) {
+  const target = e.target as HTMLElement
+  if (target.tagName === 'A') {
+    const href = target.getAttribute('href')
+    if (href) navigateTo(href)
+  }
+}
+
+const nuxtApp = useNuxtApp()
+onMounted(() => {
+  document.querySelectorAll('a').forEach(a => {
+    nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
+  })
+})
 </script>
