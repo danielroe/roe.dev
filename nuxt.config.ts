@@ -2,7 +2,6 @@ import type { InputPluginOption } from 'rollup'
 export default defineNuxtConfig({
   $production: {
     experimental: {
-      componentIslands: true,
       noVueServer: true,
     },
   },
@@ -57,6 +56,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    componentIslands: true,
     payloadExtraction: true,
     typedPages: true,
   },

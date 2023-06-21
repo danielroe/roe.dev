@@ -62,7 +62,7 @@ if (!page.value) {
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
-useRoute().meta.title = page.value.title
+route.meta.title = page.value.title
 
 if (process.server) {
   const SLUG_RE = createRegExp(
