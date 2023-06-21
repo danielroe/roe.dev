@@ -22,8 +22,10 @@ function handleNavigation(e: MouseEvent | KeyboardEvent) {
 
 const nuxtApp = useNuxtApp()
 onMounted(() => {
-  document.querySelectorAll('main a').forEach(a => {
-    nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
-  })
+  nextTick(() =>
+    document.querySelectorAll('main a').forEach(a => {
+      nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
+    })
+  )
 })
 </script>
