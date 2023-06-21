@@ -32,6 +32,11 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    'prerender:routes'(routes) {
+      if (process.env.DISABLE_PRERENDER) {
+        routes.routes.clear()
+      }
+    },
     // TODO: this is a hack that we surely do not need
     'nitro:config'(config) {
       ;(config.rollupConfig!.plugins as InputPluginOption[]).push({

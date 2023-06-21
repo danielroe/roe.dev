@@ -19,7 +19,10 @@ describe('project sizes', () => {
   }
 
   beforeAll(async () => {
-    await execa('pnpm', ['nuxi', 'build'], { cwd: rootDir })
+    await execa('pnpm', ['nuxi', 'build'], {
+      cwd: rootDir,
+      env: { DISABLE_PRERENDER: 'true' },
+    })
   }, 120 * 1000)
 
   afterAll(async () => {
