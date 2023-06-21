@@ -3,8 +3,8 @@
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Articles</h1>
     </header>
-    <main class="text-lg">
-      <TheBlogIndex @click.prevent="handleNavigation" />
+    <main class="text-lg" @click.prevent="handleNavigation">
+      <TheBlogIndex />
     </main>
   </div>
 </template>
