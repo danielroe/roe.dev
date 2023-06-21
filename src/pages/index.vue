@@ -4,7 +4,7 @@
       <h1 class="text-2xl">Welcome!</h1>
     </header>
     <main :class="$style.home" class="text-lg">
-      <StaticMarkdownRender v-if="page" :value="page" />
+      <StaticMarkdownRender path="/" />
       <template v-if="sponsors && sponsors.length">
         <hr
           class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
@@ -47,12 +47,6 @@
 <script lang="ts" setup>
 const { data: sponsors } = await useAsyncData(() =>
   $fetch<string[]>('/api/sponsors')
-)
-
-const { data: page } = await useAsyncData(
-  () =>
-    ((process.server || process.dev) as true) &&
-    queryContent('/').only(['title', 'type', 'body']).findOne()
 )
 </script>
 

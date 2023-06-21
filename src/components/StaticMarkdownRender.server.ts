@@ -3,9 +3,10 @@ import { ContentRendererMarkdown } from '#components'
 
 export default defineComponent({
   props: {
-    value: Object,
+    path: String,
   },
-  setup(props) {
-    return () => h(ContentRendererMarkdown, { value: props.value })
+  async setup(props) {
+    const value = await queryContent(props.path!).findOne()
+    return () => h(ContentRendererMarkdown, { value })
   },
 })
