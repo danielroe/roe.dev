@@ -122,8 +122,8 @@ devDependencies:
     specifier: 4.2.3
     version: 4.2.3(vite@4.3.9)(vue@3.3.4)
   '@vue/test-utils':
-    specifier: 2.3.2
-    version: 2.3.2(vue@3.3.4)
+    specifier: 2.4.0
+    version: 2.4.0(vue@3.3.4)
   c8:
     specifier: 8.0.0
     version: 8.0.0
@@ -2247,16 +2247,21 @@ packages:
   /@vue/shared@3.3.4:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
 
-  /@vue/test-utils@2.3.2(vue@3.3.4):
-    resolution: {integrity: sha512-hJnVaYhbrIm0yBS0+e1Y0Sj85cMyAi+PAbK4JHqMRUZ6S622Goa+G7QzkRSyvCteG8wop7tipuEbHoZo26wsSA==}
+  /@vue/test-utils@2.4.0(vue@3.3.4):
+    resolution: {integrity: sha512-BKB9aj1yky63/I3IwSr1FjUeHYsKXI7D6S9F378AHt7a5vC0dLkOBtSsFXoRGC/7BfHmiB9HRhT+i9xrUHoAKw==}
     peerDependencies:
+      '@vue/compiler-dom': ^3.0.1
+      '@vue/server-renderer': ^3.0.1
       vue: ^3.0.1
+    peerDependenciesMeta:
+      '@vue/compiler-dom':
+        optional: true
+      '@vue/server-renderer':
+        optional: true
     dependencies:
       js-beautify: 1.14.6
       vue: 3.3.4
-    optionalDependencies:
-      '@vue/compiler-dom': 3.3.4
-      '@vue/server-renderer': 3.3.4(vue@3.3.4)
+      vue-component-type-helpers: 1.6.5
     dev: true
 
   /@vue/typescript@1.8.1(typescript@5.1.3):
@@ -7195,6 +7200,8 @@ packages:
       vitest: 0.30.1(happy-dom@9.20.3)(playwright@1.33.0)
       vitest-environment-nuxt: 0.8.5(vitest@0.30.1)(vue-router@4.2.2)(vue@3.3.4)
     transitivePeerDependencies:
+      - '@vue/compiler-dom'
+      - '@vue/server-renderer'
       - rollup
       - supports-color
       - vue
@@ -10194,7 +10201,7 @@ packages:
       vue-router: ^4.0.0
     dependencies:
       '@nuxt/kit': 3.5.3
-      '@vue/test-utils': 2.3.2(vue@3.3.4)
+      '@vue/test-utils': 2.4.0(vue@3.3.4)
       defu: 6.1.2
       estree-walker: 3.0.3
       h3: 1.6.6
@@ -10206,6 +10213,8 @@ packages:
       vue: 3.3.4
       vue-router: 4.2.2(vue@3.3.4)
     transitivePeerDependencies:
+      - '@vue/compiler-dom'
+      - '@vue/server-renderer'
       - rollup
       - supports-color
     dev: true
@@ -10323,6 +10332,10 @@ packages:
     dependencies:
       ufo: 1.1.2
     dev: false
+
+  /vue-component-type-helpers@1.6.5:
+    resolution: {integrity: sha512-iGdlqtajmiqed8ptURKPJ/Olz0/mwripVZszg6tygfZSIL9kYFPJTNY6+Q6OjWGznl2L06vxG5HvNvAnWrnzbg==}
+    dev: true
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
