@@ -9,7 +9,11 @@ await setup({
   nuxtConfig: {
     hooks: {
       'prerender:routes'(routes) {
-        routes.routes.clear()
+        for (const route of routes.routes) {
+          if (!route.includes('_content')) {
+            routes.routes.delete(route)
+          }
+        }
       },
     },
   },
