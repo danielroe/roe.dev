@@ -6,6 +6,15 @@ import { createPage, setup } from '@nuxt/test-utils'
 
 await setup({
   rootDir: fileURLToPath(new URL('../..', import.meta.url)),
+  nuxtConfig: {
+    hooks: {
+      'prerender:routes'(routes) {
+        if (process.env.DISABLE_PRERENDER) {
+          routes.routes.clear()
+        }
+      },
+    },
+  },
 })
 
 describe('site behaviour', () => {
