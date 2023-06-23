@@ -22,7 +22,7 @@ The app is made by [The Positive Birth Company](https://thepositivebirthcompany.
 
 Their mission is to empower women and their birth partners. That resonated with us. In fact, we traveled 370 miles to attend one of their courses.
 
-![The Positive Birth Company video still](/img/pbc.jpg)
+<p><img src="/img/pbc.jpg" width="944" height="466" alt="The Positive Birth Company video still"></p>
 
 ## Aesthetics and purpose
 
@@ -32,7 +32,7 @@ Looking at it, you'll observe that it's simple and attractive. Modern colours an
 
 |                                                                                                                             |                                                                                                                        |                                                                                                                  |
 | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| ![Freya app screenshot: 'Freya will help you to relax with calming visualisations and guided meditation.'](/img/freya1.jpg) | ![Freya app screenshot: 'Freya will coach you through each surge with a simple breathing technique.'](/img/freya2.jpg) | ![Freya app screenshot: 'Use our surge timer to keep track of how your labour is progressing.'](/img/freya3.jpg) |
+| <img width="500" height="1082" src="/img/freya1.jpg" alt="Freya app screenshot: 'Freya will help you to relax with calming visualisations and guided meditation.'"> | <img width="500" height="1082" src="/img/freya2.jpg" alt="Freya app screenshot: 'Freya will coach you through each surge with a simple breathing technique.'"> | <img width="500" height="1082" src="/img/freya3.jpg" alt="Freya app screenshot: 'Use our surge timer to keep track of how your labour is progressing.'"> |
 
 But it's not just about pretty UI.
 

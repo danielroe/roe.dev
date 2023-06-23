@@ -18,7 +18,7 @@ However, this really came alive for me recently. As part of our functionality wi
 
 It worked fantastically well, and we were able to roll out a great user experience immediately. But we soon noticed that it added extra weight to our webpack bundle. How much? 359kB of parsed JS!
 
-![Webpack bundle showing 359kB of tiptap dependencies](/img/tiptap-webpack-bundle.png)
+<p><img width="1200" height="803" src="/img/tiptap-webpack-bundle.png" alt="Webpack bundle showing 359kB of tiptap dependencies"></p>
 
 That might have been worth it for an app more centred around the editor experience, but it wasn't for us. So we started looking for alternatives.
 
@@ -31,7 +31,8 @@ So rather than aim for minor improvements, why not start as simple as possible a
 [Pell](https://github.com/jaredreich/pell), for example, is just 3.54kB minified - just 1% of our previous bundle size with tiptap.
 
 It renders something like this:
-![Demo of using Pell rich text editor](https://raw.githubusercontent.com/jaredreich/pell/master/demo.gif)
+
+<p><img width="500" height="305" src="https://raw.githubusercontent.com/jaredreich/pell/master/demo.gif" alt="Demo of using Pell rich text editor"></p>
 
 Vue makes it very easy to pull in a library with a custom wrapper component, and there are packages that do that with Pell. But, to be honest, that's probably the wrong thing to do. The base library is so simple that it's a great foundation for building your own rich text editor Vue component. And I wanted to make sure we supported Markdown shortcuts -- automatically creating bulleted lists after typing `*`, for example. So this is a good example of when it's best to re-implement functionality directly in Vue.
 
