@@ -35,14 +35,13 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"219k"'
+      '"210k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
           "_nuxt/CalSchedule.js",
           "_nuxt/ContentRendererMarkdown.js",
-          "_nuxt/GridLink.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
@@ -50,6 +49,7 @@ describe('project sizes', () => {
           "_nuxt/ProseEm.js",
           "_nuxt/ProseH2.js",
           "_nuxt/ProseH3.js",
+          "_nuxt/ProseImg.js",
           "_nuxt/ProseLi.js",
           "_nuxt/ProseOl.js",
           "_nuxt/ProseP.js",
@@ -62,10 +62,7 @@ describe('project sizes', () => {
           "_nuxt/ProseTr.js",
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
-          "_nuxt/StaticMarkdownRender.js",
           "_nuxt/_article_.js",
-          "_nuxt/components-chunk.js",
-          "_nuxt/dates.js",
           "_nuxt/entry.js",
           "_nuxt/index.js",
           "_nuxt/index.js",
@@ -79,12 +76,12 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"512k"'
+      '"215k"'
     )
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25448k"'
+      '"25488k"'
     )
 
     const packages = modules.files
@@ -108,6 +105,7 @@ describe('project sizes', () => {
         "consola",
         "cookie-es",
         "cssfilter",
+        "debug",
         "decode-named-character-reference",
         "defu",
         "destr",
@@ -122,6 +120,7 @@ describe('project sizes', () => {
         "github-slugger",
         "h3",
         "h3/node_modules/destr",
+        "has-flag",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -133,6 +132,7 @@ describe('project sizes', () => {
         "hastscript",
         "hookable",
         "html-void-elements",
+        "http-graceful-shutdown",
         "image-meta",
         "ipx",
         "ipx/node_modules/destr",
@@ -194,6 +194,7 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "ms",
         "node-emoji",
         "node-fetch-native",
         "ofetch",
@@ -224,6 +225,7 @@ describe('project sizes', () => {
         "slugify",
         "space-separated-tokens",
         "stringify-entities",
+        "supports-color",
         "trim-lines",
         "trough",
         "ufo",
