@@ -9,9 +9,7 @@ await setup({
   nuxtConfig: {
     hooks: {
       'prerender:routes'(routes) {
-        if (process.env.DISABLE_PRERENDER) {
-          routes.routes.clear()
-        }
+        routes.routes.clear()
       },
     },
   },
