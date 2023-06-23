@@ -32,7 +32,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"218k"'
+      '"219k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -81,7 +81,7 @@ describe('project sizes', () => {
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25437k"'
+      '"25448k"'
     )
 
     const packages = modules.files
@@ -118,6 +118,7 @@ describe('project sizes', () => {
         "flat",
         "github-slugger",
         "h3",
+        "h3/node_modules/destr",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -131,6 +132,7 @@ describe('project sizes', () => {
         "html-void-elements",
         "image-meta",
         "ipx",
+        "ipx/node_modules/destr",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -192,6 +194,7 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "ofetch",
+        "ofetch/node_modules/destr",
         "ohash",
         "parse-entities",
         "parse5",
@@ -232,6 +235,7 @@ describe('project sizes', () => {
         "unist-util-visit",
         "unist-util-visit-parents",
         "unstorage",
+        "unstorage/node_modules/destr",
         "vfile",
         "vfile-location",
         "vfile-message",
