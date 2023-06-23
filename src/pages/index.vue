@@ -1,60 +1,45 @@
+<script setup>
+const avatar = useNuxtApp().$auth.user.avatar
+useHead({
+  style: [
+    {
+      innerHTML: `
+img[data-image-src='${avatar || 'null'}'] {
+  border-style: solid;
+  border-width: 1px;
+
+  --tw-border-opacity: 1;
+
+  border-color: rgb(250 204 21 / var(--tw-border-opacity));
+}`,
+    },
+  ],
+})
+</script>
+
 <template>
   <div class="flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Welcome!</h1>
     </header>
     <main :class="$style.home" class="text-lg">
-      <StaticMarkdownRender v-if="page" :value="page" />
-      <template v-if="sponsors && sponsors.length">
-        <hr
-          class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-        />
-        <aside>
-          <header class="text-center font-bold mb-4">
-            special thanks to
-            <template v-if="$auth.user.sponsor">
-              <span class="text-[var(--text-base)]">you</span>
-              and
-            </template>
-          </header>
-          <div
-            class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
-          >
-            <nuxt-img
-              v-for="sponsor of sponsors"
-              :key="sponsor"
-              sizes="sm:70px"
-              alt=""
-              class="rounded-full"
-              :class="{
-                'border-solid border-[1px] border-yellow-400':
-                  $auth.user.avatar === sponsor,
-              }"
-              :src="sponsor"
-              loading="lazy"
-              decoding="async"
-              format="webp"
-              height="35"
-              width="35"
-            />
-          </div>
-        </aside>
-      </template>
+      <StaticMarkdownRender path="/" />
+      <hr
+        class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
+      />
+      <aside>
+        <header class="text-center font-bold mb-4">
+          special thanks to
+          <template v-if="$auth.user.sponsor">
+            <span class="text-[var(--text-base)]">you</span>
+            and
+          </template>
+        </header>
+        <TheSponsors />
+      </aside>
     </main>
   </div>
 </template>
-
-<script lang="ts" setup>
-const { data: sponsors } = await useAsyncData(() =>
-  $fetch<string[]>('/api/sponsors')
-)
-
-const { data: page } = await useAsyncData(
-  () =>
-    ((process.server || process.dev) as true) &&
-    queryContent('/').only(['title', 'type', 'body']).findOne()
-)
-</script>
 
 <style module>
 .home {

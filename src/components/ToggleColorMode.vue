@@ -14,14 +14,7 @@ const colorMode = useColorMode()
     "
   >
     <span
-      :class="$style.disc"
-      class="block rounded-full h-4 w-4 border-2 border-solid outline-none"
+      class="block rounded-full h-4 w-4 border-2 border-solid outline-none bg-[var(--text-base)]"
     />
   </button>
 </template>
-
-<style module>
-.disc {
-  background-color: var(--text-base, theme('colors.gray.800'));
-}
-</style>

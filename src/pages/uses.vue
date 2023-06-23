@@ -4,19 +4,13 @@
       <h1 class="text-2xl">Uses</h1>
     </header>
     <main class="text-lg" :class="$style.uses">
-      <StaticMarkdownRender v-if="page" :value="page" />
+      <StaticMarkdownRender path="/uses" />
     </main>
   </div>
 </template>
 
 <script lang="ts" setup>
 definePageMeta({ title: 'Uses' })
-
-const { data: page } = await useAsyncData(
-  () =>
-    ((process.server || process.dev) as true) &&
-    queryContent('/uses').only(['title', 'type', 'body']).findOne()
-)
 </script>
 
 <style module>

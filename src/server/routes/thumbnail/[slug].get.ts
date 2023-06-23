@@ -7,7 +7,7 @@ export default defineEventHandler(async event => {
 
   const website =
     (getQuery(event).website as string) ||
-    (await useStorage().getItem(getRouterParam(event, 'slug')))
+    (await useStorage().getItem(getRouterParam(event, 'slug')!))
   if (!website || typeof website !== 'string')
     throw createError('Missing website query parameter')
 

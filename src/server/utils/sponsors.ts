@@ -11,7 +11,8 @@ interface CacheEntry {
   mtime: number
 }
 
-export async function getSponsors (): Promise<Sponsor[]> {
+export async function getSponsors(): Promise<Sponsor[]> {
+  if (!useRuntimeConfig().github.token) return []
   const entry: CacheEntry =
     ((await useStorage().getItem('sponsors')) as any) || {}
 

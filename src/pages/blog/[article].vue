@@ -26,7 +26,7 @@
       </dl>
     </header>
     <section v-if="page" :class="$style.blog">
-      <StaticMarkdownRender :cache-key="page.title" :value="page" />
+      <StaticMarkdownRender :path="path" />
     </section>
     <WebMentions />
   </main>
@@ -39,15 +39,17 @@ const route = useRoute('blog-article')
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
-const path = useRoute()
-  .path.replace(/(index)?\.json$/, '')
-  .replace(/\/$/, '')
+const path = computed(() =>
+  route.path.replace(/(index)?\.json$/, '').replace(/\/$/, '')
+)
 
 const { data: page } = await useAsyncData(
-  path,
+  path.value,
   () =>
     ((process.server || process.dev) as true) &&
-    queryContent(path).only(['title', 'type', 'body', 'date', 'tags']).findOne()
+    queryContent(path.value)
+      .only(['title', 'date', 'tags', 'description'])
+      .findOne()
 )
 
 if (!page.value) {
@@ -60,7 +62,7 @@ if (!page.value) {
 const d = new Date(page.value.date)
 const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
-useRoute().meta.title = page.value.title
+route.meta.title = page.value.title
 
 if (process.server) {
   const SLUG_RE = createRegExp(
