@@ -39,6 +39,10 @@ export default defineNuxtConfig({
     },
     // TODO: this is a hack that we surely do not need
     'nitro:config'(config) {
+      if (process.env.DISABLE_PRERENDER) {
+        config.prerender ||= {}
+        config.prerender.crawlLinks = false
+      }
       ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
         transform(_code, id) {

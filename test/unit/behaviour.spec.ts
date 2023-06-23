@@ -7,13 +7,15 @@ import { createPage, setup } from '@nuxt/test-utils'
 await setup({
   rootDir: fileURLToPath(new URL('../..', import.meta.url)),
   nuxtConfig: {
+    nitro: {
+      prerender: {
+        crawlLinks: false,
+      },
+    },
     hooks: {
       'prerender:routes'(routes) {
-        for (const route of routes.routes) {
-          if (!route.includes('_content')) {
-            routes.routes.delete(route)
-          }
-        }
+        routes.routes.clear()
+        routes.routes.add('/')
       },
     },
   },
