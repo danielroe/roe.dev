@@ -1,10 +1,13 @@
+import { useNuxt } from 'nuxt/kit'
 import type { InputPluginOption } from 'rollup'
+
 export default defineNuxtConfig({
   $production: {
     experimental: {
       noVueServer: true,
     },
   },
+  devtools: { enabled: true },
   runtimeConfig: {
     // JWT claims
     privateKey: '',
@@ -32,6 +35,17 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    'components:extend'(components) {
+      // This code ensures that we can run our markdown renderer on the
+      // client side in development mode (for HMR).
+      const nuxt = useNuxt()
+      for (const comp of components) {
+        if (comp.pascalName === 'StaticMarkdownRender' && nuxt.options.dev) {
+          comp.mode = 'all'
+        }
+      }
+    },
+    // We disable prerendering to speed up the bundle test.
     'prerender:routes'(routes) {
       if (process.env.DISABLE_PRERENDER) {
         routes.routes.clear()

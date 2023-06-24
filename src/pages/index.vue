@@ -40,11 +40,3 @@ img[data-image-src='${avatar || 'null'}'] {
     </main>
   </div>
 </template>
-
-<style module>
-.home {
-  p + p {
-    @apply mt-4;
-  }
-}
-</style>
