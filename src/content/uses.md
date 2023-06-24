@@ -23,7 +23,7 @@
 
 ## Hardware
 
-- MacBook Air 13" M2
+- MacBook Air 13" M2 24GB
 - Microphone: Røde NT-USB
 - Camera: Sony Alpha ZV-E10 with Sigma 16 mm lens, running to an Elgato Cam Link
 - Headphones: Bose NC 700
