@@ -16,7 +16,8 @@ async function getMarkdownArticles() {
     articles.push({
       body_markdown: contents
         .replace(/\(\//g, '(https://roe.dev/')
-        .replace(/ ---? /g, ' — '),
+        .replace(/ ---? /g, ' — ')
+        .replace(/(\n|^)---\n[\s\S]*\n---\n/, '\n'),
       title: contents.match(/title: (.*)/)?.[1],
       slug,
       canonical_url: `https://roe.dev/blog/${slug}/`,
@@ -33,7 +34,6 @@ function getArticles() {
   })
 }
 
-// eslint-disable-next-line
 async function postArticle({ title, body_markdown, canonical_url }) {
   try {
     return await $fetch(`${url}/articles`, {
@@ -55,7 +55,6 @@ async function postArticle({ title, body_markdown, canonical_url }) {
   }
 }
 
-// eslint-disable-next-line
 async function updateArticle(id, { title, body_markdown, canonical_url }) {
   try {
     return await $fetch(`${url}/articles/${id}`, {
@@ -80,15 +79,15 @@ async function updateArticle(id, { title, body_markdown, canonical_url }) {
 getArticles().then(async articles => {
   const markdownArticles = await getMarkdownArticles()
   // console.log('TCL: markdownArticles', markdownArticles)
-  markdownArticles.forEach(markdownArticle => {
+  for (const markdownArticle of markdownArticles) {
     const article = articles.find(
       article => article.canonical_url === markdownArticle.canonical_url
     )
     // console.log('TCL: article', article)
     if (article) {
-      updateArticle(article.id, markdownArticle)
+      await updateArticle(article.id, markdownArticle)
     } else {
-      postArticle(markdownArticle)
+      await postArticle(markdownArticle)
     }
-  })
+  }
 })
