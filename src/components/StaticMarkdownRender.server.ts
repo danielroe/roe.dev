@@ -10,7 +10,7 @@ export default defineComponent({
       const { data } = await useAsyncData(() =>
         queryContent(props.path!).findOne()
       )
-      return () => h(ContentRendererMarkdown, { value: data.value })
+      return () => h(ContentRendererMarkdown, { value: data.value! })
     }
     const value = await queryContent(props.path!).findOne()
     return () => h(ContentRendererMarkdown, { value })
