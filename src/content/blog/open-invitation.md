@@ -23,11 +23,11 @@ I was honestly astounded at how many people wanted to chat. People I had never m
 
 1. Looking back at those calls, I don't regret a single one. A number of people I'd now consider valuable contributors to Nuxt messaged me - and we had a chance to talk for the first time. And I think there were plenty of folk who would be assets to any project.
 
+1. I've summarised [a few thoughts](/blog/contributing-to-nuxt) about contributing to Nuxt that came out of these calls.
+
 1. I absolutely want to have an open-door policy in future.
 
 ## An open invitation
-
-<!-- I've thrown [a few thoughts together here](/blog/contributing-to-nuxt) about how to get started with contributing to open source (or Nuxt, in particular). -->
 
 So here's the deal. If you want to have a 10-minute chat about anything, then I would love to talk to you.
 

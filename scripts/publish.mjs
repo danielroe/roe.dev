@@ -17,6 +17,11 @@ async function getMarkdownArticles() {
       body_markdown: contents
         .replace(/\(\//g, '(https://roe.dev/')
         .replace(/ ---? /g, ' — ')
+        .replace(/::SocialPost\{link=([^ ]*)[\s\S]*?::/g, '$1')
+        .replace(
+          /:CalSchedule\{meeting=([^ ]*).*\}/g,
+          'https://cal.com/danielroe/$1'
+        )
         .replace(/(\n|^)---\n[\s\S]*\n---\n/, '\n'),
       title: contents.match(/title: (.*)/)?.[1],
       slug,
