@@ -38,7 +38,7 @@ Here are some things I believe about giving into an open-source project:
 
 If you want to contribute to Nuxt, feel free to [book a chat](/blog/open-invitation) at any point.
 
-You can also check out [our contribution guide](http://localhost:3000/blog/contributing-to-nuxt). And, if it can be better, maybe that could be your first issue or pull request.
+You can also check out [our contribution guide](https://nuxt.com/docs/community/contribution#how-to-contribute). And, if it can be better, maybe that could be your first issue or pull request.
 
 If you're looking for a place to start, why not start with one of these filtered issue searches:
 
