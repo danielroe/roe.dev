@@ -22,7 +22,7 @@ img[data-image-src='${avatar || 'null'}'] {
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Welcome!</h1>
     </header>
-    <main :class="$style.home" class="text-lg">
+    <main class="text-lg">
       <StaticMarkdownRender path="/" />
       <hr
         class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
@@ -40,11 +40,3 @@ img[data-image-src='${avatar || 'null'}'] {
     </main>
   </div>
 </template>
-
-<style module>
-.home {
-  p + p {
-    @apply mt-4;
-  }
-}
-</style>

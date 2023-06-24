@@ -6,6 +6,12 @@ export default defineComponent({
     path: String,
   },
   async setup(props) {
+    if (process.dev) {
+      const { data } = await useAsyncData(() =>
+        queryContent(props.path!).findOne()
+      )
+      return () => h(ContentRendererMarkdown, { value: data.value! })
+    }
     const value = await queryContent(props.path!).findOne()
     return () => h(ContentRendererMarkdown, { value })
   },
