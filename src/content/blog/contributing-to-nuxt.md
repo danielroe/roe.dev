@@ -47,3 +47,5 @@ If you're looking for a place to start, why not start with one of these filtered
 * [Triage](https://github.com/nuxt/nuxt/issues?q=is:issue+is:open+sort:updated-desc+label:3.x+label:%22pending+triage%22+-label:%22needs+reproduction%22). One of the biggest jobs is sorting through new issues that people raise, and figuring out whether they are duplicates, real bugs, or need more information before we can begin investigating or fixing them. Commenting and trying to reproduce bugs is hugely helpful.
 
 ... and if you're engaging with an issue, feel free to ask away! I'm happy to help via DMs (on [Twitter](https://twitter.com/danielcroe) or [Discord](https://discord.nuxtjs.org)).
+
+However you get involved, thank you for the gift. ❤️
