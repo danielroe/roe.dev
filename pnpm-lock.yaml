@@ -149,8 +149,8 @@ devDependencies:
     specifier: 13.2.3
     version: 13.2.3
   nuxt-vitest:
-    specifier: 0.8.6
-    version: 0.8.6(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(vite@4.3.9)(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4)
+    specifier: 0.8.7
+    version: 0.8.7(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(vite@4.3.9)(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4)
   ofetch:
     specifier: 1.1.1
     version: 1.1.1
@@ -8268,8 +8268,8 @@ packages:
       - supports-color
     dev: false
 
-  /nuxt-vitest@0.8.6(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(vite@4.3.9)(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4):
-    resolution: {integrity: sha512-UL6i0S53WrKLzOuMgEJhoiPqy2IbPblWSf6JX2NwL1xfXk8SFJNRFuBNBoHhXa0Ydiz79t73aV30O+/umrKS7A==}
+  /nuxt-vitest@0.8.7(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(vite@4.3.9)(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4):
+    resolution: {integrity: sha512-OaQqF8QxfLKzYzSrwcfkhv5BeyLQGGvrSvOedjV3OHuDjOaTJa6OPU2VTCZBVNvPMjnbm2h71/CsXbH6smvEJw==}
     peerDependencies:
       '@vitejs/plugin-vue': '*'
       '@vitejs/plugin-vue-jsx': '*'
@@ -8286,7 +8286,7 @@ packages:
       std-env: 3.3.3
       vite: 4.3.9(@types/node@20.3.2)
       vitest: 0.32.2(happy-dom@9.20.3)(playwright@1.33.0)
-      vitest-environment-nuxt: 0.8.6(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4)
+      vitest-environment-nuxt: 0.8.7(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4)
     transitivePeerDependencies:
       - '@vue/compiler-dom'
       - '@vue/server-renderer'
@@ -11508,8 +11508,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt@0.8.6(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4):
-    resolution: {integrity: sha512-gPjmcSSIcdmJPfN2MbtR86t9q9BQCI+jzmQaYoeJjFJp1RftYV1YepuyuaH3ZqirQV/8fnze8XAQ8U1S4PwINg==}
+  /vitest-environment-nuxt@0.8.7(vitest@0.32.2)(vue-router@4.2.2)(vue@3.3.4):
+    resolution: {integrity: sha512-wk0Jn+PmZqF3jT3R/pkrgP7C98K6+/B3yq0dG9I8Qanwmp3014ljQgpiukrAZ6ZeF4k/8wrNBRliBcqtxCKFcw==}
     peerDependencies:
       vitest: ^0.24.5 || ^0.26.0 || ^0.27.0 || ^0.28.0 || ^0.29.0 || ^0.30.0
       vue: ^3.2.45
@@ -11519,7 +11519,7 @@ packages:
       '@vue/test-utils': 2.4.0(vue@3.3.4)
       defu: 6.1.2
       estree-walker: 3.0.3
-      h3: 1.7.0
+      h3: 1.7.1
       happy-dom: 9.20.3
       magic-string: 0.30.0
       ofetch: 1.1.1
