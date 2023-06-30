@@ -24,8 +24,8 @@ dependencies:
     specifier: 0.4.0
     version: 0.4.0
   '@nuxtjs/html-validator':
-    specifier: 1.4.0
-    version: 1.4.0
+    specifier: 1.5.0
+    version: 1.5.0
   '@nuxtjs/plausible':
     specifier: 0.2.1
     version: 0.2.1
@@ -1146,8 +1146,8 @@ packages:
       '@hapi/hoek': 9.3.0
     dev: true
 
-  /@html-validate/stylish@4.0.1:
-    resolution: {integrity: sha512-BBZuKxYAbf9yddzn5eboV3LR9tF0KAJACkxH9+g0C9mhxIInPHtLhsXdDMyhRBY49Ls9TLjAuPKbuSUgLjclBA==}
+  /@html-validate/stylish@4.1.0:
+    resolution: {integrity: sha512-f2MOKJ2HVdLxpOOg2jD6hjDTDJic3wpb8/UdDDIic5jTvgfMMPN3PoiNWlqDg/mCzLIj1b/p1hCRx4Kz5lbVjw==}
     engines: {node: '>= 14.0'}
     dependencies:
       kleur: 4.1.5
@@ -1593,7 +1593,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: true
 
   /@nuxt/postcss8@1.1.3(webpack@5.87.0):
     resolution: {integrity: sha512-CdHtErhvQwueNZPBOmlAAKrNCK7aIpZDYhtS7TzXlSgPHHox1g3cSlf+Ke9oB/8t4mNNjdB+prclme2ibuCOEA==}
@@ -1643,7 +1642,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: true
 
   /@nuxt/telemetry@2.2.0:
     resolution: {integrity: sha512-Z2UmPkBy5WjxvHKuUcl1X6vKWnIyWSP+9UGde1F+MzzZxYgAQybFud1uL2B3KCowxZdoqT1hd2WklV7EtyCwrQ==}
@@ -1852,12 +1850,12 @@ packages:
       - supports-color
     dev: false
 
-  /@nuxtjs/html-validator@1.4.0:
-    resolution: {integrity: sha512-mmldGjiGdevrQlXFMdQksCk3mG5uCaWyMbw038Y1lnrIaPTqjeccLigCwDXtx0jAAH/u26Xi9adZ49SveUuKBw==}
+  /@nuxtjs/html-validator@1.5.0:
+    resolution: {integrity: sha512-z5V4b/Ff84Hgqhjzqec5BFWp0XIGd0AxRJDx/le6Kidt1VR9SDzY+z7aYQvYZiERpzrziVlguqXAUSybsqQCqg==}
     dependencies:
-      '@nuxt/kit': 3.6.0
+      '@nuxt/kit': 3.6.1
       chalk: 5.2.0
-      html-validate: 7.18.0
+      html-validate: 8.0.5
       pathe: 1.1.1
       prettier: 2.8.8
       std-env: 3.3.3
@@ -5978,14 +5976,14 @@ packages:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
     engines: {node: '>=8'}
 
-  /html-validate@7.18.0:
-    resolution: {integrity: sha512-Ul8tPbrcpcV4XXx8aoWhx9ISRy0uCdhXyOz0MnnXt5IQ7sEyQFJJdY61Oysl8PKjE7JiR7SfLeyISPvQY8oS9Q==}
-    engines: {node: '>= 14.0'}
+  /html-validate@8.0.5:
+    resolution: {integrity: sha512-8IBayugyDTiH49JjxSEq+A0UFQzuyG9m0382aHMrPoHVNQcr3IypjuKcjn150ahAwAqO0o4NgMbkC1LezQU1mw==}
+    engines: {node: '>= 16.0'}
     hasBin: true
     peerDependencies:
-      jest: ^25.1 || ^26 || ^27.1 || ^28.1.3 || ^29.0.3
-      jest-diff: ^25.1 || ^26 || ^27.1 || ^28.1.3 || ^29.0.3
-      jest-snapshot: ^25.1 || ^26 || ^27.1 || ^28.1.3 || ^29.0.3
+      jest: ^27.1 || ^28.1.3 || ^29.0.3
+      jest-diff: ^27.1 || ^28.1.3 || ^29.0.3
+      jest-snapshot: ^27.1 || ^28.1.3 || ^29.0.3
     peerDependenciesMeta:
       jest:
         optional: true
@@ -5995,12 +5993,10 @@ packages:
         optional: true
     dependencies:
       '@babel/code-frame': 7.22.5
-      '@html-validate/stylish': 4.0.1
+      '@html-validate/stylish': 4.1.0
       '@sidvind/better-ajv-errors': 2.1.0(ajv@8.12.0)
-      acorn-walk: 8.2.0
       ajv: 8.12.0
       deepmerge: 4.3.1
-      espree: 9.5.2
       glob: 10.2.6
       ignore: 5.2.4
       kleur: 4.1.5
