@@ -35,7 +35,7 @@ describe('project sizes', () => {
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"211k"'
+      '"212k"'
     )
     expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
@@ -81,7 +81,7 @@ describe('project sizes', () => {
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25488k"'
+      '"25529k"'
     )
 
     const packages = modules.files
