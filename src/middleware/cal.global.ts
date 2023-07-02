@@ -3,7 +3,16 @@ const initConfig = {
   origin: 'https://app.cal.com',
 }
 const styleConfig = {
-  styles: { branding: { brandColor: '#1f2937' } },
+  cssVarsPerTheme: {
+    light: {
+      'cal-bg-muted': '#e5e7eb',
+      'cal-bg-emphasis': '#f3f4f6',
+    },
+    dark: {
+      'cal-bg-muted': '#1f2937',
+      'cal-bg-emphasis': '#374151',
+    },
+  },
   hideEventTypeDetails: false,
   layout: 'month_view',
 }
