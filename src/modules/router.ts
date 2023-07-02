@@ -78,7 +78,9 @@ export default defineNuxtModule({
             )
             return {
               path: path.includes('[')
-                ? `/${path.replace(/\[.*\]/g, '.+').replace(/\//g, '\\/')}/`
+                ? `/${path
+                    .replace(/\[(.*)\]/g, '(?<$1>.+)')
+                    .replace(/\//g, '\\/')}/`
                 : genString(path),
               component: `defineAsyncComponent(${genDynamicImport(f, {
                 interopDefault: true,

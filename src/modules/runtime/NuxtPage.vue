@@ -10,6 +10,7 @@ const match = (path: string) =>
     typeof r.path === 'string' ? r.path === path : r.path.test(path)
   )
 const component = computed(() => match(route.path)?.component)
+console.log(route.path, match(route.path))
 nuxtApp.hooks.hook('link:prefetch', url => {
   const path = match(url)
   if (path && path.component && path.component.__asyncResolved !== true) {
@@ -23,8 +24,13 @@ onMounted(() => {
 watch(
   () => route.path,
   (path: string) => {
-    route.meta = match(path)?.meta ?? {}
-  }
+    const matched = match(path)
+    route.meta = matched?.meta ?? {}
+    if (matched.path instanceof RegExp) {
+      route.params = path.match(matched.path)?.groups
+    }
+  },
+  { immediate: true }
 )
 </script>
 
