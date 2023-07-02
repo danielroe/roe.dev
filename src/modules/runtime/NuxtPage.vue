@@ -17,15 +17,14 @@ const match = (path: string) =>
     typeof r.path === 'string' ? r.path === path : r.path.test(path)
   )
 const component = computed(() => match(route.path)?.component)
-console.log(route.path, match(route.path))
+const preloadedPages = new Set<string>([route.path])
 nuxtApp.hooks.hook('link:prefetch', url => {
+  if (preloadedPages.has(url)) return
+  preloadedPages.add(url)
   const path = match(url)
   if (path && path.component && path.component.__asyncResolved !== true) {
     path.component.__asyncLoader()
   }
-})
-onMounted(() => {
-  nuxtApp.hooks.callHook('app:suspense:resolve')
 })
 
 watch(
@@ -42,7 +41,10 @@ watch(
 </script>
 
 <template>
-  <Suspense v-if="component">
+  <Suspense
+    v-if="component"
+    @resolve="() => nuxtApp.hooks.callHook('app:suspense:resolve')"
+  >
     <component :is="component" />
   </Suspense>
 </template>
