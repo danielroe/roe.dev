@@ -7,6 +7,7 @@ import {
   addComponent,
   addImports,
   addTemplate,
+  addRouteMiddleware,
   createResolver,
   defineNuxtModule,
   useNuxt,
@@ -60,6 +61,12 @@ export default defineNuxtModule({
       filePath: resolver.resolve('./runtime/NuxtPage.vue'),
       name: 'NuxtPage',
       priority: 20,
+    })
+
+    addRouteMiddleware({
+      name: 'path-params',
+      global: true,
+      path: resolver.resolve('./runtime/path.global.ts'),
     })
 
     addTemplate({
