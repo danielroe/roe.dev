@@ -14,12 +14,19 @@ nuxtApp.hooks.hook('link:prefetch', url => {
     path.component.__asyncLoader()
   }
 })
+const done = nuxtApp.deferHydration()
 </script>
 
 <template>
   <Suspense
     v-if="component"
-    @resolve="() => nuxtApp.hooks.callHook('app:suspense:resolve')"
+    :suspensible="true"
+    @pending="() => nuxtApp.callHook('page:start', component)"
+    @resolve="
+      () => {
+        nextTick(() => nuxtApp.callHook('page:finish', component).finally(done))
+      }
+    "
   >
     <component :is="component" />
   </Suspense>
