@@ -43,7 +43,7 @@ You can also check out [our contribution guide](https://nuxt.com/docs/community/
 If you're looking for a place to start, why not start with one of these filtered issue searches:
 
 * [Documentation](https://github.com/nuxt/nuxt/issues?q=is:issue+is:open+sort:updated-desc+label:documentation+label:3.x+-label:%22pending+triage%22). Often these already have a solution or hint in the comments, but it needs to be brought into the docs.
-* [Good first issues](https://github.com/nuxt/nuxt/issues?q=is:issue+is:open+sort:updated-desc+label:%22%F0%9F%91%89+good+first+issue%22+label:3.x+-label:%22pending+triage%22). We try to use this issue not for _easy_ issues but ones that have a clear scope and are ready-to-build.
+* [Good first issues](https://github.com/nuxt/nuxt/issues?q=is:issue+is:open+sort:updated-desc+label:%22good+first+issue%22+label:3.x+-label:%22pending+triage%22). We try to use this issue not for _easy_ issues but ones that have a clear scope and are ready-to-build.
 * [Triage](https://github.com/nuxt/nuxt/issues?q=is:issue+is:open+sort:updated-desc+label:3.x+label:%22pending+triage%22+-label:%22needs+reproduction%22). One of the biggest jobs is sorting through new issues that people raise, and figuring out whether they are duplicates, real bugs, or need more information before we can begin investigating or fixing them. Commenting and trying to reproduce bugs is hugely helpful.
 
 ... and if you're engaging with an issue, feel free to ask away! I'm happy to help via DMs (on [Twitter](https://twitter.com/danielcroe) or [Discord](https://discord.nuxtjs.org)).
