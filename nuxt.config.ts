@@ -104,6 +104,7 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
+      concurrency: 12,
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
