@@ -47,7 +47,13 @@ export default defineNuxtModule({
 
     addImports({
       name: 'definePageMeta',
-      from: resolver.resolve('./runtime/define-page-meta'),
+      from: resolver.resolve('./runtime/route-composables'),
+      priority: 20,
+    })
+
+    addImports({
+      name: 'useRoute',
+      from: resolver.resolve('./runtime/route-composables'),
       priority: 20,
     })
 
