@@ -1,4 +1,3 @@
-let registered: boolean
 const initConfig = {
   origin: 'https://app.cal.com',
 }
@@ -18,8 +17,7 @@ const styleConfig = {
 }
 
 export default defineNuxtRouteMiddleware(to => {
-  if ((process.server || !registered) && to.path === '/blog/open-invitation') {
-    registered = true
+  if (to.path === '/blog/open-invitation') {
     useHead({
       script: [
         {
