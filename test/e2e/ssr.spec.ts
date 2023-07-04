@@ -16,6 +16,8 @@ const pages = [
   '/blog/good-ux-and-giving-birth',
   '/blog/building-your-own-vue-rich-text-component',
   '/blog/creating-your-own-sitemap-module',
+  '/blog/open-invitation',
+  '/blog/contributing-to-nuxt',
 ]
 
 test.describe(`pages`, () => {
