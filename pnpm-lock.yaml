@@ -36,8 +36,8 @@ dependencies:
     specifier: 0.2.6
     version: 0.2.6
   '@unhead/vue':
-    specifier: ^1.1.27
-    version: 1.1.27(vue@3.3.4)
+    specifier: ^1.1.29
+    version: 1.1.29(vue@3.3.4)
   feed:
     specifier: ^4.2.2
     version: 4.2.2
@@ -2358,37 +2358,17 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
-  /@unhead/dom@1.1.27:
-    resolution: {integrity: sha512-sUrzpKIVvFp8TFx1mgp5t0k5ts1+KmgjMgRRuvRTZMBMVeGQRLSuL3uo34iwuFmKxeI6BXT5lVBk5H02c1XdGg==}
-    dependencies:
-      '@unhead/schema': 1.1.27
-      '@unhead/shared': 1.1.27
-    dev: false
-
   /@unhead/dom@1.1.29:
     resolution: {integrity: sha512-CyCblipMp3HNf6AJTABHn/F8U5bTA36FDHky/zcXX3MEaj/XzI6uxr6z813H67pxKw+tMlzYb+XM8Lfax61OvQ==}
     dependencies:
       '@unhead/schema': 1.1.29
       '@unhead/shared': 1.1.29
 
-  /@unhead/schema@1.1.27:
-    resolution: {integrity: sha512-S+xhPoBxBXDrsW9ltcF9Cv3cntMbSx+dfSmE7RNyDhogqHd3+lDEV2dnQpHKWTGjujwwMCALV5SADunAn785bw==}
-    dependencies:
-      hookable: 5.5.3
-      zhead: 2.0.7
-    dev: false
-
   /@unhead/schema@1.1.29:
     resolution: {integrity: sha512-ihgzC2VlEcC7SAt4hlRZAVubgBKvunHqEfSQmWbTNEiPI/Lkjry9rJuDjswo2go54xrDpAqOu3ZOVHq03YtOWQ==}
     dependencies:
       hookable: 5.5.3
       zhead: 2.0.7
-
-  /@unhead/shared@1.1.27:
-    resolution: {integrity: sha512-ElZ5WcMnhVlg44OAwTNq4XBkNePcL/BHZk7WKFcqpeGTJrEvSfs40lGJoo4sMsgDAd+XQdhJDd4dJu48jQB3kg==}
-    dependencies:
-      '@unhead/schema': 1.1.27
-    dev: false
 
   /@unhead/shared@1.1.29:
     resolution: {integrity: sha512-jYERAozHXGYT1jh/1friuRUajqKt/tU5oeLyIBSY+GDPs9k6mSpYHcrRhimqE3PJSN/hvg3UhyeH1/ltpSbyXA==}
@@ -2400,18 +2380,6 @@ packages:
     dependencies:
       '@unhead/schema': 1.1.29
       '@unhead/shared': 1.1.29
-
-  /@unhead/vue@1.1.27(vue@3.3.4):
-    resolution: {integrity: sha512-ibe7/QW4ZtyCI/et/fI3CnwC+oxqp+7LrhmuLUS93ib1Sl70D51dcAy9eAvh0MG7wWUyMUrf3T95MRifJo7uzA==}
-    peerDependencies:
-      vue: '>=2.7 || >=3'
-    dependencies:
-      '@unhead/schema': 1.1.27
-      '@unhead/shared': 1.1.27
-      hookable: 5.5.3
-      unhead: 1.1.27
-      vue: 3.3.4
-    dev: false
 
   /@unhead/vue@1.1.29(vue@3.3.4):
     resolution: {integrity: sha512-BNNNvP3CJUmYAQw9z2SNHaemiXnbmBorPwpEdjvcb8mLC4IRBC6JHSrgsSl0SgHF6u3tulvi0zqQNHMo8MEnIQ==}
@@ -10898,15 +10866,6 @@ packages:
       mime: 3.0.0
       node-fetch-native: 1.2.0
       pathe: 1.1.1
-
-  /unhead@1.1.27:
-    resolution: {integrity: sha512-KnE4xeV/mZLxnXG1VAp1nsaO2vzMq9Ch5uN4Y2SJAG4fXLEBi/A8evr3Vd81c+oAwQZjDXKFW60HDCJCkwo/Cw==}
-    dependencies:
-      '@unhead/dom': 1.1.27
-      '@unhead/schema': 1.1.27
-      '@unhead/shared': 1.1.27
-      hookable: 5.5.3
-    dev: false
 
   /unhead@1.1.29:
     resolution: {integrity: sha512-EmFma66Bn0YXIeW4VLHQInSAGNEjmIRnBMGbhpF2T6OEhNnNVbSeMd36xp2d7KwUKajEirZLWmg0ZxLGzaAVXA==}
