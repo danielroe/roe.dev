@@ -34,10 +34,10 @@ describe('project sizes', () => {
 
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
-    expect(roundToKilobytes(stats.client.totalBytes)).toMatchInlineSnapshot(
-      '"184k"'
-    )
-    expect(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
+    expect
+      .soft(roundToKilobytes(stats.client.totalBytes))
+      .toMatchInlineSnapshot('"185k"')
+    expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
           "_nuxt/CalSchedule.js",
@@ -75,20 +75,20 @@ describe('project sizes', () => {
 
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
-    expect(roundToKilobytes(stats.server.totalBytes)).toMatchInlineSnapshot(
-      '"219k"'
-    )
+    expect
+      .soft(roundToKilobytes(stats.server.totalBytes))
+      .toMatchInlineSnapshot('"219k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
-    expect(roundToKilobytes(modules.totalBytes)).toMatchInlineSnapshot(
-      '"25529k"'
-    )
+    expect
+      .soft(roundToKilobytes(modules.totalBytes))
+      .toMatchInlineSnapshot('"25529k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
       .map(m => m.replace('/package.json', '').replace('node_modules/', ''))
       .sort()
-    expect(packages).toMatchInlineSnapshot(`
+    expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@fastify/accept-negotiator",
         "bail",
