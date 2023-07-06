@@ -7,7 +7,7 @@ defineProps({
 
 <template>
   <button
-    class="flex flex-row link gap-2 mt-4"
+    class="link mt-4"
     :data-cal-link="`danielroe/${meeting}`"
     type="button"
   >

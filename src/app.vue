@@ -10,7 +10,6 @@
 const route = useRoute()
 
 useHead({
-  htmlAttrs: { lang: 'en' },
   title: () => (route.meta.title as string) || '',
   titleTemplate: title => (title ? `${title} - Daniel Roe` : 'Daniel Roe'),
 })

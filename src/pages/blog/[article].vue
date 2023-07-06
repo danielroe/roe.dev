@@ -17,7 +17,8 @@
               v-for="(tag, index) in page.tags"
               :key="tag"
               :class="{
-                'before:mx-1 before:inline-block before:font-bold': index,
+                'before:content-empty before:mx-1 before:inline-block before:font-bold':
+                  index,
               }"
               v-text="tag"
             />

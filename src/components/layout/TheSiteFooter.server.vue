@@ -32,7 +32,7 @@ const year = new Date().getFullYear()
 <template>
   <div>
     <footer
-      class="before:block before:mx-auto before:my-4 before:content before:w-4 before:border-t-2 before:border-solid before:border-gray-700 relative text-center mx-auto px-4 py-2 max-w-[50rem]"
+      class="before:content-empty before:block before:mx-auto before:my-4 before:content before:w-4 before:border-t-2 before:border-solid before:border-gray-700 relative text-center mx-auto px-4 py-2 max-w-[50rem]"
     >
       <small>&copy; 2019-{{ year }} Daniel Roe. All rights reserved.</small>
       <ul class="flex flex-row justify-center gap-4 my-4 items-center">
