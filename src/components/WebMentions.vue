@@ -44,9 +44,7 @@ const { data: mentions, pending } = useFetch(
   />
   <h2 class="text-xl mb-4">Mentions</h2>
   <div v-if="pending" class="flex items-center justify-center w-[2rem]">
-    <svg class="h-6 w-6" alt="">
-      <use xlink:href="#loading" />
-    </svg>
+    <span class="h-6 w-6 i-svg-spinners:90-ring-with-bg" alt="" />
     <span class="sr-only"> Loading </span>
   </div>
   <div v-else-if="!mentions || !mentions.length">No mentions yet</div>

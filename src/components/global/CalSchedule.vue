@@ -11,9 +11,7 @@ defineProps({
     :data-cal-link="`danielroe/${meeting}`"
     type="button"
   >
-    <svg class="inline-block h-4 w-4" alt="">
-      <use xlink:href="#calendar" />
-    </svg>
+    <span class="i-ri:calendar-check-fill h-4 w-4" alt="" />
     {{ message }}
   </button>
 </template>

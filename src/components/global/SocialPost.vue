@@ -1,9 +1,10 @@
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   link: String,
   datetime: String,
-  social: String,
+  social: String as () => 'twitter',
 })
+const icon = props.social === 'twitter' ? 'i-ri:twitter-fill' : ''
 </script>
 
 <template>
@@ -16,9 +17,7 @@ defineProps({
       class="flex flex-row gap-2 w-full mt-6 pb-0 !mb-2"
     >
       <div v-if="social" class="max-w-6">
-        <svg class="inline-block h-4 w-4 fill-current" alt="">
-          <use :xlink:href="`#${social}`" />
-        </svg>
+        <span class="h-4 w-4" :class="icon" alt="" />
       </div>
       <component :is="link ? 'a' : 'div'" :href="link">
         <NuxtTime

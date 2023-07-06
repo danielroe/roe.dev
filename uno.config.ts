@@ -1,4 +1,4 @@
-import { defineConfig, presetUno } from 'unocss'
+import { defineConfig, presetUno, presetIcons } from 'unocss'
 
 export default defineConfig({
   shortcuts: [{ hidden: 'display-none' }],
@@ -10,6 +10,12 @@ export default defineConfig({
     },
   },
   presets: [
+    presetIcons({
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle',
+      },
+    }),
     presetUno({
       dark: {
         dark: 'dark-mode',
