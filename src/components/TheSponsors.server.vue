@@ -3,9 +3,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
 </script>
 
 <template>
-  <div
-    class="flex gap-3 flex-row flex-wrap max-w-md mx-auto justify-center relative"
-  >
+  <div class="flex gap-3 flex-row flex-wrap mx-auto justify-center relative">
     <nuxt-img
       v-for="sponsor of sponsors"
       :key="sponsor"
