@@ -20,5 +20,12 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
       height="35"
       width="35"
     />
+    <nuxt-link
+      to="https://github.com/sponsors/danielroe"
+      class="pure rounded-full border-gray border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:opacity-50 focus:opacity-50 transform-opacity"
+      target="_blank"
+    >
+      <div class="block i-ri:add-fill h-6 w-6" />
+    </nuxt-link>
   </div>
 </template>

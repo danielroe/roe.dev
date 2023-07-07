@@ -57,7 +57,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a, .link {
+a:not(.pure), .link:not(.pure) {
   @apply relative inline-block;
 
   &::after {
