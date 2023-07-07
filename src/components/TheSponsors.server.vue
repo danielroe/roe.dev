@@ -26,6 +26,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
       target="_blank"
     >
       <div class="block i-ri:add-fill h-6 w-6" />
+      <span class="sr-only">Sponsor me on GitHub</span>
     </nuxt-link>
   </div>
 </template>
