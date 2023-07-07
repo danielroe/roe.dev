@@ -80,7 +80,9 @@ main {
   color: var(--text-muted, theme('colors.gray.300'));
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 main a:not([href^='#']), main .link {
+  /* stylelint-disable-next-line no-descending-specificity */
   &::after {
     border-color: currentcolor;
     opacity: 0.1;
