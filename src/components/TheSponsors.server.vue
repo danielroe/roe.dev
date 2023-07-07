@@ -24,7 +24,6 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
       to="https://github.com/sponsors/danielroe"
       class="pure rounded-full border-gray border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:opacity-50 focus:opacity-50 transform-opacity"
       target="_blank"
-      alt="Become a sponsor"
     >
       <div class="block i-ri:add-fill h-6 w-6" />
       <span class="sr-only">Sponsor me on GitHub</span>
