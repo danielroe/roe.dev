@@ -72,9 +72,7 @@ useRouter().afterEach(() => {
         v-if="$auth.status === 'pending'"
         class="flex items-center justify-center w-[2rem] flex-shrink-0"
       >
-        <svg class="h-6 w-6" alt="">
-          <use xlink:href="#loading" />
-        </svg>
+        <span class="h-6 w-6 i-svg-spinners:90-ring-with-bg" alt="" />
         <span class="sr-only"> Loading </span>
       </div>
       <NuxtLink
@@ -83,9 +81,7 @@ useRouter().afterEach(() => {
         class="p-1 w-[2rem] flex-shrink-0"
         @click="$auth.status = 'pending'"
       >
-        <svg class="h-5 w-5 fill-current" alt="">
-          <use xlink:href="#github" />
-        </svg>
+        <span class="h-5 w-5 i-ri:github-fill" alt="" />
         <span class="sr-only"> Login </span>
       </NuxtLink>
       <button
@@ -99,23 +95,18 @@ useRouter().afterEach(() => {
           :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
           :src="$auth.user.avatar"
         />
-        <svg
+        <span
           v-if="$auth.user.sponsor"
-          class="absolute top-[-0.45rem] right-[-0.2rem] h-5 w-5 text-yellow-400 fill-current"
+          class="absolute top-[-0.45rem] right-[-0.2rem] h-5 w-5 text-yellow-400"
           alt=""
         >
-          <use
-            xlink:href="#star"
-            class="border-solid border-[1px] border-gray-800"
-          />
-        </svg>
+          <span class="i-ri:star-fill border border-solid border-gray-800" />
+        </span>
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <div class="md:hidden">
         <button type="button" @click="showMenu = !showMenu">
-          <svg class="h-6 w-6" alt="">
-            <use xlink:href="#menu" />
-          </svg>
+          <span class="h-6 w-6 i-ri:bar-chart-line" alt="" />
           <span class="sr-only"> Open mobile navigation menu </span>
         </button>
         <Teleport v-if="showMenu" to="body">
@@ -127,9 +118,7 @@ useRouter().afterEach(() => {
               class="top-0 right-0 fixed p-8"
               @click="showMenu = !showMenu"
             >
-              <svg class="h-8 w-8" alt="">
-                <use xlink:href="#close" />
-              </svg>
+              <span class="h-8 w-8 i-ri:close-fill" alt="" />
               <span class="sr-only"> Close mobile navigation menu </span>
             </button>
             <ul

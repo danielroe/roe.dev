@@ -114,13 +114,12 @@ const { data: talks } = await useAsyncData(
       <article>
         <header>
           <div class="flex flex-row items-center gap-2">
-            <svg
+            <span
               v-if="type === 'podcast' || video"
-              class="h-4 w-4 fill-current"
+              :class="video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
+              class="h-4 w-4 flex-shrink-0"
               :alt="video ? `Play ${title}` : `Listen to ${title}`"
-            >
-              <use :xlink:href="video ? '#play' : '#audio'" />
-            </svg>
+            />
             {{ title }}
           </div>
           <dl

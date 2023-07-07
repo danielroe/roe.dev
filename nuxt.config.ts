@@ -136,10 +136,11 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/main.css'],
+  css: ['@unocss/reset/tailwind.css', '~/assets/main.css'],
 
   app: {
     head: {
+      htmlAttrs: { lang: 'en' },
       title: 'Daniel Roe',
     },
     pageTransition: false,
@@ -149,6 +150,13 @@ export default defineNuxtConfig({
   plausible: {
     domain: 'roe.dev',
     apiHost: 'https://v.roe.dev',
+  },
+
+  postcss: {
+    plugins: {
+      'postcss-nesting': {},
+      '@unocss/postcss': {},
+    },
   },
 
   image: {
@@ -190,7 +198,7 @@ export default defineNuxtConfig({
     'magic-regexp/nuxt',
     '@nuxt/image',
     '@nuxtjs/html-validator',
-    '@nuxtjs/tailwindcss',
+    '@unocss/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/content',
     '@nuxtjs/plausible',
