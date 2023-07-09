@@ -33,6 +33,22 @@ const menu = [
 useRouter().afterEach(() => {
   showMenu.value = false
 })
+
+watch(showMenu, value => {
+  document.body.classList.toggle('overflow-hidden', value)
+})
+
+function toggleMenu() {
+  if (process.server) return
+  if (document.startViewTransition) {
+    document.startViewTransition(async () => {
+      showMenu.value = !showMenu.value
+      await nextTick()
+    })
+  } else {
+    showMenu.value = !showMenu.value
+  }
+}
 </script>
 
 <template>
@@ -105,8 +121,12 @@ useRouter().afterEach(() => {
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <div class="md:hidden">
-        <button type="button" @click="showMenu = !showMenu">
-          <span class="h-6 w-6 i-ri:bar-chart-line" alt="" />
+        <button type="button" @click="toggleMenu">
+          <span
+            class="h-6 w-6 i-ri:add-line"
+            :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
+            alt=""
+          />
           <span class="sr-only"> Open mobile navigation menu </span>
         </button>
         <Teleport v-if="showMenu" to="body">
@@ -116,9 +136,13 @@ useRouter().afterEach(() => {
             <button
               type="button"
               class="top-0 right-0 fixed p-8"
-              @click="showMenu = !showMenu"
+              @click="toggleMenu"
             >
-              <span class="h-8 w-8 i-ri:close-fill" alt="" />
+              <span
+                class="h-8 w-8 i-ri:close-fill"
+                :style="{ viewTransitionName: 'menu' }"
+                alt=""
+              />
               <span class="sr-only"> Close mobile navigation menu </span>
             </button>
             <ul
