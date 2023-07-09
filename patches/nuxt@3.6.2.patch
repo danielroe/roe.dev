@@ -1,0 +1,34 @@
+diff --git a/dist/app/components/nuxt-island.js b/dist/app/components/nuxt-island.js
+index e19bb7a1d66a95864526862c6a70690273fb596f..40a8aab0dd011e1fc11b2d6ac8b7b1f85362674f 100644
+--- a/dist/app/components/nuxt-island.js
++++ b/dist/app/components/nuxt-island.js
+@@ -41,7 +41,28 @@ export default defineComponent({
+     onMounted(() => {
+       mounted.value = true;
+     });
+-    const ssrHTML = ref(process.client ? getFragmentHTML(instance.vnode?.el ?? null).join("") ?? "<div></div>" : "<div></div>");
++    
++    const ssrHTML = ref("<div></div>");
++    if (process.client) {
++      const renderedHTML = getFragmentHTML(instance.vnode?.el ?? null).join("")
++      if (renderedHTML) {
++        ssrHTML.value = renderedHTML;
++        const key2 = `${props.name}_${hashId.value}`;
++        const url = `/__nuxt_island/${key2}`;
++        nuxtApp.payload.data[key2] = {
++          __nuxt_island: {
++            key: key2,
++            params: {
++              ...props.context,
++              props: props.props ? JSON.stringify(props.props) : void 0
++            }
++          },
++          html: renderedHTML,
++          head: {},
++        }
++      }
++      ssrHTML.value = renderedHTML
++    }
+     const slotProps = computed(() => getSlotProps(ssrHTML.value));
+     const uid = ref(ssrHTML.value.match(SSR_UID_RE)?.[1] ?? randomUUID());
+     const availableSlots = computed(() => [...ssrHTML.value.matchAll(SLOTNAME_RE)].map((m) => m[1]));

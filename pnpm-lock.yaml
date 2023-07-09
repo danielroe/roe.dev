@@ -11,6 +11,9 @@ patchedDependencies:
   '@nuxtjs/color-mode@3.3.0':
     hash: yhatw3bbda574qeiohv37vxgf4
     path: patches/@nuxtjs__color-mode@3.3.0.patch
+  nuxt@3.6.2:
+    hash: mh2dslgs5hdxnzdojyzdens4vm
+    path: patches/nuxt@3.6.2.patch
 
 dependencies:
   '@iconify-json/ri':
@@ -78,7 +81,7 @@ dependencies:
     version: 1.4.0
   nuxt:
     specifier: 3.6.2
-    version: 3.6.2(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
+    version: 3.6.2(patch_hash=mh2dslgs5hdxnzdojyzdens4vm)(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
   nuxt-time:
     specifier: ^0.1.0
     version: 0.1.0
@@ -1457,7 +1460,7 @@ packages:
       '@nuxt/kit': 3.6.2
       '@nuxt/schema': 3.6.2
       execa: 7.1.1
-      nuxt: 3.6.2(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
+      nuxt: 3.6.2(patch_hash=mh2dslgs5hdxnzdojyzdens4vm)(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
       vite: 4.3.9(@types/node@20.4.0)
     transitivePeerDependencies:
       - rollup
@@ -1506,7 +1509,7 @@ packages:
       launch-editor: 2.6.0
       local-pkg: 0.4.3
       magicast: 0.2.9
-      nuxt: 3.6.2(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
+      nuxt: 3.6.2(patch_hash=mh2dslgs5hdxnzdojyzdens4vm)(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4)
       nypm: 0.2.2
       pacote: 15.2.0
       pathe: 1.1.1
@@ -8044,7 +8047,7 @@ packages:
       - vue-router
     dev: true
 
-  /nuxt@3.6.2(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4):
+  /nuxt@3.6.2(patch_hash=mh2dslgs5hdxnzdojyzdens4vm)(@types/node@20.4.0)(eslint@8.44.0)(stylelint@15.10.1)(typescript@5.1.6)(vue-tsc@1.8.4):
     resolution: {integrity: sha512-nzxXEKyjBUjRIfP/vojFdZ9RbpaiVftatT+p5tzJGea8beocRB2XsZ0hcDtmMuOcF6glQjG3EIsVu2p9Ckz/Kg==}
     engines: {node: ^14.18.0 || >=16.10.0}
     hasBin: true
@@ -8135,6 +8138,7 @@ packages:
       - vls
       - vti
       - vue-tsc
+    patched: true
 
   /nypm@0.2.2:
     resolution: {integrity: sha512-O7bumfWgUXlJefT1Y41SF4vsCvzeUYmnKABuOKStheCObzrkWPDmqJc+RJVU+57oFu9bITcrUq8sKFIHgjCnTg==}
