@@ -6,6 +6,7 @@ const entries = await queryContent('/blog')
     return (result as Array<{ title?: string; date: string; _path: string }>)
       .map(e => ({
         ...formatDateField(e),
+        slug: e._path.match(/^.*\/([^/]*)\/?$/)?.[1] ?? '',
         path: e._path,
       }))
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -15,20 +16,30 @@ const entries = await queryContent('/blog')
 <template>
   <section class="flex flex-row flex-wrap gap-4">
     <GridLink
-      v-for="{ title, path, date, formattedDate } in entries"
+      v-for="{ title, path, slug, date, formattedDate } in entries"
       :key="path"
       :to="path"
       :title="title"
     >
       <article>
         <header>
-          {{ title }}
+          <span :style="{ viewTransitionName: `heading-${slug}` }">
+            {{ title }}
+          </span>
           <dl
             v-if="date"
             class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
           >
-            <dt class="float-left md:float-none mr-2">Published</dt>
-            <dd class="font-semibold mr-4">
+            <dt
+              :style="{ viewTransitionName: `published-dt-${slug}` }"
+              class="float-left md:float-none mr-2"
+            >
+              Published
+            </dt>
+            <dd
+              :style="{ viewTransitionName: `published-dd-${slug}` }"
+              class="font-semibold mr-4"
+            >
               <time :datetime="date">{{ formattedDate }}</time>
             </dd>
           </dl>
