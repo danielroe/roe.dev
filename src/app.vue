@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="font-sans overflow-x-hidden min-h-screen flex flex-col">
+  <div id="app" class="overflow-x-hidden min-h-screen flex flex-col">
     <LayoutTheSiteHeader v-once />
     <NuxtPage />
     <LayoutTheSiteFooter v-once />
@@ -12,6 +12,9 @@ const route = useRoute()
 useHead({
   title: () => (route.meta.title as string) || '',
   titleTemplate: title => (title ? `${title} - Daniel Roe` : 'Daniel Roe'),
+  bodyAttrs: {
+    class: 'font-sans',
+  },
 })
 
 if (process.server) {
