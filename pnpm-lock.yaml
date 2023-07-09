@@ -7,6 +7,11 @@ settings:
 overrides:
   consola: 3.2.3
 
+patchedDependencies:
+  '@nuxtjs/color-mode@3.3.0':
+    hash: yhatw3bbda574qeiohv37vxgf4
+    path: patches/@nuxtjs__color-mode@3.3.0.patch
+
 dependencies:
   '@iconify-json/ri':
     specifier: ^1.1.10
@@ -25,7 +30,7 @@ dependencies:
     version: 3.6.2
   '@nuxtjs/color-mode':
     specifier: 3.3.0
-    version: 3.3.0
+    version: 3.3.0(patch_hash=yhatw3bbda574qeiohv37vxgf4)
   '@nuxtjs/fontaine':
     specifier: 0.4.0
     version: 0.4.0
@@ -1713,7 +1718,7 @@ packages:
       - vti
       - vue-tsc
 
-  /@nuxtjs/color-mode@3.3.0:
+  /@nuxtjs/color-mode@3.3.0(patch_hash=yhatw3bbda574qeiohv37vxgf4):
     resolution: {integrity: sha512-YVFNmTISke1eL7uk5p9I1suOsM222FxrqKoF13HS4x94OKCWwPLLeTCEzHZ8orzKnaFUbCXpuL4pRv8gvW+0Kw==}
     dependencies:
       '@nuxt/kit': 3.6.2
@@ -1723,6 +1728,7 @@ packages:
       - rollup
       - supports-color
     dev: false
+    patched: true
 
   /@nuxtjs/eslint-config-typescript@12.0.0(eslint@8.44.0)(typescript@5.1.6):
     resolution: {integrity: sha512-HJR0ho5MYuOCFjkL+eMX/VXbUwy36J12DUMVy+dj3Qz1GYHwX92Saxap3urFzr8oPkzzFiuOknDivfCeRBWakg==}

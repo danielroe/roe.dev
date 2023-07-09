@@ -1,0 +1,15 @@
+diff --git a/dist/runtime/plugin.server.mjs b/dist/runtime/plugin.server.mjs
+index fdf0733d4be968bdb043247042403ac11171fe2b..a28362add57252d4472622af7885ca21895df606 100644
+--- a/dist/runtime/plugin.server.mjs
++++ b/dist/runtime/plugin.server.mjs
+@@ -12,7 +12,9 @@ const addScript = (head) => {
+   head[serializeProp][hid] = ["innerHTML"];
+ };
+ export default defineNuxtPlugin((nuxtApp) => {
+-  const colorMode = useState("color-mode", () => reactive({
++  const colorMode = nuxtApp.ssrContext && 'islandContext' in nuxtApp.ssrContext
++    ? reactive({})
++    : useState("color-mode", () => reactive({
+     preference,
+     value: preference,
+     unknown: true,
