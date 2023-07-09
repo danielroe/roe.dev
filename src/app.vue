@@ -25,38 +25,23 @@ if (process.server) {
   const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
   const url = `https://roe.dev${path}`
 
+  useServerSeoMeta({
+    themeColor: '#1a202c',
+    msapplicationTileColor: '#1a202c',
+    ogUrl: url,
+    ogImage: `https://roe.dev/og/og.jpg`,
+    ogImageHeight: 630,
+    ogImageWidth: 1200,
+    ogTitle: route.meta.title || 'Daniel Roe',
+    description: route.meta.description || `The personal website of Daniel Roe`,
+    ogDescription:
+      route.meta.description || `The personal website of Daniel Roe`,
+    twitterCard: 'summary_large_image',
+    twitterSite: '@danielcroe',
+    twitterCreator: '@danielcroe',
+  })
+
   useServerHead({
-    meta: () => [
-      { name: 'theme-color', content: '#1a202c' },
-      { name: 'msapplication-TileColor', content: '#1a202c' },
-      { property: 'og:url', content: url },
-      {
-        property: 'og:image',
-        content: `https://roe.dev/og/og.jpg`,
-        key: 'og:image',
-      },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      {
-        property: 'og:title',
-        content: (route.meta.title as string) || 'Daniel Roe',
-      },
-      {
-        name: 'description',
-        content:
-          (route.meta.description as string) ||
-          `The personal website of Daniel Roe`,
-      },
-      {
-        property: 'og:description',
-        content:
-          (route.meta.description as string) ||
-          `The personal website of Daniel Roe`,
-      },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:site', content: '@danielcroe' },
-      { name: 'twitter:creator', content: '@danielcroe' },
-    ],
     link: [
       ...[
         '/fonts/barlow-7cHpv4kjgoGqM7E_Ass52Hs.woff2',
