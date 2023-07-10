@@ -1,23 +1,15 @@
 <template>
   <main class="flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
     <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
-      <h1 class="text-2xl" :style="{ viewTransitionName: `heading-${slug}` }">
+      <h1 class="text-2xl">
         {{ page.title }}
       </h1>
       <dl
         v-if="page.date && formattedDate"
         class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
       >
-        <dt
-          :style="{ viewTransitionName: `published-dt-${slug}` }"
-          class="float-left md:float-none mr-2"
-        >
-          Published
-        </dt>
-        <dd
-          :style="{ viewTransitionName: `published-dd-${slug}` }"
-          class="font-semibold mr-4"
-        >
+        <dt class="float-left md:float-none mr-2">Published</dt>
+        <dd class="font-semibold mr-4">
           <time :datetime="page.date">{{ formattedDate }}</time>
         </dd>
         <template v-if="page.tags && page.tags.length">
@@ -100,6 +92,20 @@ if (process.server) {
   )
 }
 </script>
+
+<style scoped>
+header > h1:first-child {
+  view-transition-name: heading;
+}
+
+header dl dt:first-of-type {
+  view-transition-name: published-dt;
+}
+
+header dl dd:first-of-type {
+  view-transition-name: published-dd;
+}
+</style>
 
 <style module>
 .blog {
