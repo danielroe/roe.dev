@@ -170,10 +170,10 @@ function toggleMenu(input?: Event | boolean) {
 
 <style>
 ::view-transition-old(menu) {
-  transform: rotate(90);
+  transform: rotate(0deg);
 }
 
 ::view-transition-new(menu) {
-  transform: rotate(0);
+  transform: rotate(90deg);
 }
 </style>
