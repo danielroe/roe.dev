@@ -31,22 +31,23 @@ const menu = [
 ]
 
 useRouter().afterEach(() => {
-  showMenu.value = false
+  toggleMenu(false)
 })
 
 watch(showMenu, value => {
   document.body.classList.toggle('overflow-hidden', value)
 })
 
-function toggleMenu() {
-  if (process.server) return
+function toggleMenu(input?: Event | boolean) {
+  const newValue = typeof input === 'boolean' ? input : !showMenu.value
+  if (process.server || input === showMenu.value) return
   if (document.startViewTransition) {
     document.startViewTransition(async () => {
-      showMenu.value = !showMenu.value
+      showMenu.value = newValue
       await nextTick()
     })
   } else {
-    showMenu.value = !showMenu.value
+    showMenu.value = newValue
   }
 }
 </script>
@@ -123,7 +124,7 @@ function toggleMenu() {
       <div class="md:hidden">
         <button type="button" @click="toggleMenu">
           <span
-            class="h-6 w-6 i-ri:add-line"
+            class="menu-icon h-6 w-6 i-ri:add-line"
             :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
             alt=""
           />
@@ -139,7 +140,7 @@ function toggleMenu() {
               @click="toggleMenu"
             >
               <span
-                class="h-8 w-8 i-ri:close-fill"
+                class="menu-icon h-8 w-8 i-ri:close-fill"
                 :style="{ viewTransitionName: 'menu' }"
                 alt=""
               />
@@ -166,3 +167,13 @@ function toggleMenu() {
     </div>
   </nav>
 </template>
+
+<style>
+::view-transition-old(menu) {
+  transform: rotate(90);
+}
+
+::view-transition-new(menu) {
+  transform: rotate(0);
+}
+</style>
