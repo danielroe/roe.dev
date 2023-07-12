@@ -26,6 +26,11 @@ const links = [
     link: 'https://bsky.app/profile/danielroe.dev',
   },
   {
+    name: 'Threads',
+    icon: 'i-custom-threads',
+    link: 'https://www.threads.net/@daniel.c.roe',
+  },
+  {
     name: 'RSS',
     icon: 'i-ri:rss-fill',
     link: '/rss.xml',
