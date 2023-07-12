@@ -31,6 +31,16 @@ const links = [
     link: 'https://www.threads.net/@daniel.c.roe',
   },
   {
+    name: 'Twitch',
+    icon: 'i-ri-twitch-fill',
+    link: 'https://twitch.tv/danielroe',
+  },
+  {
+    name: 'YouTube',
+    icon: 'i-ri-youtube-fill',
+    link: 'https://www.youtube.com/@danielroe',
+  },
+  {
     name: 'RSS',
     icon: 'i-ri:rss-fill',
     link: '/rss.xml',
