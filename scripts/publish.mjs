@@ -5,7 +5,7 @@ import { $fetch } from 'ofetch'
 import { iterateOnDirectory } from './global.mjs'
 
 const url = 'https://dev.to/api'
-const token = process.env.DEVTO_TOKEN || 'CYgR6zbcVgtKDRkawFYZKrCT'
+const token = process.env.DEVTO_TOKEN
 
 async function getMarkdownArticles() {
   const articles = []
@@ -32,6 +32,9 @@ async function getMarkdownArticles() {
 }
 
 function getArticles() {
+  if (!token) {
+    throw new Error('No token provided')
+  }
   return $fetch(`${url}/articles/me`, {
     headers: {
       'api-key': token,
