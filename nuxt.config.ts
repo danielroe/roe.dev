@@ -12,11 +12,6 @@ export default defineNuxtConfig({
     // JWT claims
     privateKey: '',
     publicKey: '',
-    // for logging errors
-    axiom: {
-      dataset: 'roe.dev',
-      accessKey: '',
-    },
     // emailing ideas
     sendgridApiKey: '',
     resendApiKey: '',
