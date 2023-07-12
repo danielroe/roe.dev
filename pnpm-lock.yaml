@@ -166,14 +166,14 @@ devDependencies:
     specifier: 4.2.1
     version: 4.2.1(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@2.8.8)
   happy-dom:
-    specifier: 10.0.3
-    version: 10.0.3
+    specifier: 10.1.1
+    version: 10.1.1
   lint-staged:
     specifier: 13.2.3
     version: 13.2.3
   nuxt-vitest:
     specifier: 0.9.0
-    version: 0.9.0(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(happy-dom@10.0.3)(vite@4.4.2)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4)
+    version: 0.9.0(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(happy-dom@10.1.1)(vite@4.4.2)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4)
   ofetch:
     specifier: 1.1.1
     version: 1.1.1
@@ -203,7 +203,7 @@ devDependencies:
     version: 5.1.6
   vitest:
     specifier: 0.33.0
-    version: 0.33.0(happy-dom@10.0.3)(playwright@1.33.0)
+    version: 0.33.0(happy-dom@10.1.1)(playwright@1.33.0)
   vue-tsc:
     specifier: 1.8.4
     version: 1.8.4(typescript@5.1.6)
@@ -1651,7 +1651,7 @@ packages:
       pathe: 1.1.1
       playwright: 1.33.0
       ufo: 1.1.2
-      vitest: 0.33.0(happy-dom@10.0.3)(playwright@1.33.0)
+      vitest: 0.33.0(happy-dom@10.1.1)(playwright@1.33.0)
       vue: 3.3.4
     transitivePeerDependencies:
       - rollup
@@ -5742,8 +5742,8 @@ packages:
       ufo: 1.1.2
       uncrypto: 0.1.3
 
-  /happy-dom@10.0.3:
-    resolution: {integrity: sha512-WkCP+Z5fX6U5PY+yHP3ElV5D9PoxRAHRWPFq3pG9rg/6Hjf5ak7dozAgSCywsTRUq2qfa8vV8OQvUy5pRXy8EQ==}
+  /happy-dom@10.1.1:
+    resolution: {integrity: sha512-/9AMl/rwMCAz/lAs55W0B2p9I/RfnMWmR2iBI1/twz0+XZYrVgHyJzrBTpHDZlbf00NRk/pFoaktKPtdAP5Tlg==}
     dependencies:
       css.escape: 1.5.1
       entities: 4.5.0
@@ -7995,7 +7995,7 @@ packages:
       - supports-color
     dev: false
 
-  /nuxt-vitest@0.9.0(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(happy-dom@10.0.3)(vite@4.4.2)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4):
+  /nuxt-vitest@0.9.0(@vitejs/plugin-vue-jsx@3.0.1)(@vitejs/plugin-vue@4.2.3)(happy-dom@10.1.1)(vite@4.4.2)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4):
     resolution: {integrity: sha512-cGgrEp8C8A1cNrAOJdl15NF2SnPn/jDKX2JvPpvXLhHZiBa0bdO3izdAEXgaDJRuZfYteLbLbBvDGGFd2fy8cg==}
     peerDependencies:
       '@vitejs/plugin-vue': '*'
@@ -8012,8 +8012,8 @@ packages:
       perfect-debounce: 1.0.0
       std-env: 3.3.3
       vite: 4.4.2(@types/node@20.4.0)
-      vitest: 0.33.0(happy-dom@10.0.3)(playwright@1.33.0)
-      vitest-environment-nuxt: 0.9.0(happy-dom@10.0.3)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4)
+      vitest: 0.33.0(happy-dom@10.1.1)(playwright@1.33.0)
+      vitest-environment-nuxt: 0.9.0(happy-dom@10.1.1)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4)
     transitivePeerDependencies:
       - '@vue/compiler-dom'
       - '@vue/server-renderer'
@@ -11054,7 +11054,7 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest-environment-nuxt@0.9.0(happy-dom@10.0.3)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4):
+  /vitest-environment-nuxt@0.9.0(happy-dom@10.1.1)(vitest@0.33.0)(vue-router@4.2.4)(vue@3.3.4):
     resolution: {integrity: sha512-RytvkgUXy6ziJqOoHkOZik5KBkmHCoFzbhd/Lgd4yLy4+FB0dN8U4JvAPJmraZTZC7SCq9JYUZR/5gdu92SK6A==}
     peerDependencies:
       happy-dom: ^9.10.9
@@ -11073,11 +11073,11 @@ packages:
       defu: 6.1.2
       estree-walker: 3.0.3
       h3: 1.7.1
-      happy-dom: 10.0.3
+      happy-dom: 10.1.1
       magic-string: 0.30.1
       ofetch: 1.1.1
       unenv: 1.5.1
-      vitest: 0.33.0(happy-dom@10.0.3)(playwright@1.33.0)
+      vitest: 0.33.0(happy-dom@10.1.1)(playwright@1.33.0)
       vue: 3.3.4
       vue-router: 4.2.4(vue@3.3.4)
     transitivePeerDependencies:
@@ -11087,7 +11087,7 @@ packages:
       - supports-color
     dev: true
 
-  /vitest@0.33.0(happy-dom@10.0.3)(playwright@1.33.0):
+  /vitest@0.33.0(happy-dom@10.1.1)(playwright@1.33.0):
     resolution: {integrity: sha512-1CxaugJ50xskkQ0e969R/hW47za4YXDUfWJDxip1hwbnhUjYolpfUn2AMOulqG/Dtd9WYAtkHmM/m3yKVrEejQ==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -11131,7 +11131,7 @@ packages:
       cac: 6.7.14
       chai: 4.3.7
       debug: 4.3.4
-      happy-dom: 10.0.3
+      happy-dom: 10.1.1
       local-pkg: 0.4.3
       magic-string: 0.30.1
       pathe: 1.1.1
