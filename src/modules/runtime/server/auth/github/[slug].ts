@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')
   if (!slug || !config.invites?.map || !(slug in config.invites.map)) {
     throw createError({ statusCode: 404 })
