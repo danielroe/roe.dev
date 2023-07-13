@@ -18,7 +18,7 @@ export async function loginUser(
   claims: Record<string, string | boolean>
 ) {
   const privateKey = await jose.importPKCS8(
-    useRuntimeConfig(event).privateKey,
+    useRuntimeConfig().privateKey,
     'ES256'
   )
   const jwt = await new jose.SignJWT(claims)

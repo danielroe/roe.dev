@@ -53,8 +53,8 @@ export default defineEventHandler(async event => {
     })
   }
 
+  const repo = config.invites.map[slug]
   try {
-    const repo = config.invites.map[slug]
     const res = await $fetch(
       `https://api.github.com/repos/${repo}/collaborators/${username}`,
       {
