@@ -1,4 +1,4 @@
-import { chromium, LaunchOptions } from 'playwright'
+import { chromium, LaunchOptions } from 'playwright-core'
 
 function getOptions(isDev: boolean) {
   let options: LaunchOptions

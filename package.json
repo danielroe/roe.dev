@@ -12,8 +12,8 @@
     "test": "vitest run test/unit",
     "test:types": "nuxi prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
-    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.33.0-focal npx playwright test test/e2e --update-snapshots",
-    "postinstall": "nuxt prepare && pnpm simple-git-hooks install && node ./node_modules/playwright/install.js"
+    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.36.0-focal npx playwright test test/e2e --update-snapshots",
+    "postinstall": "nuxt prepare && pnpm simple-git-hooks install && npx playwright install"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -47,7 +47,6 @@
     "nuxt": "3.6.2",
     "nuxt-time": "^0.1.0",
     "pathe": "^1.1.1",
-    "playwright": "1.33.0",
     "postcss-nesting": "^12.0.0",
     "prism-themes": "1.9.0",
     "remark": "^14.0.3",
@@ -65,7 +64,7 @@
     "@nuxtjs/eslint-config": "12.0.0",
     "@nuxtjs/eslint-config-typescript": "12.0.0",
     "@nuxtjs/eslint-module": "4.1.0",
-    "@playwright/test": "1.33.0",
+    "@playwright/test": "1.36.0",
     "@types/node": "20.4.2",
     "@vitejs/plugin-vue": "4.2.3",
     "@vue/test-utils": "2.4.0",
@@ -100,7 +99,8 @@
   "pnpm": {
     "patchedDependencies": {
       "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch",
-      "nuxt@3.6.2": "patches/nuxt@3.6.2.patch"
+      "nuxt@3.6.2": "patches/nuxt@3.6.2.patch",
+      "@nuxt/test-utils@3.6.2": "patches/@nuxt__test-utils@3.6.2.patch"
     }
   }
 }
