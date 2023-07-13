@@ -22,6 +22,14 @@ export default defineNuxtModule({
       process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID ||
       nuxt.options.runtimeConfig.public.githubClientId
 
+    nuxt.options.runtimeConfig.invites = {
+      map: options.map,
+    }
+
+    nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
+      include: ['../src/modules/runtime/server/**/*'],
+    })
+
     if (!gitHubClientId || Object.values(options.map).length === 0) return
 
     const redirect = nuxt.options.dev
@@ -34,14 +42,6 @@ export default defineNuxtModule({
         redirect: `https://github.com/login/oauth/authorize?client_id=${gitHubClientId}${redirect}/${slug}`,
       }
     }
-
-    nuxt.options.runtimeConfig.invites = {
-      map: options.map,
-    }
-
-    nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
-      include: ['../src/modules/runtime/server/**/*'],
-    })
 
     addServerHandler({
       route: '/auth/github/:slug',
