@@ -8,6 +8,9 @@ overrides:
   consola: 3.2.3
 
 patchedDependencies:
+  '@nuxt/test-utils@3.6.2':
+    hash: dvwjcmo5jxtrz6uiuh4jvhw5cq
+    path: patches/@nuxt__test-utils@3.6.2.patch
   '@nuxtjs/color-mode@3.3.0':
     hash: yhatw3bbda574qeiohv37vxgf4
     path: patches/@nuxtjs__color-mode@3.3.0.patch
@@ -125,7 +128,7 @@ devDependencies:
     version: 0.6.7(nuxt@3.6.2)(vite@4.4.2)
   '@nuxt/test-utils':
     specifier: 3.6.2
-    version: 3.6.2(vitest@0.33.0)(vue@3.3.4)
+    version: 3.6.2(patch_hash=dvwjcmo5jxtrz6uiuh4jvhw5cq)(vitest@0.33.0)(vue@3.3.4)
   '@nuxtjs/eslint-config':
     specifier: 12.0.0
     version: 12.0.0(@typescript-eslint/parser@5.60.1)(eslint-import-resolver-typescript@3.5.5)(eslint@8.44.0)
@@ -1622,7 +1625,7 @@ packages:
       - rollup
       - supports-color
 
-  /@nuxt/test-utils@3.6.2(vitest@0.33.0)(vue@3.3.4):
+  /@nuxt/test-utils@3.6.2(patch_hash=dvwjcmo5jxtrz6uiuh4jvhw5cq)(vitest@0.33.0)(vue@3.3.4):
     resolution: {integrity: sha512-OvWmgEqh4SiADTj6cnYhIq2fvdBYzIDtrCOJYuCGc6Of80oGZG18cZfKmlcACRk/Vk3zQP3FGDfC26tz7d5N+Q==}
     engines: {node: ^14.18.0 || >=16.10.0}
     peerDependencies:
@@ -1653,6 +1656,7 @@ packages:
       - rollup
       - supports-color
     dev: true
+    patched: true
 
   /@nuxt/ui-templates@1.2.0:
     resolution: {integrity: sha512-MSZza7dxccNb/p7nuzGF8/m4POaFpHzVhNdR7f4xahOpH7Ja02lFeYR+rHtoHIJC0yym4qriqv0mQ+Qf/R61bQ==}
