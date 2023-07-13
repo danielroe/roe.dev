@@ -12,6 +12,7 @@ export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter()
 
   router.beforeResolve((to, from) => {
+    // TODO: remove in next Nuxt patch
     if (to.meta.pageTransition === false || to.fullPath === from.fullPath) {
       return
     }
