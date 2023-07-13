@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"184k"')
+      .toMatchInlineSnapshot('"183k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -77,12 +77,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"207k"')
+      .toMatchInlineSnapshot('"206k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"25529k"')
+      .toMatchInlineSnapshot('"8875k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -90,30 +90,22 @@ describe('project sizes', () => {
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
-        "@fastify/accept-negotiator",
         "bail",
         "ccount",
         "character-entities",
         "character-entities-html4",
         "character-entities-legacy",
         "character-reference-invalid",
-        "color",
-        "color-convert",
-        "color-name",
-        "color-string",
         "comma-separated-tokens",
         "consola",
         "cookie-es",
-        "cssfilter",
         "debug",
         "decode-named-character-reference",
         "defu",
         "destr",
         "detab",
-        "detect-libc",
         "emoticon",
         "escape-string-regexp",
-        "etag",
         "extend",
         "feed",
         "flat",
@@ -133,14 +125,10 @@ describe('project sizes', () => {
         "hookable",
         "html-void-elements",
         "http-graceful-shutdown",
-        "image-meta",
-        "ipx",
-        "ipx/node_modules/destr",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
-        "is-arrayish",
         "is-buffer",
         "is-decimal",
         "is-hexadecimal",
@@ -218,10 +206,7 @@ describe('project sizes', () => {
         "remark-squeeze-paragraphs",
         "sax",
         "scule",
-        "semver",
-        "sharp",
         "shiki-es",
-        "simple-swizzle",
         "slugify",
         "space-separated-tokens",
         "stringify-entities",
@@ -246,7 +231,6 @@ describe('project sizes', () => {
         "vfile-message",
         "web-namespaces",
         "xml-js",
-        "xss",
         "zwitch",
       ]
     `)
