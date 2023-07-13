@@ -27,6 +27,6 @@ describe('site behaviour', () => {
     await page.waitForLoadState('networkidle')
     expect(
       await page.getByText('All rights reserved').innerHTML()
-    ).toMatchInlineSnapshot('"© 2019-2023 Daniel Roe. All rights reserved."')
+    ).toMatchInlineSnapshot('"© 2019-2023 Daniel Roe."')
   })
 })
