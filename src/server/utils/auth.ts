@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import * as jose from 'jose'
 
-export async function verifyUser (event: H3Event) {
+export async function verifyUser(event: H3Event) {
   const token = getCookie(event, 'token')
   if (!token) return null
 
@@ -13,12 +13,12 @@ export async function verifyUser (event: H3Event) {
   return payload
 }
 
-export async function loginUser (
+export async function loginUser(
   event: H3Event,
   claims: Record<string, string | boolean>
 ) {
   const privateKey = await jose.importPKCS8(
-    useRuntimeConfig().privateKey,
+    useRuntimeConfig(event).privateKey,
     'ES256'
   )
   const jwt = await new jose.SignJWT(claims)

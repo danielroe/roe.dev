@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
 
-const repo = 'danielroe/nailing-it-vueconf-us-2023'
-
 export default defineEventHandler(async event => {
+  const config = useRuntimeConfig(event)
+  const slug = getRouterParam(event, 'slug')
+  if (!slug || !config.invites?.map || !(slug in config.invites.map)) {
+    throw createError({ statusCode: 404 })
+  }
+
   const { code } = getQuery(event)
 
   if (!code) {
@@ -12,7 +16,6 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const config = useRuntimeConfig()
   const { access_token } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
@@ -51,6 +54,7 @@ export default defineEventHandler(async event => {
   }
 
   try {
+    const repo = config.invites.map[slug]
     const res = await $fetch(
       `https://api.github.com/repos/${repo}/collaborators/${username}`,
       {
