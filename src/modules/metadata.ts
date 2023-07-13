@@ -6,11 +6,19 @@ import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 
+const serializers = new Map([
+  [/\(\//g, '(https://roe.dev/'],
+  [/ ---? /g, ' — '],
+  [/::SocialPost\{link=([^ ]*)[\s\S]*?::/g, '$1'],
+  [/:CalSchedule\{meeting=([^ ]*).*\}/g, 'https://cal.com/danielroe/$1'],
+  [/(\n|^)---\n[\s\S]*\n---\n/, '\n'],
+])
+
 export default defineNuxtModule({
   meta: {
     name: 'metadata',
   },
-  async setup () {
+  async setup() {
     const nuxt = useNuxt()
     const { resolve } = createResolver(import.meta.url)
     const files = await globby(resolve('../content/blog'))
@@ -19,10 +27,15 @@ export default defineNuxtModule({
     const md = remark().use(remarkHtml)
 
     for (const path of files) {
-      const contents = await readFile(path, 'utf-8')
+      let contents = await readFile(path, 'utf-8')
       const slug = filename(path)
       const { data } = grayMatter(contents)
       const date = new Date(data.date)
+
+      for (const item of serializers) {
+        contents = contents.replace(item[0], item[1])
+      }
+
       metadata[slug] = {
         ...data,
         html: await md
