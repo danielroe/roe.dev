@@ -15,7 +15,11 @@ export default defineLazyEventHandler(async () => {
   )
   const { host, protocol } = parseURL(data.aliases[0])
 
-  const client = createClient({ url: withProtocol(host!, protocol!) })
+  const client = createClient({
+    url: withProtocol(host!, protocol!),
+    disableVersionCheck: true,
+    disableDeprecatedWarning: true,
+  })
   const { id } = await client.v1.accounts.lookup({ acct })
 
   return defineEventHandler(async () => {
