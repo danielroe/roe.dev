@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"339k"')
+      .toMatchInlineSnapshot('"338k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26424k"')
+      .toMatchInlineSnapshot('"26186k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -96,10 +96,7 @@ describe('project sizes', () => {
         "asynckit",
         "bail",
         "call-bind",
-        "camel-case",
-        "capital-case",
         "ccount",
-        "change-case",
         "character-entities",
         "character-entities-html4",
         "character-entities-legacy",
@@ -111,7 +108,6 @@ describe('project sizes', () => {
         "combined-stream",
         "comma-separated-tokens",
         "consola",
-        "constant-case",
         "cookie-es",
         "cssfilter",
         "debug",
@@ -121,7 +117,6 @@ describe('project sizes', () => {
         "destr",
         "detab",
         "detect-libc",
-        "dot-case",
         "emoticon",
         "escape-string-regexp",
         "etag",
@@ -149,7 +144,6 @@ describe('project sizes', () => {
         "hast-util-to-parse5",
         "hast-util-to-string",
         "hastscript",
-        "header-case",
         "hookable",
         "html-void-elements",
         "http-graceful-shutdown",
@@ -165,7 +159,6 @@ describe('project sizes', () => {
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
-        "isomorphic-ws",
         "jose",
         "jose/dist/node/esm",
         "js-yaml",
@@ -173,8 +166,6 @@ describe('project sizes', () => {
         "klona",
         "lodash",
         "longest-streak",
-        "lower-case",
-        "lru-cache",
         "markdown-table",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
@@ -220,18 +211,14 @@ describe('project sizes', () => {
         "mime-db",
         "mime-types",
         "ms",
-        "no-case",
         "node-emoji",
         "node-fetch-native",
         "object-inspect",
         "ofetch",
         "ofetch/node_modules/destr",
         "ohash",
-        "param-case",
         "parse-entities",
         "parse5",
-        "pascal-case",
-        "path-case",
         "pathe",
         "property-information",
         "qs",
@@ -250,19 +237,16 @@ describe('project sizes', () => {
         "sax",
         "scule",
         "semver",
-        "sentence-case",
         "sharp",
         "shiki-es",
         "side-channel",
         "simple-swizzle",
         "slugify",
-        "snake-case",
         "space-separated-tokens",
         "stringify-entities",
         "supports-color",
         "trim-lines",
         "trough",
-        "tslib",
         "ufo",
         "uncrypto",
         "unenv",
@@ -276,16 +260,12 @@ describe('project sizes', () => {
         "unist-util-visit-parents",
         "unstorage",
         "unstorage/node_modules/destr",
-        "upper-case",
-        "upper-case-first",
         "vfile",
         "vfile-location",
         "vfile-message",
         "web-namespaces",
-        "ws",
         "xml-js",
         "xss",
-        "yallist",
         "zwitch",
       ]
     `)
