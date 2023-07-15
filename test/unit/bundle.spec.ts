@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"209k"')
+      .toMatchInlineSnapshot('"339k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26936k"')
+      .toMatchInlineSnapshot('"26424k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -92,7 +92,6 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@fastify/accept-negotiator",
-        "@mastojs/ponyfills",
         "abort-controller",
         "asynckit",
         "bail",
@@ -124,7 +123,6 @@ describe('project sizes', () => {
         "detect-libc",
         "dot-case",
         "emoticon",
-        "encoding",
         "escape-string-regexp",
         "etag",
         "event-target-shim",
@@ -155,7 +153,6 @@ describe('project sizes', () => {
         "hookable",
         "html-void-elements",
         "http-graceful-shutdown",
-        "iconv-lite",
         "image-meta",
         "ipx",
         "ipx/node_modules/destr",
@@ -179,7 +176,6 @@ describe('project sizes', () => {
         "lower-case",
         "lru-cache",
         "markdown-table",
-        "masto",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
         "mdast-util-find-and-replace",
@@ -226,7 +222,6 @@ describe('project sizes', () => {
         "ms",
         "no-case",
         "node-emoji",
-        "node-fetch",
         "node-fetch-native",
         "object-inspect",
         "ofetch",
@@ -252,7 +247,6 @@ describe('project sizes', () => {
         "remark-parse",
         "remark-rehype",
         "remark-squeeze-paragraphs",
-        "safer-buffer",
         "sax",
         "scule",
         "semver",
@@ -266,7 +260,6 @@ describe('project sizes', () => {
         "space-separated-tokens",
         "stringify-entities",
         "supports-color",
-        "tr46",
         "trim-lines",
         "trough",
         "tslib",
@@ -289,8 +282,6 @@ describe('project sizes', () => {
         "vfile-location",
         "vfile-message",
         "web-namespaces",
-        "webidl-conversions",
-        "whatwg-url",
         "ws",
         "xml-js",
         "xss",
