@@ -64,6 +64,7 @@ describe('project sizes', () => {
           "_nuxt/SocialPost.js",
           "_nuxt/_article_.js",
           "_nuxt/entry.js",
+          "_nuxt/feed.js",
           "_nuxt/index.js",
           "_nuxt/index.js",
           "_nuxt/talks.js",
@@ -77,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"207k"')
+      .toMatchInlineSnapshot('"338k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"25529k"')
+      .toMatchInlineSnapshot('"26175k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -91,7 +92,10 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@fastify/accept-negotiator",
+        "abort-controller",
+        "asynckit",
         "bail",
+        "call-bind",
         "ccount",
         "character-entities",
         "character-entities-html4",
@@ -101,6 +105,7 @@ describe('project sizes', () => {
         "color-convert",
         "color-name",
         "color-string",
+        "combined-stream",
         "comma-separated-tokens",
         "consola",
         "cookie-es",
@@ -108,19 +113,27 @@ describe('project sizes', () => {
         "debug",
         "decode-named-character-reference",
         "defu",
+        "delayed-stream",
         "destr",
         "detab",
         "detect-libc",
         "emoticon",
         "escape-string-regexp",
         "etag",
+        "event-target-shim",
         "extend",
         "feed",
         "flat",
+        "form-data",
+        "function-bind",
+        "get-intrinsic",
         "github-slugger",
         "h3",
         "h3/node_modules/destr",
+        "has",
         "has-flag",
+        "has-proto",
+        "has-symbols",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -194,9 +207,12 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "mime-db",
+        "mime-types",
         "ms",
         "node-emoji",
         "node-fetch-native",
+        "object-inspect",
         "ofetch",
         "ofetch/node_modules/destr",
         "ohash",
@@ -204,6 +220,7 @@ describe('project sizes', () => {
         "parse5",
         "pathe",
         "property-information",
+        "qs",
         "radix3",
         "rehype-external-links",
         "rehype-raw",
@@ -221,6 +238,7 @@ describe('project sizes', () => {
         "semver",
         "sharp",
         "shiki-es",
+        "side-channel",
         "simple-swizzle",
         "slugify",
         "space-separated-tokens",

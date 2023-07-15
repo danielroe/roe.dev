@@ -17,7 +17,7 @@ function augmentMatched(route: RouteLocationNormalized) {
   route.matched = [
     {
       components: {
-        default: match(route.path)?.component.__asyncResolved.__name,
+        default: match(route.path)?.component.__asyncResolved?.__name,
       },
     } as any as RouteRecordNormalized,
   ]
