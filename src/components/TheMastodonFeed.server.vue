@@ -23,3 +23,14 @@ const { data } = await useFetch('/_social/mastodon', {
   default: () => [],
 })
 </script>
+
+<style scoped>
+div :global(.invisible) {
+  display: none;
+}
+
+div :global(.ellipsis::after) {
+  content: '...';
+  display: inline-block;
+}
+</style>

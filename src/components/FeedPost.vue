@@ -21,6 +21,7 @@ defineProps({
       class="rounded-full self-start"
       height="48"
       width="48"
+      alt="Avatar for Daniel Roe"
     />
     <div class="flex flex-col gap-4 w-full">
       <header class="flex flex-row justify-between items-center text-sm w-full">
@@ -50,14 +51,3 @@ defineProps({
     </div>
   </article>
 </template>
-
-<style scoped>
-div :global(.invisible) {
-  display: none;
-}
-
-div :global(.ellipsis::after) {
-  content: '...';
-  display: inline-block;
-}
-</style>
