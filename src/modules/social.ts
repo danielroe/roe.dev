@@ -34,6 +34,7 @@ export default defineNuxtModule({
 
     nuxt.options.nitro = defu(nuxt.options.nitro, {
       alias: {
+        eventemitter3: 'unenv/runtime/mock/proxy',
         'isomorphic-ws': 'unenv/runtime/mock/proxy',
       },
     })
