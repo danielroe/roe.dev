@@ -27,6 +27,8 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
 
+    nuxt.options.alias['node-fetch'] = 'node-fetch-native'
+
     for (const network in options.networks) {
       if (!isSupportedNetwork(network)) {
         console.warn('Ignoring unsupported network:', network)
