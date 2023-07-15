@@ -74,6 +74,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    typescriptBundlerResolution: true,
     viewTransition: true,
     componentIslands: true,
     payloadExtraction: true,
@@ -86,7 +87,6 @@ export default defineNuxtConfig({
     strict: true,
     tsConfig: {
       compilerOptions: {
-        // moduleResolution: 'bundler',
         // resolveJsonModule: false,
       },
     },
