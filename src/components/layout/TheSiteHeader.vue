@@ -25,6 +25,10 @@ const menu = [
     path: '/uses',
   },
   {
+    name: 'Feed',
+    path: '/feed',
+  },
+  {
     name: 'Blog',
     path: '/blog',
   },

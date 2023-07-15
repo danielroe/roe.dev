@@ -83,6 +83,14 @@ export default defineNuxtConfig({
 
   sourcemap: false,
 
+  social: {
+    networks: {
+      mastodon: {
+        identifier: '@daniel@roe.dev',
+      },
+    },
+  },
+
   typescript: {
     strict: true,
     tsConfig: {
@@ -158,6 +166,7 @@ export default defineNuxtConfig({
   image: {
     domains: [
       'avatars.githubusercontent.com',
+      's3.nl-ams.scw.cloud',
       'https://avatars.githubusercontent.com',
     ],
     screens: {
