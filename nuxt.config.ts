@@ -83,6 +83,10 @@ export default defineNuxtConfig({
 
   sourcemap: false,
 
+  devTo: {
+    enabled: !!process.env.SYNC_DEV_TO,
+  },
+
   typescript: {
     strict: true,
     tsConfig: {

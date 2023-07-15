@@ -1,18 +1,13 @@
-import { readFile } from 'fs/promises'
-import { createResolver, defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { readFile } from 'node:fs/promises'
+import { createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
+
 import { globby } from 'globby'
 import grayMatter from 'gray-matter'
 import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 
-const serializers = new Map([
-  [/\(\//g, '(https://roe.dev/'],
-  [/ ---? /g, ' — '],
-  [/::SocialPost\{link=([^ ]*)[\s\S]*?::/g, '$1'],
-  [/:CalSchedule\{meeting=([^ ]*).*\}/g, 'https://cal.com/danielroe/$1'],
-  [/(\n|^)---\n[\s\S]*\n---\n/, '\n'],
-])
+import { serializers } from './shared/serialisers'
 
 export default defineNuxtModule({
   meta: {
