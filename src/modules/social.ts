@@ -28,6 +28,7 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
 
     nuxt.options.alias['node-fetch'] = 'node-fetch-native'
+    nuxt.options.build.transpile.push('masto', '@mastojs/ponyfills')
 
     for (const network in options.networks) {
       if (!isSupportedNetwork(network)) {
