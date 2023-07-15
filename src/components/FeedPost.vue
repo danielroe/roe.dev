@@ -46,7 +46,7 @@ defineProps({
         :src="media[0].url"
         :width="media[0].width"
         :height="media[0].height"
-        :alt="media[0].alt"
+        :alt="media[0].alt || undefined"
       />
     </div>
   </article>
