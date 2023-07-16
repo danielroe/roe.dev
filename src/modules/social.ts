@@ -48,7 +48,7 @@ export default defineNuxtModule({
     nuxt.options.build.transpile.push(
       'masto',
       '@mastojs/ponyfills',
-      '@atproto/api'
+      'magic-string'
     )
 
     nuxt.options.nitro = defu(nuxt.options.nitro, {
@@ -59,6 +59,9 @@ export default defineNuxtModule({
     })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
+      '@jridgewell/sourcemap-codec': resolver.resolve(
+        './mocks/sourcemap-codec'
+      ),
       qs: 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
       semver: resolver.resolve('./mocks/semver'),
