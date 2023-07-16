@@ -99,7 +99,7 @@ export default defineLazyEventHandler(async () => {
           text.append('</p>')
 
           return {
-            network: 'bluesky',
+            network: 'bluesky' as const,
             accountLink: `https://staging.bsky.app/profile/${p.post.author.handle}`,
             avatar: p.post.author.avatar,
             handle: p.post.author.displayName,

@@ -28,7 +28,7 @@ export default defineLazyEventHandler(async () => {
       posts
         .filter(p => p.content && !p.inReplyToId)
         .map(p => ({
-          network: 'mastodon',
+          network: 'mastodon' as const,
           accountLink: `https://elk.zone/${host}/@${p.account.acct}`,
           avatar: p.account.avatar,
           handle: p.account.displayName.replace(
