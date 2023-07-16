@@ -27,7 +27,7 @@ describe(
     it('renders server components', async () => {
       const logs: string[] = []
       const page = await createPage()
-      await page.route('/feed/_payload.json', route =>
+      await page.route('**/feed/_payload.json', route =>
         route.fulfill({
           json: [{ data: 2, prerenderedAt: 3 }, {}, 1689517334625],
         })
