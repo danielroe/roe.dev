@@ -7,13 +7,20 @@ import {
 import { defu } from 'defu'
 
 const networks = {
+  bluesky: 'bluesky',
   mastodon: 'mastodon',
 }
 
 type Network = keyof typeof networks
 
 type NetworkOptions = {
-  identifier: string
+  bluesky?: {
+    identifier: string
+    password?: string
+  }
+  mastodon?: {
+    identifier: string
+  }
 }
 
 export default defineNuxtModule({
@@ -22,15 +29,27 @@ export default defineNuxtModule({
     configKey: 'social',
   },
   defaults: {
-    networks: {} as Partial<Record<Network, NetworkOptions>>,
+    networks: {} as NetworkOptions,
   },
   setup(options) {
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
 
+    if (options.networks.bluesky) {
+      options.networks.bluesky.password ||= ''
+    }
+
+    nuxt.options.runtimeConfig.social = {
+      networks: options.networks as any,
+    }
+
     // Prevent all the extra stuff `masto` will add
     nuxt.options.alias['node-fetch'] = 'node-fetch-native'
-    nuxt.options.build.transpile.push('masto', '@mastojs/ponyfills')
+    nuxt.options.build.transpile.push(
+      'masto',
+      '@mastojs/ponyfills',
+      'magic-string'
+    )
 
     nuxt.options.nitro = defu(nuxt.options.nitro, {
       alias: {
@@ -40,6 +59,9 @@ export default defineNuxtModule({
     })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
+      '@jridgewell/sourcemap-codec': resolver.resolve(
+        './mocks/sourcemap-codec'
+      ),
       qs: 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
       semver: resolver.resolve('./mocks/semver'),
@@ -56,9 +78,11 @@ export default defineNuxtModule({
       })
     }
 
-    nuxt.options.nitro.routeRules ||= {}
-    nuxt.options.nitro.routeRules['/_social/**'] = {
-      swr: 60,
+    if (!nuxt.options.dev) {
+      nuxt.options.nitro.routeRules ||= {}
+      nuxt.options.nitro.routeRules['/_social/**'] = {
+        swr: 60,
+      }
     }
   },
 })

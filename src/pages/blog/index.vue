@@ -3,7 +3,7 @@
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Articles</h1>
     </header>
-    <main class="text-lg" @click.prevent="handleNavigation">
+    <main class="text-lg" @click="handleNavigationClicks">
       <TheBlogIndex />
     </main>
   </div>
@@ -11,14 +11,6 @@
 
 <script setup lang="ts">
 definePageMeta({ title: 'Blog' })
-
-function handleNavigation(e: MouseEvent | KeyboardEvent) {
-  const anchor = (e.target as HTMLElement).closest('a')
-  if (anchor) {
-    const href = anchor.getAttribute('href')
-    if (href) navigateTo(href)
-  }
-}
 
 const nuxtApp = useNuxtApp()
 onMounted(() => {
