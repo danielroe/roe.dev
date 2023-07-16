@@ -1,0 +1,13 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 92612b782343dd150c4c363caf4a7a886c7681ab..91c89729b722fe482be6539db51db13888b3cdfb 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -130,7 +130,7 @@ interface DynamicEventHandler extends EventHandler {
+     set: (handler: EventHandler) => void;
+ }
+ declare function dynamicEventHandler(initial?: EventHandler): DynamicEventHandler;
+-declare function defineLazyEventHandler(factory: LazyEventHandler): EventHandler;
++declare function defineLazyEventHandler<T extends LazyEventHandler>(factory: T): Awaited<ReturnType<T>>;
+ declare const lazyEventHandler: typeof defineLazyEventHandler;
+ 
+ interface Layer {
