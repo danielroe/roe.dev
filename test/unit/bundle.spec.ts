@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"1235k"')
+      .toMatchInlineSnapshot('"372k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26134k"')
+      .toMatchInlineSnapshot('"26958k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -91,8 +91,8 @@ describe('project sizes', () => {
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
+        "@atproto/api",
         "@fastify/accept-negotiator",
-        "@jridgewell/sourcemap-codec",
         "abort-controller",
         "asynckit",
         "bail",
@@ -160,7 +160,6 @@ describe('project sizes', () => {
         "klona",
         "lodash",
         "longest-streak",
-        "magic-string",
         "markdown-table",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
