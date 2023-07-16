@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"338k"')
+      .toMatchInlineSnapshot('"342k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26175k"')
+      .toMatchInlineSnapshot('"26091k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -95,7 +95,6 @@ describe('project sizes', () => {
         "abort-controller",
         "asynckit",
         "bail",
-        "call-bind",
         "ccount",
         "character-entities",
         "character-entities-html4",
@@ -125,15 +124,10 @@ describe('project sizes', () => {
         "feed",
         "flat",
         "form-data",
-        "function-bind",
-        "get-intrinsic",
         "github-slugger",
         "h3",
         "h3/node_modules/destr",
-        "has",
         "has-flag",
-        "has-proto",
-        "has-symbols",
         "hast-util-from-parse5",
         "hast-util-has-property",
         "hast-util-heading-rank",
@@ -212,7 +206,6 @@ describe('project sizes', () => {
         "ms",
         "node-emoji",
         "node-fetch-native",
-        "object-inspect",
         "ofetch",
         "ofetch/node_modules/destr",
         "ohash",
@@ -220,7 +213,6 @@ describe('project sizes', () => {
         "parse5",
         "pathe",
         "property-information",
-        "qs",
         "radix3",
         "rehype-external-links",
         "rehype-raw",
@@ -238,7 +230,6 @@ describe('project sizes', () => {
         "semver",
         "sharp",
         "shiki-es",
-        "side-channel",
         "simple-swizzle",
         "slugify",
         "space-separated-tokens",
