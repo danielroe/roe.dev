@@ -1,4 +1,4 @@
-import BskyAPI from '@atproto/api'
+import * as BskyAPI from '@atproto/api'
 import MagicString from 'magic-string'
 
 interface PostRecord {
