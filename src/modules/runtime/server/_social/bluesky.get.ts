@@ -1,5 +1,7 @@
-import * as BskyAPI from '@atproto/api'
+import BskyAPI from '@atproto/api'
 import MagicString from 'magic-string'
+
+const { BskyAgent } = BskyAPI as unknown as typeof import('@atproto/api')
 
 interface PostRecord {
   $type: 'app.bsky.feed.post'
@@ -48,7 +50,7 @@ interface PostEmbed {
 
 export default defineLazyEventHandler(async () => {
   const { identifier, password } = useRuntimeConfig().social.networks.bluesky
-  const agent = new BskyAPI.BskyAgent({ service: 'https://bsky.social' })
+  const agent = new BskyAgent({ service: 'https://bsky.social' })
 
   await agent.login({
     identifier,
