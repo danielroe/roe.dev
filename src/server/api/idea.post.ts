@@ -1,8 +1,7 @@
 import { sendEmail } from '../utils/email'
-import { verifyUser } from '../utils/auth'
 
 export default defineEventHandler(async event => {
-  const payload = await verifyUser(event)
+  const { data: payload } = await getUserSession(event)
   if (!payload) {
     throw createError({
       statusCode: 401,

@@ -57,7 +57,8 @@ export default defineEventHandler(async event => {
     })
 
     // set custom JWT claim
-    await loginUser(event, {
+    await setUserSession(event, {
+      authenticated: true,
       sponsor:
         // @ts-expect-error no typings for gh api response
         ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
