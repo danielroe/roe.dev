@@ -40,7 +40,7 @@ export default defineNuxtModule({
     })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
-      querystring: 'rollup-plugin-node-polyfills/polyfills/qs',
+      qs: 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
       semver: resolver.resolve('./mocks/semver'),
     })
