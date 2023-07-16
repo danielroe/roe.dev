@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"185k"')
+      .toMatchInlineSnapshot('"186k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"342k"')
+      .toMatchInlineSnapshot('"1235k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26091k"')
+      .toMatchInlineSnapshot('"26134k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -92,6 +92,7 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@fastify/accept-negotiator",
+        "@jridgewell/sourcemap-codec",
         "abort-controller",
         "asynckit",
         "bail",
@@ -159,6 +160,7 @@ describe('project sizes', () => {
         "klona",
         "lodash",
         "longest-streak",
+        "magic-string",
         "markdown-table",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
