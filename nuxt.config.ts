@@ -9,9 +9,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   runtimeConfig: {
-    // JWT claims
-    privateKey: '',
-    publicKey: '',
+    sessionPassword: '',
     // emailing ideas
     sendgridApiKey: '',
     resendApiKey: '',
