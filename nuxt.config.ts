@@ -114,6 +114,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    future: { nativeSWR: true },
     prerender: {
       concurrency: 12,
       crawlLinks: true,

@@ -81,6 +81,7 @@ export default defineNuxtModule({
     if (!nuxt.options.dev) {
       nuxt.options.nitro.routeRules ||= {}
       nuxt.options.nitro.routeRules['/_social/**'] = {
+        isr: 60,
         swr: 60,
       }
     }
