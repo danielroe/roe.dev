@@ -85,8 +85,11 @@ export default defineNuxtConfig({
 
   social: {
     networks: {
+      bluesky: {
+        identifier: 'danielroe.dev',
+      },
       mastodon: {
-        identifier: '@daniel@roe.dev',
+        identifier: 'daniel@roe.dev',
       },
     },
   },
@@ -171,6 +174,7 @@ export default defineNuxtConfig({
     domains: [
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
+      'cdn.bsky.social',
       'https://avatars.githubusercontent.com',
     ],
     screens: {
