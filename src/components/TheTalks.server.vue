@@ -56,7 +56,13 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
   useAsyncData(
     () =>
       ((process.server || process.dev) as true) &&
-      import('../data/talks.json').then(r => r.default as any as Talk[])
+      import('../data/talks.json').then(r => r.default as any as Talk[]),
+    {
+      transform: talks =>
+        talks.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        ),
+    }
   ),
   useFetch('/api/streams', {
     transform: streams =>
