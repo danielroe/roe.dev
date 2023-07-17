@@ -118,7 +118,15 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
     </GridLink>
   </section>
   <section class="mt-12 flex flex-row flex-wrap gap-4">
-    <h2 class="uppercase text-sm font-bold tracking-widest">Latest streams</h2>
+    <header
+      class="flex flex-row justify-between gap-2 w-full items-center uppercase text-sm font-bold tracking-widest"
+    >
+      <h2 class="flex flex-row gap-1 items-center">
+        <span class="i-ri:twitch-fill" />
+        Latest streams
+      </h2>
+      <a class="text-sm" href="https://twitch.tv/danielroe"> more </a>
+    </header>
     <GridLink v-for="video of streams" :key="video.title" :href="video.video">
       <article class="flex flex-row gap-4">
         <header class="flex-grow">
@@ -140,7 +148,7 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
           </dl>
         </header>
         <nuxt-img
-          class="aspect-[1.9] w-[150px] -mr-4 my-[-.88rem]"
+          class="aspect-[1.9] w-[150px] -mr-4 my-[-.88rem] object-cover object-left-top"
           width="1200"
           height="630"
           :alt="`Still thumbnail for ${video.title}`"
@@ -148,7 +156,6 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
         />
       </article>
     </GridLink>
-    <a href="https://twitch.tv/danielroe"> See more </a>
   </section>
   <section class="mt-12 flex flex-row flex-wrap gap-4">
     <h2 class="uppercase text-sm font-bold tracking-widest">Past talks</h2>
