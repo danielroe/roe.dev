@@ -52,19 +52,33 @@ const upcomingConferences = [
 //   }
 // }
 
-const { data: talks } = await useAsyncData(
-  () =>
-    ((process.server || process.dev) as true) &&
-    import('../data/talks.json').then(r => r.default as any as Talk[]),
-  {
-    transform: talks =>
-      (talks
-        ?.sort(
+const [{ data: talks }, { data: streams }] = await Promise.all([
+  useAsyncData(
+    () =>
+      ((process.server || process.dev) as true) &&
+      import('../data/talks.json').then(r => r.default as any as Talk[]),
+    {
+      transform: talks =>
+        talks.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        )
-        .map(formatDateField) as Talk[]) || [],
-  }
-)
+        ),
+    }
+  ),
+  useFetch('/api/streams', {
+    transform: streams =>
+      streams.slice(0, 4).map(stream => ({
+        title: stream.title,
+        thumbnail: stream.thumbnail_url
+          .replace('%{width}', '1200')
+          .replace('%{height}', '630'),
+        source: 'Twitch',
+        link: stream.url,
+        date: stream.created_at,
+        type: 'video',
+        video: stream.url,
+      })),
+  }),
+])
 </script>
 
 <template>
@@ -104,9 +118,42 @@ const { data: talks } = await useAsyncData(
     </GridLink>
   </section>
   <section class="mt-12 flex flex-row flex-wrap gap-4">
+    <h2 class="uppercase text-sm font-bold tracking-widest">Latest streams</h2>
+    <GridLink v-for="video of streams" :key="video.title" :href="video.video">
+      <article class="flex flex-row gap-4">
+        <header class="flex-grow">
+          {{ video.title }}
+          <dl
+            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+          >
+            <dt class="float-left md:float-none mr-2">Date</dt>
+            <dd class="font-semibold mr-4">
+              <NuxtTime
+                :datetime="video.date"
+                day="numeric"
+                month="long"
+                year="numeric"
+              />
+            </dd>
+            <dt class="float-left md:float-none mr-2">Where</dt>
+            <dd class="font-semibold mr-4">{{ video.source }}</dd>
+          </dl>
+        </header>
+        <img
+          class="aspect-[1.9] w-[150px] -mr-4 my-[-.88rem]"
+          width="1200"
+          height="630"
+          :alt="`Still thumbnail for ${video.title}`"
+          :src="video.thumbnail"
+        />
+      </article>
+    </GridLink>
+    <a href="https://twitch.tv/danielroe"> See more </a>
+  </section>
+  <section class="mt-12 flex flex-row flex-wrap gap-4">
     <h2 class="uppercase text-sm font-bold tracking-widest">Past talks</h2>
     <GridLink
-      v-for="{ title, source, link, date, type, video, formattedDate } in talks"
+      v-for="{ title, source, link, date, type, video } of talks"
       :key="link"
       :alt="title"
       :href="video || link"
@@ -128,7 +175,12 @@ const { data: talks } = await useAsyncData(
           >
             <dt class="float-left md:float-none mr-2">Date</dt>
             <dd class="font-semibold mr-4">
-              <time :datetime="date">{{ formattedDate }}</time>
+              <NuxtTime
+                :datetime="date"
+                day="numeric"
+                month="long"
+                year="numeric"
+              />
             </dd>
             <dt v-if="source" class="float-left md:float-none mr-2">Where</dt>
             <dd v-if="source" class="font-semibold mr-4">
