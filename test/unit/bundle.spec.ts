@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"366k"')
+      .toMatchInlineSnapshot('"668k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"10160k"')
+      .toMatchInlineSnapshot('"12005k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -92,6 +92,20 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atproto/api",
+        "@babel/parser",
+        "@unhead/dom",
+        "@unhead/dom/node_modules/@unhead/shared",
+        "@unhead/shared",
+        "@unhead/ssr",
+        "@unhead/ssr/node_modules/@unhead/shared",
+        "@vue/compiler-core",
+        "@vue/compiler-dom",
+        "@vue/compiler-ssr",
+        "@vue/reactivity",
+        "@vue/runtime-core",
+        "@vue/runtime-dom",
+        "@vue/server-renderer",
+        "@vue/shared",
         "abort-controller",
         "asynckit",
         "bail",
@@ -110,8 +124,10 @@ describe('project sizes', () => {
         "delayed-stream",
         "destr",
         "detab",
+        "devalue",
         "emoticon",
         "escape-string-regexp",
+        "estree-walker",
         "event-target-shim",
         "extend",
         "feed",
@@ -133,6 +149,7 @@ describe('project sizes', () => {
         "hookable",
         "html-void-elements",
         "http-graceful-shutdown",
+        "image-meta",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -146,6 +163,7 @@ describe('project sizes', () => {
         "klona",
         "lodash",
         "longest-streak",
+        "magic-regexp",
         "markdown-table",
         "mdast-squeeze-paragraphs",
         "mdast-util-definitions",
@@ -216,6 +234,7 @@ describe('project sizes', () => {
         "scule",
         "shiki-es",
         "slugify",
+        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
         "supports-color",
@@ -223,7 +242,10 @@ describe('project sizes', () => {
         "trough",
         "ufo",
         "uncrypto",
+        "unctx",
         "unenv",
+        "unhead",
+        "unhead/node_modules/@unhead/shared",
         "unified",
         "unist-builder",
         "unist-util-generated",
@@ -237,6 +259,8 @@ describe('project sizes', () => {
         "vfile",
         "vfile-location",
         "vfile-message",
+        "vue",
+        "vue-bundle-renderer",
         "web-namespaces",
         "xml-js",
         "zwitch",
