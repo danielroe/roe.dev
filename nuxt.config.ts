@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     sessionPassword: '',
     // emailing ideas
-    sendgridApiKey: '',
     resendApiKey: '',
     github: {
       // my GH ID
@@ -97,7 +96,6 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    strict: true,
     tsConfig: {
       compilerOptions: {
         // resolveJsonModule: false,
@@ -106,10 +104,6 @@ export default defineNuxtConfig({
   },
 
   srcDir: 'src',
-
-  build: {
-    transpile: [/content-edge/, /image-edge/],
-  },
 
   nitro: {
     future: { nativeSWR: true },
@@ -174,7 +168,6 @@ export default defineNuxtConfig({
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
-      'https://avatars.githubusercontent.com',
     ],
     screens: {
       logo: 40,
