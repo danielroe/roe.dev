@@ -73,7 +73,7 @@ if (process.server) {
             type: 'font/woff2',
             crossorigin: '',
             href,
-          } as const)
+          }) as const
       ),
       { rel: 'canonical', href: url },
       { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
