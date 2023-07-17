@@ -139,7 +139,7 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
             <dd class="font-semibold mr-4">{{ video.source }}</dd>
           </dl>
         </header>
-        <img
+        <nuxt-img
           class="aspect-[1.9] w-[150px] -mr-4 my-[-.88rem]"
           width="1200"
           height="630"
