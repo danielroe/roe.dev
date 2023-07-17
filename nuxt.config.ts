@@ -121,7 +121,7 @@ export default defineNuxtConfig({
           )
 
         if (route.error) {
-          console.error(route.route, route.error, route)
+          console.error(route.route, route.contents, route.error)
           process.exit(1)
         }
       },
@@ -134,6 +134,7 @@ export default defineNuxtConfig({
   },
 
   content: {
+    navigation: false,
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],
       theme: 'material-palenight',
@@ -164,6 +165,7 @@ export default defineNuxtConfig({
   },
 
   image: {
+    provider: 'none',
     domains: [
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
