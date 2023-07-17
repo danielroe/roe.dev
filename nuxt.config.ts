@@ -2,11 +2,6 @@ import { useNuxt } from 'nuxt/kit'
 import type { InputPluginOption } from 'rollup'
 
 export default defineNuxtConfig({
-  $production: {
-    experimental: {
-      noVueServer: true,
-    },
-  },
   devtools: { enabled: true },
   runtimeConfig: {
     sessionPassword: '',
