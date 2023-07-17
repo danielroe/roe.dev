@@ -57,10 +57,7 @@ const year = new Date().getFullYear()
     >
       <small>
         &copy; 2019-{{ year }} Daniel Roe.
-        <a
-          class="link"
-          href="https://creativecommons.org/licenses/by-sa/4.0/"
-        >
+        <a class="link" href="https://creativecommons.org/licenses/by-sa/4.0/">
           CC BY-SA 4.0
         </a>
       </small>
