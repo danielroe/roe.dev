@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     sessionPassword: '',
     // emailing ideas
     resendApiKey: '',
+    twitch: {
+      clientId: '',
+      clientSecret: '',
+    },
     github: {
       // my GH ID
       id: 'MDQ6VXNlcjI4NzA2Mzcy',
@@ -165,6 +169,7 @@ export default defineNuxtConfig({
 
   image: {
     domains: [
+      'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
