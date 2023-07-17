@@ -32,5 +32,6 @@ div :global(.invisible) {
 
 div :global(.ellipsis::after) {
   display: inline-block;
+  content: '...';
 }
 </style>
