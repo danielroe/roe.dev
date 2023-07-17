@@ -143,8 +143,6 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
                 year="numeric"
               />
             </dd>
-            <dt class="float-left md:float-none mr-2">Where</dt>
-            <dd class="font-semibold mr-4">{{ video.source }}</dd>
           </dl>
         </header>
         <nuxt-img
