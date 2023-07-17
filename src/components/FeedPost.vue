@@ -22,7 +22,7 @@ defineProps({
   >
     <nuxt-img
       :src="avatar ?? '/me.jpg'"
-      class="rounded-full self-start"
+      class="rounded-full self-start w-12 h-12"
       height="48"
       width="48"
       alt="Avatar for Daniel Roe"
