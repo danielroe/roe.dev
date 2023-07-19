@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"187k"')
+      .toMatchInlineSnapshot('"186k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"374k"')
+      .toMatchInlineSnapshot('"375k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"26819k"')
+      .toMatchInlineSnapshot('"27962k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -135,6 +135,10 @@ describe('project sizes', () => {
         "hast-util-is-element",
         "hast-util-parse-selector",
         "hast-util-raw",
+        "hast-util-raw/node_modules/unist-util-position",
+        "hast-util-raw/node_modules/unist-util-visit",
+        "hast-util-raw/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "hast-util-raw/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "hast-util-to-parse5",
         "hast-util-to-string",
         "hastscript",
@@ -160,9 +164,19 @@ describe('project sizes', () => {
         "longest-streak",
         "markdown-table",
         "mdast-squeeze-paragraphs",
+        "mdast-squeeze-paragraphs/node_modules/unist-util-visit",
+        "mdast-squeeze-paragraphs/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "mdast-squeeze-paragraphs/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-definitions",
+        "mdast-util-definitions/node_modules/unist-util-visit",
+        "mdast-util-definitions/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "mdast-util-definitions/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-find-and-replace",
+        "mdast-util-find-and-replace/node_modules/unist-util-is",
+        "mdast-util-find-and-replace/node_modules/unist-util-visit-parents",
+        "mdast-util-find-and-replace/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-from-markdown",
+        "mdast-util-from-markdown/node_modules/unist-util-stringify-position",
         "mdast-util-gfm",
         "mdast-util-gfm-autolink-literal",
         "mdast-util-gfm-footnote",
@@ -170,8 +184,16 @@ describe('project sizes', () => {
         "mdast-util-gfm-table",
         "mdast-util-gfm-task-list-item",
         "mdast-util-phrasing",
+        "mdast-util-phrasing/node_modules/unist-util-is",
         "mdast-util-to-hast",
+        "mdast-util-to-hast/node_modules/unist-util-position",
+        "mdast-util-to-hast/node_modules/unist-util-visit",
+        "mdast-util-to-hast/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "mdast-util-to-hast/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-to-markdown",
+        "mdast-util-to-markdown/node_modules/unist-util-visit",
+        "mdast-util-to-markdown/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "mdast-util-to-markdown/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-to-string",
         "mdurl",
         "micromark",
@@ -214,13 +236,28 @@ describe('project sizes', () => {
         "property-information",
         "radix3",
         "rehype-external-links",
+        "rehype-external-links/node_modules/unist-util-visit",
+        "rehype-external-links/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "rehype-external-links/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "rehype-raw",
         "rehype-slug",
+        "rehype-slug/node_modules/unist-util-visit",
+        "rehype-slug/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "rehype-slug/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "rehype-sort-attribute-values",
+        "rehype-sort-attribute-values/node_modules/unist-util-visit",
+        "rehype-sort-attribute-values/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "rehype-sort-attribute-values/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "rehype-sort-attributes",
+        "rehype-sort-attributes/node_modules/unist-util-visit",
+        "rehype-sort-attributes/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "rehype-sort-attributes/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "remark-emoji",
         "remark-gfm",
         "remark-mdc",
+        "remark-mdc/node_modules/unist-util-visit",
+        "remark-mdc/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
+        "remark-mdc/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "remark-parse",
         "remark-rehype",
         "remark-squeeze-paragraphs",
@@ -247,11 +284,15 @@ describe('project sizes', () => {
         "unist-util-stringify-position",
         "unist-util-visit",
         "unist-util-visit-parents",
+        "unist-util-visit-parents/node_modules/unist-util-is",
+        "unist-util-visit/node_modules/unist-util-visit-parents",
+        "unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "unstorage",
         "unstorage/node_modules/destr",
         "vfile",
         "vfile-location",
         "vfile-message",
+        "vfile-message/node_modules/unist-util-stringify-position",
         "web-namespaces",
         "xml-js",
         "xss",
