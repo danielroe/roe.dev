@@ -140,7 +140,7 @@ export default defineNuxtConfig({
   content: {
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],
-      theme: 'material-palenight',
+      theme: 'material-theme-palenight',
     },
   },
 
