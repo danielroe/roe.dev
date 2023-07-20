@@ -13,7 +13,7 @@
     "test:types": "nuxi prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.36.1-focal npx playwright test test/e2e --update-snapshots",
-    "postinstall": "nuxt prepare && pnpm simple-git-hooks install && npx playwright install && npm install --ignore-scripts=false --foreground-scripts --verbose sharp"
+    "postinstall": "nuxt prepare && pnpm simple-git-hooks install && npx playwright install && npm install --ignore-scripts=false --foreground-scripts --verbose --legacy-peer-deps sharp"
   },
   "lint-staged": {
     "*.{js,vue}": [
