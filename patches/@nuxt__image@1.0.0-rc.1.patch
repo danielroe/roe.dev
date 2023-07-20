@@ -1,0 +1,931 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 62f3863254e04a15987c50ab9ff9186dadeaa9f0..bd27ab716b426faf32ebc3b2a20edcf7eb154bbb 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -6,7 +6,7 @@ import { hash } from 'ohash';
+ import { provider } from 'std-env';
+ import { eventHandler } from 'h3';
+ 
+-const ipxSetup = async (providerOptions, moduleOptions) => {
++const ipxSetup = (setupOptions) => async (providerOptions, moduleOptions) => {
+   const nitro = useNitro();
+   const nuxt = useNuxt();
+   const hasUserProvidedIPX = nuxt.options.serverHandlers.find((handler) => handler.route?.startsWith("/_ipx")) || nuxt.options.devServerHandlers.find((handler) => handler.route?.startsWith("/_ipx"));
+@@ -30,7 +30,9 @@ const ipxSetup = async (providerOptions, moduleOptions) => {
+       route: "/_ipx/**",
+       handler: resolver.resolve("./runtime/ipx")
+     };
+-    nitro.options.handlers.push(handler);
++    if (!setupOptions?.isStatic) {
++      nitro.options.handlers.push(handler);
++    }
+     nitro.options._config.handlers.push(handler);
+     return;
+   }
+@@ -47,7 +49,6 @@ const ipxSetup = async (providerOptions, moduleOptions) => {
+     })
+   };
+   nitro.options.devHandlers.push(devHandler);
+-  nitro.options._config.devHandlers.push(devHandler);
+ };
+ 
+ const BuiltInProviders = [
+@@ -66,20 +67,23 @@ const BuiltInProviders = [
+   "ipx",
+   "layer0",
+   "netlify",
++  "prepr",
+   "none",
+   "prismic",
+   "sanity",
++  "static",
+   "storyblok",
+   "strapi",
+   "twicpics",
+   "unsplash",
++  "uploadcare",
+   "vercel",
+   "wagtail"
+ ];
+ const providerSetup = {
+   // IPX
+-  ipx: ipxSetup,
+-  static: ipxSetup,
++  ipx: ipxSetup(),
++  static: ipxSetup({ isStatic: true }),
+   // https://vercel.com/docs/more/adding-your-framework#images
+   vercel(_providerOptions, moduleOptions, nuxt) {
+     nuxt.options.nitro = defu(nuxt.options.nitro, {
+@@ -143,12 +147,12 @@ function detectProvider(userInput) {
+ const module = defineNuxtModule({
+   defaults: (nuxt) => ({
+     inject: false,
+-    staticFilename: "[publicPath]/image/[hash][ext]",
+     provider: "auto",
+     dir: nuxt.options.dir.public,
+     presets: {},
+     domains: [],
+     sharp: {},
++    format: ["webp"],
+     // https://tailwindcss.com/docs/breakpoints
+     screens: {
+       xs: 320,
+@@ -159,9 +163,9 @@ const module = defineNuxtModule({
+       xxl: 1536,
+       "2xl": 1536
+     },
+-    internalUrl: "",
+     providers: {},
+-    alias: {}
++    alias: {},
++    densities: [1, 2]
+   }),
+   meta: {
+     name: "@nuxt/image",
+@@ -184,16 +188,20 @@ const module = defineNuxtModule({
+     if (options.provider) {
+       options[options.provider] = options[options.provider] || {};
+     }
++    options.densities = options.densities || [];
+     const imageOptions = pick(options, [
+       "screens",
+       "presets",
+       "provider",
+       "domains",
+-      "alias"
++      "alias",
++      "densities",
++      "format",
++      "quality"
+     ]);
+     const providers = await resolveProviders(nuxt, options);
+     for (const p of providers) {
+-      if (typeof p.setup === "function" && p.name !== "ipx") {
++      if (typeof p.setup === "function" && p.name !== "ipx" && p.name !== "static") {
+         await p.setup(p, options, nuxt);
+       }
+     }
+@@ -227,14 +235,12 @@ ${providers.map((p) => `  ['${p.name}']: { provider: ${p.importName}, defaults:
+       }
+     });
+     nuxt.hook("nitro:init", async (nitro) => {
+-      if (!options.provider || options.provider === "ipx") {
+-        imageOptions.provider = options.provider = nitro.options.node ? "ipx" : "none";
+-        options[options.provider] = options[options.provider] || {};
+-        if (options.provider === "none") {
+-          return;
+-        }
+-        const p = await resolveProvider(nuxt, "ipx", options.ipx);
+-        if (!providers.some((p2) => p2.name === "ipx")) {
++      if (!options.provider || options.provider === "ipx" || options.provider === "static") {
++        const resolvedProvider = nitro.options.static || options.provider === "static" ? "static" : nitro.options.node ? "ipx" : "none";
++        imageOptions.provider = options.provider = resolvedProvider;
++        options[resolvedProvider] = options[resolvedProvider] || {};
++        const p = await resolveProvider(nuxt, resolvedProvider, options[resolvedProvider]);
++        if (!providers.some((p2) => p2.name === resolvedProvider)) {
+           providers.push(p);
+         }
+         if (typeof p.setup === "function") {
+diff --git a/dist/runtime/components/_base.d.ts b/dist/runtime/components/_base.d.ts
+index 15cd3421ab144883dfe0e500d4fdaf2231854b5f..dc622c20b0166c26630d22b317f113970bf54f9f 100644
+--- a/dist/runtime/components/_base.d.ts
++++ b/dist/runtime/components/_base.d.ts
+@@ -36,6 +36,10 @@ export declare const baseImageProps: {
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+diff --git a/dist/runtime/components/_base.mjs b/dist/runtime/components/_base.mjs
+index 067281c4809c8365f174be1ff6864f849818d2eb..db445da7fdc89f6297660097e9a24f66f0f3964c 100644
+--- a/dist/runtime/components/_base.mjs
++++ b/dist/runtime/components/_base.mjs
+@@ -1,5 +1,6 @@
+ import { computed } from "vue";
+ import { parseSize } from "../utils/index.mjs";
++import { useImage } from "#imports";
+ export const baseImageProps = {
+   // input source
+   src: { type: String, required: true },
+@@ -13,6 +14,7 @@ export const baseImageProps = {
+   preset: { type: String, default: void 0 },
+   provider: { type: String, default: void 0 },
+   sizes: { type: [Object, String], default: void 0 },
++  densities: { type: String, default: void 0 },
+   preload: { type: Boolean, default: void 0 },
+   // <img> attributes
+   width: { type: [String, Number], default: void 0 },
+@@ -55,13 +57,14 @@ export const useBaseImage = (props) => {
+       decoding: props.decoding
+     };
+   });
++  const $img = useImage();
+   const modifiers = computed(() => {
+     return {
+       ...props.modifiers,
+       width: parseSize(props.width),
+       height: parseSize(props.height),
+       format: props.format,
+-      quality: props.quality,
++      quality: props.quality || $img.options.quality,
+       background: props.background,
+       fit: props.fit
+     };
+diff --git a/dist/runtime/components/nuxt-img.d.ts b/dist/runtime/components/nuxt-img.d.ts
+index 19164564d1600992554dc5b7671b43e6b060da2e..7bb3ec71bd5aa765971892e6636ffa37f47a4b42 100644
+--- a/dist/runtime/components/nuxt-img.d.ts
++++ b/dist/runtime/components/nuxt-img.d.ts
+@@ -39,6 +39,10 @@ export declare const imgProps: {
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -127,6 +131,10 @@ declare const _default: import("vue").DefineComponent<{
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -216,6 +224,10 @@ declare const _default: import("vue").DefineComponent<{
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -272,10 +284,11 @@ declare const _default: import("vue").DefineComponent<{
+     format: string;
+     provider: string;
+     preset: string;
++    densities: string;
+     modifiers: Record<string, any>;
+     sizes: string | Record<string, any>;
+-    preload: boolean;
+     quality: string | number;
++    preload: boolean;
+     background: string;
+     alt: string;
+     referrerpolicy: string;
+diff --git a/dist/runtime/components/nuxt-img.mjs b/dist/runtime/components/nuxt-img.mjs
+index 44cbd10c263a1fad6eba2441b34df11d175ea0df..bd72e4df97e5a4f9542db208fca3ff643a5b1e62 100644
+--- a/dist/runtime/components/nuxt-img.mjs
++++ b/dist/runtime/components/nuxt-img.mjs
+@@ -19,6 +19,7 @@ export default defineComponent({
+     const sizes = computed(() => $img.getSizes(props.src, {
+       ..._base.options.value,
+       sizes: props.sizes,
++      densities: props.densities,
+       modifiers: {
+         ..._base.modifiers.value,
+         width: parseSize(props.width),
+@@ -27,7 +28,7 @@ export default defineComponent({
+     }));
+     const attrs = computed(() => {
+       const attrs2 = { ..._base.attrs.value, "data-nuxt-img": "" };
+-      if (props.sizes) {
++      if (!props.placeholder || placeholderLoaded.value) {
+         attrs2.sizes = sizes.value.sizes;
+         attrs2.srcset = sizes.value.srcset;
+       }
+@@ -80,10 +81,11 @@ export default defineComponent({
+       if (placeholder.value) {
+         const img = new Image();
+         img.src = mainSrc.value;
++        if (props.sizes) {
++          img.sizes = sizes.value.sizes || "";
++          img.srcset = sizes.value.srcset;
++        }
+         img.onload = (event) => {
+-          if (imgEl.value) {
+-            imgEl.value.src = mainSrc.value;
+-          }
+           placeholderLoaded.value = true;
+           ctx.emit("load", event);
+         };
+@@ -108,7 +110,6 @@ export default defineComponent({
+     });
+     return () => h("img", {
+       ref: imgEl,
+-      key: src.value,
+       src: src.value,
+       ...process.server ? { onerror: "this.setAttribute('data-error', 1)" } : {},
+       ...attrs.value,
+diff --git a/dist/runtime/components/nuxt-picture.d.ts b/dist/runtime/components/nuxt-picture.d.ts
+index accc3338c76a515bf0bd159adc730632f370e40b..4ab693a440ab8406aa459502ed8e1669e08686f5 100644
+--- a/dist/runtime/components/nuxt-picture.d.ts
++++ b/dist/runtime/components/nuxt-picture.d.ts
+@@ -43,6 +43,10 @@ export declare const pictureProps: {
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -135,6 +139,10 @@ declare const _default: import("vue").DefineComponent<{
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -228,6 +236,10 @@ declare const _default: import("vue").DefineComponent<{
+         type: () => string | Record<string, any>;
+         default: undefined;
+     };
++    densities: {
++        type: StringConstructor;
++        default: undefined;
++    };
+     preload: {
+         type: BooleanConstructor;
+         default: undefined;
+@@ -283,10 +295,11 @@ declare const _default: import("vue").DefineComponent<{
+     format: string;
+     provider: string;
+     preset: string;
++    densities: string;
+     modifiers: Record<string, any>;
+     sizes: string | Record<string, any>;
+-    preload: boolean;
+     quality: string | number;
++    preload: boolean;
+     background: string;
+     alt: string;
+     referrerpolicy: string;
+diff --git a/dist/runtime/components/nuxt-picture.mjs b/dist/runtime/components/nuxt-picture.mjs
+index cf7443ea3e67ef7f5ef2776e67a676c06cb2a7d0..296e8698118a6fcf09576e435b230c4cdeb4015a 100644
+--- a/dist/runtime/components/nuxt-picture.mjs
++++ b/dist/runtime/components/nuxt-picture.mjs
+@@ -15,38 +15,39 @@ export default defineComponent({
+   setup: (props, ctx) => {
+     const $img = useImage();
+     const _base = useBaseImage(props);
+-    const isTransparent = computed(() => ["png", "webp", "gif"].includes(originalFormat.value));
+     const originalFormat = computed(() => getFileExtension(props.src));
+-    const format = computed(() => props.format || (originalFormat.value === "svg" ? "svg" : "webp"));
++    const isTransparent = computed(() => ["png", "webp", "gif", "svg"].includes(originalFormat.value));
+     const legacyFormat = computed(() => {
+       if (props.legacyFormat) {
+         return props.legacyFormat;
+       }
+-      const formats = {
+-        webp: isTransparent.value ? "png" : "jpeg",
+-        svg: "png"
+-      };
+-      return formats[format.value] || originalFormat.value;
++      return isTransparent.value ? "png" : "jpeg";
+     });
+     const sources = computed(() => {
+-      if (format.value === "svg") {
++      const formats = props.format?.split(",") || (originalFormat.value === "svg" ? ["svg"] : $img.options.format?.length ? [...$img.options.format] : ["webp"]);
++      if (formats[0] === "svg") {
+         return [{ src: props.src }];
+       }
+-      const formats = legacyFormat.value !== format.value ? [legacyFormat.value, format.value] : [format.value];
+-      return formats.map((format2) => {
++      if (!formats.includes(legacyFormat.value)) {
++        formats.push(legacyFormat.value);
++      } else {
++        formats.splice(formats.indexOf(legacyFormat.value), 1);
++        formats.push(legacyFormat.value);
++      }
++      return formats.map((format) => {
+         const { srcset, sizes, src } = $img.getSizes(props.src, {
+           ..._base.options.value,
+           sizes: props.sizes || $img.options.screens,
+-          modifiers: { ..._base.modifiers.value, format: format2 }
++          modifiers: { ..._base.modifiers.value, format }
+         });
+-        return { src, type: `image/${format2}`, sizes, srcset };
++        return { src, type: `image/${format}`, sizes, srcset };
+       });
+     });
++    const lastSourceIndex = computed(() => sources.value.length - 1);
+     if (props.preload) {
+-      const srcKey = sources.value?.[1] ? 1 : 0;
+-      const link = { rel: "preload", as: "image", imagesrcset: sources.value[srcKey].srcset };
+-      if (sources.value?.[srcKey]?.sizes) {
+-        link.imagesizes = sources.value[srcKey].sizes;
++      const link = { rel: "preload", as: "image", imagesrcset: sources.value[0].srcset };
++      if (sources.value?.[0]?.sizes) {
++        link.imagesizes = sources.value[0].sizes;
+       }
+       useHead({ link: [link] });
+     }
+@@ -75,20 +76,22 @@ export default defineComponent({
+         ctx.emit("load", event);
+       };
+     });
+-    return () => h("picture", { key: sources.value[0].src }, [
+-      ...sources.value?.[1] ? [h("source", {
+-        type: sources.value[1].type,
+-        sizes: sources.value[1].sizes,
+-        srcset: sources.value[1].srcset
+-      })] : [],
++    return () => h("picture", null, [
++      ...sources.value.slice(0, -1).map((source) => {
++        return h("source", {
++          type: source.type,
++          sizes: source.sizes,
++          srcset: source.srcset
++        });
++      }),
+       h("img", {
+         ref: imgEl,
+         ..._base.attrs.value,
+         ...process.server ? { onerror: "this.setAttribute('data-error', 1)" } : {},
+         ...imgAttrs,
+-        src: sources.value[0].src,
+-        sizes: sources.value[0].sizes,
+-        srcset: sources.value[0].srcset
++        src: sources.value[lastSourceIndex.value].src,
++        sizes: sources.value[lastSourceIndex.value].sizes,
++        srcset: sources.value[lastSourceIndex.value].srcset
+       })
+     ]);
+   }
+diff --git a/dist/runtime/image.mjs b/dist/runtime/image.mjs
+index b74a67f3721b4b5d5cf74d1a942302897cd1846b..90546ea75485a6cd845aceb45ac5a85104417fb9 100644
+--- a/dist/runtime/image.mjs
++++ b/dist/runtime/image.mjs
+@@ -1,7 +1,7 @@
+ import { defu } from "defu";
+ import { hasProtocol, parseURL, joinURL, withLeadingSlash } from "ufo";
+ import { imageMeta } from "./utils/meta.mjs";
+-import { parseSize } from "./utils/index.mjs";
++import { parseDensities, parseSize, parseSizes } from "./utils/index.mjs";
+ import { prerenderStaticImages } from "./utils/prerender.mjs";
+ export function createImage(globalOptions) {
+   const ctx = {
+@@ -97,54 +97,119 @@ function getPreset(ctx, name) {
+ function getSizes(ctx, input, opts) {
+   const width = parseSize(opts.modifiers?.width);
+   const height = parseSize(opts.modifiers?.height);
++  const sizes = parseSizes(opts.sizes);
++  const densities = opts.densities?.trim() ? parseDensities(opts.densities.trim()) : ctx.options.densities;
++  if (densities.length === 0) {
++    throw new Error("'densities' must not be empty, configure to '1' to render regular size only (DPR 1.0)");
++  }
+   const hwRatio = width && height ? height / width : 0;
+-  const variants = [];
+-  const sizes = {};
+-  if (typeof opts.sizes === "string") {
+-    for (const entry of opts.sizes.split(/[\s,]+/).filter((e) => e)) {
+-      const s = entry.split(":");
+-      if (s.length !== 2) {
++  const sizeVariants = [];
++  const srcsetVariants = [];
++  if (Object.keys(sizes).length > 1) {
++    for (const key in sizes) {
++      const variant = getSizesVariant(key, String(sizes[key]), height, hwRatio, ctx);
++      if (variant === void 0) {
+         continue;
+       }
+-      sizes[s[0].trim()] = s[1].trim();
++      sizeVariants.push({
++        size: variant.size,
++        screenMaxWidth: variant.screenMaxWidth,
++        media: `(max-width: ${variant.screenMaxWidth}px)`
++      });
++      for (const density of densities) {
++        srcsetVariants.push({
++          width: variant._cWidth * density,
++          src: getVariantSrc(ctx, input, opts, variant, density)
++        });
++      }
+     }
++    finaliseSizeVariants(sizeVariants);
+   } else {
+-    Object.assign(sizes, opts.sizes);
+-  }
+-  for (const key in sizes) {
+-    const screenMaxWidth = ctx.options.screens && ctx.options.screens[key] || parseInt(key);
+-    let size = String(sizes[key]);
+-    const isFluid = size.endsWith("vw");
+-    if (!isFluid && /^\d+$/.test(size)) {
+-      size = size + "px";
+-    }
+-    if (!isFluid && !size.endsWith("px")) {
+-      continue;
+-    }
+-    let _cWidth = parseInt(size);
+-    if (!screenMaxWidth || !_cWidth) {
+-      continue;
+-    }
+-    if (isFluid) {
+-      _cWidth = Math.round(_cWidth / 100 * screenMaxWidth);
++    for (const density of densities) {
++      const key = Object.keys(sizes)[0];
++      let variant = getSizesVariant(key, String(sizes[key]), height, hwRatio, ctx);
++      if (variant === void 0) {
++        variant = {
++          size: "",
++          screenMaxWidth: 0,
++          _cWidth: opts.modifiers?.width,
++          _cHeight: opts.modifiers?.height
++        };
++      }
++      srcsetVariants.push({
++        width: density,
++        src: getVariantSrc(ctx, input, opts, variant, density)
++      });
+     }
+-    const _cHeight = hwRatio ? Math.round(_cWidth * hwRatio) : height;
+-    variants.push({
+-      width: _cWidth,
+-      size,
+-      screenMaxWidth,
+-      media: `(max-width: ${screenMaxWidth}px)`,
+-      src: ctx.$img(input, { ...opts.modifiers, width: _cWidth, height: _cHeight }, opts)
+-    });
+-  }
+-  variants.sort((v1, v2) => v1.screenMaxWidth - v2.screenMaxWidth);
+-  const defaultVar = variants[variants.length - 1];
+-  if (defaultVar) {
+-    defaultVar.media = "";
+   }
++  finaliseSrcsetVariants(srcsetVariants);
++  const defaultVariant = srcsetVariants[srcsetVariants.length - 1];
++  const sizesVal = sizeVariants.length ? sizeVariants.map((v) => `${v.media ? v.media + " " : ""}${v.size}`).join(", ") : void 0;
++  const suffix = sizesVal ? "w" : "x";
++  const srcsetVal = srcsetVariants.map((v) => `${v.src} ${v.width}${suffix}`).join(", ");
+   return {
+-    sizes: variants.map((v) => `${v.media ? v.media + " " : ""}${v.size}`).join(", "),
+-    srcset: variants.map((v) => `${v.src} ${v.width}w`).join(", "),
+-    src: defaultVar?.src
++    sizes: sizesVal,
++    srcset: srcsetVal,
++    src: defaultVariant?.src
+   };
+ }
++function getSizesVariant(key, size, height, hwRatio, ctx) {
++  const screenMaxWidth = ctx.options.screens && ctx.options.screens[key] || parseInt(key);
++  const isFluid = size.endsWith("vw");
++  if (!isFluid && /^\d+$/.test(size)) {
++    size = size + "px";
++  }
++  if (!isFluid && !size.endsWith("px")) {
++    return void 0;
++  }
++  let _cWidth = parseInt(size);
++  if (!screenMaxWidth || !_cWidth) {
++    return void 0;
++  }
++  if (isFluid) {
++    _cWidth = Math.round(_cWidth / 100 * screenMaxWidth);
++  }
++  const _cHeight = hwRatio ? Math.round(_cWidth * hwRatio) : height;
++  return {
++    size,
++    screenMaxWidth,
++    _cWidth,
++    _cHeight
++  };
++}
++function getVariantSrc(ctx, input, opts, variant, density) {
++  return ctx.$img(
++    input,
++    {
++      ...opts.modifiers,
++      width: variant._cWidth ? variant._cWidth * density : void 0,
++      height: variant._cHeight ? variant._cHeight * density : void 0
++    },
++    opts
++  );
++}
++function finaliseSizeVariants(sizeVariants) {
++  sizeVariants.sort((v1, v2) => v1.screenMaxWidth - v2.screenMaxWidth);
++  if (sizeVariants[sizeVariants.length - 1]) {
++    sizeVariants[sizeVariants.length - 1].media = "";
++  }
++  let previousMedia = null;
++  for (let i = sizeVariants.length - 1; i >= 0; i--) {
++    const sizeVariant = sizeVariants[i];
++    if (sizeVariant.media === previousMedia) {
++      sizeVariants.splice(i, 1);
++    }
++    previousMedia = sizeVariant.media;
++  }
++}
++function finaliseSrcsetVariants(srcsetVariants) {
++  srcsetVariants.sort((v1, v2) => v1.width - v2.width);
++  let previousWidth = null;
++  for (let i = srcsetVariants.length - 1; i >= 0; i--) {
++    const sizeVariant = srcsetVariants[i];
++    if (sizeVariant.width === previousWidth) {
++      srcsetVariants.splice(i, 1);
++    }
++    previousWidth = sizeVariant.width;
++  }
++}
+diff --git a/dist/runtime/ipx.mjs b/dist/runtime/ipx.mjs
+index b081a45244cb3abcad643c8085df8ba90537f47e..f7401728fb9be9d1a844cf419fd9f49e42045d7a 100644
+--- a/dist/runtime/ipx.mjs
++++ b/dist/runtime/ipx.mjs
+@@ -4,11 +4,11 @@ import { withLeadingSlash } from "ufo";
+ import { eventHandler, lazyEventHandler } from "h3";
+ import { useRuntimeConfig } from "#imports";
+ export default lazyEventHandler(() => {
+-  const opts = useRuntimeConfig().ipx;
++  const opts = useRuntimeConfig().ipx || {};
+   const ipxOptions = {
+-    ...opts || {},
++    ...opts,
+     // TODO: Switch to storage API when ipx supports it
+-    dir: fileURLToPath(new URL(opts.dir, import.meta.url))
++    dir: opts.dir ? fileURLToPath(new URL(opts.dir, import.meta.url)) : void 0
+   };
+   const ipx = createIPX(ipxOptions);
+   const middleware = createIPXMiddleware(ipx);
+diff --git a/dist/runtime/providers/directus.mjs b/dist/runtime/providers/directus.mjs
+index 69503cea717f2351c5abab13c2acb07db9dbfc88..b2e1159fafc466adfa4e7718ffa40102f1cea68f 100644
+--- a/dist/runtime/providers/directus.mjs
++++ b/dist/runtime/providers/directus.mjs
+@@ -4,8 +4,9 @@ export const operationsGenerator = createOperationsGenerator({
+   joinWith: "&"
+ });
+ export const getImage = (src, { modifiers = {}, baseURL } = {}) => {
+-  const transforms = modifiers.transforms;
+-  if (transforms && transforms.length > 0) {
++  let transforms = modifiers.transforms;
++  if (transforms && Array.isArray(transforms) && transforms.length > 0) {
++    transforms = Array.from(new Set(transforms.map((obj) => JSON.stringify(obj)))).map((value) => JSON.parse(value));
+     modifiers.transforms = new URLSearchParams(JSON.stringify(transforms)).toString().replace(/=+$/, "");
+   }
+   const operations = operationsGenerator(modifiers);
+diff --git a/dist/runtime/providers/prepr/formatter.d.ts b/dist/runtime/providers/prepr/formatter.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..8674c9ca8568ee0fa03c22551d64c0eb7e59b9e2
+--- /dev/null
++++ b/dist/runtime/providers/prepr/formatter.d.ts
+@@ -0,0 +1 @@
++export declare function formatter(key: string, value: string): string;
+diff --git a/dist/runtime/providers/prepr/formatter.mjs b/dist/runtime/providers/prepr/formatter.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..f2f4ca4ab8100fd0e28cdc7600bd9e9525db9f30
+--- /dev/null
++++ b/dist/runtime/providers/prepr/formatter.mjs
+@@ -0,0 +1,3 @@
++export function formatter(key, value) {
++  return String(value) === "true" ? key : `${key}_${value}`;
++}
+diff --git a/dist/runtime/providers/prepr/getImage.d.ts b/dist/runtime/providers/prepr/getImage.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..6b7591ec2e8631db69cc208c93c157a2eaed4e1b
+--- /dev/null
++++ b/dist/runtime/providers/prepr/getImage.d.ts
+@@ -0,0 +1,7 @@
++import type { ImageOptions, ResolvedImage, ImageCTX } from '../../../types';
++interface PreprImageOptions extends ImageOptions {
++    projectName: string;
++}
++type PreprProviderGetImage = (src: string, options: PreprImageOptions, ctx: ImageCTX) => ResolvedImage;
++declare const getImage: PreprProviderGetImage;
++export { getImage };
+diff --git a/dist/runtime/providers/prepr/getImage.mjs b/dist/runtime/providers/prepr/getImage.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..dde8f201f31e1e708edd4a054be02668331fc71d
+--- /dev/null
++++ b/dist/runtime/providers/prepr/getImage.mjs
+@@ -0,0 +1,25 @@
++import { joinURL } from "ufo";
++import { formatter } from "./formatter.mjs";
++import { keyMap } from "./keyMap.mjs";
++import { valueMap } from "./valueMap.mjs";
++import { createOperationsGenerator } from "#image";
++const operationsGenerator = createOperationsGenerator({
++  formatter,
++  joinWith: ",",
++  keyMap,
++  valueMap
++});
++const getImage = (src, options, _ctx) => {
++  const { projectName } = options;
++  if (typeof projectName !== "string" || !projectName.trim()) {
++    throw new TypeError("[nuxt] [image] [prepr] No project name provided.");
++  }
++  const fileBucket = "stream";
++  const fileOperations = operationsGenerator(options.modifiers);
++  const filePath = fileOperations ? joinURL(fileOperations, src) : src;
++  const projectUrl = `https://${projectName.trim()}.${fileBucket}.prepr.io`;
++  return {
++    url: joinURL(projectUrl, filePath)
++  };
++};
++export { getImage };
+diff --git a/dist/runtime/providers/prepr/index.d.ts b/dist/runtime/providers/prepr/index.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..b33414bd7155083462e80ef92dd13c791f7caf0b
+--- /dev/null
++++ b/dist/runtime/providers/prepr/index.d.ts
+@@ -0,0 +1 @@
++export * from './getImage';
+diff --git a/dist/runtime/providers/prepr/index.mjs b/dist/runtime/providers/prepr/index.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..dc452600d91d1db271ed754600ccd6db83eebcf1
+--- /dev/null
++++ b/dist/runtime/providers/prepr/index.mjs
+@@ -0,0 +1 @@
++export * from "./getImage.mjs";
+diff --git a/dist/runtime/providers/prepr/keyMap.d.ts b/dist/runtime/providers/prepr/keyMap.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..427b0f5e2c7e01c00ef24b428ec0ef8c7cffbc2f
+--- /dev/null
++++ b/dist/runtime/providers/prepr/keyMap.d.ts
+@@ -0,0 +1,16 @@
++/**
++ * Key map is responsible for mapping readable "properties", which can be passed
++ * as modifiers of `NuxtImg` component, to URL path parameters that can be
++ * interpreted Prepr's REST API.
++ */
++declare const keyMap: {
++    readonly crop: "c";
++    readonly format: "format";
++    readonly height: "h";
++    readonly quality: "q";
++    readonly width: "w";
++};
++type KeyMapKey = keyof typeof keyMap;
++type KeyMapValue = typeof keyMap[KeyMapKey];
++export { keyMap };
++export type { KeyMapKey, KeyMapValue };
+diff --git a/dist/runtime/providers/prepr/keyMap.mjs b/dist/runtime/providers/prepr/keyMap.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..cdd0c522e636890c40d201bc316ad67443097ff6
+--- /dev/null
++++ b/dist/runtime/providers/prepr/keyMap.mjs
+@@ -0,0 +1,8 @@
++const keyMap = {
++  crop: "c",
++  format: "format",
++  height: "h",
++  quality: "q",
++  width: "w"
++};
++export { keyMap };
+diff --git a/dist/runtime/providers/prepr/valueMap.d.ts b/dist/runtime/providers/prepr/valueMap.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..2f9d8c6777aa439528d5e2ced2d6d911eef96709
+--- /dev/null
++++ b/dist/runtime/providers/prepr/valueMap.d.ts
+@@ -0,0 +1,29 @@
++/**
++ * Value map is responsible for mapping readable "properties" defined in
++ * `keyMap.ts` aswell as native modifiers of `NuxtImg` component, to URL path
++ * parameter values that can be interpreted Prepr's REST API.
++ *
++ * ```Examples
++ * Prepr's `w` path param expects an arbitrary number, so, it does not need to be in `valueMap`
++ *
++ * Our custom param `width` maps to `w` in keyMap, so, it does not need to be in `valueMap`
++ *
++ * Prepr's `format` path param expects a string which can either be `jpg` or `png`,
++ * if we want to allow the user to pass <NuxtImage :modifiers="{ format: 'jpeg' }" />,
++ * because it is a valid option of <NuxtImg :format />, then we need to have
++ * `jpeg` to `jpg` because Prepr's API does not recognize `jpeg`. Similar things
++ * could be said for `fit=cover`, which should map to `fit=crop`
++ *```
++ */
++declare const valueMap: {
++    readonly format: {
++        readonly jpeg: "jpg";
++    };
++    readonly fit: {
++        readonly cover: "crop";
++    };
++};
++type ValuesMapKey = keyof typeof valueMap;
++type ValuesMapValue = typeof valueMap[ValuesMapKey];
++export { valueMap };
++export type { ValuesMapKey, ValuesMapValue };
+diff --git a/dist/runtime/providers/prepr/valueMap.mjs b/dist/runtime/providers/prepr/valueMap.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..80fbc2bf37f2f07f6cee290bf70c3202b3a7428c
+--- /dev/null
++++ b/dist/runtime/providers/prepr/valueMap.mjs
+@@ -0,0 +1,10 @@
++const valueMap = {
++  format: {
++    jpeg: "jpg"
++  },
++  fit: {
++    cover: "crop"
++    // Prepr.io accepts value `crop` defaulting to value `centre`
++  }
++};
++export { valueMap };
+diff --git a/dist/runtime/providers/static.d.ts b/dist/runtime/providers/static.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..536d464f60b248e202667a2011e8cc3cae3a07f2
+--- /dev/null
++++ b/dist/runtime/providers/static.d.ts
+@@ -0,0 +1 @@
++export * from './ipx';
+diff --git a/dist/runtime/providers/static.mjs b/dist/runtime/providers/static.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..b00167284611ac8f11a56bf966f07e89cf9f61c8
+--- /dev/null
++++ b/dist/runtime/providers/static.mjs
+@@ -0,0 +1 @@
++export * from "./ipx.mjs";
+diff --git a/dist/runtime/providers/storyblok.mjs b/dist/runtime/providers/storyblok.mjs
+index a5a3c32a3b3a3dbef350b142f87a4846dc1d495d..269be49eef6bf844b5f1cdccc606be8d8672808c 100644
+--- a/dist/runtime/providers/storyblok.mjs
++++ b/dist/runtime/providers/storyblok.mjs
+@@ -10,12 +10,15 @@ export const getImage = (src, { modifiers = {}, baseURL = storyblockCDN } = {})
+     format,
+     quality
+   } = modifiers;
+-  const doResize = width !== "0" || height !== "0";
+-  if (format) {
+-    filters.format = format + "";
+-  }
+-  if (quality) {
+-    filters.quality = quality + "";
++  const isSVG = src.endsWith(".svg");
++  const doResize = !isSVG && (width !== "0" || height !== "0");
++  if (!isSVG) {
++    if (format) {
++      filters.format = format + "";
++    }
++    if (quality) {
++      filters.quality = quality + "";
++    }
+   }
+   const _filters = Object.entries(filters || {}).map((e) => `${e[0]}(${e[1]})`).join(":");
+   const options = joinURL(
+diff --git a/dist/runtime/providers/uploadcare.d.ts b/dist/runtime/providers/uploadcare.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..a6bbc9890db150d9eaae9b6c35719ac25a096181
+--- /dev/null
++++ b/dist/runtime/providers/uploadcare.d.ts
+@@ -0,0 +1,21 @@
++/**
++ * Image provider for Uploadcare
++ * URL API reference:
++ * @link https://uploadcare.com/api-refs/url-api/
++ *
++ * URL format: https://ucarecdn.com/:uuid/-/:operation/:params/:filename
++ *
++ * Operations:
++ * [X] Image Compression
++ * [/] Image Geometry
++ * [ ] Image Overlays
++ * [ ] Image Colours
++ * [ ] Image Definition
++ * [ ] Image Rotations
++ *
++ * Other stuff to think about later:
++ * - Signed URLs
++ * - File Groups
++ *  */
++import { ProviderGetImage } from '../../types';
++export declare const getImage: ProviderGetImage;
+diff --git a/dist/runtime/providers/uploadcare.mjs b/dist/runtime/providers/uploadcare.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..d47ab6ea5c0d6ab784a8655c6af077fa5d2b5751
+--- /dev/null
++++ b/dist/runtime/providers/uploadcare.mjs
+@@ -0,0 +1,32 @@
++import { joinURL, withTrailingSlash } from "ufo";
++import { createOperationsGenerator } from "#image";
++const operationsGenerator = createOperationsGenerator({
++  joinWith: "",
++  formatter: (key, value) => `-/${key}/${Array.isArray(value) ? value.join("/") : value}/`
++});
++export const getImage = (uuid, { modifiers, cdnURL = "" } = {}) => {
++  if (modifiers?.width || modifiers?.height) {
++    modifiers.resize = `${modifiers?.width || ""}x${modifiers?.height || ""}`;
++    delete modifiers?.width;
++    delete modifiers?.height;
++  }
++  if (modifiers?.fit) {
++    switch (modifiers.fit) {
++      case "cover":
++        modifiers.scale_crop = [modifiers.resize, "center"];
++        delete modifiers.resize;
++        break;
++      case "contain":
++        modifiers.stretch = "off";
++        break;
++      default:
++        modifiers.smart_resize = modifiers.resize;
++        delete modifiers.resize;
++        break;
++    }
++    delete modifiers.fit;
++  }
++  const operations = operationsGenerator(modifiers);
++  const url = withTrailingSlash(joinURL(cdnURL || "https://ucarecdn.com", uuid, operations));
++  return { url };
++};
+diff --git a/dist/runtime/utils/index.d.ts b/dist/runtime/utils/index.d.ts
+index b5960c8869dcdf8a6cc4219f8a88ebf054c7a0e3..983c552221a7a7a163fd19b079f5bca41e671ff1 100644
+--- a/dist/runtime/utils/index.d.ts
++++ b/dist/runtime/utils/index.d.ts
+@@ -14,4 +14,6 @@ export declare function renderAttributesToString(attributes?: Attrs): string;
+ export declare function renderTag(tag: string, attrs: Attrs, contents?: string): string;
+ export declare function generateAlt(src?: string): string | undefined;
+ export declare function parseSize(input?: string | number | undefined): number | undefined;
++export declare function parseDensities(input?: string | undefined): number[];
++export declare function parseSizes(input: Record<string, string | number> | string): Record<string, string>;
+ export {};
+diff --git a/dist/runtime/utils/index.mjs b/dist/runtime/utils/index.mjs
+index db9713c03de277abfb7d681d091909c2c5363069..3ee34487a5cdbeae81f3b1f02a2e8fd0459b83ab 100644
+--- a/dist/runtime/utils/index.mjs
++++ b/dist/runtime/utils/index.mjs
+@@ -70,3 +70,26 @@ export function parseSize(input = "") {
+     }
+   }
+ }
++export function parseDensities(input = "") {
++  if (input === void 0 || !input.length) {
++    return [];
++  }
++  const densities = input.split(" ").map((size) => parseInt(size.replace("x", "")));
++  return densities.filter((value, index) => densities.indexOf(value) === index);
++}
++export function parseSizes(input) {
++  const sizes = {};
++  if (typeof input === "string") {
++    for (const entry of input.split(/[\s,]+/).filter((e) => e)) {
++      const s = entry.split(":");
++      if (s.length !== 2) {
++        sizes[s[0].trim()] = s[0].trim();
++      } else {
++        sizes[s[0].trim()] = s[1].trim();
++      }
++    }
++  } else {
++    Object.assign(sizes, input);
++  }
++  return sizes;
++}
