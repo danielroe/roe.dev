@@ -1,0 +1,13 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 4a44ddffd155c94aa496723e0157eb5b22a5c105..27eb452840995b2d2eab0cee0389f0bc145fefad 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -583,7 +583,7 @@ function handleRequest(request, ipx) {
+   return _handleRequest(request, ipx).catch((error) => {
+     const statusCode = Number.parseInt(error.statusCode) || 500;
+     const statusMessage = error.statusMessage ? error.statusMessage : `IPX Error (${statusCode})`;
+-    if (process.env.NODE_ENV !== "production" && statusCode === 500) {
++    if (statusCode === 500) {
+       console.error(error);
+     }
+     return sanetizeReponse({

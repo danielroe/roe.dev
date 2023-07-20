@@ -18,6 +18,9 @@ patchedDependencies:
   h3@1.7.1:
     hash: zgpxsicqglhhaxsndndgishp2i
     path: patches/h3@1.7.1.patch
+  ipx@1.2.0:
+    hash: 2ncj2nqxfncq6pgjslztoshxsi
+    path: patches/ipx@1.2.0.patch
 
 dependencies:
   '@atproto/api':
@@ -1603,7 +1606,7 @@ packages:
       std-env: 3.3.3
       ufo: 1.1.2
     optionalDependencies:
-      ipx: 1.2.0
+      ipx: 1.2.0(patch_hash=2ncj2nqxfncq6pgjslztoshxsi)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -5775,7 +5778,7 @@ packages:
     resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==}
     dev: true
 
-  /ipx@1.2.0:
+  /ipx@1.2.0(patch_hash=2ncj2nqxfncq6pgjslztoshxsi):
     resolution: {integrity: sha512-FkEP56C08HdlqlWKm3pMhatywPtDBTlePTdzskksCR1+7xnB6fQs6pXOTXPTG5i+gGPgCOxbNMUSZEH/DQcWDA==}
     hasBin: true
     requiresBuild: true
@@ -5794,6 +5797,7 @@ packages:
       xss: 1.0.14
     dev: false
     optional: true
+    patched: true
 
   /iron-webcrypto@0.7.1:
     resolution: {integrity: sha512-K/UmlEhPCPXEHV5hAtH5C0tI5JnFuOrv4yO/j7ODPl3HaiiHBLbOLTde+ieUaAyfCATe4LoAnclyF+hmSCOVmQ==}
