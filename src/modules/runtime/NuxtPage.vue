@@ -15,6 +15,13 @@ nuxtApp.hooks.hook('link:prefetch', url => {
   }
 })
 const done = nuxtApp.deferHydration()
+if (process.client) {
+  nuxtApp.hook('page:finish', () =>
+    document.documentElement.scrollTo({
+      top: 0,
+    })
+  )
+}
 </script>
 
 <template>

@@ -27,13 +27,18 @@ describe(
     it('renders server components', async () => {
       const logs: string[] = []
       const page = await createPage()
+      await page.route('**/feed/_payload.json', route =>
+        route.fulfill({
+          json: [{ data: 2, prerenderedAt: 3 }, {}, 1689517334625],
+        })
+      )
       page.on('console', msg => logs.push(msg.text()))
       await page.goto(url('/'))
       await page.waitForLoadState('networkidle')
       expect(
         await page.getByText('2019-2023').innerHTML()
       ).toMatchInlineSnapshot(
-        '" © 2019-2023 Daniel Roe. <a class=\\"link\\" href=\\"https://creativecommons.org/licenses/by-nc-sa/4.0/\\"> CC BY-SA 4.0 </a>"'
+        '" © 2019-2023 Daniel Roe. <a class=\\"link\\" href=\\"https://creativecommons.org/licenses/by-sa/4.0/\\"> CC BY-SA 4.0 </a>"'
       )
       expect(logs).toMatchInlineSnapshot(`
         [

@@ -9,12 +9,13 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   runtimeConfig: {
-    // JWT claims
-    privateKey: '',
-    publicKey: '',
+    sessionPassword: '',
     // emailing ideas
-    sendgridApiKey: '',
     resendApiKey: '',
+    twitch: {
+      clientId: '',
+      clientSecret: '',
+    },
     github: {
       // my GH ID
       id: 'MDQ6VXNlcjI4NzA2Mzcy',
@@ -74,6 +75,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    typescriptBundlerResolution: true,
     viewTransition: true,
     componentIslands: true,
     payloadExtraction: true,
@@ -82,11 +84,24 @@ export default defineNuxtConfig({
 
   sourcemap: false,
 
+  social: {
+    networks: {
+      bluesky: {
+        identifier: 'danielroe.dev',
+      },
+      mastodon: {
+        identifier: 'daniel@roe.dev',
+      },
+    },
+  },
+
+  devTo: {
+    enabled: !!process.env.SYNC_DEV_TO,
+  },
+
   typescript: {
-    strict: true,
     tsConfig: {
       compilerOptions: {
-        // moduleResolution: 'bundler',
         // resolveJsonModule: false,
       },
     },
@@ -94,11 +109,8 @@ export default defineNuxtConfig({
 
   srcDir: 'src',
 
-  build: {
-    transpile: [/content-edge/, /image-edge/],
-  },
-
   nitro: {
+    future: { nativeSWR: true },
     prerender: {
       concurrency: 12,
       crawlLinks: true,
@@ -128,7 +140,7 @@ export default defineNuxtConfig({
   content: {
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],
-      theme: 'material-palenight',
+      theme: 'material-theme-palenight',
     },
   },
 
@@ -156,10 +168,11 @@ export default defineNuxtConfig({
   },
 
   image: {
-    provider: 'static',
     domains: [
+      'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
-      'https://avatars.githubusercontent.com',
+      's3.nl-ams.scw.cloud',
+      'cdn.bsky.social',
     ],
     screens: {
       logo: 40,

@@ -24,6 +24,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Update blogs on dev.to
-        run: node scripts/publish.mjs
+        run: pnpm nuxi prepare
         env:
           DEVTO_TOKEN: ${{ secrets.DEVTO_TOKEN }}
+          SYNC_DEV_TO: true
