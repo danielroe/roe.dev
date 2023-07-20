@@ -168,6 +168,7 @@ export default defineNuxtConfig({
   },
 
   image: {
+    provider: 'static',
     domains: [
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
