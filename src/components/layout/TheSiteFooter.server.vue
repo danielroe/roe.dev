@@ -69,7 +69,7 @@ const year = new Date().getFullYear()
         >
           <a :href="link" rel="me">
             <span class="h-4 w-4 fill-current" :class="icon" alt="" />
-            <span class="visually-hidden">
+            <span class="sr-only">
               {{ name }}
             </span>
           </a>

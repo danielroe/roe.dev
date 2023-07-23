@@ -97,16 +97,6 @@ main a:not([href^='#']), .link {
   }
 }
 
-.visually-hidden:not(:focus, :active) {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  white-space: nowrap; /* added line */
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
-}
-
 p + p, p + blockquote {
   @apply mt-4;
 }
