@@ -6,7 +6,7 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "start": "nuxt start",
-    "lint:js": "eslint --ext .js,.vue --fix --ignore-path .gitignore .",
+    "lint:js": "eslint --ext .js,.ts,.mjs,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
     "test": "vitest run test/unit",
@@ -16,7 +16,7 @@
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install && npx playwright install"
   },
   "lint-staged": {
-    "*.{js,vue}": [
+    "*.{js,ts,mjs,vue}": [
       "eslint",
       "prettier --write"
     ],

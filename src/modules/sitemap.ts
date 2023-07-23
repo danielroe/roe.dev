@@ -7,7 +7,7 @@ export default defineNuxtModule({
   meta: {
     name: 'sitemap',
   },
-  setup () {
+  setup() {
     const nuxt = useNuxt()
     nuxt.hook('nitro:init', nitro => {
       nitro.hooks.hook('close', async () => {

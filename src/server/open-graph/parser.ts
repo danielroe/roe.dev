@@ -7,7 +7,7 @@ export interface ParsedReqs {
   tags: string[]
 }
 
-export function parseReqs (slug: string) {
+export function parseReqs(slug: string) {
   if (slug === 'og') {
     return {
       date: '',

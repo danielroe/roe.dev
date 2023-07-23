@@ -4,7 +4,7 @@ export const requestIdleCallback =
     const start = Date.now()
     const idleDeadline = {
       didTimeout: false,
-      timeRemaining () {
+      timeRemaining() {
         return Math.max(0, 50 - (Date.now() - start))
       },
     }
