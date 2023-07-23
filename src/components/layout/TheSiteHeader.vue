@@ -105,7 +105,7 @@ function toggleMenu(input?: Event | boolean) {
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
-        class="p-1 w-[2rem] flex-shrink-0"
+        class="-mr-1 -mt-1 p-1 w-[2rem] flex-shrink-0"
         @click="$auth.status = 'pending'"
       >
         <span class="h-5 w-5 i-ri:github-fill" alt="" />
