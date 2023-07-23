@@ -1,13 +1,26 @@
 <template>
-  <div id="app" class="overflow-x-hidden min-h-screen flex flex-col">
-    <LayoutTheSiteHeader v-once />
+  <div
+    id="app"
+    class="overflow-x-hidden min-h-screen flex flex-col"
+    :class="{ 'highlight-islands': highlightIslands }"
+    @click="openSiteUI"
+  >
+    <LayoutTheSiteHeader />
     <NuxtPage />
-    <LayoutTheSiteFooter v-once />
+    <LayoutTheSiteFooter />
   </div>
 </template>
 
 <script lang="ts" setup>
 const route = useRoute()
+
+// TODO: interactive components within server components
+const highlightIslands = ref(false)
+function openSiteUI(e: MouseEvent | KeyboardEvent) {
+  if ((e.target as HTMLElement).hasAttribute('data-site-ui')) {
+    highlightIslands.value = !highlightIslands.value
+  }
+}
 
 useHead({
   title: () => (route.meta.title as string) || '',
@@ -104,3 +117,9 @@ if (process.server) {
   })
 }
 </script>
+
+<style>
+.highlight-islands [data-island] {
+  border: 1px solid red;
+}
+</style>
