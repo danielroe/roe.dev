@@ -173,12 +173,10 @@ function toggleMenu(input?: Event | boolean) {
 </template>
 
 <style>
-/* stylelint-disable-next-line */
 ::view-transition-old(menu) {
   transform: rotate(0deg);
 }
 
-/* stylelint-disable-next-line */
 ::view-transition-new(menu) {
   transform: rotate(90deg);
 }
