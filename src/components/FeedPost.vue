@@ -18,7 +18,7 @@ defineProps({
 
 <template>
   <article
-    class="p-4 relative text-base flex flex-row gap-4 shadow min-h-12 transition-all border-[1px] border-solid border-transparent after:text-transparent flex-[100%] bg-[var(--accent)]"
+    class="p-4 relative text-base flex flex-row gap-4 shadow min-h-12 transition-all border-[1px] border-solid border-transparent after:text-transparent flex-[100%] bg-accent"
   >
     <nuxt-img
       :src="avatar ?? '/me.jpg'"

@@ -22,7 +22,7 @@ img[data-image-src='${avatar || 'null'}'] {
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Welcome!</h1>
     </header>
-    <main class="text-lg">
+    <main class="text-muted text-lg">
       <StaticMarkdownRender path="/" />
       <hr
         class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
@@ -31,7 +31,7 @@ img[data-image-src='${avatar || 'null'}'] {
         <header class="text-center font-bold mb-4">
           special thanks to
           <template v-if="$auth.user.sponsor">
-            <span class="text-[var(--text-base)]">you</span>
+            <span class="text-primary">you</span>
             and
           </template>
         </header>

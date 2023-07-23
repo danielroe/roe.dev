@@ -10,7 +10,7 @@
       <article>
         <span
           :class="$style.badge"
-          class="absolute flex top-0 right-0 p-1 before:content-empty before:absolute before:block before:w-full before:-mt-4"
+          class="absolute flex top-0 right-0 p-1 text-primary before:content-empty before:absolute before:block before:w-full before:-mt-4 before:bg-background"
         >
           <span class="z-10 h-4 w-4 i-ri:github-fill" alt="" />
         </span>
@@ -87,12 +87,9 @@ const { data: repos } = await useAsyncData('repos', () => {
 
 <style module>
 .badge {
-  color: var(--text-base, theme('colors.gray.300'));
-
   &::before {
     height: calc(100% + 1rem);
     content: '';
-    background-color: var(--background, theme('colors.white'));
     transform: rotate(30deg) scaleX(10);
   }
 }

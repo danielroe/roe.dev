@@ -39,72 +39,27 @@
 .dark-mode {
   --background: theme('colors.gray.800');
   --accent: theme('colors.gray.900');
-  --text-base: theme('colors.white');
-  --text-muted: theme('colors.gray.300');
+  --primary: theme('colors.white');
+  --muted: theme('colors.gray.300');
 }
 
 .light-mode {
   --background: theme('colors.gray.200');
   --accent: theme('colors.gray.100');
-  --text-base: theme('colors.gray.800');
-  --text-muted: theme('colors.gray.700');
+  --primary: theme('colors.gray.800');
+  --muted: theme('colors.gray.700');
 }
 
 :root {
   background-color: var(--background, theme('colors.gray.800'));
-  color: var(--text-base, theme('colors.white'));
+  color: var(--primary, theme('colors.white'));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a, .link {
-  @apply relative inline-block;
-
-  &:not(.pure)::after {
-    @apply block border-transparent;
-
-    margin: -0.5em -0.25em 0;
-    transition: 0.3s border-color, 0.3s opacity;
-    width: calc(100% + 0.5em);
-    border-bottom-width: 0.5em;
-    content: '';
-  }
 }
 
 a:not([href]) {
   opacity: 0.5;
   pointer-events: none;
-}
-
-main {
-  color: var(--text-muted, theme('colors.gray.300'));
-}
-
-main a:not([href^='#']), .link {
-  &:not(.pure)::after {
-    border-color: currentcolor;
-    opacity: 0.1;
-  }
-
-  &:hover,
-  &:active,
-  &:focus {
-    @apply outline-none;
-
-    &::after {
-      opacity: 0.2;
-    }
-  }
-}
-
-.visually-hidden:not(:focus, :active) {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  white-space: nowrap; /* added line */
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
 }
 
 p + p, p + blockquote {
