@@ -42,6 +42,7 @@ describe('project sizes', () => {
         [
           "_nuxt/CalSchedule.js",
           "_nuxt/ContentRendererMarkdown.js",
+          "_nuxt/NuxtTime.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
