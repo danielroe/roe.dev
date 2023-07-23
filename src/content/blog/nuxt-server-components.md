@@ -13,7 +13,7 @@ It's possible to use server components within [Nuxt](https://nuxt.com/), even if
 
 > :span{class="i-ri:lightbulb-fill h-4 w-4"} Believe it or not, Nuxt has had server components since before React.
 
-## Some key terms
+## Similar but different
 
 There are a few terms floating around that are worth mentioning:
 
