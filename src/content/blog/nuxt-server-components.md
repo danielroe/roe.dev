@@ -1,5 +1,5 @@
 ---
-title: 'Nuxt server components: a guide'
+title: 'A guide to Nuxt server components'
 date: '2023-07-23T14:00:00.000Z'
 tags:
   - nuxt
