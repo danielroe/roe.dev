@@ -65,7 +65,7 @@ function toggleMenu(input?: Event | boolean) {
     >
       <li>
         <NuxtLink
-          class="underlined-link hidden md:inline-block outline-none px-2 py-2"
+          class="underlined-link px-2 py-2"
           :class="{
             'not-[:hover,:focus,:active]:after:border-transparent':
               $route.path !== '/',
@@ -80,7 +80,7 @@ function toggleMenu(input?: Event | boolean) {
         <li aria-hidden="true" class="hidden md:inline-block font-bold">•</li>
         <li>
           <NuxtLink
-            class="underlined-link hidden md:inline-block outline-none px-2 py-2"
+            class="underlined-link hidden md:inline-block px-2 py-2"
             :class="{
               'not-[:hover,:focus,:active]:after:border-transparent':
                 $route.path !== link.path,
@@ -161,8 +161,11 @@ function toggleMenu(input?: Event | boolean) {
             >
               <li v-for="link in menu" :key="link.name">
                 <NuxtLink
-                  class="outline-none px-2 py-2 hover:after:border-background focus:after:border-background"
-                  exact-active-class="after:border-background"
+                  class="underlined-link px-2 py-2"
+                  :class="{
+                    'not-[:hover,:focus,:active]:after:border-transparent':
+                      $route.path !== link.path,
+                  }"
                   :to="link.path"
                 >
                   {{ link.name }}
