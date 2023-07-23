@@ -1,7 +1,13 @@
 import { defineConfig, presetUno, presetIcons } from 'unocss'
 
 export default defineConfig({
-  shortcuts: [{ hidden: 'display-none' }],
+  shortcuts: [
+    {
+      'underlined-link':
+        'relative inline-block after:block after:my-[-0.5em] after:mx-[-0.25em] after:opacity-10 after:border-current after:content-empty after:duration-300 after:transition-border-color after:transition-opacity after:border-b-[0.5em] hover:outline-none active:outline-none focus:outline-none hover:after:opacity-20 active:after:opacity-20 focus:after:opacity-20',
+      hidden: 'display-none',
+    },
+  ],
   theme: {
     colors: {
       primary: 'var(--primary)',

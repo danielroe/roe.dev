@@ -57,40 +57,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a, .link {
-  @apply relative inline-block;
-
-  &:not(.pure)::after {
-    @apply block border-transparent;
-
-    margin: -0.5em -0.25em 0;
-    transition: 0.3s border-color, 0.3s opacity;
-    width: calc(100% + 0.5em);
-    border-bottom-width: 0.5em;
-    content: '';
-  }
-}
-
 a:not([href]) {
   opacity: 0.5;
   pointer-events: none;
-}
-
-main a:not([href^='#']), .link {
-  &:not(.pure)::after {
-    border-color: currentcolor;
-    opacity: 0.1;
-  }
-
-  &:hover,
-  &:active,
-  &:focus {
-    @apply outline-none;
-
-    &::after {
-      opacity: 0.2;
-    }
-  }
 }
 
 p + p, p + blockquote {

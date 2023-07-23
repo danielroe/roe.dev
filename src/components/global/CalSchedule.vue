@@ -7,7 +7,7 @@ defineProps({
 
 <template>
   <button
-    class="link mt-4"
+    class="underlined-link mt-4"
     :data-cal-link="`danielroe/${meeting}`"
     type="button"
   >

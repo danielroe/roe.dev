@@ -66,7 +66,7 @@ function toggleMenu(input?: Event | boolean) {
     >
       <li>
         <NuxtLink
-          class="outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
+          class="underlined-link outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
           to="/"
           title="Daniel Roe"
         >
@@ -77,7 +77,7 @@ function toggleMenu(input?: Event | boolean) {
         <li aria-hidden="true" class="hidden md:inline-block font-bold">•</li>
         <li>
           <NuxtLink
-            class="hidden md:inline-block outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
+            class="underlined-link hidden md:inline-block outline-none px-2 py-2 hover:after:border-gray-700 focus:after:border-gray-700"
             exact-active-class="after:border-gray-800"
             :to="link.path"
           >
