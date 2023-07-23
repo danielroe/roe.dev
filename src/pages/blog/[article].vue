@@ -5,12 +5,17 @@
         {{ page.title }}
       </h1>
       <dl
-        v-if="page.date && formattedDate"
+        v-if="page.date"
         class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
       >
         <dt class="float-left md:float-none mr-2">Published</dt>
         <dd class="font-semibold mr-4">
-          <time :datetime="page.date">{{ formattedDate }}</time>
+          <NuxtTime
+            :datetime="page.date"
+            day="numeric"
+            month="long"
+            year="numeric"
+          />
         </dd>
         <template v-if="page.tags && page.tags.length">
           <dt class="float-left md:float-none mr-2">Tags</dt>
@@ -61,9 +66,6 @@ if (!page.value) {
     fatal: true,
   })
 }
-
-const d = new Date(page.value.date)
-const formattedDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 
 route.meta.title = page.value.title
 

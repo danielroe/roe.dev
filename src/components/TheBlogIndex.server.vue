@@ -5,8 +5,7 @@ const entries = await queryContent('/blog')
   .then(result => {
     return (result as Array<{ title?: string; date: string; _path: string }>)
       .map(e => ({
-        ...formatDateField(e),
-        // slug: e._path.match(/^.*\/([^/]*)\/?$/)?.[1] ?? '',
+        ...e,
         path: e._path,
       }))
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -16,7 +15,7 @@ const entries = await queryContent('/blog')
 <template>
   <section class="flex flex-row flex-wrap gap-4">
     <GridLink
-      v-for="{ title, path, date, formattedDate } in entries"
+      v-for="{ title, path, date } in entries"
       :key="path"
       :to="path"
       :title="title"
@@ -32,7 +31,12 @@ const entries = await queryContent('/blog')
           >
             <dt class="float-left md:float-none mr-2">Published</dt>
             <dd class="font-semibold mr-4">
-              <time :datetime="date">{{ formattedDate }}</time>
+              <NuxtTime
+                :datetime="date"
+                day="numeric"
+                month="long"
+                year="numeric"
+              />
             </dd>
           </dl>
         </header>
