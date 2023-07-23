@@ -4,7 +4,7 @@
       <h1 class="text-2xl">Work</h1>
     </header>
 
-    <main class="text-lg">
+    <main class="text-muted text-lg">
       <TheGithubRepos />
       <form
         v-if="$auth.user.sponsor"

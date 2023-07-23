@@ -39,20 +39,20 @@
 .dark-mode {
   --background: theme('colors.gray.800');
   --accent: theme('colors.gray.900');
-  --text-base: theme('colors.white');
-  --text-muted: theme('colors.gray.300');
+  --primary: theme('colors.white');
+  --muted: theme('colors.gray.300');
 }
 
 .light-mode {
   --background: theme('colors.gray.200');
   --accent: theme('colors.gray.100');
-  --text-base: theme('colors.gray.800');
-  --text-muted: theme('colors.gray.700');
+  --primary: theme('colors.gray.800');
+  --muted: theme('colors.gray.700');
 }
 
 :root {
   background-color: var(--background, theme('colors.gray.800'));
-  color: var(--text-base, theme('colors.white'));
+  color: var(--primary, theme('colors.white'));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -74,10 +74,6 @@ a, .link {
 a:not([href]) {
   opacity: 0.5;
   pointer-events: none;
-}
-
-main {
-  color: var(--text-muted, theme('colors.gray.300'));
 }
 
 main a:not([href^='#']), .link {

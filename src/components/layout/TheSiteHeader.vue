@@ -136,7 +136,7 @@ function toggleMenu(input?: Event | boolean) {
         </button>
         <Teleport v-if="showMenu" to="body">
           <nav
-            class="inset-0 fixed bg-[--accent] text-[--text-muted] z-10 flex flex-col justify-center items-center"
+            class="inset-0 fixed bg-accent text-muted z-10 flex flex-col justify-center items-center"
           >
             <button
               type="button"
@@ -155,8 +155,8 @@ function toggleMenu(input?: Event | boolean) {
             >
               <li v-for="link in menu" :key="link.name">
                 <NuxtLink
-                  class="outline-none px-2 py-2 hover:after:border-[--background] focus:after:border-[--background]"
-                  exact-active-class="after:border-[--background]"
+                  class="outline-none px-2 py-2 hover:after:border-background focus:after:border-background"
+                  exact-active-class="after:border-background"
                   :to="link.path"
                 >
                   {{ link.name }}

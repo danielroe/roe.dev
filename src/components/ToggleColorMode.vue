@@ -14,7 +14,7 @@ const colorMode = useColorMode()
     "
   >
     <span
-      class="block rounded-full h-4 w-4 border-2 border-solid outline-none bg-[var(--text-base)]"
+      class="block rounded-full h-4 w-4 border-2 border-solid outline-none bg-primary"
     />
   </button>
 </template>

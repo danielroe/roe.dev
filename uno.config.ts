@@ -3,6 +3,12 @@ import { defineConfig, presetUno, presetIcons } from 'unocss'
 export default defineConfig({
   shortcuts: [{ hidden: 'display-none' }],
   theme: {
+    colors: {
+      primary: 'var(--primary)',
+      accent: 'var(--accent)',
+      muted: 'var(--muted)',
+      background: 'var(--background)',
+    },
     fontFamily: {
       sans: 'Barlow, "Barlow fallback", sans-serif',
       code: 'Fira Code',

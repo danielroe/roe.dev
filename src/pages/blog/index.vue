@@ -3,7 +3,7 @@
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Articles</h1>
     </header>
-    <main class="text-lg" @click="handleNavigationClicks">
+    <main class="text-muted text-lg" @click="handleNavigationClicks">
       <TheBlogIndex />
     </main>
   </div>

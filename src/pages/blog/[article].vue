@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
+  <main class="text-muted flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
     <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">
         {{ page.title }}
@@ -197,10 +197,7 @@ header dl dd:first-of-type {
 
   p > code,
   li > code {
-    @apply px-2 py-1 mx-1 text-sm;
-
-    color: var(--background, theme('colors.gray.800'));
-    background-color: var(--text-base, theme('colors.white'));
+    @apply px-2 py-1 mx-1 text-sm text-background bg-primary;
   }
 
   p + div {

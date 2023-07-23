@@ -3,7 +3,7 @@
     <header class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">Uses</h1>
     </header>
-    <main class="text-lg" :class="$style.uses">
+    <main class="text-muted text-lg" :class="$style.uses">
       <StaticMarkdownRender path="/uses" />
     </main>
   </div>
