@@ -15,7 +15,7 @@ It's possible to use server components within [Nuxt](https://nuxt.com/), even if
 
 ## Similar but different
 
-There are a few terms floating around that are worth mentioning:
+There are a other similar-sounding terms floating around that are worth mentioning:
 
 * **React server components (or RSCs)**. This is an entirely different approach to rendering server components which is often linked to streaming responses from server to client.
    
