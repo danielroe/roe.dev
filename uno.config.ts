@@ -1,6 +1,9 @@
 import { defineConfig, presetUno, presetIcons } from 'unocss'
 
 export default defineConfig({
+  content: {
+    filesystem: ['./src/content/**/*.md'],
+  },
   shortcuts: [
     {
       'underlined-link':

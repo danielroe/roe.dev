@@ -117,6 +117,10 @@ header dl dd:first-of-type {
     letter-spacing: 0.1rem;
   }
 
+  h3 {
+    @apply font-bold;
+  }
+
   * + h2,
   * + h3,
   * + h4 {
