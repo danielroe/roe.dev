@@ -57,7 +57,7 @@ defineProps({
           />
         </a>
       </header>
-      <div v-html="html" />
+      <div :class="$style.html" v-html="html" />
       <nuxt-img
         v-if="media?.length && media[0].url"
         :src="media[0].url"
@@ -68,3 +68,9 @@ defineProps({
     </div>
   </article>
 </template>
+
+<style module>
+.html a {
+  @apply underlined-link;
+}
+</style>
