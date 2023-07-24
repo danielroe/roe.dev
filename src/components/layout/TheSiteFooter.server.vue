@@ -12,7 +12,7 @@ const links = [
   },
   {
     name: 'Twitter',
-    icon: 'i-ri:twitter-fill',
+    icon: 'i-custom-twitter',
     link: 'https://twitter.com/danielcroe',
   },
   {
