@@ -1,6 +1,6 @@
 ---
 title: 'A guide to Nuxt server components'
-date: '2023-07-23T14:00:00.000Z'
+date: '2023-07-24T22:00:00.000Z'
 tags:
   - nuxt
   - server components
