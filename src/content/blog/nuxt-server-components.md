@@ -51,7 +51,7 @@ There are a other similar-sounding terms floating around that are worth mentioni
 
 * **React server components (or RSCs)**. This is an entirely different approach to rendering server components which is often linked to streaming responses from server to client.
    
-* **'Island' architecture**: popularised by frameworks like [îles](https://iles.pages.dev/) or [Astro](https://astro.build/), this is an architecture which embeds dynamic 'islands' within more static surroundings. The Nuxt approach is the opposite - we embed static 'islands' within a dynamic Nuxt app.
+* **'Island' architecture**: named by [Jason Miller](https://jasonformat.com/islands-architecture/) and popularised most recently by frameworks like [îles](https://iles.pages.dev/) or [Astro](https://astro.build/), this is an architecture which embeds dynamic 'islands' within more static surroundings. The Nuxt approach is the opposite - we embed static 'islands' within a dynamic Nuxt app.
 
 ## Using server components
 
