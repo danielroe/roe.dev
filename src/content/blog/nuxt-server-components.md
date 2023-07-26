@@ -4,7 +4,7 @@ date: '2023-07-24T22:00:00.000Z'
 tags:
   - nuxt
   - server components
-description: 
+description: It's possible to use server components within Nuxt, even if you are generating a static site. Here's how.
 ---
 
 'Server components' are becoming increasingly common in the web development ecosystem, for good reason.
