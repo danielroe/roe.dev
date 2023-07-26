@@ -168,7 +168,7 @@ header dl dd:first-of-type {
         width: 1rem;
       }
 
-      > :first-child {
+      > :first-child:not(strong) {
         @apply inline-block;
       }
     }
