@@ -1,6 +1,6 @@
 ---
 title: 'Governance and abuse'
-date: '2023-08-01T07:00:00.000Z'
+date: '2023-07-27T17:00:00.000Z'
 tags:
   - governance
   - open source
