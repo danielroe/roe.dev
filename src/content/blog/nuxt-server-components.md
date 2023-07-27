@@ -17,8 +17,6 @@ Instead, server components allow server-rendering individual components within y
 
 It's possible to use server components within [Nuxt](https://nuxt.com/), even if you are generating a static site. That makes it possible to build complex sites that mix dynamic components, server-rendered HTML and even static chunks of markup.
 
-> :span{class="i-ri:lightbulb-fill h-4 w-4"} Believe it or not, Nuxt has had server components since before React.
-
 ## Key benefits
 
 1. ⚡️ Server components allow you to extract logic **out of your client-side bundle**.
@@ -49,9 +47,8 @@ It's possible to use server components within [Nuxt](https://nuxt.com/), even if
 
 There are a other similar-sounding terms floating around that are worth mentioning:
 
-* **React server components (or RSCs)**. This is an entirely different approach to rendering server components which is often linked to streaming responses from server to client.
-   
-* **'Island' architecture**: named by [Katie Sylor-Miller](https://sylormiller.com/) and popularised most recently by frameworks like [îles](https://iles.pages.dev/) or [Astro](https://astro.build/), this is an architecture which embeds dynamic 'islands' within more static surroundings. The Nuxt approach is the opposite - we embed static 'islands' within a dynamic Nuxt app.
+- **React server components (or RSCs)**. This is an entirely different approach to rendering server components which is often linked to streaming responses from server to client.
+- **'Island' architecture**: named by [Katie Sylor-Miller](https://sylormiller.com/) and popularised most recently by frameworks like [îles](https://iles.pages.dev/) or [Astro](https://astro.build/), this is an architecture which embeds dynamic 'islands' within more static surroundings. The Nuxt approach is the opposite - we embed static 'islands' within a dynamic Nuxt app.
 
 ## Using server components
 
@@ -65,7 +62,7 @@ First, you'll need to enable the feature (which is still experimental):
 export default defineNuxtConfig({
   experimental: {
     componentIslands: true,
-  }
+  },
 })
 ```
 
@@ -181,13 +178,13 @@ I plan to keep this article up-to-date as we roll out new features and update ho
 
 If you're interested in following on, here are a few next steps I'm pretty excited about:
 
-* 🌎 **Remote sources**. It will be possible soon to load server components from other websites, enabling you to create Nuxt microservices that render components which you can use in different websites. [Check out this PR](https://github.com/nuxt/nuxt/pull/21592).
+- 🌎 **Remote sources**. It will be possible soon to load server components from other websites, enabling you to create Nuxt microservices that render components which you can use in different websites. [Check out this PR](https://github.com/nuxt/nuxt/pull/21592).
 
-* 😴 **'Lazy' server components**. Soon it will be possible to display 'fallback' content while a server component loads to avoid blocking navigation. [Check out this PR](https://github.com/nuxt/nuxt/pull/21918).
+- 😴 **'Lazy' server components**. Soon it will be possible to display 'fallback' content while a server component loads to avoid blocking navigation. [Check out this PR](https://github.com/nuxt/nuxt/pull/21918).
 
-* 🏝️ **Islands of interactivity**. It's already possible to have interactive client slots within server components, but soon we will support arbitrary interactive components within server component HTML.
+- 🏝️ **Islands of interactivity**. It's already possible to have interactive client slots within server components, but soon we will support arbitrary interactive components within server component HTML.
 
-* 💡 **ServerOnly**. It might be nice to support a `<ServerOnly>` component that automatically converts sections of markup into server-only sections that get rendered on the server...
+- 💡 **ServerOnly**. It might be nice to support a `<ServerOnly>` component that automatically converts sections of markup into server-only sections that get rendered on the server...
 
 You can also follow the [Nuxt server component roadmap](https://github.com/nuxt/nuxt/issues/19772) in our GitHub repository.
 
