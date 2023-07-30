@@ -11,12 +11,19 @@ interface Talk {
 }
 
 const upcomingConferences = [
+  // {
+  //   name: 'WeAreDevs World Congress',
+  //   dates: '27-28 July, 2023',
+  //   link: 'https://www.wearedevelopers.com/world-congress',
+  //   location: 'Berlin, Germany',
+  //   image: 'wearedevs-world-congress.jpg',
+  // },
   {
-    name: 'WeAreDevs World Congress',
-    dates: '27-28 July, 2023',
-    link: 'https://www.wearedevelopers.com/world-congress',
-    location: 'Berlin, Germany',
-    image: 'wearedevs-world-congress.jpg',
+    name: 'TypeScript Congress',
+    dates: '21-22 September, 2023',
+    link: 'https://typescriptcongress.com/',
+    location: 'Remote',
+    image: 'typescript-congress.jpg',
   },
   {
     name: 'Digital Labin',
