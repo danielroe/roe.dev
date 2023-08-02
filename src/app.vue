@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+import 'uno.css'
 const route = useRoute()
 
 // TODO: interactive components within server components
