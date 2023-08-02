@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"187k"')
+      .toMatchInlineSnapshot('"185k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"27586k"')
+      .toMatchInlineSnapshot('"11309k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -93,7 +93,6 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atproto/api",
-        "@fastify/accept-negotiator",
         "abort-controller",
         "asynckit",
         "bail",
@@ -102,25 +101,18 @@ describe('project sizes', () => {
         "character-entities-html4",
         "character-entities-legacy",
         "character-reference-invalid",
-        "color",
-        "color-convert",
-        "color-name",
-        "color-string",
         "combined-stream",
         "comma-separated-tokens",
         "consola",
         "cookie-es",
-        "cssfilter",
         "debug",
         "decode-named-character-reference",
         "defu",
         "delayed-stream",
         "destr",
         "detab",
-        "detect-libc",
         "emoticon",
         "escape-string-regexp",
-        "etag",
         "event-target-shim",
         "extend",
         "feed",
@@ -128,7 +120,6 @@ describe('project sizes', () => {
         "form-data",
         "github-slugger",
         "h3",
-        "h3/node_modules/destr",
         "has-flag",
         "hast-util-from-parse5",
         "hast-util-has-property",
@@ -146,14 +137,10 @@ describe('project sizes', () => {
         "hookable",
         "html-void-elements",
         "http-graceful-shutdown",
-        "image-meta",
-        "ipx",
-        "ipx/node_modules/destr",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
-        "is-arrayish",
         "is-buffer",
         "is-decimal",
         "is-hexadecimal",
@@ -229,7 +216,6 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "ofetch",
-        "ofetch/node_modules/destr",
         "ohash",
         "parse-entities",
         "parse5",
@@ -264,10 +250,7 @@ describe('project sizes', () => {
         "remark-squeeze-paragraphs",
         "sax",
         "scule",
-        "semver",
-        "sharp",
         "shiki-es",
-        "simple-swizzle",
         "slugify",
         "space-separated-tokens",
         "stringify-entities",
@@ -289,14 +272,12 @@ describe('project sizes', () => {
         "unist-util-visit/node_modules/unist-util-visit-parents",
         "unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "unstorage",
-        "unstorage/node_modules/destr",
         "vfile",
         "vfile-location",
         "vfile-message",
         "vfile-message/node_modules/unist-util-stringify-position",
         "web-namespaces",
         "xml-js",
-        "xss",
         "zwitch",
       ]
     `)
