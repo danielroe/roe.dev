@@ -27,4 +27,4 @@
 - Microphone: Røde NT-USB
 - Camera: Sony Alpha ZV-E10 with Sigma 16 mm lens, running to an Elgato Cam Link
 - Headphones: Bose NC 700
-- Keyboard: [Keychron Q5 QMK](https://www.keychron.com/products/keychron-q5-qmk-custom-mechanical-keyboard)
+- Keyboard: [Keychron Q5 QMK](https://www.keychron.com/products/keychron-q5-qmk-custom-mechanical-keyboard) with Gateron G Pro Brown switches
