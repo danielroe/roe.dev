@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"27633k"')
+      .toMatchInlineSnapshot('"27586k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -129,7 +129,6 @@ describe('project sizes', () => {
         "github-slugger",
         "h3",
         "h3/node_modules/destr",
-        "h3/node_modules/ufo",
         "has-flag",
         "hast-util-from-parse5",
         "hast-util-has-property",
@@ -150,7 +149,6 @@ describe('project sizes', () => {
         "image-meta",
         "ipx",
         "ipx/node_modules/destr",
-        "ipx/node_modules/ufo",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -232,7 +230,6 @@ describe('project sizes', () => {
         "node-fetch-native",
         "ofetch",
         "ofetch/node_modules/destr",
-        "ofetch/node_modules/ufo",
         "ohash",
         "parse-entities",
         "parse5",
