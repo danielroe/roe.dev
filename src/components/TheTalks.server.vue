@@ -33,6 +33,13 @@ const upcomingConferences = [
     image: 'digital-labin.jpg',
   },
   {
+    name: 'ViteConf',
+    dates: '5 October, 2023',
+    link: 'https://viteconf.org/',
+    location: 'Remote',
+    image: 'viteconf.jpg',
+  },
+  {
     name: 'Armada JS',
     dates: '5-6 October, 2023',
     link: 'https://armada-js.com/',
