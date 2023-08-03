@@ -89,7 +89,8 @@
   },
   "resolutions": {
     "consola": "3.2.3",
-    "nitropack": "npm:nitropack@latest",
+    "nitropack": "npm:nitropack-edge@latest",
+    "h3": "1.8.0-rc.2",
     "semver": "< 6.0.0, >= 6.3.1"
   },
   "simple-git-hooks": {
@@ -99,8 +100,7 @@
   "packageManager": "pnpm@8.6.11",
   "pnpm": {
     "patchedDependencies": {
-      "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch",
-      "h3@1.7.1": "patches/h3@1.7.1.patch"
+      "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch"
     }
   }
 }
