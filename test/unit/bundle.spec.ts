@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"186k"')
+      .toMatchInlineSnapshot('"194k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"392k"')
+      .toMatchInlineSnapshot('"395k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"27587k"')
+      .toMatchInlineSnapshot('"27795k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -95,13 +95,17 @@ describe('project sizes', () => {
         "@atproto/api",
         "@fastify/accept-negotiator",
         "abort-controller",
+        "anymatch",
         "asynckit",
         "bail",
+        "binary-extensions",
+        "braces",
         "ccount",
         "character-entities",
         "character-entities-html4",
         "character-entities-legacy",
         "character-reference-invalid",
+        "chokidar",
         "color",
         "color-convert",
         "color-name",
@@ -124,9 +128,11 @@ describe('project sizes', () => {
         "event-target-shim",
         "extend",
         "feed",
+        "fill-range",
         "flat",
         "form-data",
         "github-slugger",
+        "glob-parent",
         "h3",
         "h3/node_modules/destr",
         "has-flag",
@@ -154,9 +160,13 @@ describe('project sizes', () => {
         "is-alphabetical",
         "is-alphanumerical",
         "is-arrayish",
+        "is-binary-path",
         "is-buffer",
         "is-decimal",
+        "is-extglob",
+        "is-glob",
         "is-hexadecimal",
+        "is-number",
         "is-plain-obj",
         "js-yaml",
         "json5",
@@ -228,14 +238,17 @@ describe('project sizes', () => {
         "ms",
         "node-emoji",
         "node-fetch-native",
+        "normalize-path",
         "ofetch",
         "ofetch/node_modules/destr",
         "ohash",
         "parse-entities",
         "parse5",
         "pathe",
+        "picomatch",
         "property-information",
         "radix3",
+        "readdirp",
         "rehype-external-links",
         "rehype-external-links/node_modules/unist-util-visit",
         "rehype-external-links/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
@@ -272,6 +285,7 @@ describe('project sizes', () => {
         "space-separated-tokens",
         "stringify-entities",
         "supports-color",
+        "to-regex-range",
         "trim-lines",
         "trough",
         "ufo",
