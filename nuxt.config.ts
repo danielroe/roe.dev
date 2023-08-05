@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   runtimeConfig: {
+    voteUrl: '',
     sessionPassword: '',
     // emailing ideas
     resendApiKey: '',
