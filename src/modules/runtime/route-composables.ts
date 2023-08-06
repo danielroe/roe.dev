@@ -12,7 +12,10 @@ export function handleNavigationClicks(e: MouseEvent | KeyboardEvent) {
     if (href) {
       e.preventDefault()
       const url = parseURL(href)
-      if (!url.host || url.host === 'roe.dev') {
+      if (
+        !('external' in anchor.dataset) &&
+        (!url.host || url.host === 'roe.dev')
+      ) {
         return navigateTo(url.pathname)
       }
 
