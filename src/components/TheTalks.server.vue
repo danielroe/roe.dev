@@ -1,5 +1,7 @@
 <script setup lang="ts">
 interface Talk {
+  slug: string
+  group?: string
   title: string
   source: string
   tags: string
@@ -7,17 +9,10 @@ interface Talk {
   date: string
   type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
   video?: string
-  formattedDate: string
+  release?: string
 }
 
 const upcomingConferences = [
-  // {
-  //   name: 'WeAreDevs World Congress',
-  //   dates: '27-28 July, 2023',
-  //   link: 'https://www.wearedevelopers.com/world-congress',
-  //   location: 'Berlin, Germany',
-  //   image: 'wearedevs-world-congress.jpg',
-  // },
   {
     name: 'TypeScript Congress',
     dates: '21-22 September, 2023',
@@ -66,16 +61,34 @@ const upcomingConferences = [
 //   }
 // }
 
-const [{ data: talks }, { data: streams }] = await Promise.all([
+const [{ data: groups }, { data: streams }] = await Promise.all([
   useAsyncData(
     () =>
       ((process.server || process.dev) as true) &&
       import('../data/talks.json').then(r => r.default as any as Talk[]),
     {
-      transform: talks =>
-        talks.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        ),
+      transform: talks => {
+        const groupedTalks: Record<string, Talk[]> = {}
+        for (const talk of talks) {
+          const slug = talk.group || talk.slug
+          groupedTalks[slug] ||= []
+          groupedTalks[slug].push(talk)
+        }
+
+        for (const group in groupedTalks) {
+          groupedTalks[group].sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          )
+        }
+
+        const groups = Object.entries(groupedTalks).sort(
+          ([_s1, [a]], [_s2, [b]]) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime()
+          }
+        )
+
+        return groups
+      },
     }
   ),
   useFetch('/api/streams', {
@@ -171,43 +184,66 @@ const [{ data: talks }, { data: streams }] = await Promise.all([
   </section>
   <section class="mt-12 flex flex-row flex-wrap gap-4">
     <h2 class="uppercase text-sm font-bold tracking-widest">Past talks</h2>
-    <GridLink
-      v-for="{ title, source, link, date, type, video } of talks"
-      :key="link"
-      :alt="title"
-      :href="video || link"
+    <section
+      v-for="[slug, talks] of groups"
+      :key="slug"
+      class="bg-accent p-4 relative text-xl flex flex-col justify-end min-h-12 transition-all border-1 border-solid border-transparent after:text-transparent flex-[100%]"
     >
-      <article>
-        <header>
-          <div class="flex flex-row items-center gap-2">
-            <span
-              v-if="type === 'podcast' || video"
-              :class="video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
-              class="h-4 w-4 flex-shrink-0"
-              :alt="video ? `Play ${title}` : `Listen to ${title}`"
-            />
-            {{ title }}
-          </div>
+      <div class="flex flex-row items-center gap-2">
+        {{ talks[0].title }}
+      </div>
+      <article
+        v-for="{ title, source, link, date, type, video, release } of talks"
+        :key="link"
+        :class="{ 'opacity-60': !video && !link && !release }"
+        :alt="title"
+      >
+        <header class="flex flex-row mt-1">
           <dl
             v-if="date"
-            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+            class="flex flex-row gap-4 flex-wrap leading-normal text-xs uppercase"
           >
-            <dt class="float-left md:float-none mr-2">Date</dt>
-            <dd class="font-semibold mr-4">
+            <dt class="sr-only">Date</dt>
+            <dd class="font-semibold min-w-24">
               <NuxtTime
                 :datetime="date"
                 day="numeric"
-                month="long"
+                month="short"
                 year="numeric"
               />
             </dd>
-            <dt v-if="source" class="float-left md:float-none mr-2">Where</dt>
-            <dd v-if="source" class="font-semibold mr-4">
+            <dt v-if="source" class="sr-only">Where</dt>
+            <dd v-if="source" class="font-semibold">
               {{ source }}
             </dd>
           </dl>
+          <div
+            v-if="video || link || release"
+            class="ml-auto flex flex-row gap-2 items-start"
+          >
+            <NuxtLink
+              v-if="video || link"
+              :href="video || link"
+              class="underlined-link leading-normal uppercase text-xs font-bold items-center"
+            >
+              <span
+                v-if="type === 'podcast' || video"
+                :class="video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
+                class="h-4 w-4 flex-shrink-0"
+              />
+              {{ video ? `Watch` : `Listen` }}
+            </NuxtLink>
+            <NuxtLink
+              v-if="release"
+              class="underlined-link leading-normal uppercase text-xs font-bold items-center"
+              :to="`/slides/${release}.pdf`"
+              data-external
+            >
+              <span class="i-ri:presentation-fill" /> PDF
+            </NuxtLink>
+          </div>
         </header>
       </article>
-    </GridLink>
+    </section>
   </section>
 </template>
