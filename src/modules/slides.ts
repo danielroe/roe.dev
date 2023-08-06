@@ -9,6 +9,7 @@ export default defineNuxtModule({
   },
   async setup() {
     const nuxt = useNuxt()
+    if (!process.env.NUXT_GITHUB_TOKEN) return
 
     const $gh = $fetch.create({
       baseURL: 'https://api.github.com/repos/danielroe/slides/releases',
