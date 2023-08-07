@@ -48,6 +48,13 @@ const upcomingConferences = [
     location: 'Nakano, Tokyo',
     image: 'vuefes-japan.jpg',
   },
+  {
+    name: 'vueday 2023',
+    dates: '10 November, 2023',
+    link: 'https://2023.vueday.it/',
+    location: 'Verona, Italy',
+    image: 'vuefes-japan.jpg',
+  },
 ]
 
 // if (process.env.prerender && process.server) {
