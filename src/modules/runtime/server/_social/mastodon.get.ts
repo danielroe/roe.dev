@@ -23,7 +23,7 @@ export default defineLazyEventHandler(async () => {
   const { id } = await client.v1.accounts.lookup({ acct })
 
   return defineEventHandler(async () => {
-    const posts = await client.v1.accounts.listStatuses(id)
+    const posts = await client.v1.accounts.listStatuses(id, { limit: 200 })
     return Promise.all(
       posts
         .filter(p => p.content && !p.inReplyToId)
