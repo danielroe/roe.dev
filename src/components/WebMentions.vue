@@ -32,7 +32,9 @@ const { data: mentions, pending } = useFetch(
     server: false,
     transform: (r: any) =>
       (r.children as WebMention[]).filter(
-        c => !c.url.startsWith('https://geek.ds3783.com')
+        c =>
+          !c.url.startsWith('https://geek.ds3783.com') &&
+          !c.url.startsWith('https://show-hn.com')
       ),
   }
 )
