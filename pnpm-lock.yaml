@@ -57,8 +57,8 @@ dependencies:
     specifier: ^0.53.6
     version: 0.53.6(postcss@8.4.27)(vite@4.4.6)(webpack@5.88.2)
   '@unocss/postcss':
-    specifier: ^0.53.6
-    version: 0.53.6(postcss@8.4.27)
+    specifier: ^0.55.0
+    version: 0.55.0(postcss@8.4.27)
   feed:
     specifier: ^4.2.2
     version: 4.2.2
@@ -2544,8 +2544,20 @@ packages:
       unconfig: 0.3.9
     dev: false
 
+  /@unocss/config@0.55.0:
+    resolution: {integrity: sha512-N1o49aqqMP8UTmFZKsqN+CZFxoiUbatTYdPixCGErI5H6jA0VByVU7RI3Dr+Lk3PTOxbmZUunaDaWZP3iT4X5w==}
+    engines: {node: '>=14'}
+    dependencies:
+      '@unocss/core': 0.55.0
+      unconfig: 0.3.10
+    dev: false
+
   /@unocss/core@0.53.6:
     resolution: {integrity: sha512-wuaLjWCzKUisHUxo4pjIdzcimdSmVa2hMHA3V7wVFBiSFX96/s7l0bvhHGFF/gMjbOnvJ+y+lBl3VKqcj9kwbA==}
+    dev: false
+
+  /@unocss/core@0.55.0:
+    resolution: {integrity: sha512-TcTugpuhsv6OwMsP3iFIG8FVc9N5JzkojIGNAKF8I2WBftZ//3QcpEHiHc1mH3MlPYfJgUvCcT6/Gad55qmHzg==}
     dev: false
 
   /@unocss/extractor-arbitrary-variants@0.53.6:
@@ -2597,6 +2609,20 @@ packages:
       css-tree: 2.3.1
       fast-glob: 3.3.1
       magic-string: 0.30.1
+      postcss: 8.4.27
+    dev: false
+
+  /@unocss/postcss@0.55.0(postcss@8.4.27):
+    resolution: {integrity: sha512-qytqO8riNLpy1m6qVfISVHw3dwNRHgpxcUaufSN7P8lgsbOimwh2nRE35f/HoKS1VV+5JVsVaHmUFQVxwiW6cw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      postcss: ^8.4.21
+    dependencies:
+      '@unocss/config': 0.55.0
+      '@unocss/core': 0.55.0
+      css-tree: 2.3.1
+      fast-glob: 3.3.1
+      magic-string: 0.30.2
       postcss: 8.4.27
     dev: false
 
@@ -6901,6 +6927,13 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /magic-string@0.30.2:
+    resolution: {integrity: sha512-lNZdu7pewtq/ZvWUp9Wpf/x7WzMTsR26TWV03BRZrXFsv+BI6dy8RAiKgm1uM/kyR0rCfUcqvOlXKG66KhIGug==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
   /magicast@0.2.9:
     resolution: {integrity: sha512-S1WBXLSVKa34X+Bv7pfA8Umqc1BoglsqzWaQcyuexDc0cjgnERaFTSHbne2OfT27lXYxt/B/sV/2Kh0HaSQkfg==}
     dependencies:
@@ -10694,6 +10727,15 @@ packages:
       buffer: 5.7.1
       through: 2.3.8
     dev: true
+
+  /unconfig@0.3.10:
+    resolution: {integrity: sha512-tj317lhIq2iZF/NXrJnU1t2UaGUKKz1eL1sK2t63Oq66V9BxqvZV12m55fp/fpQJ+DDmVlLgo7cnLVOZkhlO/A==}
+    dependencies:
+      '@antfu/utils': 0.7.5
+      defu: 6.1.2
+      jiti: 1.19.1
+      mlly: 1.4.0
+    dev: false
 
   /unconfig@0.3.9:
     resolution: {integrity: sha512-8yhetFd48M641mxrkWA+C/lZU4N0rCOdlo3dFsyFPnBHBjMJfjT/3eAZBRT2RxCRqeBMAKBVgikejdS6yeBjMw==}
