@@ -49,6 +49,12 @@ const upcomingConferences = [
     image: 'vuefes-japan.jpg',
   },
   {
+    name: 'JetBrains JavaScript Day 2023',
+    dates: '2 November, 2023',
+    location: 'Remote',
+    image: 'jetbrains-day.jpg',
+  },
+  {
     name: 'vueday 2023',
     dates: '10 November, 2023',
     link: 'https://2023.vueday.it/',
