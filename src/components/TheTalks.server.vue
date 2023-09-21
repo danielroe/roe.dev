@@ -14,13 +14,6 @@ interface Talk {
 
 const upcomingConferences = [
   {
-    name: 'TypeScript Congress',
-    dates: '21-22 September, 2023',
-    link: 'https://typescriptcongress.com/',
-    location: 'Remote',
-    image: 'typescript-congress.jpg',
-  },
-  {
     name: 'Digital Labin',
     dates: '22-23 September, 2023',
     link: 'https://digital-labin.com/',
