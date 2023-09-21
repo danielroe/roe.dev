@@ -258,6 +258,7 @@ packages:
 
   /@atproto/identifier@0.2.0:
     resolution: {integrity: sha512-5zzlozQEWPMDzyl0D0zSpuNbnc1gtBg/Ov5wbcfieZzbjxgJ/eJHXEBlmxNE1uN91QqpGX5FCEE36jX8tKl9Ag==}
+    deprecated: This package is now deprecated. Please use @atproto/syntax, which provides the same interfaces.
     dependencies:
       '@atproto/common-web': 0.2.0
     dev: false
@@ -276,10 +277,12 @@ packages:
 
   /@atproto/nsid@0.1.0:
     resolution: {integrity: sha512-Pp+tHrGtPVHUi3ainR5yPgHbuqxrZrT0vAMbsNonL+NpWRB82szZSWNThPAgUz4v73Fav6y0WcTIXHzRv2D2Yg==}
+    deprecated: This package is now deprecated. Please use @atproto/syntax, which provides the same interfaces.
     dev: false
 
   /@atproto/uri@0.1.0:
     resolution: {integrity: sha512-ZaiOYHsakB98HrXfqiF6m7xgahSn9yXxKnPm0EaN0Breax6jtTl+lblWtduonAmyWVLJJAQJbvF+ud0i/3+wBw==}
+    deprecated: This package is now deprecated. Please use @atproto/syntax, which provides the same interfaces.
     dependencies:
       '@atproto/identifier': 0.2.0
       '@atproto/nsid': 0.1.0
