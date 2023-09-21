@@ -13,48 +13,30 @@ export default defineEventHandler(async event => {
 
   const slug = getRouterParam(event, 'slug')!.replace(/\.jpg$/, '')
 
+  let parsedReqs: ParsedReqs
   try {
-    let parsedReqs: ParsedReqs
-    try {
-      parsedReqs = parseReqs(slug)
-    } catch (e) {
-      event.node.res.setHeader(
-        'Cache-Control',
-        'public,immutable,no-transform,s-max-age=21600,max-age=21600'
-      )
-      event.node.res.statusCode = 404
-      return event.node.res.end()
-    }
-
-    const html = getHtml(parsedReqs)
-
-    const DEBUG = false
-
-    if (!DEBUG) {
-      const { title } = parsedReqs
-      const fileName = title
-      const filePath = await writeTempFile(fileName, html)
-      const fileUrl = `file://${filePath}`
-
-      const file = await getScreenshot(fileUrl, isDev)
-
-      event.node.res.statusCode = 200
-      event.node.res.setHeader('Content-Type', 'image/jpeg')
-      event.node.res.setHeader(
-        'Cache-Control',
-        'public,immutable,no-transform,s-max-age=21600,max-age=21600'
-      )
-      event.node.res.end(file)
-    } else {
-      event.node.res.setHeader('Content-Type', 'text/html')
-      event.node.res.end(html)
-    }
+    parsedReqs = parseReqs(slug)
   } catch (e) {
-    event.node.res.statusCode = 500
-    event.node.res.setHeader('Content-Type', 'text/html')
-    event.node.res.end(
-      '<h1>Internal Error</h1><p>Sorry, an error occurred.</p>'
+    setHeader(
+      event,
+      'Cache-Control',
+      'public,immutable,no-transform,s-max-age=21600,max-age=21600'
     )
-    console.error(e)
+    setResponseStatus(event, 404)
+    return
   }
+
+  const html = getHtml(parsedReqs)
+
+  const filePath = await writeTempFile(parsedReqs.title, html)
+  const fileUrl = `file://${filePath}`
+
+  const file = await getScreenshot(fileUrl, isDev)
+
+  setHeaders(event, {
+    'Content-Type': 'image/jpeg',
+    'Cache-Control':
+      'public,immutable,no-transform,s-max-age=21600,max-age=21600',
+  })
+  return file
 })
