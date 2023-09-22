@@ -73,6 +73,10 @@ export default defineNuxtConfig({
         config.define!['process.env.prerender'] = 'false'
       }
     },
+    'close': () => {
+      // TODO: fix upstream bug where node process is not exiting
+      process.exit()
+    }
   },
 
   experimental: {
