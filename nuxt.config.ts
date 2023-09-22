@@ -115,7 +115,7 @@ export default defineNuxtConfig({
     prerender: {
       concurrency: 12,
       crawlLinks: true,
-      routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
+      routes: ['/', '/uses', '/og/og.jpg', '/rss.xml', '/voted'],
     },
     hooks: {
       'prerender:generate'(route) {
