@@ -76,7 +76,7 @@ export default defineNuxtConfig({
     'close': () => {
       // TODO: fix upstream bug where node process is not exiting
       const nuxt = useNuxt()
-      if (!nuxt.options.test && !nuxt.options.dev) {
+      if (!nuxt.options.test && !nuxt.options.dev && !process.env.NUXT_TEST_OPTIONS) {
         process.exit()
       }
     }
