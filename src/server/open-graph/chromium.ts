@@ -24,5 +24,8 @@ export async function getScreenshot(url: string, isDev?: boolean) {
   await page.goto(url)
   await page.waitForLoadState('domcontentloaded')
   await new Promise(resolve => setTimeout(resolve, 1000))
-  return page.screenshot({ type: 'jpeg', quality: 100 })
+  const screenshot = await page.screenshot({ type: 'jpeg', quality: 100 })
+  await page.close()
+  await browser.close()
+  return screenshot
 }
