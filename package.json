@@ -30,13 +30,13 @@
     "@iconify-json/svg-spinners": "^1.1.1",
     "@nuxt/content": "2.7.2",
     "@nuxt/image": "1.0.0-rc.1",
-    "@nuxt/kit": "3.6.5",
+    "@nuxt/kit": "3.7.3",
     "@nuxtjs/color-mode": "3.3.0",
     "@nuxtjs/fontaine": "0.4.1",
     "@nuxtjs/html-validator": "1.5.2",
     "@nuxtjs/plausible": "0.2.1",
     "@nuxtjs/web-vitals": "0.2.6",
-    "@unhead/vue": "^1.1.32",
+    "@unhead/vue": "^1.7.4",
     "@unocss/nuxt": "^0.53.6",
     "@unocss/postcss": "^0.55.0",
     "feed": "^4.2.2",
@@ -47,7 +47,7 @@
     "magic-string": "^0.30.1",
     "masto": "^5.11.4",
     "mlly": "^1.4.0",
-    "nuxt": "3.6.5",
+    "nuxt": "3.7.3",
     "nuxt-time": "^0.1.1",
     "partykit": "0.0.0-fffe721",
     "pathe": "^1.1.1",
@@ -58,7 +58,7 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "slugify": "^1.6.6",
     "tslib": "2.6.1",
-    "ufo": "^1.1.2",
+    "ufo": "^1.3.0",
     "unplugin": "^1.4.0"
   },
   "devDependencies": {
@@ -66,7 +66,7 @@
     "@commitlint/config-conventional": "17.6.7",
     "@nuxt/devtools": "0.8.0",
     "@nuxt/eslint-config": "0.1.1",
-    "@nuxt/test-utils": "3.6.5",
+    "@nuxt/test-utils": "3.7.3",
     "@playwright/test": "1.36.2",
     "@types/node": "20.6.1",
     "@vitejs/plugin-vue": "4.2.3",
@@ -101,8 +101,7 @@
   "packageManager": "pnpm@8.6.12",
   "pnpm": {
     "patchedDependencies": {
-      "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch",
-      "h3@1.7.1": "patches/h3@1.7.1.patch"
+      "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch"
     }
   }
 }
