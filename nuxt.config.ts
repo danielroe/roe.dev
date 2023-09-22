@@ -121,20 +121,20 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml'],
     },
-    // hooks: {
-    //   'prerender:generate'(route) {
-    //     if (route.fileName)
-    //       route.fileName = route.fileName.replace(
-    //         /(\.\w{3})\/index.html$/,
-    //         '$1'
-    //       )
+    hooks: {
+      'prerender:generate'(route) {
+        if (route.fileName)
+          route.fileName = route.fileName.replace(
+            /(\.\w{3})\/index.html$/,
+            '$1'
+          )
 
-    //     if (route.error) {
-    //       console.error(route.route, route.error, route)
-    //       process.exit(1)
-    //     }
-    //   },
-    // },
+        if (route.error) {
+          console.error(route.route, route.error, route)
+          process.exit(1)
+        }
+      },
+    },
   },
 
   routeRules: {
@@ -213,7 +213,7 @@ export default defineNuxtConfig({
     'nuxt-vitest',
     'magic-regexp/nuxt',
     '@nuxt/image',
-    // '@nuxtjs/html-validator',
+    '@nuxtjs/html-validator',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/content',
