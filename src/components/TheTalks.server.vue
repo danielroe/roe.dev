@@ -14,13 +14,6 @@ interface Talk {
 
 const upcomingConferences = [
   {
-    name: 'Digital Labin',
-    dates: '22-23 September, 2023',
-    link: 'https://digital-labin.com/',
-    location: 'Labin, Istria, Croatia',
-    image: 'digital-labin.jpg',
-  },
-  {
     name: 'ViteConf',
     dates: '5 October, 2023',
     link: 'https://viteconf.org/',
