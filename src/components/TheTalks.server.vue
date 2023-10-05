@@ -21,13 +21,6 @@ const upcomingConferences = [
     image: 'viteconf.jpg',
   },
   {
-    name: 'Armada JS',
-    dates: '5-6 October, 2023',
-    link: 'https://armada-js.com/',
-    location: 'Novi Sad, Serbia',
-    image: 'armada-js.jpg',
-  },
-  {
     name: 'VueFes Japan',
     dates: '28 October, 2023',
     link: 'https://vuefes.jp/2023/',
