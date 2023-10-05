@@ -14,13 +14,6 @@ interface Talk {
 
 const upcomingConferences = [
   {
-    name: 'ViteConf',
-    dates: '5 October, 2023',
-    link: 'https://viteconf.org/',
-    location: 'Remote',
-    image: 'viteconf.jpg',
-  },
-  {
     name: 'VueFes Japan',
     dates: '28 October, 2023',
     link: 'https://vuefes.jp/2023/',
