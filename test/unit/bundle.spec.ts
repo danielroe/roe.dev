@@ -92,7 +92,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"29338k"')
+      .toMatchInlineSnapshot('"29391k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -156,6 +156,7 @@ describe('project sizes', () => {
         "is-alphabetical",
         "is-alphanumerical",
         "is-arrayish",
+        "is-buffer",
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
@@ -493,6 +494,9 @@ describe('project sizes', () => {
         "unenv",
         "unicode-emoji-modifier-base",
         "unified",
+        "unified/node_modules/vfile",
+        "unified/node_modules/vfile/node_modules/vfile-message",
+        "unified/node_modules/vfile/node_modules/vfile-message/node_modules/unist-util-stringify-position",
         "unist-util-generated",
         "unist-util-is",
         "unist-util-position",
@@ -506,6 +510,8 @@ describe('project sizes', () => {
         "vfile-location",
         "vfile-message",
         "vfile-message/node_modules/unist-util-stringify-position",
+        "vfile/node_modules/vfile-message",
+        "vfile/node_modules/vfile-message/node_modules/unist-util-stringify-position",
         "web-namespaces",
         "xml-js",
         "zwitch",
