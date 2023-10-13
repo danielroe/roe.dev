@@ -17,6 +17,7 @@ export default defineNuxtModule({
       'ProseEm',
       'ProseOl',
       'ProseUl',
+      'ProsePre',
       'ProseStrong',
       'ProseBlockquote',
       'ProseThead',
