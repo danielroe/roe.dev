@@ -89,11 +89,11 @@ dependencies:
     specifier: ^12.0.1
     version: 12.0.1(postcss@8.4.31)
   remark:
-    specifier: ^15.0.1
-    version: 15.0.1
+    specifier: ^14.0.3
+    version: 14.0.3
   remark-html:
-    specifier: ^16.0.1
-    version: 16.0.1
+    specifier: ^15.0.2
+    version: 15.0.2
   rollup-plugin-node-polyfills:
     specifier: ^0.2.1
     version: 0.2.1
@@ -5647,12 +5647,26 @@ packages:
       zwitch: 2.0.4
     dev: false
 
-  /hast-util-sanitize@5.0.0:
-    resolution: {integrity: sha512-L0g/qhOA82zG2hA3O29hnlv4mLU7YVVT1if5JZSr2tKO1ywkQbuMDcN05btgX0HtpqDXQniAM0ar0K+Lv4MDBQ==}
+  /hast-util-sanitize@4.1.0:
+    resolution: {integrity: sha512-Hd9tU0ltknMGRDv+d6Ro/4XKzBqQnP/EZrpiTbpFYfXv/uOhWeKc+2uajcbEvAEH98VZd7eII2PiXm13RihnLw==}
     dependencies:
-      '@types/hast': 3.0.1
-      '@ungap/structured-clone': 1.2.0
-      unist-util-position: 5.0.0
+      '@types/hast': 2.3.6
+    dev: false
+
+  /hast-util-to-html@8.0.4:
+    resolution: {integrity: sha512-4tpQTUOr9BMjtYyNlt0P50mH7xj0Ks2xpo8M943Vykljf99HW6EzulIoJP1N3eKOSScEHzyzi9dm7/cn0RfGwA==}
+    dependencies:
+      '@types/hast': 2.3.6
+      '@types/unist': 2.0.8
+      ccount: 2.0.1
+      comma-separated-tokens: 2.0.3
+      hast-util-raw: 7.2.3
+      hast-util-whitespace: 2.0.1
+      html-void-elements: 2.0.1
+      property-information: 6.3.0
+      space-separated-tokens: 2.0.2
+      stringify-entities: 4.0.3
+      zwitch: 2.0.4
     dev: false
 
   /hast-util-to-html@9.0.0:
@@ -5699,6 +5713,10 @@ packages:
     resolution: {integrity: sha512-OGkAxX1Ua3cbcW6EJ5pT/tslVb90uViVkcJ4ZZIMW/R33DX/AkcJcRrPebPwJkHYwlDHXz4aIwvAAaAdtrACFA==}
     dependencies:
       '@types/hast': 3.0.1
+    dev: false
+
+  /hast-util-whitespace@2.0.1:
+    resolution: {integrity: sha512-nAxA0v8+vXSBDt3AnRUNjyRIQ0rD+ntpbAp4LnPkumc5M9yUbSMa4XDU9Q6etY4f1Wp4bNgvc1yjiZtsTTrSng==}
     dev: false
 
   /hast-util-whitespace@3.0.0:
@@ -9135,14 +9153,14 @@ packages:
       - supports-color
     dev: false
 
-  /remark-html@16.0.1:
-    resolution: {integrity: sha512-B9JqA5i0qZe0Nsf49q3OXyGvyXuZFDzAP2iOFLEumymuYJITVpiH1IgsTEwTpdptDmZlMDMWeDmSawdaJIGCXQ==}
+  /remark-html@15.0.2:
+    resolution: {integrity: sha512-/CIOI7wzHJzsh48AiuIyIe1clxVkUtreul73zcCXLub0FmnevQE0UMFDQm7NUx8/3rl/4zCshlMfqBdWScQthw==}
     dependencies:
-      '@types/mdast': 4.0.1
-      hast-util-sanitize: 5.0.0
-      hast-util-to-html: 9.0.0
-      mdast-util-to-hast: 13.0.2
-      unified: 11.0.3
+      '@types/mdast': 3.0.13
+      hast-util-sanitize: 4.1.0
+      hast-util-to-html: 8.0.4
+      mdast-util-to-hast: 12.3.0
+      unified: 10.1.2
     dev: false
 
   /remark-mdc@2.0.0:
@@ -9180,17 +9198,6 @@ packages:
       - supports-color
     dev: false
 
-  /remark-parse@11.0.0:
-    resolution: {integrity: sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==}
-    dependencies:
-      '@types/mdast': 4.0.1
-      mdast-util-from-markdown: 2.0.0
-      micromark-util-types: 2.0.0
-      unified: 11.0.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /remark-rehype@10.1.0:
     resolution: {integrity: sha512-EFmR5zppdBp0WQeDVZ/b66CWJipB2q2VLNFMabzDSGR66Z2fQii83G5gTBbgGEnEEA0QRussvrFHxk1HWGJskw==}
     dependencies:
@@ -9200,21 +9207,21 @@ packages:
       unified: 10.1.2
     dev: false
 
-  /remark-stringify@11.0.0:
-    resolution: {integrity: sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==}
+  /remark-stringify@10.0.3:
+    resolution: {integrity: sha512-koyOzCMYoUHudypbj4XpnAKFbkddRMYZHwghnxd7ue5210WzGw6kOBwauJTRUMq16jsovXx8dYNvSSWP89kZ3A==}
     dependencies:
-      '@types/mdast': 4.0.1
-      mdast-util-to-markdown: 2.1.0
-      unified: 11.0.3
+      '@types/mdast': 3.0.13
+      mdast-util-to-markdown: 1.5.0
+      unified: 10.1.2
     dev: false
 
-  /remark@15.0.1:
-    resolution: {integrity: sha512-Eht5w30ruCXgFmxVUSlNWQ9iiimq07URKeFS3hNc8cUWy1llX4KDWfyEDZRycMc+znsN9Ux5/tJ/BFdgdOwA3A==}
+  /remark@14.0.3:
+    resolution: {integrity: sha512-bfmJW1dmR2LvaMJuAnE88pZP9DktIFYXazkTfOIKZzi3Knk9lT0roItIA24ydOucI3bV/g/tXBA6hzqq3FV9Ew==}
     dependencies:
-      '@types/mdast': 4.0.1
-      remark-parse: 11.0.0
-      remark-stringify: 11.0.0
-      unified: 11.0.3
+      '@types/mdast': 3.0.13
+      remark-parse: 10.0.2
+      remark-stringify: 10.0.3
+      unified: 10.1.2
     transitivePeerDependencies:
       - supports-color
     dev: false
