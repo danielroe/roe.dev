@@ -1,0 +1,66 @@
+diff --git a/dist/app/composables/cookie.js b/dist/app/composables/cookie.js
+index cc76cdd749e5f1845c47a1b6e2c25cf4d053eea6..8cbb18332af77d9a89147f57eda6216f9b16f12d 100644
+--- a/dist/app/composables/cookie.js
++++ b/dist/app/composables/cookie.js
+@@ -1,4 +1,4 @@
+-import { getCurrentInstance, nextTick, onUnmounted, ref, toRaw, watch } from "vue";
++import { getCurrentScope, nextTick, onScopeDispose, ref, toRaw, watch } from "vue";
+ import { parse, serialize } from "cookie-es";
+ import { deleteCookie, getCookie, getRequestHeader, setCookie } from "h3";
+ import destr from "destr";
+@@ -17,8 +17,8 @@ export function useCookie(name, _opts) {
+   const cookie = ref(cookies[name] ?? opts.default?.());
+   if (import.meta.client) {
+     const channel = typeof BroadcastChannel === "undefined" ? null : new BroadcastChannel(`nuxt:cookies:${name}`);
+-    if (getCurrentInstance()) {
+-      onUnmounted(() => {
++    if (getCurrentScope()) {
++      onScopeDispose(() => {
+         channel?.close();
+       });
+     }
+diff --git a/dist/app/composables/router.js b/dist/app/composables/router.js
+index a20f50f3bf4a2aafbb0c52fe15980adef09144bd..2fe14e2be746955fab89dd083083db32015a3c32 100644
+--- a/dist/app/composables/router.js
++++ b/dist/app/composables/router.js
+@@ -80,6 +80,9 @@ export const navigateTo = (to, options) => {
+     if (protocol && isScriptProtocol(protocol)) {
+       throw new Error(`Cannot navigate to a URL with '${protocol}' protocol.`);
+     }
++    if (import.meta.client) {
++      useNuxtApp().scope.dispose()
++    }
+   }
+   const inMiddleware = isProcessingMiddleware();
+   if (import.meta.client && !isExternal && inMiddleware) {
+diff --git a/dist/app/entry.js b/dist/app/entry.js
+index a3209af4741cbac1bbd1cfd0e42dd99b6292e9e4..1adb42a073eb455f5aa00b26cfbe4386a4dce0ee 100644
+--- a/dist/app/entry.js
++++ b/dist/app/entry.js
+@@ -1,4 +1,4 @@
+-import { createApp, createSSRApp, nextTick } from "vue";
++import { createApp, createSSRApp, nextTick, effectScope } from "vue";
+ import { $fetch } from "ofetch";
+ import { baseURL } from "#build/paths.mjs";
+ import { applyPlugins, createNuxtApp } from "#app/nuxt";
+@@ -16,6 +16,7 @@ if (import.meta.server) {
+   entry = async function createNuxtAppServer(ssrContext) {
+     const vueApp = createApp(RootComponent);
+     const nuxt = createNuxtApp({ vueApp, ssrContext });
++    nuxt.scope = effectScope()
+     try {
+       await applyPlugins(nuxt, plugins);
+       await nuxt.hooks.callHook("app:created", vueApp);
+diff --git a/dist/app/nuxt.js b/dist/app/nuxt.js
+index f19cae010080d1ad1dcb0801500c738ddb3d4a5c..2692e3b968112920f42f115212cab3c1dbe7d10e 100644
+--- a/dist/app/nuxt.js
++++ b/dist/app/nuxt.js
+@@ -27,7 +27,7 @@ export function createNuxtApp(options) {
+     static: {
+       data: {}
+     },
+-    runWithContext: (fn) => callWithNuxt(nuxtApp, fn),
++    runWithContext: (fn) => nuxtApp.scope.run(() => callWithNuxt(nuxtApp, fn)),
+     isHydrating: import.meta.client,
+     deferHydration() {
+       if (!nuxtApp.isHydrating) {
