@@ -20,19 +20,17 @@ index cc76cdd749e5f1845c47a1b6e2c25cf4d053eea6..8cbb18332af77d9a89147f57eda6216f
        });
      }
 diff --git a/dist/app/composables/router.js b/dist/app/composables/router.js
-index a20f50f3bf4a2aafbb0c52fe15980adef09144bd..2fe14e2be746955fab89dd083083db32015a3c32 100644
+index a20f50f3bf4a2aafbb0c52fe15980adef09144bd..520e8709a36295b6395adb98e8369afdfb823476 100644
 --- a/dist/app/composables/router.js
 +++ b/dist/app/composables/router.js
-@@ -80,6 +80,9 @@ export const navigateTo = (to, options) => {
-     if (protocol && isScriptProtocol(protocol)) {
-       throw new Error(`Cannot navigate to a URL with '${protocol}' protocol.`);
+@@ -112,6 +112,7 @@ export const navigateTo = (to, options) => {
      }
-+    if (import.meta.client) {
-+      useNuxtApp().scope.dispose()
-+    }
    }
-   const inMiddleware = isProcessingMiddleware();
-   if (import.meta.client && !isExternal && inMiddleware) {
+   if (isExternal) {
++    nuxtApp._scope.stop()
+     if (options?.replace) {
+       location.replace(toPath);
+     } else {
 diff --git a/dist/app/entry.js b/dist/app/entry.js
 index a3209af4741cbac1bbd1cfd0e42dd99b6292e9e4..1adb42a073eb455f5aa00b26cfbe4386a4dce0ee 100644
 --- a/dist/app/entry.js
@@ -52,15 +50,29 @@ index a3209af4741cbac1bbd1cfd0e42dd99b6292e9e4..1adb42a073eb455f5aa00b26cfbe4386
        await applyPlugins(nuxt, plugins);
        await nuxt.hooks.callHook("app:created", vueApp);
 diff --git a/dist/app/nuxt.js b/dist/app/nuxt.js
-index f19cae010080d1ad1dcb0801500c738ddb3d4a5c..2692e3b968112920f42f115212cab3c1dbe7d10e 100644
+index f19cae010080d1ad1dcb0801500c738ddb3d4a5c..f7824bb40bfba07d6f0945885da2abb37f2a6c07 100644
 --- a/dist/app/nuxt.js
 +++ b/dist/app/nuxt.js
-@@ -27,7 +27,7 @@ export function createNuxtApp(options) {
+@@ -1,4 +1,4 @@
+-import { getCurrentInstance, hasInjectionContext, reactive } from "vue";
++import { getCurrentInstance, hasInjectionContext, reactive, effectScope } from "vue";
+ import { createHooks } from "hookable";
+ import { getContext } from "unctx";
+ const nuxtAppCtx = /* @__PURE__ */ getContext("nuxt-app", {
+@@ -8,6 +8,7 @@ export const NuxtPluginIndicator = "__nuxt_plugin";
+ export function createNuxtApp(options) {
+   let hydratingCount = 0;
+   const nuxtApp = {
++    _scope: effectScope(),
+     provide: void 0,
+     globalName: "nuxt",
+     versions: {
+@@ -27,7 +28,7 @@ export function createNuxtApp(options) {
      static: {
        data: {}
      },
 -    runWithContext: (fn) => callWithNuxt(nuxtApp, fn),
-+    runWithContext: (fn) => nuxtApp.scope.run(() => callWithNuxt(nuxtApp, fn)),
++    runWithContext: (fn) => nuxtApp._scope.run(() => callWithNuxt(nuxtApp, fn)),
      isHydrating: import.meta.client,
      deferHydration() {
        if (!nuxtApp.isHydrating) {
