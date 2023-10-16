@@ -36,13 +36,40 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"193k"')
+      .toMatchInlineSnapshot('"971k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
+          "_nuxt/Base.js",
+          "_nuxt/Body.js",
           "_nuxt/CalSchedule.js",
+          "_nuxt/ClientOnly.js",
+          "_nuxt/ColorScheme.js",
           "_nuxt/ContentRendererMarkdown.js",
+          "_nuxt/DevOnly.js",
+          "_nuxt/FeedPost.js",
+          "_nuxt/GridLink.js",
+          "_nuxt/Head.js",
+          "_nuxt/Html.js",
+          "_nuxt/LayoutTheSiteHeader.js",
+          "_nuxt/Link.js",
+          "_nuxt/MDC.js",
+          "_nuxt/MDCRenderer.js",
+          "_nuxt/MDCSlot.js",
+          "_nuxt/Meta.js",
+          "_nuxt/NoScript.js",
+          "_nuxt/NuxtErrorBoundary.js",
+          "_nuxt/NuxtImg.js",
+          "_nuxt/NuxtIsland.js",
+          "_nuxt/NuxtLayout.js",
+          "_nuxt/NuxtLink.js",
+          "_nuxt/NuxtLoadingIndicator.js",
+          "_nuxt/NuxtPage.js",
+          "_nuxt/NuxtPage.js",
+          "_nuxt/NuxtPicture.js",
           "_nuxt/NuxtTime.js",
+          "_nuxt/NuxtTime.js",
+          "_nuxt/NuxtWelcome.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
@@ -69,15 +96,49 @@ describe('project sizes', () => {
           "_nuxt/ProseThead.js",
           "_nuxt/ProseTr.js",
           "_nuxt/ProseUl.js",
+          "_nuxt/ServerPlaceholder.js",
           "_nuxt/SocialPost.js",
+          "_nuxt/Style.js",
+          "_nuxt/TheSiteHeader.js",
+          "_nuxt/Title.js",
+          "_nuxt/ToggleColorMode.js",
+          "_nuxt/ToggleColorMode.js",
+          "_nuxt/UnoIcon.js",
+          "_nuxt/WebMentions.js",
+          "_nuxt/WebMentions.js",
           "_nuxt/_article_.js",
+          "_nuxt/_base.js",
+          "_nuxt/_plugin-vue_export-helper.js",
+          "_nuxt/asyncData.js",
+          "_nuxt/color-mode-options.js",
+          "_nuxt/cookie.js",
+          "_nuxt/defu.js",
           "_nuxt/entry.js",
+          "_nuxt/error.js",
           "_nuxt/feed.js",
           "_nuxt/index.js",
           "_nuxt/index.js",
+          "_nuxt/index.js",
+          "_nuxt/index.js",
+          "_nuxt/index.js",
+          "_nuxt/index.js",
+          "_nuxt/mdc-imports.js",
+          "_nuxt/middleware.js",
+          "_nuxt/node.js",
+          "_nuxt/nuxt.js",
+          "_nuxt/nuxt.js",
+          "_nuxt/preload-helper.js",
+          "_nuxt/route-composables.js",
+          "_nuxt/router.js",
+          "_nuxt/routes.js",
+          "_nuxt/runtime-core.js",
+          "_nuxt/runtime-dom.js",
+          "_nuxt/server-component.js",
           "_nuxt/talks.js",
           "_nuxt/uses.js",
+          "_nuxt/utils.js",
           "_nuxt/voted.js",
+          "_nuxt/vue.js",
           "_nuxt/work.js",
         ]
       `)
@@ -87,7 +148,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"629k"')
+      .toMatchInlineSnapshot('"653k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
