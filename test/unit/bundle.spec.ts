@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import fsp from 'node:fs/promises'
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import execa from 'execa'
+import { execa } from 'execa'
 import { globby } from 'globby'
 import { join } from 'pathe'
 
