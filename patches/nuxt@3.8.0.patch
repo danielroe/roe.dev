@@ -1,0 +1,22 @@
+diff --git a/dist/app/components/nuxt-island.js b/dist/app/components/nuxt-island.js
+index ee357c3e35f18f2bf6f5ae11eb5f49e8c6a6acdd..f9ad769195b9a5f9e629dbe7a1b76fb27d077f59 100644
+--- a/dist/app/components/nuxt-island.js
++++ b/dist/app/components/nuxt-island.js
+@@ -98,7 +98,7 @@ export default defineComponent({
+       }
+       const url = remoteComponentIslands && props.source ? new URL(`/__nuxt_island/${key2}`, props.source).href : `/__nuxt_island/${key2}`;
+       if (import.meta.server && import.meta.prerender) {
+-        appendResponseHeader(event, "x-nitro-prerender", url);
++        nuxtApp.runWithContext(() => prerenderRoutes(url));
+       }
+       const r = await eventFetch(withQuery(import.meta.dev && import.meta.client || props.source ? url : joinURL(config.app.baseURL ?? "", url), {
+         ...props.context,
+@@ -108,7 +108,7 @@ export default defineComponent({
+       if (import.meta.server && import.meta.prerender) {
+         const hints = r.headers.get("x-nitro-prerender");
+         if (hints) {
+-          prerenderRoutes(hints);
++          nuxtApp.runWithContext(() => prerenderRoutes(hints));
+         }
+       }
+       setPayload(key2, result);
