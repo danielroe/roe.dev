@@ -1,4 +1,6 @@
+import { readdirSync, copyFileSync } from 'node:fs'
 import { useNuxt } from 'nuxt/kit'
+import { join } from 'pathe'
 import type { InputPluginOption } from 'rollup'
 
 export default defineNuxtConfig({
@@ -118,6 +120,14 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml', '/voted'],
     },
     hooks: {
+      'prerender:done'(routes) {
+        for (const file of readdirSync('.output/public/__nuxt_island')) {
+          copyFileSync(
+            join('.output/public/__nuxt_island', file),
+            join('.output/public/__nuxt_island', file + '.json')
+          )
+        }
+      },
       'prerender:generate'(route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(
