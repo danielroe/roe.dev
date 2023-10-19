@@ -87,12 +87,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"644k"')
+      .toMatchInlineSnapshot('"635k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"28920k"')
+      .toMatchInlineSnapshot('"28994k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -138,6 +138,9 @@ describe('project sizes', () => {
         "form-data",
         "github-slugger",
         "h3",
+        "h3-nightly",
+        "h3-nightly/node_modules/destr",
+        "h3/node_modules/destr",
         "hast-util-from-parse5",
         "hast-util-is-element",
         "hast-util-parse-selector",
@@ -151,6 +154,7 @@ describe('project sizes', () => {
         "html-void-elements",
         "image-meta",
         "ipx",
+        "ipx/node_modules/destr",
         "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
@@ -409,6 +413,7 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "ofetch",
+        "ofetch/node_modules/destr",
         "parse-entities",
         "parse5",
         "pathe",
