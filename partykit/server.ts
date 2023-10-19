@@ -1,4 +1,4 @@
-import type { PartyKitRoom, PartyKitServer } from 'partykit/server'
+import type { PartyKitServer, Party } from 'partykit/server'
 
 export default {
   async onConnect(ws, room) {
@@ -31,5 +31,4 @@ export default {
   },
 } satisfies PartyKitServer
 
-const get = (room: PartyKitRoom) =>
-  room.storage.get<number>('count').then(r => r || 0)
+const get = (room: Party) => room.storage.get<number>('count').then(r => r || 0)
