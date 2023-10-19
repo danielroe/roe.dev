@@ -94,6 +94,10 @@
     "vitest": "0.33.0",
     "vue-tsc": "1.8.19"
   },
+  "resolutions": {
+    "h3": "npm:h3-nightly@latest",
+    "nitropack": "npm:nitropack-edge@latest"
+  },
   "simple-git-hooks": {
     "commit-msg": "pnpm commitlint --edit $1",
     "pre-commit": "pnpm lint-staged"
