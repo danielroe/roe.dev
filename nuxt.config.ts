@@ -1,6 +1,4 @@
-import { readdirSync, copyFileSync } from 'node:fs'
 import { useNuxt } from 'nuxt/kit'
-import { join } from 'pathe'
 import type { InputPluginOption } from 'rollup'
 
 export default defineNuxtConfig({
