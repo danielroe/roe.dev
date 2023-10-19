@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot('"198k"')
+      .toMatchInlineSnapshot('"197k"')
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -92,7 +92,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"28994k"')
+      .toMatchInlineSnapshot('"32010k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -103,10 +103,12 @@ describe('project sizes', () => {
         "@atproto/api",
         "@fastify/accept-negotiator",
         "@sindresorhus/is",
+        "@trysound/sax",
         "@ungap/structured-clone",
         "abort-controller",
         "asynckit",
         "bail",
+        "boolbase",
         "ccount",
         "char-regex",
         "character-entities",
@@ -120,6 +122,13 @@ describe('project sizes', () => {
         "combined-stream",
         "comma-separated-tokens",
         "cookie-es",
+        "css-select",
+        "css-tree",
+        "css-tree/node_modules/mdn-data",
+        "css-what",
+        "csso",
+        "csso/node_modules/css-tree",
+        "csso/node_modules/css-tree/node_modules/mdn-data",
         "decode-named-character-reference",
         "defu",
         "delayed-stream",
@@ -127,8 +136,13 @@ describe('project sizes', () => {
         "detab",
         "detect-libc",
         "devlop",
+        "dom-serializer",
+        "domelementtype",
+        "domhandler",
+        "domutils",
         "emojilib",
         "emoticon",
+        "entities",
         "escape-string-regexp",
         "etag",
         "event-target-shim",
@@ -138,8 +152,6 @@ describe('project sizes', () => {
         "form-data",
         "github-slugger",
         "h3",
-        "h3-nightly",
-        "h3-nightly/node_modules/destr",
         "h3/node_modules/destr",
         "hast-util-from-parse5",
         "hast-util-is-element",
@@ -258,6 +270,7 @@ describe('project sizes', () => {
         "mdast-util-to-markdown/node_modules/unist-util-visit/node_modules/unist-util-visit-parents",
         "mdast-util-to-markdown/node_modules/unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-to-string",
+        "mdn-data",
         "micromark",
         "micromark-core-commonmark",
         "micromark-core-commonmark/node_modules/micromark-factory-destination",
@@ -412,6 +425,7 @@ describe('project sizes', () => {
         "mime-types",
         "node-emoji",
         "node-fetch-native",
+        "nth-check",
         "ofetch",
         "ofetch/node_modules/destr",
         "parse-entities",
@@ -490,8 +504,12 @@ describe('project sizes', () => {
         "simple-swizzle",
         "skin-tone",
         "slugify",
+        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
+        "svgo",
+        "svgo/node_modules/css-tree",
+        "svgo/node_modules/css-tree/node_modules/mdn-data",
         "trim-lines",
         "trough",
         "ufo",
