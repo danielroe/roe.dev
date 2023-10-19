@@ -4,5 +4,12 @@ export default defineVitestConfig({
   test: {
     dir: 'test/unit',
     environment: 'nuxt',
+    environmentOptions: {
+      nuxt: {
+        overrides: {
+          test: true,
+        },
+      },
+    },
   },
 })
