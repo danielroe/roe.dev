@@ -35,3 +35,5 @@ jobs:
 
       - name: Unit tests
         run: pnpm test
+        env:
+          DISABLE_PRERENDER: true
