@@ -121,7 +121,7 @@ export default defineNuxtConfig({
     },
     hooks: {
       'prerender:done'(routes) {
-        for (const file of readdirSync('.output/public/__nuxt_island')) {
+        for (const file of readdirSync('.vercel/output/static/__nuxt_island')) {
           copyFileSync(
             join('.output/public/__nuxt_island', file),
             join('.output/public/__nuxt_island', file + '.json')
