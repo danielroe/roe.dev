@@ -120,14 +120,6 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml', '/voted'],
     },
     hooks: {
-      'prerender:done'(routes) {
-        for (const file of readdirSync('.vercel/output/static/__nuxt_island')) {
-          copyFileSync(
-            join('.vercel/output/static/__nuxt_island', file),
-            join('.vercel/output/static/__nuxt_island', file + '.json')
-          )
-        }
-      },
       'prerender:generate'(route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(
