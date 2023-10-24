@@ -93,7 +93,7 @@ function toggleMenu(input?: Event | boolean) {
       </template>
     </ul>
     <div
-      class="ml-2 mr-1 flex md:gap-2 w-16 flex-shrink-0 items-center justify-between"
+      class="ml-2 mr-1 flex md:gap-2 flex-shrink-0 items-center justify-between"
     >
       <div
         v-if="$auth.status === 'pending'"
