@@ -14,13 +14,6 @@ interface Talk {
 
 const upcomingConferences = [
   {
-    name: 'VueFes Japan',
-    dates: '28 October, 2023',
-    link: 'https://vuefes.jp/2023/',
-    location: 'Nakano, Tokyo',
-    image: 'vuefes-japan.jpg',
-  },
-  {
     name: 'JetBrains JavaScript Day 2023',
     dates: '2 November, 2023',
     location: 'Remote',
