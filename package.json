@@ -11,7 +11,7 @@
     "lint:js": "eslint --ext .js,.ts,.mjs,.vue --fix --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --fix --ignore-path .gitignore",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "test": "vitest run test/unit",
+    "test": "vitest run test/unit --no-threads",
     "test:types": "nuxi prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.36.1-focal npx playwright test test/e2e --update-snapshots",
