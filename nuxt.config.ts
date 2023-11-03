@@ -111,6 +111,8 @@ export default defineNuxtConfig({
   srcDir: 'src',
 
   nitro: {
+    // TODO: investigate in nitro/nuxt
+    replace: { 'process.browser': false },
     future: { nativeSWR: true },
     prerender: {
       concurrency: 12,
