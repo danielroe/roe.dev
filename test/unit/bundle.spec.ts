@@ -61,6 +61,7 @@ describe('project sizes', () => {
           "_nuxt/ProseOl.js",
           "_nuxt/ProseP.js",
           "_nuxt/ProsePre.js",
+          "_nuxt/ProseScript.js",
           "_nuxt/ProseStrong.js",
           "_nuxt/ProseTable.js",
           "_nuxt/ProseTbody.js",
@@ -87,12 +88,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"630k"')
+      .toMatchInlineSnapshot('"632k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"32531k"')
+      .toMatchInlineSnapshot('"32533k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
