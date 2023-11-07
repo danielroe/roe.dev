@@ -1,4 +1,4 @@
-import { ParsedReqs } from './parser'
+import type { ParsedReqs } from './parser'
 
 function getCss() {
   return `

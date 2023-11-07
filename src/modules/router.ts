@@ -40,7 +40,7 @@ export default defineNuxtModule({
 
     nuxt.hook('app:templates', app => {
       const routerTemplate = app.templates.find(
-        t => t.filename === 'vue-router.d.ts'
+        t => t.filename === 'vue-router-stub.d.ts'
       )
       routerTemplate!.getContents = () => 'export * from "vue-router"'
     })
