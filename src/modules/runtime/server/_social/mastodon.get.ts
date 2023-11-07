@@ -1,4 +1,4 @@
-import { createClient } from 'masto'
+import { createRestAPIClient } from 'masto'
 import { parseURL, withProtocol } from 'ufo'
 
 export default defineLazyEventHandler(async () => {
@@ -15,15 +15,15 @@ export default defineLazyEventHandler(async () => {
   )
   const { host, protocol } = parseURL(data.aliases[0])
 
-  const client = createClient({
+  const client = createRestAPIClient({
     url: withProtocol(host!, protocol!),
-    disableVersionCheck: true,
-    disableDeprecatedWarning: true,
   })
   const { id } = await client.v1.accounts.lookup({ acct })
 
   return defineEventHandler(async () => {
-    const posts = await client.v1.accounts.listStatuses(id, { limit: 200 })
+    const posts = await client.v1.accounts
+      .$select(id)
+      .statuses.list({ limit: 200 })
     return Promise.all(
       posts
         .filter(p => p.content && !p.inReplyToId)
