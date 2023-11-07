@@ -88,12 +88,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot('"632k"')
+      .toMatchInlineSnapshot('"413k"')
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot('"32474k"')
+      .toMatchInlineSnapshot('"32349k"')
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -106,8 +106,6 @@ describe('project sizes', () => {
         "@sindresorhus/is",
         "@trysound/sax",
         "@ungap/structured-clone",
-        "abort-controller",
-        "asynckit",
         "bail",
         "boolbase",
         "ccount",
@@ -120,7 +118,6 @@ describe('project sizes', () => {
         "color-convert",
         "color-name",
         "color-string",
-        "combined-stream",
         "comma-separated-tokens",
         "cookie-es",
         "css-select",
@@ -132,7 +129,6 @@ describe('project sizes', () => {
         "csso/node_modules/css-tree/node_modules/mdn-data",
         "decode-named-character-reference",
         "defu",
-        "delayed-stream",
         "destr",
         "detab",
         "detect-libc",
@@ -146,11 +142,11 @@ describe('project sizes', () => {
         "entities",
         "escape-string-regexp",
         "etag",
-        "event-target-shim",
+        "events-to-async",
+        "events-to-async/module",
         "extend",
         "feed",
         "flat",
-        "form-data",
         "github-slugger",
         "h3",
         "hast-util-from-parse5",
@@ -420,8 +416,6 @@ describe('project sizes', () => {
         "micromark/node_modules/micromark-util-sanitize-uri/node_modules/micromark-util-encode",
         "micromark/node_modules/micromark-util-subtokenize",
         "micromark/node_modules/micromark-util-subtokenize/node_modules/micromark-util-chunked",
-        "mime-db",
-        "mime-types",
         "node-emoji",
         "node-fetch-native",
         "nth-check",
@@ -510,6 +504,7 @@ describe('project sizes', () => {
         "svgo/node_modules/css-tree/node_modules/mdn-data",
         "trim-lines",
         "trough",
+        "ts-custom-error",
         "ufo",
         "uncrypto",
         "unenv",
@@ -534,6 +529,7 @@ describe('project sizes', () => {
         "vfile/node_modules/vfile-message",
         "vfile/node_modules/vfile-message/node_modules/unist-util-stringify-position",
         "web-namespaces",
+        "ws",
         "xml-js",
         "zwitch",
       ]
