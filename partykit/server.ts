@@ -1,21 +1,25 @@
 import type { PartyKitServer, Party } from 'partykit/server'
 
 export default {
-  async onConnect(ws, room) {
+  async onConnect(ws, party) {
+    // 1. Handle live voting in slide deck
     const set = async (val: number) => {
-      await room.storage.put('count', val)
+      await party.storage.put('count', val)
       ws.send(`count:${val}`)
     }
 
-    ws.send(`count:${await get(room)}`)
+    ws.send(`count:${await get(party)}`)
     ws.addEventListener('message', async ({ data }) => {
       if (data === 'vote') {
-        await set((await get(room)) + 1)
+        await set((await get(party)) + 1)
       }
       if (data === 'clear') {
         await set(0)
       }
     })
+
+    // 2. Tell connectees how many people are viewing the site
+    party.broadcast(`connections:${[...party.getConnections()].length}`)
   },
   async onRequest(request, room) {
     if (request.method === 'GET') {
