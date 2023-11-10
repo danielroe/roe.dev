@@ -12,15 +12,13 @@ interface Talk {
   release?: string
 }
 
-const upcomingConferences = [
-  {
-    name: 'vueday 2023',
-    dates: '10 November, 2023',
-    link: 'https://2023.vueday.it/',
-    location: 'Verona, Italy',
-    image: 'vuefes-japan.jpg',
-  },
-]
+const upcomingConferences: Array<{
+  name: string
+  dates: string
+  link: string
+  location: string
+  image: string
+}> = []
 
 // if (process.env.prerender && process.server) {
 //   for (const conference of upcomingConferences) {
@@ -81,7 +79,10 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
 </script>
 
 <template>
-  <section class="flex flex-row flex-wrap gap-4">
+  <section
+    v-if="upcomingConferences.length"
+    class="flex flex-row flex-wrap gap-4"
+  >
     <h2 class="uppercase text-sm font-bold tracking-widest">
       Upcoming conferences
     </h2>
@@ -116,7 +117,10 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
       </article>
     </GridLink>
   </section>
-  <section class="mt-12 flex flex-row flex-wrap gap-4">
+  <section
+    class="flex flex-row flex-wrap gap-4"
+    :class="upcomingConferences.length ? 'mt-12' : null"
+  >
     <header
       class="flex flex-row justify-between gap-2 w-full items-center uppercase text-sm font-bold tracking-widest"
     >
