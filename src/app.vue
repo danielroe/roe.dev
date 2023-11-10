@@ -7,6 +7,7 @@
   >
     <LayoutTheSiteHeader />
     <NuxtPage />
+    <LayoutThePresenceIndicator />
     <LayoutTheSiteFooter />
   </div>
 </template>
