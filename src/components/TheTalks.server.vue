@@ -79,11 +79,11 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
 </script>
 
 <template>
-  <section class="flex flex-row flex-wrap gap-4">
-    <h2
-      v-if="upcomingConferences.length"
-      class="uppercase text-sm font-bold tracking-widest"
-    >
+  <section
+    v-if="upcomingConferences.length"
+    class="flex flex-row flex-wrap gap-4"
+  >
+    <h2 class="uppercase text-sm font-bold tracking-widest">
       Upcoming conferences
     </h2>
     <GridLink
@@ -117,7 +117,10 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
       </article>
     </GridLink>
   </section>
-  <section class="mt-12 flex flex-row flex-wrap gap-4">
+  <section
+    class="flex flex-row flex-wrap gap-4"
+    :class="upcomingConferences.length ? 'mt-12' : null"
+  >
     <header
       class="flex flex-row justify-between gap-2 w-full items-center uppercase text-sm font-bold tracking-widest"
     >
