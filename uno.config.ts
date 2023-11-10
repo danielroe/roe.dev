@@ -39,8 +39,8 @@ export default defineConfig({
     }),
     presetUno({
       dark: {
-        dark: 'dark-mode',
-        light: 'light-mode',
+        dark: '.dark-mode',
+        light: '.light-mode',
       },
     }),
   ],
