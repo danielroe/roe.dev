@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@nuxtjs/color-mode@3.3.0':
-    hash: yhatw3bbda574qeiohv37vxgf4
-    path: patches/@nuxtjs__color-mode@3.3.0.patch
-
 dependencies:
   '@atproto/api':
     specifier: ^0.6.20
@@ -29,8 +24,8 @@ dependencies:
     specifier: 3.8.1
     version: 3.8.1(rollup@3.29.4)
   '@nuxtjs/color-mode':
-    specifier: 3.3.0
-    version: 3.3.0(patch_hash=yhatw3bbda574qeiohv37vxgf4)(rollup@3.29.4)
+    specifier: 3.3.1
+    version: 3.3.1(rollup@3.29.4)
   '@nuxtjs/fontaine':
     specifier: 0.4.1
     version: 0.4.1(rollup@3.29.4)
@@ -2080,8 +2075,8 @@ packages:
       - vue-tsc
     dev: false
 
-  /@nuxtjs/color-mode@3.3.0(patch_hash=yhatw3bbda574qeiohv37vxgf4)(rollup@3.29.4):
-    resolution: {integrity: sha512-YVFNmTISke1eL7uk5p9I1suOsM222FxrqKoF13HS4x94OKCWwPLLeTCEzHZ8orzKnaFUbCXpuL4pRv8gvW+0Kw==}
+  /@nuxtjs/color-mode@3.3.1(rollup@3.29.4):
+    resolution: {integrity: sha512-FQwl4p8qYJagqJRLYGrKEhMuFN32S1LrHsIJYUXLrMErcHtaIC3TaEamH7geyC3xeoTmAYCuSdtfzsSlwD/cJQ==}
     dependencies:
       '@nuxt/kit': 3.8.1(rollup@3.29.4)
       lodash.template: 4.5.0
@@ -2090,7 +2085,6 @@ packages:
       - rollup
       - supports-color
     dev: false
-    patched: true
 
   /@nuxtjs/fontaine@0.4.1(rollup@3.29.4):
     resolution: {integrity: sha512-8VnrFYnilfqlQVsCufiqoWusivYVOwP/0Nzu9FV44oryQlBa3qiT7EyOkKSmOxf9yZWCZBRc2wjTSxI+WTYlpg==}
