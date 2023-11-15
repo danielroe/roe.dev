@@ -31,7 +31,7 @@
     "@nuxt/content": "2.9.0",
     "@nuxt/image": "1.0.0",
     "@nuxt/kit": "3.8.1",
-    "@nuxtjs/color-mode": "3.3.0",
+    "@nuxtjs/color-mode": "3.3.1",
     "@nuxtjs/fontaine": "0.4.1",
     "@nuxtjs/html-validator": "1.5.2",
     "@nuxtjs/plausible": "0.2.3",
@@ -99,10 +99,5 @@
     "commit-msg": "pnpm commitlint --edit $1",
     "pre-commit": "pnpm lint-staged"
   },
-  "packageManager": "pnpm@8.10.2",
-  "pnpm": {
-    "patchedDependencies": {
-      "@nuxtjs/color-mode@3.3.0": "patches/@nuxtjs__color-mode@3.3.0.patch"
-    }
-  }
+  "packageManager": "pnpm@8.10.2"
 }
