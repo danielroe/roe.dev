@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const avatar = useNuxtApp().$auth.user.avatar
 useHead({
   style: [
