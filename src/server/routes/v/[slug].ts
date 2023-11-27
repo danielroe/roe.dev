@@ -4,6 +4,10 @@ export default defineEventHandler(async event => {
   if (!slug || !/^[\da-z]+$/.test(slug)) {
     throw createError({ statusCode: 400, statusMessage: 'Missing slug' })
   }
-  await $fetch(slug, { baseURL: config.voteUrl, method: 'POST' })
+  await $fetch(slug, {
+    baseURL: config.voteUrl,
+    body: { type: 'vote' },
+    method: 'POST',
+  })
   return await sendRedirect(event, '/voted')
 })

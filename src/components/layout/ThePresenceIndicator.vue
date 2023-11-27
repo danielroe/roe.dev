@@ -58,8 +58,14 @@ if (import.meta.client) {
   partySocket.onmessage = evt => {
     const data = evt.data as string
     const [type, value] = data.split(':')
-    if (type === 'connections') {
-      count.value = parseInt(value)
+    switch (type) {
+      case 'connections':
+        count.value = parseInt(value)
+        break
+
+      case 'status':
+        if (value in colorSet) status.value = value as keyof typeof colorSet
+        break
     }
   }
 
