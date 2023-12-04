@@ -24,4 +24,6 @@ jobs:
 
       - name: Nuxt Nightly
         uses: danielroe/nuxt-nightly-action@c263e358545baabc638e728fbed7d255e7a04130
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
