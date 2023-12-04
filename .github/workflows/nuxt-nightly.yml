@@ -5,6 +5,8 @@ on:
   #   - cron: "0 5 * * 1,3,5" # monday,wednesday,friday 5AM
   workflow_dispatch:
   push:
+    branches:
+      ci/nightly
 
 jobs:
   test:
