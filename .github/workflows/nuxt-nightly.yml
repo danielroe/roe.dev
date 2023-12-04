@@ -23,7 +23,7 @@ jobs:
         run: pnpm install
 
       - name: Nuxt Nightly
-        uses: danielroe/nuxt-nightly-action@cafdeb6d1ebf9a539acac84fba6ce23e0498ec03
+        uses: danielroe/nuxt-nightly-action@435f10e15a93e734af9e9d9e55974320ed9e9e3f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
