@@ -75,8 +75,10 @@ export default defineNuxtConfig({
     },
   },
 
-  experimental: {
+  future: {
     typescriptBundlerResolution: true,
+  },
+  experimental: {
     viewTransition: true,
     componentIslands: true,
     payloadExtraction: true,
