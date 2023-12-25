@@ -13,7 +13,7 @@ await setup({
       },
     },
     hooks: {
-      'prerender:routes' (routes) {
+      'prerender:routes'(routes) {
         routes.routes.clear()
         routes.routes.add('/')
       },

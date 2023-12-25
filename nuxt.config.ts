@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'components:extend' (components) {
+    'components:extend'(components) {
       // This code ensures that we can run our markdown renderer on the
       // client side in development mode (for HMR).
       const nuxt = useNuxt()
@@ -43,32 +43,32 @@ export default defineNuxtConfig({
       }
     },
     // We disable prerendering to speed up the bundle test.
-    'prerender:routes' (routes) {
+    'prerender:routes'(routes) {
       if (process.env.DISABLE_PRERENDER) {
         routes.routes.clear()
       }
     },
     // TODO: this is a hack that we surely do not need
-    'nitro:config' (config) {
+    'nitro:config'(config) {
       if (process.env.DISABLE_PRERENDER) {
         config.prerender ||= {}
         config.prerender.crawlLinks = false
       }
-      ; (config.rollupConfig!.plugins as InputPluginOption[]).push({
+      ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
-        transform (_code, id) {
+        transform(_code, id) {
           if (id.includes('og/[slug]') || id.includes('thumbnail/[slug]')) {
             return 'export default defineEventHandler(() => {})'
           }
         },
       })
     },
-    'nitro:init' (nitro) {
+    'nitro:init'(nitro) {
       nitro.options._config.rollupConfig!.plugins = (
         nitro.options._config.rollupConfig!.plugins as InputPluginOption[]
       ).filter(p => !p || !('name' in p) || p.name !== 'purge-the-handler')
     },
-    'vite:extendConfig' (config, { isClient }) {
+    'vite:extendConfig'(config, { isClient }) {
       if (isClient) {
         config.define!['process.env.prerender'] = 'false'
       }
@@ -122,7 +122,7 @@ export default defineNuxtConfig({
       routes: ['/', '/uses', '/og/og.jpg', '/rss.xml', '/voted'],
     },
     hooks: {
-      'prerender:generate' (route) {
+      'prerender:generate'(route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(
             /(\.\w{3})\/index.html$/,
