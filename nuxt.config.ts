@@ -75,8 +75,10 @@ export default defineNuxtConfig({
     },
   },
 
-  experimental: {
+  future: {
     typescriptBundlerResolution: true,
+  },
+  experimental: {
     viewTransition: true,
     componentIslands: true,
     payloadExtraction: true,
@@ -208,7 +210,7 @@ export default defineNuxtConfig({
 
   modules: [
     'nuxt-time',
-    'nuxt-vitest',
+    '@nuxt/test-utils/module',
     'magic-regexp/nuxt',
     '@nuxt/image',
     '@nuxtjs/html-validator',

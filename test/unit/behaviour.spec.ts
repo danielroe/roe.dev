@@ -2,7 +2,7 @@
 import { fileURLToPath } from 'node:url'
 
 import { describe, expect, it } from 'vitest'
-import { createPage, setup, url } from '@nuxt/test-utils'
+import { createPage, setup, url } from '@nuxt/test-utils/e2e'
 
 await setup({
   rootDir: fileURLToPath(new URL('../..', import.meta.url)),
@@ -38,7 +38,7 @@ describe(
       expect(
         await page.getByText('2019-2023').innerHTML()
       ).toMatchInlineSnapshot(
-        '" © 2019-2023 Daniel Roe. <a class=\\"underlined-link\\" href=\\"https://creativecommons.org/licenses/by-sa/4.0/\\"> CC BY-SA 4.0 </a>"'
+        '" © 2019-2023 Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"'
       )
       expect(logs).toMatchInlineSnapshot(`
         [
