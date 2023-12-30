@@ -129,11 +129,11 @@ You can check out this [full StackBlitz example](https://stackblitz.com/edit/nux
 
 ## Payload extraction
 
-It gets even better. Nuxt turns something called 'payload extraction' when you prerender your pages. (You can also turn it on manually even when you have a runtime server, with the `experimental.payloadExtraction` option.) 
+It gets even better. Nuxt turns on something called 'payload extraction' when you prerender your pages. (You can also turn it on manually even when you have a runtime server, with the `experimental.payloadExtraction` option.) 
 
 Without payload extraction, your data fetching composables (`useFetch` and `useAsyncData`) will rerun on _client-side_ navigation. But _with_ it, this data is extracted into a `payload.json` file which can be used instead of rerunning the composables.
 
-If you are prerendering every route of your app, you can therefore confidently early return or throw an error which means your data fetching code also be tree shaken out from your final app. (That's what I do in my website: [see here](https://github.com/danielroe/roe.dev/blob/main/src/components/TheTalks.server.vue#L37-L38) for example.)
+If you are prerendering every route of your app, you can therefore confidently early return or throw an error which means your data fetching code can also be tree shaken out from your final app. (That's what I do in my website: [see here](https://github.com/danielroe/roe.dev/blob/main/src/components/TheTalks.server.vue#L37-L38) for example.)
 
 ## Next steps for prerendering optimisations
 
