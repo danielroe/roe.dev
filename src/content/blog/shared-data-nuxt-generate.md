@@ -21,7 +21,7 @@ As the time taken to generate static pages slows down every deploy, if you _shar
 
 ## Using a shared payload in Nuxt 2
 
-In Nuxt 2, shared payload support was built in. You could use a shared payload as simply as this ([see Nuxt 2 documentation](https://v2.nuxt.com/docs/configuration-glossary/configuration-generate#speeding-up-dynamic-route-generation-with-payload)):
+In Nuxt 2, shared payload support was built in. You could use a shared payload as simply as this ([see Nuxt 2 documentation](https://v2.nuxt.com/docs/configuration-glossary/configuration-generate/#speeding-up-dynamic-route-generation-with-payload)):
 
 <div>~/nuxt.config.ts</div>
 
