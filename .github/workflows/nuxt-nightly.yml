@@ -1,0 +1,29 @@
+name: nuxt-nightly
+
+on:
+  # schedule:
+  #   - cron: "0 5 * * 1,3,5" # monday,wednesday,friday 5AM
+  workflow_dispatch:
+  push:
+    branches:
+      ci/nightly
+
+jobs:
+  test:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Nuxt Nightly
+        uses: danielroe/nuxt-nightly-action@5a73b8ffd230ea1299c32abf39c8d326d3afdf45
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
