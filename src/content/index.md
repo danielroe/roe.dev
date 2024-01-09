@@ -1,7 +1,7 @@
 Daniel leads the [Nuxt core team](https://nuxt.com).
 
 He founded and successfully grew a creative agency, launched an HR-tech SaaS startup, and
-continues to contribute to the developer community in the North East.
+continues to contribute to the developer community.
 
 He was identified as One to Watch by FreshMinds, has delivered a TEDx talk on the importance of
 clear communication, was a founding member of Durham Young Professionals and has mentored students
