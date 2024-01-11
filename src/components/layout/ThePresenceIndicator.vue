@@ -50,27 +50,30 @@ const status = ref<keyof typeof colorSet>('default')
 const count = ref<null | number>(null)
 
 if (import.meta.client) {
-  const partySocket = new PartySocket({
-    host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
-    room: 'site',
+  let partySocket: PartySocket
+  onNuxtReady(() => {
+    partySocket = new PartySocket({
+      host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
+      room: 'site',
+    })
+
+    partySocket.onmessage = evt => {
+      const data = evt.data as string
+      const [type, value] = data.split(':')
+      switch (type) {
+        case 'connections':
+          count.value = parseInt(value)
+          break
+
+        case 'status':
+          if (value in colorSet) status.value = value as keyof typeof colorSet
+          break
+      }
+    }
   })
 
-  partySocket.onmessage = evt => {
-    const data = evt.data as string
-    const [type, value] = data.split(':')
-    switch (type) {
-      case 'connections':
-        count.value = parseInt(value)
-        break
-
-      case 'status':
-        if (value in colorSet) status.value = value as keyof typeof colorSet
-        break
-    }
-  }
-
-  onBeforeUnmount(() => partySocket.close())
-  onDeactivated(() => partySocket.close())
-  onActivated(() => partySocket.reconnect())
+  onBeforeUnmount(() => partySocket?.close())
+  onDeactivated(() => partySocket?.close())
+  onActivated(() => partySocket?.reconnect())
 }
 </script>
