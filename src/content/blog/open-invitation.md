@@ -9,7 +9,7 @@ description: If you want to have a 10-minute chat about anything, then I would l
 
 A few months ago I tweeted out an open invitation for anyone new to contributing to open source.
 
-::SocialPost{link=https://twitter.com/danielcroe/status/1630239320375463937 datetime=2023-02-27T16:11:57.000Z social=twitter}
+::social-post{link=https://twitter.com/danielcroe/status/1630239320375463937 datetime=2023-02-27T16:11:57.000Z social=twitter}
 If you're new to contributing to open source or [@nuxt_js](https://twitter.com/nuxt_js), and want to, let me know. I'd be really happy to have an informal chat, pre-PR review, etc. ❤️
 ::
 
