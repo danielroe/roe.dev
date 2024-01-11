@@ -16,7 +16,7 @@ const clients = {
     'imperial-enterprise-lab.svg',
     { height: 32, width: 80 },
   ],
-}
+} as const
 </script>
 
 <template>

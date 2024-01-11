@@ -192,4 +192,4 @@ You can also follow the [Nuxt server component roadmap](https://github.com/nuxt/
 
 If you want to see which parts of my site are server components, try clicking this button to see what I've chosen to render as a server component - and then click around to other pages:
 
-<button data-site-ui="" class="underlined-link"><span class="i-ri:magic-fill h-4 w-4"></span> Show server component outlines</button>
+<button type="button" data-site-ui="" class="underlined-link"><span class="i-ri:magic-fill h-4 w-4"></span> Show server component outlines</button>

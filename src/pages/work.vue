@@ -35,8 +35,8 @@
             ideaStatus === 'submitted'
               ? 'Done'
               : ideaStatus === 'error'
-              ? 'Error'
-              : 'Submit'
+                ? 'Error'
+                : 'Submit'
           }}
         </button>
       </form>

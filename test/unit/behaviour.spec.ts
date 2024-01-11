@@ -35,10 +35,11 @@ describe(
       page.on('console', msg => logs.push(msg.text()))
       await page.goto(url('/'))
       await page.waitForLoadState('networkidle')
+      const year = new Date().getFullYear()
       expect(
-        await page.getByText('2019-2023').innerHTML()
+        await page.getByText(`2019-${year}`).innerHTML()
       ).toMatchInlineSnapshot(
-        '" © 2019-2023 Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"'
+        `" © 2019-${year} Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"`
       )
       expect(logs).toMatchInlineSnapshot(`
         [
