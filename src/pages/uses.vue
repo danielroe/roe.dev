@@ -1,9 +1,9 @@
 <template>
-  <div class="flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
+  <div class="flex-grow px-4 py-2 md:px-12 md:py-4 w-full">
     <header class="leading-none mt-[5vw] mb-[1vw]">
-      <h1 class="text-2xl">Uses</h1>
+      <h1 class="text-2xl">some of what I use</h1>
     </header>
-    <main class="text-muted text-lg" :class="$style.uses">
+    <main class="text-muted text-lg max-w-[37.50rem]" :class="$style.uses">
       <StaticMarkdownRender path="/uses" />
     </main>
   </div>
@@ -17,6 +17,11 @@ definePageMeta({ title: 'Uses' })
 .uses {
   h2,
   h3 {
+    @apply text-lg;
+  }
+
+  h2:not(:first-child),
+  h3 {
     @apply mt-6;
   }
 
@@ -29,5 +34,9 @@ definePageMeta({ title: 'Uses' })
       list-style-type: '‣ ';
     }
   }
+}
+
+.uses {
+  @apply text-base;
 }
 </style>

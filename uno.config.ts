@@ -7,7 +7,7 @@ export default defineConfig({
   shortcuts: [
     {
       'underlined-link':
-        'relative inline-block after:block after:my-[-0.5em] after:mx-[-0.25em] after:opacity-10 after:border-current after:content-empty after:duration-300 after:transition-border-color after:transition-opacity after:border-b-[0.5em] outline-none hover:after:opacity-20 active:after:opacity-20 focus:after:opacity-20',
+        'relative inline-block after:block after:my-[-0.5em] after:mx-[-0.25em] after:opacity-10 after:border-current after:content-empty after:duration-300 after:transition-border-color after:transition-opacity after:border-b-[0.5em] outline-none hover:after:opacity-35 active:after:opacity-35 focus:after:opacity-35',
     },
   ],
   theme: {

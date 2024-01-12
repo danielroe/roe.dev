@@ -4,9 +4,10 @@ const colorMode = useColorMode()
 
 <template>
   <button
+    v-if="colorMode"
     aria-label="Change site theme"
     type="button"
-    class="h-7 w-7 ml-2 items-center justify-center transition-opacity focus:outline-none hover:opacity-70 focus:opacity-70"
+    class="h-7 w-12 relative rounded-full bg-accent ml-2 items-center justify-start px-1 transition-opacity outline-none border-2 border-solid border-accent hover:border-primary focus:border-primary active:border-primary"
     @click="
       colorMode.value === 'dark'
         ? (colorMode.preference = 'light')
@@ -14,7 +15,10 @@ const colorMode = useColorMode()
     "
   >
     <span
-      class="block rounded-full h-4 w-4 border-2 border-solid outline-none bg-primary"
+      class="inline-block rounded-full h-4 w-4 bg-primary transition-transform"
+      :style="
+        colorMode.value === 'light' ? 'transform:translateX(1.25rem)' : ''
+      "
     />
   </button>
 </template>

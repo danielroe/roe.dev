@@ -20,13 +20,13 @@
           >
             <template v-if="stars">
               <dt class="float-left md:float-none mr-2">Stars</dt>
-              <dd class="font-semibold mr-4">
+              <dd class="mr-4">
                 {{ stars }}
               </dd>
             </template>
             <template v-if="language">
               <dt class="float-left md:float-none mr-2">Language</dt>
-              <dd class="font-semibold mr-4">
+              <dd class="mr-4">
                 {{ language }}
               </dd>
             </template>

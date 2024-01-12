@@ -13,20 +13,12 @@ const menu = [
     path: '/',
   },
   {
-    name: 'Work',
-    path: '/work',
-  },
-  {
     name: 'Talks',
     path: '/talks',
   },
   {
     name: 'Uses',
     path: '/uses',
-  },
-  {
-    name: 'Feed',
-    path: '/feed',
   },
   {
     name: 'Blog',
@@ -58,32 +50,31 @@ function toggleMenu(input?: Event | boolean) {
 
 <template>
   <nav
-    class="p-2 uppercase bg-gray-900 flex flex-row justify-between items-center text-white md:p-4 tracking-[0.15rem]"
+    class="py-4 px-4 md:px-12 md:py-8 uppercase flex flex-row justify-between items-center text-primary md:p-4 tracking-[0.15rem]"
   >
     <ul
-      class="font-semibold flex-grow text-xs md:text-base justify-between flex flex-row items-center md:flex-grow-0"
+      class="flex-grow text-xs md:text-base justify-between flex flex-row items-center md:flex-grow-0"
     >
       <li>
         <NuxtLink
-          class="underlined-link px-2 py-2"
+          class="underlined-link mr-6 py-2"
           :class="{
             'not-[:hover,:focus,:active]:after:border-transparent':
               $route.path !== '/',
           }"
           to="/"
-          title="Daniel Roe"
         >
-          DCR
+          Daniel Roe
         </NuxtLink>
       </li>
       <template v-for="link in menu.slice(1)" :key="link.name">
-        <li aria-hidden="true" class="hidden md:inline-block font-bold">•</li>
         <li>
           <NuxtLink
-            class="underlined-link hidden md:inline-block px-2 py-2"
+            class="underlined-link hidden md:inline-block px-2 py-2 hover:opacity-100 active:opacity-100 focus:opacity-100 transition-opacity"
             :class="{
-              'not-[:hover,:focus,:active]:after:border-transparent':
+              'not-[:hover,:focus,:active]:after:border-transparent opacity-25':
                 $route.path !== link.path,
+              'opacity-75': $route.path === link.path,
             }"
             :to="link.path"
           >
@@ -105,7 +96,7 @@ function toggleMenu(input?: Event | boolean) {
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
-        class="-mr-1 -mt-1 p-1 w-[2rem] flex-shrink-0"
+        class="p-1 w-[2rem] flex-shrink-0 outline-none border-transparent border-2 border-solid hover:border-primary active:border-primary focus:border-primary rounded-full leading-none"
         @click="$auth.status = 'pending'"
       >
         <span class="h-5 w-5 i-ri:github-fill" alt="" />
@@ -157,7 +148,7 @@ function toggleMenu(input?: Event | boolean) {
               <span class="sr-only"> Close mobile navigation menu </span>
             </button>
             <ul
-              class="uppercase font-semibold tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
+              class="uppercase tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
             >
               <li v-for="link in menu" :key="link.name">
                 <NuxtLink

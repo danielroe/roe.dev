@@ -13,24 +13,24 @@ const entries = await queryContent('/blog')
 </script>
 
 <template>
-  <section class="flex flex-row flex-wrap gap-4">
-    <GridLink
+  <section class="flex flex-col gap-4 max-w-[37.50rem]">
+    <NuxtLink
       v-for="{ title, path, date } in entries"
       :key="path"
       :to="path"
       :title="title"
     >
       <article>
-        <header>
-          <span>
+        <header class="flex flex-col md:flex-row justify-between items-start">
+          <span class="underlined-link">
             {{ title }}
           </span>
           <dl
             v-if="date"
-            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
+            class="mt-3 md:mt-1 leading-normal uppercase text-xs opacity-60"
           >
-            <dt class="float-left md:float-none mr-2">Published</dt>
-            <dd class="font-semibold mr-4">
+            <dt class="sr-only">Published</dt>
+            <dd class="mr-4">
               <NuxtTime
                 :datetime="date"
                 day="numeric"
@@ -41,7 +41,7 @@ const entries = await queryContent('/blog')
           </dl>
         </header>
       </article>
-    </GridLink>
+    </NuxtLink>
   </section>
 </template>
 

@@ -3,7 +3,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
 </script>
 
 <template>
-  <div class="flex gap-3 flex-row flex-wrap mx-auto justify-center relative">
+  <div class="flex gap-3 flex-row flex-wrap mx-auto justify-start relative">
     <nuxt-img
       v-for="sponsor of sponsors"
       :key="sponsor"
@@ -20,7 +20,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
     />
     <nuxt-link
       to="https://github.com/sponsors/danielroe"
-      class="pure rounded-full border-gray border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:opacity-50 focus:opacity-50 transform-opacity"
+      class="pure rounded-full border-primary outline-none border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:border-solid focus:border-solid active:border-solid hover:bg-accent focus:bg-accent active:bg-accent"
       target="_blank"
     >
       <div class="block i-ri:add-fill h-6 w-6" />
