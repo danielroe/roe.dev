@@ -46,7 +46,7 @@ const count = ref<null | number>(null)
 
 // eslint-disable-next-line vue/one-component-per-file
 const LiveWrapper = defineComponent({
-  setup (_props, { slots }) {
+  setup(_props, { slots }) {
     return () =>
       h(
         'a',
@@ -62,7 +62,7 @@ const LiveWrapper = defineComponent({
 
 // eslint-disable-next-line vue/one-component-per-file
 const PresenceWrapper = defineComponent({
-  setup (_props, { slots }) {
+  setup(_props, { slots }) {
     return () =>
       h(
         'span',

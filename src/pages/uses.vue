@@ -15,6 +15,8 @@ definePageMeta({ title: 'Uses' })
 
 <style module>
 .uses {
+  @apply text-base;
+
   h2,
   h3 {
     @apply text-lg;
@@ -34,9 +36,5 @@ definePageMeta({ title: 'Uses' })
       list-style-type: '‣ ';
     }
   }
-}
-
-.uses {
-  @apply text-base;
 }
 </style>
