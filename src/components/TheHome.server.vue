@@ -168,15 +168,13 @@ const { data: talks } = await useAsyncData(
                 :src="video.thumbnail"
               />
             </div>
-            <div
-              class="px-2 py-2 flex flex-row justify-between items-end leading-none"
-            >
-              <div class="text-ellipsis line-clamp-1">
+            <div class="px-2 py-1 flex flex-row justify-between items-end">
+              <div class="text-ellipsis line-clamp-1 py-1 leading-none">
                 {{ video.title }}
               </div>
               <NuxtTime
                 :datetime="video.date"
-                class="flex-shrink-0 uppercase text-xs opacity-60 leading-none"
+                class="flex-shrink-0 uppercase text-xs opacity-60 leading-none py-1"
                 day="numeric"
                 month="long"
               />
@@ -363,7 +361,9 @@ const { data: talks } = await useAsyncData(
       <NuxtLink class="underlined-link" to="/feed">
         aggregated feed on this site </NuxtLink
       >. You can also get in touch
-      <a class="underlined-link" href="mailto:daniel@roe.dev">by email</a>
+      <a class="underlined-link" href="mailto:daniel@roe.dev" data-external>
+        by email
+      </a>
       &mdash; and I have an open diary if you want to
       <NuxtLink class="underlined-link" to="/blog/open-invitation">
         book a meeting </NuxtLink
