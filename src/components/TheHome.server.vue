@@ -148,7 +148,7 @@ const { data: talks } = await useAsyncData(
         class="flex flex-row gap-2 mt-4 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
       >
         <li
-          v-for="video of streams"
+          v-for="(video, index) of streams"
           :key="video.title"
           class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
         >
@@ -164,6 +164,8 @@ const { data: talks } = await useAsyncData(
                 style="transform: scale(1.11)"
                 width="762"
                 height="400"
+                decoding="async"
+                :loading="index > 2 ? 'lazy' : 'eager'"
                 :alt="`Still thumbnail for ${video.title}`"
                 :src="video.thumbnail"
               />
@@ -229,6 +231,8 @@ const { data: talks } = await useAsyncData(
               class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
             >
               <nuxt-img
+                loading="lazy"
+                decoding="async"
                 :src="conference.image"
                 :alt="`Logo for ${conference.name}`"
                 class="object-cover object-center"
