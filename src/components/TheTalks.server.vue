@@ -95,7 +95,7 @@ const { data: groups } = await useAsyncData(
           </dl>
           <ExpandableTray
             v-if="video || link || release"
-            class="ml-auto flex gap-2 items-start"
+            class="ml-auto flex items-start"
           >
             <NuxtLink
               v-if="video || link"
