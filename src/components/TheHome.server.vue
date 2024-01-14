@@ -191,18 +191,18 @@ const { data: talks } = await useAsyncData(
       <ExpandableTray>
         <a
           href="https://twitch.tv/danielroe"
-          class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+          class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
           aria-label="Watch more streams on Twitch"
         >
-          <span class="i-ri-twitch-fill" />
+          <span class="i-ri-twitch-fill h-5 w-5 md:h-4 md:w-4" />
           <span class="hidden md:inline-block">twitch</span>
         </a>
         <a
           href="https://youtube.com/@danielroe"
-          class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+          class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
           aria-label="Watch more videos on YouTube"
         >
-          <span class="i-ri-youtube-fill" />
+          <span class="i-ri-youtube-fill h-5 w-5 md:h-4 md:w-4" />
           <span class="hidden md:inline-block">youtube</span>
         </a>
       </ExpandableTray>
@@ -265,24 +265,26 @@ const { data: talks } = await useAsyncData(
   <section class="max-w-[37.50rem] overflow-visible">
     <h2 class="text-xl">recent talks</h2>
     <ul class="flex flex-col mt-4">
-      <li v-for="talk in talks" :key="talk.slug">
+      <li v-for="talk in talks" :key="talk.slug" class="mt-2 first:mt-0">
         <div
-          class="flex flex-col py-1 md:flex-row justify-between md:items-center"
+          class="flex flex-col py-1 md:flex-row md:justify-between md:items-center"
         >
-          <div>
-            <span class="mr-2">
+          <div
+            class="flex flex-row items-baseline w-full md:w-auto justify-between md:justify-start"
+          >
+            <span class="mr-2 leading-snug">
               {{ talk.title }}
             </span>
-            <ExpandableTray>
+            <ExpandableTray class="-mb-4 md:mb-0">
               <NuxtLink
                 v-if="talk.video || talk.link"
                 :href="talk.video || talk.link"
-                class="px-1 active:text-primary hover:text-primary focus:text-primary transition-colors leading-normal uppercase text-sm lowercase items-center flex gap-1"
+                class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none text-sm lowercase items-center flex gap-1"
               >
                 <span
                   v-if="talk.type === 'podcast' || talk.video"
                   :class="talk.video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
-                  class="h-4 w-4 flex-shrink-0"
+                  class="h-5 w-5 md:h-4 md:w-4"
                 />
                 <span class="sr-only">
                   {{ talk.video ? `Watch` : `Listen` }} to {{ talk.title }}
@@ -290,18 +292,18 @@ const { data: talks } = await useAsyncData(
               </NuxtLink>
               <NuxtLink
                 v-if="talk.release"
-                class="px-1 active:text-primary hover:text-primary focus:text-primary transition-colors leading-normal uppercase text-sm lowercase items-center flex gap-1"
+                class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
                 :to="`/slides/${talk.release}.pdf`"
                 data-external
               >
-                <span class="i-ri:presentation-fill" />
-                <span class="sr-only">Slides for {{ talk.title }}</span>
+                <span class="h-4 w-4 i-ri:presentation-fill" />
+                <span class="sr-only"> Slides for {{ talk.title }} </span>
               </NuxtLink>
             </ExpandableTray>
           </div>
 
           <NuxtTime
-            class="text-muted uppercase text-xs"
+            class="text-muted uppercase text-xs mt-1"
             :datetime="talk.date"
             day="numeric"
             month="long"
@@ -346,15 +348,15 @@ const { data: talks } = await useAsyncData(
     <h2 class="text-xl">contact me</h2>
     <p class="mt-4">
       I'd love to connect on social media
-      <ExpandableTray>
+      <ExpandableTray class="gap-4 md:gap-2">
         <a
           v-for="link in links"
           :key="link.name"
           :href="link.link"
           :aria-label="`Follow me on ${link.name}`"
-          class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm lowercase items-center flex gap-1"
+          class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm lowercase items-center flex gap-1"
         >
-          <span :class="link.icon" />
+          <span :class="link.icon" class="h-4 w-4" />
           <span class="hidden md:inline-block">{{ link.name }}</span>
         </a>
       </ExpandableTray>
