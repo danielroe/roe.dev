@@ -174,6 +174,7 @@ export default defineNuxtConfig({
   },
 
   image: {
+    preset: 'static',
     domains: [
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
