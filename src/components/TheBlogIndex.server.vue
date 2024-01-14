@@ -27,7 +27,7 @@ const entries = await queryContent('/blog')
           </span>
           <dl
             v-if="date"
-            class="mt-3 md:mt-1 leading-normal uppercase text-xs opacity-60"
+            class="mt-3 md:mt-1 leading-normal uppercase text-xs text-muted"
           >
             <dt class="sr-only">Published</dt>
             <dd class="mr-4">

@@ -177,7 +177,7 @@ const { data: talks } = await useAsyncData(
               </div>
               <NuxtTime
                 :datetime="video.date"
-                class="flex-shrink-0 uppercase text-xs opacity-60 leading-none py-1"
+                class="flex-shrink-0 uppercase text-xs text-muted leading-none py-1"
                 day="numeric"
                 month="long"
               />
@@ -251,7 +251,7 @@ const { data: talks } = await useAsyncData(
                 </span>
                 {{ conference.name }}
               </span>
-              <span class="uppercase text-xs opacity-60">
+              <span class="uppercase text-xs text-muted">
                 {{ conference.dates }}
               </span>
             </div>
@@ -301,7 +301,7 @@ const { data: talks } = await useAsyncData(
           </div>
 
           <NuxtTime
-            class="opacity-60 uppercase text-xs"
+            class="text-muted uppercase text-xs"
             :datetime="talk.date"
             day="numeric"
             month="long"
@@ -328,7 +328,7 @@ const { data: talks } = await useAsyncData(
           </div>
 
           <NuxtTime
-            class="opacity-60 uppercase text-xs"
+            class="text-muted uppercase text-xs"
             :datetime="article.date"
             day="numeric"
             month="long"
