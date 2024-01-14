@@ -286,8 +286,8 @@ const { data: talks } = await useAsyncData(
                   :class="talk.video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
                   class="h-4 w-4 flex-shrink-0"
                 />
-                <span class="sr-only hidden md:inline-block">
-                  {{ talk.video ? `Watch` : `Listen` }}
+                <span class="sr-only">
+                  {{ talk.video ? `Watch` : `Listen` }} to {{ talk.title }}
                 </span>
               </NuxtLink>
               <NuxtLink
@@ -297,7 +297,7 @@ const { data: talks } = await useAsyncData(
                 data-external
               >
                 <span class="i-ri:presentation-fill" />
-                <span class="sr-only hidden md:inline-block">slides</span>
+                <span class="sr-only">Slides for {{ talk.title }}</span>
               </NuxtLink>
             </ExpandableTray>
           </div>
@@ -357,6 +357,7 @@ const { data: talks } = await useAsyncData(
           v-for="link in links"
           :key="link.name"
           :href="link.link"
+          :aria-label="`Follow me on ${link.name}`"
           class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm lowercase items-center flex gap-1"
         >
           <span :class="link.icon" />

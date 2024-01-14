@@ -19,7 +19,9 @@ img[data-image-src='${avatar || 'null'}'] {
 const nuxtApp = useNuxtApp()
 onNuxtReady(() =>
   document.querySelectorAll('main a').forEach(a => {
-    nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
+    const href = a.getAttribute('href')
+    if (href && !href.startsWith('mailto:'))
+      nuxtApp.hooks.callHook('link:prefetch', href)
   })
 )
 </script>
