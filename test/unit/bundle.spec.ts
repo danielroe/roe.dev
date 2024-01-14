@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"31185k"`)
+      .toMatchInlineSnapshot(`"14966k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -162,6 +162,7 @@ describe('project sizes', () => {
         "js-yaml",
         "json5",
         "longest-streak",
+        "lru-cache",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -255,6 +256,7 @@ describe('project sizes', () => {
         "web-namespaces",
         "ws",
         "xml-js",
+        "yallist",
         "zwitch",
       ]
     `)
