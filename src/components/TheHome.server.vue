@@ -161,6 +161,7 @@ const { data: talks } = await useAsyncData(
             >
               <nuxt-img
                 class="aspect-[1.9] object-cover"
+                format="webp"
                 style="transform: scale(1.11)"
                 width="762"
                 height="400"
@@ -233,6 +234,7 @@ const { data: talks } = await useAsyncData(
               <nuxt-img
                 loading="lazy"
                 decoding="async"
+                format="webp"
                 :src="conference.image"
                 :alt="`Logo for ${conference.name}`"
                 class="object-cover object-center"

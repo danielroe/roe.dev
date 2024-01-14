@@ -179,6 +179,8 @@ export default defineNuxtConfig({
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
+      'images.jsworldconference.com',
+      'www.middlesbroughfe.co.uk',
     ],
     screens: {
       logo: 40,
