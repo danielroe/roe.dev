@@ -139,7 +139,7 @@ const { data: talks } = await useAsyncData(
         </p> -->
   </section>
   <hr
-    class="block mx-auto mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700"
+    class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700"
   />
   <section class="max-w-[37.50rem]">
     <h2 class="text-xl">some recent streams</h2>
@@ -212,9 +212,7 @@ const { data: talks } = await useAsyncData(
       </span>
     </div>
   </section>
-  <hr
-    class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
   <section class="max-w-[37.50rem]">
     <h2 class="text-xl">upcoming conferences</h2>
     <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
@@ -263,9 +261,7 @@ const { data: talks } = await useAsyncData(
     </div>
     <!-- TODO: add link for conference organisers -->
   </section>
-  <hr
-    class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
   <section class="max-w-[37.50rem] overflow-visible">
     <h2 class="text-xl">recent talks</h2>
     <ul class="flex flex-col mt-4">
@@ -318,9 +314,7 @@ const { data: talks } = await useAsyncData(
       more talks &raquo;
     </NuxtLink>
   </section>
-  <hr
-    class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
   <section class="max-w-[37.50rem] overflow-visible">
     <h2 class="text-xl">latest from the blog</h2>
     <ul class="flex flex-col mt-4">
@@ -347,9 +341,7 @@ const { data: talks } = await useAsyncData(
       more articles &raquo;
     </NuxtLink>
   </section>
-  <hr
-    class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
   <section class="text-lg max-w-[50rem]">
     <h2 class="text-xl">contact me</h2>
     <p class="mt-4">
@@ -379,9 +371,7 @@ const { data: talks } = await useAsyncData(
       >.
     </p>
   </section>
-  <hr
-    class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
   <section class="max-w-[75rem]">
     <header class="text-xl mb-4">
       special thanks to
