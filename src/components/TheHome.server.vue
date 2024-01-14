@@ -192,6 +192,7 @@ const { data: talks } = await useAsyncData(
         <a
           href="https://twitch.tv/danielroe"
           class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+          aria-label="Watch more streams on Twitch"
         >
           <span class="i-ri-twitch-fill" />
           <span class="hidden md:inline-block">twitch</span>
@@ -199,6 +200,7 @@ const { data: talks } = await useAsyncData(
         <a
           href="https://youtube.com/@danielroe"
           class="px-1 outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+          aria-label="Watch more videos on YouTube"
         >
           <span class="i-ri-youtube-fill" />
           <span class="hidden md:inline-block">youtube</span>
