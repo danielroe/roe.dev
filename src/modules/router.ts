@@ -2,7 +2,12 @@ import { statSync } from 'node:fs'
 import fsp from 'node:fs/promises'
 
 import { join, relative } from 'pathe'
-import { genArrayFromRaw, genDynamicImport, genString } from 'knitwork'
+import {
+  genSafeVariableName,
+  genArrayFromRaw,
+  genString,
+  genImport,
+} from 'knitwork'
 import {
   addComponent,
   addImports,
@@ -84,8 +89,14 @@ export default defineNuxtModule({
       filename: 'routes.mjs',
       async getContents() {
         const files = await readRecursive(resolver.resolve('../pages'))
+        const componentNames = Object.fromEntries(
+          files.map(f => [f, genSafeVariableName(f)])
+        )
         return `
-        import { defineAsyncComponent } from 'vue';
+        // import { defineAsyncComponent } from 'vue';
+        ${Object.entries(componentNames)
+          .map(([path, name]) => genImport(path, { name }))
+          .join('\n')}
         export default ${genArrayFromRaw(
           files.map(f => {
             const path = withLeadingSlash(
@@ -100,9 +111,10 @@ export default defineNuxtModule({
                     .replace(/\[(.*)\]/g, '(?<$1>.+)')
                     .replace(/\//g, '\\/')}/`
                 : genString(path),
-              component: `defineAsyncComponent(${genDynamicImport(f, {
-                interopDefault: true,
-              })})`,
+              // component: `defineAsyncComponent(${genDynamicImport(f, {
+              //   interopDefault: true,
+              // })})`,
+              component: componentNames[f],
               meta: JSON.stringify(routeMeta[path] || {}),
             }
           })
