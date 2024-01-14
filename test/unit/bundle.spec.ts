@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"214k"`)
+      .toMatchInlineSnapshot(`"212k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"421k"`)
+      .toMatchInlineSnapshot(`"419k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"14966k"`)
+      .toMatchInlineSnapshot(`"11231k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -93,54 +93,30 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atproto/api",
-        "@fastify/accept-negotiator",
         "@sindresorhus/is",
-        "@trysound/sax",
         "@ungap/structured-clone",
         "bail",
-        "boolbase",
         "ccount",
         "char-regex",
         "character-entities",
         "character-entities-html4",
         "character-entities-legacy",
         "character-reference-invalid",
-        "color",
-        "color-convert",
-        "color-name",
-        "color-string",
         "comma-separated-tokens",
-        "cookie-es",
-        "css-select",
-        "css-tree",
-        "css-tree/node_modules/mdn-data",
-        "css-what",
-        "csso",
-        "csso/node_modules/css-tree",
-        "csso/node_modules/css-tree/node_modules/mdn-data",
         "decode-named-character-reference",
-        "defu",
-        "destr",
         "detab",
-        "detect-libc",
         "devlop",
-        "dom-serializer",
-        "domelementtype",
-        "domhandler",
-        "domutils",
         "emojilib",
         "emoticon",
         "entities",
         "entities/lib/esm",
         "escape-string-regexp",
-        "etag",
         "events-to-async",
         "events-to-async/module",
         "extend",
         "feed",
         "flat",
         "github-slugger",
-        "h3",
         "hast-util-from-parse5",
         "hast-util-is-element",
         "hast-util-parse-selector",
@@ -149,20 +125,15 @@ describe('project sizes', () => {
         "hast-util-to-string",
         "hastscript",
         "html-void-elements",
-        "image-meta",
-        "ipx",
-        "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
-        "is-arrayish",
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
         "js-yaml",
         "json5",
         "longest-streak",
-        "lru-cache",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -176,7 +147,6 @@ describe('project sizes', () => {
         "mdast-util-to-hast",
         "mdast-util-to-markdown",
         "mdast-util-to-string",
-        "mdn-data",
         "micromark",
         "micromark-core-commonmark",
         "micromark-extension-gfm",
@@ -204,14 +174,9 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "node-emoji",
-        "node-fetch-native",
-        "nth-check",
-        "ofetch",
         "parse-entities",
         "parse5",
-        "pathe",
         "property-information",
-        "radix3",
         "rehype-external-links",
         "rehype-raw",
         "rehype-sort-attribute-values",
@@ -223,26 +188,16 @@ describe('project sizes', () => {
         "remark-rehype",
         "sax",
         "scule",
-        "semver",
-        "sharp",
         "shikiji",
         "shikiji-core",
         "shikiji-transformers",
-        "simple-swizzle",
         "skin-tone",
         "slugify",
-        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
-        "svgo",
-        "svgo/node_modules/css-tree",
-        "svgo/node_modules/css-tree/node_modules/mdn-data",
         "trim-lines",
         "trough",
         "ts-custom-error",
-        "ufo",
-        "uncrypto",
-        "unenv",
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-is",
@@ -256,7 +211,6 @@ describe('project sizes', () => {
         "web-namespaces",
         "ws",
         "xml-js",
-        "yallist",
         "zwitch",
       ]
     `)
