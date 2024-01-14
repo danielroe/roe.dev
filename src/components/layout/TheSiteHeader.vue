@@ -53,7 +53,7 @@ function toggleMenu(input?: Event | boolean) {
     class="py-4 px-4 md:px-12 md:py-8 uppercase flex flex-row justify-between items-center text-primary md:p-4 tracking-[0.15rem]"
   >
     <ul
-      class="flex-grow text-xs md:text-base justify-between flex flex-row items-center md:flex-grow-0"
+      class="flex-grow text-sm md:text-base justify-between flex flex-row items-center md:flex-grow-0"
     >
       <li>
         <NuxtLink
@@ -109,13 +109,13 @@ function toggleMenu(input?: Event | boolean) {
         @click="$auth.logout"
       >
         <img
-          class="h-6 w-6 rounded-full"
+          class="h-8 w-8 md:h-6 md:w-6 rounded-full"
           :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
           :src="$auth.user.avatar"
         />
         <span
           v-if="$auth.user.sponsor"
-          class="absolute top-[-0.45rem] right-[-0.2rem] h-5 w-5 text-yellow-400"
+          class="absolute top-[-0.65rem] md:top-[-0.45rem] right-[-0.4rem] md:right-[-0.2rem] h-5 w-5 text-yellow-400"
           alt=""
         >
           <span class="i-ri:star-fill border border-solid border-gray-800" />
@@ -123,9 +123,9 @@ function toggleMenu(input?: Event | boolean) {
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <div class="md:hidden">
-        <button type="button" @click="toggleMenu">
+        <button type="button" class="ml-4" @click="toggleMenu">
           <span
-            class="menu-icon h-6 w-6 i-ri:add-line"
+            class="menu-icon h-8 w-8 md:h-6 md:w-6 i-ri:add-line"
             :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
             alt=""
           />
@@ -173,11 +173,32 @@ function toggleMenu(input?: Event | boolean) {
 </template>
 
 <style>
+@keyframes rotate-out {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-22.5deg);
+  }
+}
+
+@keyframes rotate-in {
+  from {
+    transform: rotate(-22.5deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
 ::view-transition-old(menu) {
-  transform: rotate(0deg);
+  opacity: 0;
+  animation: rotate-out 0.2s;
 }
 
 ::view-transition-new(menu) {
-  transform: rotate(90deg);
+  animation: rotate-in 0.2s;
 }
 </style>
