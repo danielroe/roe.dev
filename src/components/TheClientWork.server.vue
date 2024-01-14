@@ -21,25 +21,15 @@ const clients = {
 
 <template>
   <section
-    :class="$style.logos"
-    class="flex flex-row flex-wrap justify-center items-center my-12 gap-8"
+    class="flex flex-row flex-wrap justify-center items-center my-12 gap-8 *:h-full *:w-auto *:flex-grow-0 *:flex-shrink *:max-h-8 *:max-w-[5rem]"
   >
     <nuxt-picture
       v-for="([image, dimensions], name) in clients"
       :key="name"
       :alt="name"
+      class="light:*:invert-100 light:*:opacity-80"
       :src="`/img/work/${image}`"
       v-bind="dimensions"
     />
   </section>
 </template>
-
-<style module>
-.logos > * {
-  @apply h-full w-auto flex-grow-0 flex-shrink max-h-8 max-w-[5rem];
-}
-
-:global(.light-mode) .logos img {
-  filter: invert(1) opacity(0.8);
-}
-</style>
