@@ -11,7 +11,7 @@ nuxtApp.hooks.hook('link:prefetch', url => {
   preloadedPages.add(url)
   const path = match(url)
   if (path && path.component && path.component.__asyncResolved !== true) {
-    path.component.__asyncLoader()
+    path.component.__asyncLoader?.()
   }
 })
 const done = nuxtApp.deferHydration()

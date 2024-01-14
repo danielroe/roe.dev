@@ -1,5 +1,7 @@
 <template>
-  <main class="text-muted flex-grow mx-auto p-4 w-full max-w-[37.50rem]">
+  <main
+    class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]"
+  >
     <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
       <h1 class="text-2xl">
         {{ page.title }}
@@ -9,7 +11,7 @@
         class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
       >
         <dt class="float-left md:float-none mr-2">Published</dt>
-        <dd class="font-semibold mr-4">
+        <dd class="mr-4">
           <NuxtTime
             :datetime="page.date"
             day="numeric"
@@ -19,13 +21,12 @@
         </dd>
         <template v-if="page.tags && page.tags.length">
           <dt class="float-left md:float-none mr-2">Tags</dt>
-          <dd class="font-semibold mr-4">
+          <dd class="mr-4">
             <span
               v-for="(tag, index) in page.tags"
               :key="tag"
               :class="{
-                'before:content-empty before:mx-1 before:inline-block before:font-bold':
-                  index,
+                'before:content-empty before:mx-1 before:inline-block': index,
               }"
               v-text="tag"
             />
@@ -117,10 +118,6 @@ header dl dd:first-of-type {
     letter-spacing: 0.1rem;
   }
 
-  h3 {
-    @apply font-bold;
-  }
-
   * + h2,
   * + h3,
   * + h4 {
@@ -163,7 +160,7 @@ header dl dd:first-of-type {
       counter-increment: list;
 
       &::before {
-        @apply -ml-6 mt-2 mr-2 inline-block font-semibold leading-none;
+        @apply -ml-6 mt-2 mr-2 inline-block leading-none;
 
         width: 1rem;
       }
@@ -207,7 +204,7 @@ header dl dd:first-of-type {
   }
 
   p + div {
-    @apply mt-6 py-1 uppercase text-xs font-bold text-gray-600;
+    @apply mt-6 py-1 uppercase text-xs text-gray-600;
 
     letter-spacing: 0.15rem;
     background-color: theme('colors.gray.900');

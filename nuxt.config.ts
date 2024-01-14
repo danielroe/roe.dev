@@ -119,7 +119,7 @@ export default defineNuxtConfig({
     prerender: {
       concurrency: 12,
       crawlLinks: true,
-      routes: ['/', '/uses', '/og/og.jpg', '/rss.xml', '/voted'],
+      routes: ['/', '/og/og.jpg', '/rss.xml', '/voted', '/work'],
     },
     hooks: {
       'prerender:generate'(route) {
@@ -179,10 +179,14 @@ export default defineNuxtConfig({
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
+      'images.jsworldconference.com',
+      'www.middlesbroughfe.co.uk',
     ],
     screens: {
       logo: 40,
       avatar: 70,
+      380: 380,
+      760: 760,
     },
   },
 

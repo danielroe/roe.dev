@@ -2,6 +2,7 @@
 interface Talk {
   slug: string
   group?: string
+  description?: string
   title: string
   source: string
   tags: string
@@ -11,14 +12,6 @@ interface Talk {
   video?: string
   release?: string
 }
-
-const upcomingConferences: Array<{
-  name: string
-  dates: string
-  link: string
-  location: string
-  image: string
-}> = []
 
 // if (process.env.prerender && process.server) {
 //   for (const conference of upcomingConferences) {
@@ -31,142 +24,49 @@ const upcomingConferences: Array<{
 //   }
 // }
 
-const [{ data: groups }, { data: streams }] = await Promise.all([
-  useAsyncData(
-    () =>
-      ((process.server || process.dev) as true) &&
-      import('../data/talks.json').then(r => r.default as any as Talk[]),
-    {
-      transform: talks => {
-        const groupedTalks: Record<string, Talk[]> = {}
-        for (const talk of talks) {
-          const slug = talk.group || talk.slug
-          groupedTalks[slug] ||= []
-          groupedTalks[slug].push(talk)
-        }
+const { data: groups } = await useAsyncData(
+  () =>
+    ((process.server || process.dev) as true) &&
+    import('../data/talks.json').then(r => r.default as any as Talk[]),
+  {
+    transform: talks => {
+      const groupedTalks: Record<string, Talk[]> = {}
+      for (const talk of talks) {
+        const slug = talk.group || talk.slug
+        groupedTalks[slug] ||= []
+        groupedTalks[slug].push(talk)
+      }
 
-        for (const group in groupedTalks) {
-          groupedTalks[group].sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          )
-        }
-
-        const groups = Object.entries(groupedTalks).sort(
-          ([_s1, [a]], [_s2, [b]]) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime()
-          }
+      for (const group in groupedTalks) {
+        groupedTalks[group].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         )
+      }
 
-        return groups
-      },
-    }
-  ),
-  useFetch('/api/streams', {
-    transform: streams =>
-      streams.slice(0, 4).map(stream => ({
-        title: stream.title,
-        thumbnail: stream.thumbnail_url
-          .replace('%{width}', '1200')
-          .replace('%{height}', '630'),
-        source: 'Twitch',
-        link: stream.url,
-        date: stream.created_at,
-        type: 'video',
-        video: stream.url,
-      })),
-  }),
-])
+      const groups = Object.entries(groupedTalks).sort(
+        ([_s1, [a]], [_s2, [b]]) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        }
+      )
+
+      return groups
+    },
+  }
+)
 </script>
 
 <template>
-  <section
-    v-if="upcomingConferences.length"
-    class="flex flex-row flex-wrap gap-4"
-  >
-    <h2 class="uppercase text-sm font-bold tracking-widest">
-      Upcoming conferences
-    </h2>
-    <GridLink
-      v-for="conference of upcomingConferences"
-      :key="conference.name"
-      :href="conference.link"
-    >
-      <article class="flex flex-row gap-4">
-        <!-- <img
-              class="aspect-[1.9] w-[150px] -ml-4 my-[-.88rem]"
-              width="1200"
-              height="630"
-              :alt="'Home page of ' + conference.name"
-              :src="'/thumbnail/' + conference.image"
-            /> -->
-        <header class="flex-grow">
-          {{ conference.name }}
-          <dl
-            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
-          >
-            <dt class="float-left md:float-none mr-2">When</dt>
-            <dd class="font-semibold mr-4">
-              {{ conference.dates }}
-            </dd>
-            <dt class="float-left md:float-none mr-2">Where</dt>
-            <dd class="font-semibold mr-4">
-              {{ conference.location }}
-            </dd>
-          </dl>
-        </header>
-      </article>
-    </GridLink>
-  </section>
-  <section
-    class="flex flex-row flex-wrap gap-4"
-    :class="upcomingConferences.length ? 'mt-12' : null"
-  >
-    <header
-      class="flex flex-row justify-between gap-2 w-full items-center uppercase text-sm font-bold tracking-widest"
-    >
-      <h2 class="flex flex-row gap-1 items-center">
-        <span class="i-ri:twitch-fill" />
-        Latest streams
-      </h2>
-      <a class="text-sm" href="https://twitch.tv/danielroe"> more </a>
-    </header>
-    <GridLink v-for="video of streams" :key="video.title" :href="video.video">
-      <article class="flex flex-row gap-4">
-        <header class="flex-grow">
-          {{ video.title }}
-          <dl
-            class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
-          >
-            <dt class="float-left md:float-none mr-2">Date</dt>
-            <dd class="font-semibold mr-4">
-              <NuxtTime
-                :datetime="video.date"
-                day="numeric"
-                month="long"
-                year="numeric"
-              />
-            </dd>
-          </dl>
-        </header>
-        <nuxt-img
-          class="aspect-[1.9] w-[150px] -mr-4 my-[-.88rem] object-cover object-left-top"
-          width="1200"
-          height="630"
-          :alt="`Still thumbnail for ${video.title}`"
-          :src="video.thumbnail"
-        />
-      </article>
-    </GridLink>
-  </section>
-  <section class="mt-12 flex flex-row flex-wrap gap-4">
-    <h2 class="uppercase text-sm font-bold tracking-widest">Past talks</h2>
+  <section class="flex flex-row flex-wrap gap-4 max-w-[37.50rem]">
     <section
       v-for="[slug, talks] of groups"
       :key="slug"
-      class="bg-accent p-4 relative text-xl flex flex-col justify-end min-h-12 transition-all border-1 border-solid border-transparent after:text-transparent flex-[100%]"
+      class="mb-2 w-full relative flex flex-col justify-end min-h-12 transition-all border-1 border-solid border-transparent after:text-transparent flex-[100%]"
     >
-      <div class="flex flex-row items-center gap-2">
+      <div class="flex flex-row items-center gap-2 text-xl">
         {{ talks[0].title }}
+      </div>
+      <div v-if="talks[0].description" class="text-base mb-1">
+        {{ talks[0].description }}
       </div>
       <article
         v-for="{ title, source, link, date, type, video, release } of talks"
@@ -177,10 +77,10 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
         <header class="flex flex-row mt-1">
           <dl
             v-if="date"
-            class="flex flex-row gap-4 flex-wrap leading-normal text-xs uppercase"
+            class="flex flex-row items-center gap-4 leading-normal text-sm w-full"
           >
             <dt class="sr-only">Date</dt>
-            <dd class="font-semibold min-w-24">
+            <dd class="md:min-w-24 uppercase opacity-60 text-xs flex-shrink-0">
               <NuxtTime
                 :datetime="date"
                 day="numeric"
@@ -189,35 +89,35 @@ const [{ data: groups }, { data: streams }] = await Promise.all([
               />
             </dd>
             <dt v-if="source" class="sr-only">Where</dt>
-            <dd v-if="source" class="font-semibold">
+            <dd v-if="source" class="text-ellipsis line-clamp-1">
               {{ source }}
             </dd>
           </dl>
-          <div
+          <ExpandableTray
             v-if="video || link || release"
-            class="ml-auto flex flex-row gap-2 items-start"
+            class="ml-auto flex items-start"
           >
             <NuxtLink
               v-if="video || link"
               :href="video || link"
-              class="underlined-link leading-normal uppercase text-xs font-bold items-center"
+              class="text-xs items-center"
             >
               <span
                 v-if="type === 'podcast' || video"
                 :class="video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
                 class="h-4 w-4 flex-shrink-0"
               />
-              {{ video ? `Watch` : `Listen` }}
+              {{ video ? `watch` : `listen` }}
             </NuxtLink>
             <NuxtLink
               v-if="release"
-              class="underlined-link leading-normal uppercase text-xs font-bold items-center"
+              class="text-xs items-center"
               :to="`/slides/${release}.pdf`"
               data-external
             >
-              <span class="i-ri:presentation-fill" /> PDF
+              <span class="i-ri:presentation-fill" /> slides
             </NuxtLink>
-          </div>
+          </ExpandableTray>
         </header>
       </article>
     </section>
