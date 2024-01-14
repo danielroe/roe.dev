@@ -87,6 +87,7 @@ dl {
   font-size: 0.75rem;
 }
 dd {
+  font-weight: bold;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
@@ -98,6 +99,7 @@ dd > span + span::before {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   display: inline-block;
+  font-weight: bold;
   content: '•';
 }
 `
