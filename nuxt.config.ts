@@ -183,6 +183,8 @@ export default defineNuxtConfig({
     screens: {
       logo: 40,
       avatar: 70,
+      380: 380,
+      760: 760,
     },
   },
 

@@ -162,8 +162,8 @@ const { data: talks } = await useAsyncData(
               <nuxt-img
                 class="aspect-[1.9] object-cover"
                 style="transform: scale(1.11)"
-                width="1200"
-                height="630"
+                width="762"
+                height="400"
                 :alt="`Still thumbnail for ${video.title}`"
                 :src="video.thumbnail"
               />
