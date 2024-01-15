@@ -187,6 +187,7 @@ export default defineNuxtConfig({
       'www.middlesbroughfe.co.uk',
       'res.cloudinary.com',
       'cityjsconf.org',
+      'vuejsnation.com',
     ],
     screens: {
       logo: 40,

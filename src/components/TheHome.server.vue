@@ -35,6 +35,13 @@ const upcomingConferences: Array<{
   image: string
 }> = [
   {
+    name: 'Vue.js Nation',
+    dates: '24-25 January',
+    link: 'https://vuejsnation.com/',
+    location: '🌍',
+    image: 'https://vuejsnation.com/images/thumbnail-2024.jpg',
+  },
+  {
     name: 'Vue.js Amsterdam',
     dates: '28-29 February',
     link: 'https://vuejs.amsterdam/',
