@@ -61,6 +61,7 @@ export default defineNuxtConfig({
   future: {
     typescriptBundlerResolution: true,
   },
+
   experimental: {
     headNext: true,
     viewTransition: true,
@@ -86,22 +87,11 @@ export default defineNuxtConfig({
     enabled: !!process.env.SYNC_DEV_TO,
   },
 
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        // resolveJsonModule: false,
-      },
-    },
-  },
-
   srcDir: 'src',
 
   nitro: {
-    // TODO: investigate in nitro/nuxt
-    replace: { 'process.browser': false },
     future: { nativeSWR: true },
     prerender: {
-      concurrency: 12,
       crawlLinks: true,
       routes: ['/', '/og/og.jpg', '/rss.xml', '/voted', '/work'],
     },
