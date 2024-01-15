@@ -22,7 +22,7 @@ const links = [
   },
   {
     name: 'Bluesky',
-    icon: 'i-ri:checkbox-blank-fill',
+    icon: 'i-tabler-brand-bluesky',
     link: 'https://bsky.app/profile/danielroe.dev',
   },
   {

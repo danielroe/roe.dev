@@ -17,6 +17,9 @@ dependencies:
   '@iconify-json/svg-spinners':
     specifier: ^1.1.2
     version: 1.1.2
+  '@iconify-json/tabler':
+    specifier: ^1.1.104
+    version: 1.1.104
   '@nuxt/content':
     specifier: 2.10.0
     version: 2.10.0(nuxt@3.9.1)(rollup@4.9.5)(vue@3.4.13)
@@ -1375,6 +1378,12 @@ packages:
 
   /@iconify-json/svg-spinners@1.1.2:
     resolution: {integrity: sha512-Aab6SqkORaTJ1W+ooufn6C8BsBitrn3uk8iRQLPA6pjhyvQAhkKCGMctyXIL5ZjrycnoFVsZ4mx7KnwEMra8qg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/tabler@1.1.104:
+    resolution: {integrity: sha512-wULNz6HmRZSOUansZl57uI9PkE98QlkplIpalBEez56RtJ2Ygi30JqFNG+eSBRA8dYcYJG9TPNg6fcOV3TZYpA==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
