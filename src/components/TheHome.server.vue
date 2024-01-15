@@ -61,8 +61,7 @@ const upcomingConferences: Array<{
     dates: '15-17 May',
     link: 'https://vueconf.us/',
     location: '🇺🇸',
-    image:
-      'https://vueconf.us/__og-image__/image/og.png',
+    image: 'https://vueconf.us/__og-image__/image/og.png',
   },
   {
     name: 'Middlesborough FE',
