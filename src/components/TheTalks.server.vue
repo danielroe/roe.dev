@@ -65,7 +65,10 @@ const { data: groups } = await useAsyncData(
       <div class="flex flex-row items-center gap-2 text-xl">
         {{ talks[0].title }}
       </div>
-      <div v-if="talks[0].description" class="text-base mb-1">
+      <div
+        v-if="talks[0].description"
+        class="text-base mb-1"
+      >
         {{ talks[0].description }}
       </div>
       <article
@@ -79,7 +82,9 @@ const { data: groups } = await useAsyncData(
             v-if="date"
             class="flex flex-row items-center gap-4 leading-normal text-sm w-full"
           >
-            <dt class="sr-only">Date</dt>
+            <dt class="sr-only">
+              Date
+            </dt>
             <dd class="md:min-w-24 uppercase opacity-60 text-xs flex-shrink-0">
               <NuxtTime
                 :datetime="date"
@@ -88,8 +93,16 @@ const { data: groups } = await useAsyncData(
                 year="numeric"
               />
             </dd>
-            <dt v-if="source" class="sr-only">Where</dt>
-            <dd v-if="source" class="text-ellipsis line-clamp-1">
+            <dt
+              v-if="source"
+              class="sr-only"
+            >
+              Where
+            </dt>
+            <dd
+              v-if="source"
+              class="text-ellipsis line-clamp-1"
+            >
               {{ source }}
             </dd>
           </dl>

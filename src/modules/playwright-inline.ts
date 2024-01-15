@@ -9,7 +9,7 @@ export default defineNuxtModule({
     // Work around a weird tracing behaviour that traces and includes imports that are not used in production
     const nuxt = useNuxt()
     nuxt.hook('nitro:config', config => {
-      ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
+      (config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
         transform(_code, id) {
           if (id.includes('og/[slug]') || id.includes('thumbnail/[slug]')) {

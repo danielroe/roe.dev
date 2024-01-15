@@ -29,7 +29,9 @@ const entries = await queryContent('/blog')
             v-if="date"
             class="mt-3 md:mt-1 leading-normal uppercase text-xs text-muted"
           >
-            <dt class="sr-only">Published</dt>
+            <dt class="sr-only">
+              Published
+            </dt>
             <dd class="mr-4">
               <NuxtTime
                 :datetime="date"

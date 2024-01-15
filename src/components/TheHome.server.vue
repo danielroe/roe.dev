@@ -148,7 +148,10 @@ const { data: talks } = await useAsyncData(
   <section class="max-w-[37.50rem] text-lg md:text-xl">
     <p>
       I am an open-source maintainer and founder, leading the
-      <a class="underlined-link" href="https://nuxt.com">Nuxt core team</a>.
+      <a
+        class="underlined-link"
+        href="https://nuxt.com"
+      >Nuxt core team</a>.
       Previously, I was CTO of a SaaS startup and founder of a creative agency
       focusing on clarity of vision and message.
     </p>
@@ -161,9 +164,11 @@ const { data: talks } = await useAsyncData(
   </section>
   <hr
     class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
+  >
   <section class="max-w-[37.50rem]">
-    <h2 class="text-xl">some recent streams</h2>
+    <h2 class="text-xl">
+      some recent streams
+    </h2>
     <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
       <ul
         class="flex flex-row gap-2 mt-4 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
@@ -229,13 +234,18 @@ const { data: talks } = await useAsyncData(
       </ExpandableTray>
       <span class="text-base">
         or check out
-        <NuxtLink class="underlined-link" to="/uses"> what I use </NuxtLink>.
+        <NuxtLink
+          class="underlined-link"
+          to="/uses"
+        > what I use </NuxtLink>.
       </span>
     </div>
   </section>
-  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="max-w-[37.50rem]">
-    <h2 class="text-xl">upcoming conferences</h2>
+    <h2 class="text-xl">
+      upcoming conferences
+    </h2>
     <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
       <ul
         class="flex flex-row gap-2 mt-4 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
@@ -282,11 +292,17 @@ const { data: talks } = await useAsyncData(
     </div>
     <!-- TODO: add link for conference organisers -->
   </section>
-  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="max-w-[37.50rem] overflow-visible">
-    <h2 class="text-xl">recent talks</h2>
+    <h2 class="text-xl">
+      recent talks
+    </h2>
     <ul class="flex flex-col mt-4">
-      <li v-for="talk in talks" :key="talk.slug" class="mt-2 first:mt-0">
+      <li
+        v-for="talk in talks"
+        :key="talk.slug"
+        class="mt-2 first:mt-0"
+      >
         <div
           class="flex flex-col py-1 md:flex-row md:justify-between md:items-center"
         >
@@ -333,15 +349,24 @@ const { data: talks } = await useAsyncData(
         </div>
       </li>
     </ul>
-    <NuxtLink class="mt-4 underlined-link text-base" to="/talks">
+    <NuxtLink
+      class="mt-4 underlined-link text-base"
+      to="/talks"
+    >
       more talks &raquo;
     </NuxtLink>
   </section>
-  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="max-w-[37.50rem] overflow-visible">
-    <h2 class="text-xl">latest from the blog</h2>
+    <h2 class="text-xl">
+      latest from the blog
+    </h2>
     <ul class="flex flex-col mt-4">
-      <li v-for="article in articles" :key="article._path" class="py-2">
+      <li
+        v-for="article in articles"
+        :key="article._path"
+        class="py-2"
+      >
         <NuxtLink
           :to="article.path"
           class="flex flex-col items-start gap-3 justify-between md:flex-row md:items-center"
@@ -360,13 +385,18 @@ const { data: talks } = await useAsyncData(
         </NuxtLink>
       </li>
     </ul>
-    <NuxtLink class="mt-4 underlined-link text-base" to="/blog">
+    <NuxtLink
+      class="mt-4 underlined-link text-base"
+      to="/blog"
+    >
       more articles &raquo;
     </NuxtLink>
   </section>
-  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="text-lg max-w-[50rem]">
-    <h2 class="text-xl">contact me</h2>
+    <h2 class="text-xl">
+      contact me
+    </h2>
     <p class="mt-4">
       I'd love to connect on social media
       <ExpandableTray class="gap-4 md:gap-2">
@@ -377,24 +407,37 @@ const { data: talks } = await useAsyncData(
           :aria-label="`Follow me on ${link.name}`"
           class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm lowercase items-center flex gap-1"
         >
-          <span :class="link.icon" class="h-4 w-4" />
+          <span
+            :class="link.icon"
+            class="h-4 w-4"
+          />
           <span class="hidden md:inline-block">{{ link.name }}</span>
         </a>
       </ExpandableTray>
       or you can view an
-      <NuxtLink class="underlined-link" to="/feed">
-        aggregated feed on this site </NuxtLink
-      >. You can also get in touch
-      <a class="underlined-link" href="mailto:daniel@roe.dev" data-external>
+      <NuxtLink
+        class="underlined-link"
+        to="/feed"
+      >
+        aggregated feed on this site
+      </NuxtLink>. You can also get in touch
+      <a
+        class="underlined-link"
+        href="mailto:daniel@roe.dev"
+        data-external
+      >
         by email
       </a>
       &mdash; and I have an open diary if you want to
-      <NuxtLink class="underlined-link" to="/blog/open-invitation">
-        book a meeting </NuxtLink
-      >.
+      <NuxtLink
+        class="underlined-link"
+        to="/blog/open-invitation"
+      >
+        book a meeting
+      </NuxtLink>.
     </p>
   </section>
-  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700" />
+  <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="max-w-[75rem]">
     <header class="text-xl mb-4">
       special thanks to

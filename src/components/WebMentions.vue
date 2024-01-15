@@ -43,25 +43,50 @@ const { data: mentions, pending } = useFetch(
 <template>
   <hr
     class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700"
-  />
-  <h2 class="text-xl mb-4">Mentions</h2>
-  <div v-if="pending" class="flex items-center justify-center w-[2rem]">
-    <span class="h-6 w-6 i-svg-spinners:90-ring-with-bg" alt="" />
+  >
+  <h2 class="text-xl mb-4">
+    Mentions
+  </h2>
+  <div
+    v-if="pending"
+    class="flex items-center justify-center w-[2rem]"
+  >
+    <span
+      class="h-6 w-6 i-svg-spinners:90-ring-with-bg"
+      alt=""
+    />
     <span class="sr-only"> Loading </span>
   </div>
-  <div v-else-if="!mentions || !mentions.length">No mentions yet</div>
-  <div v-else class="flex flex-col gap-8">
-    <div v-for="mention in mentions" :key="mention['wm-id']" class="flex gap-4">
-      <a :href="mention.author.url" class="flex-shrink-0">
+  <div v-else-if="!mentions || !mentions.length">
+    No mentions yet
+  </div>
+  <div
+    v-else
+    class="flex flex-col gap-8"
+  >
+    <div
+      v-for="mention in mentions"
+      :key="mention['wm-id']"
+      class="flex gap-4"
+    >
+      <a
+        :href="mention.author.url"
+        class="flex-shrink-0"
+      >
         <img
           :src="mention.author.photo"
           :alt="mention.author.name"
           class="rounded-full h-12 w-12"
-        />
+        >
       </a>
       <div class="flex flex-col gap-2 items-start">
-        <div v-if="mention.content?.html" v-html="mention.content.html" />
-        <div v-else-if="mention['wm-property'] === 'like-of'">❤️</div>
+        <div
+          v-if="mention.content?.html"
+          v-html="mention.content.html"
+        />
+        <div v-else-if="mention['wm-property'] === 'like-of'">
+          ❤️
+        </div>
         <a :href="mention.url">&raquo; Link</a>
       </div>
     </div>

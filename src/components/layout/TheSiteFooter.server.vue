@@ -70,8 +70,15 @@ const year = new Date().getFullYear()
           :key="name"
           class="inline-flex items-center"
         >
-          <a :href="link" rel="me">
-            <span class="h-4 w-4 fill-current" :class="icon" alt="" />
+          <a
+            :href="link"
+            rel="me"
+          >
+            <span
+              class="h-4 w-4 fill-current"
+              :class="icon"
+              alt=""
+            />
             <span class="sr-only">
               {{ name }}
             </span>

@@ -45,7 +45,10 @@ defineProps({
             />
           </div>
         </a>
-        <a class="ml-auto" :href="permalink">
+        <a
+          class="ml-auto"
+          :href="permalink"
+        >
           <NuxtTime
             v-if="datetime"
             class="text-xs uppercase"
@@ -56,7 +59,10 @@ defineProps({
           />
         </a>
       </header>
-      <div :class="$style.html" v-html="html" />
+      <div
+        :class="$style.html"
+        v-html="html"
+      />
       <nuxt-img
         v-if="media?.length && media[0].url"
         :src="media[0].url"

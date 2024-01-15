@@ -11,7 +11,10 @@ defineProps({
     :data-cal-link="`danielroe/${meeting}`"
     type="button"
   >
-    <span class="i-ri:calendar-check-fill h-4 w-4" alt="" />
+    <span
+      class="i-ri:calendar-check-fill h-4 w-4"
+      alt=""
+    />
     {{ message }}
   </button>
 </template>

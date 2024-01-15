@@ -34,7 +34,7 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'components:extend'(components) {
+    'components:extend' (components) {
       // This code ensures that we can run our markdown renderer on the
       // client side in development mode (for HMR).
       const nuxt = useNuxt()
@@ -45,12 +45,12 @@ export default defineNuxtConfig({
       }
     },
     // We disable prerendering to speed up the bundle test.
-    'prerender:routes'(routes) {
+    'prerender:routes' (routes) {
       if (process.env.DISABLE_PRERENDER) {
         routes.routes.clear()
       }
     },
-    'nitro:config'(config) {
+    'nitro:config' (config) {
       if (process.env.DISABLE_PRERENDER) {
         config.prerender ||= {}
         config.prerender.crawlLinks = false
@@ -96,7 +96,7 @@ export default defineNuxtConfig({
       routes: ['/', '/og/og.jpg', '/rss.xml', '/voted', '/work'],
     },
     hooks: {
-      'prerender:generate'(route) {
+      'prerender:generate' (route) {
         if (route.fileName)
           route.fileName = route.fileName.replace(
             /(\.\w{3})\/index.html$/,

@@ -1,5 +1,10 @@
 <template>
-  <nuxt-picture :src="src" :alt="alt" :width="width" :height="height" />
+  <nuxt-picture
+    :src="src"
+    :alt="alt"
+    :width="width"
+    :height="height"
+  />
 </template>
 
 <script setup lang="ts">

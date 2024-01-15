@@ -11,7 +11,10 @@
         <span
           class="absolute flex top-0 right-0 pr-1 text-primary before:content-empty before:relative before:block before:w-full before:-mt-4 before:mb-2 before:bg-background before:rotate-30 before:scale-x-1000"
         >
-          <span class="z-10 h-8 w-8 i-ri:github-fill" alt="" />
+          <span
+            class="z-10 h-8 w-8 i-ri:github-fill"
+            alt=""
+          />
         </span>
         <header>
           {{ repo }}
@@ -19,13 +22,17 @@
             class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
           >
             <template v-if="stars">
-              <dt class="float-left md:float-none mr-2">Stars</dt>
+              <dt class="float-left md:float-none mr-2">
+                Stars
+              </dt>
               <dd class="mr-4">
                 {{ stars }}
               </dd>
             </template>
             <template v-if="language">
-              <dt class="float-left md:float-none mr-2">Language</dt>
+              <dt class="float-left md:float-none mr-2">
+                Language
+              </dt>
               <dd class="mr-4">
                 {{ language }}
               </dd>

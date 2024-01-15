@@ -2,7 +2,10 @@
   <main
     class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]"
   >
-    <header v-if="page" class="leading-none mt-[5vw] mb-[1vw]">
+    <header
+      v-if="page"
+      class="leading-none mt-[5vw] mb-[1vw]"
+    >
       <h1 class="text-2xl">
         {{ page.title }}
       </h1>
@@ -10,7 +13,9 @@
         v-if="page.date"
         class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
       >
-        <dt class="float-left md:float-none mr-2">Published</dt>
+        <dt class="float-left md:float-none mr-2">
+          Published
+        </dt>
         <dd class="mr-4">
           <NuxtTime
             :datetime="page.date"
@@ -20,7 +25,9 @@
           />
         </dd>
         <template v-if="page.tags && page.tags.length">
-          <dt class="float-left md:float-none mr-2">Tags</dt>
+          <dt class="float-left md:float-none mr-2">
+            Tags
+          </dt>
           <dd class="mr-4">
             <span
               v-for="(tag, index) in page.tags"
@@ -34,7 +41,10 @@
         </template>
       </dl>
     </header>
-    <section v-if="page" :class="$style.blog">
+    <section
+      v-if="page"
+      :class="$style.blog"
+    >
       <StaticMarkdownRender :path="path" />
     </section>
     <WebMentions />

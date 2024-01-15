@@ -16,10 +16,20 @@ const icon = props.social === 'twitter' ? 'i-ri:twitter-fill' : ''
       v-if="datetime || link || social"
       class="flex flex-row gap-2 w-full mt-6 pb-0 !mb-2"
     >
-      <div v-if="social" class="max-w-6">
-        <span class="h-4 w-4" :class="icon" alt="" />
+      <div
+        v-if="social"
+        class="max-w-6"
+      >
+        <span
+          class="h-4 w-4"
+          :class="icon"
+          alt=""
+        />
       </div>
-      <component :is="link ? 'a' : 'div'" :href="link">
+      <component
+        :is="link ? 'a' : 'div'"
+        :href="link"
+      >
         <NuxtTime
           v-if="datetime"
           :datetime="datetime"

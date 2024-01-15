@@ -1,10 +1,13 @@
 <template>
   <div class="flex flex-col justify-start gap-2">
-    <article v-for="(item, index) in sortedFeed" :key="item.permalink">
+    <article
+      v-for="(item, index) in sortedFeed"
+      :key="item.permalink"
+    >
       <hr
         v-if="index !== 0"
         class="block mx-auto my-2 content w-4 border-t-2 border-solid border-gray-700"
-      />
+      >
       <FeedPost
         :html="item.html"
         :handle="item.handle"

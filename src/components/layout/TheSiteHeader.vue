@@ -67,7 +67,10 @@ function toggleMenu(input?: Event | boolean) {
           Daniel Roe
         </NuxtLink>
       </li>
-      <template v-for="link in menu.slice(1)" :key="link.name">
+      <template
+        v-for="link in menu.slice(1)"
+        :key="link.name"
+      >
         <li>
           <NuxtLink
             class="underlined-link hidden md:inline-block px-2 py-2 hover:opacity-100 active:opacity-100 focus:opacity-100 transition-opacity"
@@ -90,7 +93,10 @@ function toggleMenu(input?: Event | boolean) {
         v-if="$auth.status === 'pending'"
         class="flex items-center justify-center w-[2rem] flex-shrink-0"
       >
-        <span class="h-6 w-6 i-svg-spinners:90-ring-with-bg" alt="" />
+        <span
+          class="h-6 w-6 i-svg-spinners:90-ring-with-bg"
+          alt=""
+        />
         <span class="sr-only"> Loading </span>
       </div>
       <NuxtLink
@@ -99,7 +105,10 @@ function toggleMenu(input?: Event | boolean) {
         class="p-1 w-[2rem] flex-shrink-0 outline-none border-transparent border-2 border-solid hover:border-primary active:border-primary focus:border-primary rounded-full leading-none"
         @click="$auth.status = 'pending'"
       >
-        <span class="h-5 w-5 i-ri:github-fill" alt="" />
+        <span
+          class="h-5 w-5 i-ri:github-fill"
+          alt=""
+        />
         <span class="sr-only"> Login </span>
       </NuxtLink>
       <button
@@ -112,7 +121,7 @@ function toggleMenu(input?: Event | boolean) {
           class="h-8 w-8 md:h-6 md:w-6 rounded-full"
           :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
           :src="$auth.user.avatar"
-        />
+        >
         <span
           v-if="$auth.user.sponsor"
           class="absolute top-[-0.65rem] md:top-[-0.45rem] right-[-0.4rem] md:right-[-0.2rem] h-5 w-5 text-yellow-400"
@@ -123,7 +132,11 @@ function toggleMenu(input?: Event | boolean) {
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
       <div class="md:hidden">
-        <button type="button" class="ml-4" @click="toggleMenu">
+        <button
+          type="button"
+          class="ml-4"
+          @click="toggleMenu"
+        >
           <span
             class="menu-icon h-8 w-8 md:h-6 md:w-6 i-ri:add-line"
             :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
@@ -131,7 +144,10 @@ function toggleMenu(input?: Event | boolean) {
           />
           <span class="sr-only"> Open mobile navigation menu </span>
         </button>
-        <Teleport v-if="showMenu" to="body">
+        <Teleport
+          v-if="showMenu"
+          to="body"
+        >
           <nav
             class="inset-0 fixed bg-accent text-muted z-10 flex flex-col justify-center items-center"
           >
@@ -150,7 +166,10 @@ function toggleMenu(input?: Event | boolean) {
             <ul
               class="uppercase tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
             >
-              <li v-for="link in menu" :key="link.name">
+              <li
+                v-for="link in menu"
+                :key="link.name"
+              >
                 <NuxtLink
                   class="underlined-link px-2 py-2"
                   :class="{

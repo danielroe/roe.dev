@@ -17,7 +17,10 @@
         <template v-if="status === 'live'"> live now </template>
         <template v-else>
           {{ count || '&nbsp;' }}
-          <span v-if="count" class="sr-only">viewers on website</span>
+          <span
+            v-if="count"
+            class="sr-only"
+          >viewers on website</span>
         </template>
       </span>
       &ZeroWidthSpace;
