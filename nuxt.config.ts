@@ -1,5 +1,4 @@
 import { useNuxt } from 'nuxt/kit'
-import type { InputPluginOption } from 'rollup'
 
 export default defineNuxtConfig({
   $production: {
