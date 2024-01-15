@@ -188,6 +188,7 @@ export default defineNuxtConfig({
       'res.cloudinary.com',
       'cityjsconf.org',
       'vuejsnation.com',
+      'vueconf.us',
     ],
     screens: {
       logo: 40,

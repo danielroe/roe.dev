@@ -62,7 +62,7 @@ const upcomingConferences: Array<{
     link: 'https://vueconf.us/',
     location: '🇺🇸',
     image:
-      'https://res.cloudinary.com/connectjs/image/upload/v1702956496/twittercard2024_2-01_faek7d.png',
+      'https://vueconf.us/__og-image__/image/og.png',
   },
   {
     name: 'Middlesborough FE',
