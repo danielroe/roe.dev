@@ -1,7 +1,5 @@
 import { getScreenshot } from '../../open-graph/index'
 
-const isDev = process.env.VERCEL_ENV === 'development'
-
 export default defineEventHandler(async event => {
   if (!import.meta.dev && !import.meta.prerender) return
 
@@ -11,7 +9,7 @@ export default defineEventHandler(async event => {
   if (!website || typeof website !== 'string')
     throw createError('Missing website query parameter')
 
-  const file = await getScreenshot(website, isDev)
+  const file = await getScreenshot(website, import.meta.dev)
 
   event.node.res.statusCode = 200
   event.node.res.setHeader('Content-Type', 'image/jpeg')
