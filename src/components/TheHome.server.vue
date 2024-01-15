@@ -43,6 +43,21 @@ const upcomingConferences: Array<{
       'https://images.jsworldconference.com/logo_vuejs_amsterdam_b4b41918cb.svg?width=400',
   },
   {
+    name: 'CityJS London',
+    dates: '3-5 April',
+    link: 'https://london.cityjsconf.org/',
+    location: '🇬🇧',
+    image: 'https://cityjsconf.org/images/site/2019.jpg',
+  },
+  {
+    name: 'Vueconf US',
+    dates: '15-17 May',
+    link: 'https://vueconf.us/',
+    location: '🇺🇸',
+    image:
+      'https://res.cloudinary.com/connectjs/image/upload/v1702956496/twittercard2024_2-01_faek7d.png',
+  },
+  {
     name: 'Middlesborough FE',
     dates: '17 July',
     link: 'https://middlesbroughfe.co.uk/',

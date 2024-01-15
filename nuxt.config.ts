@@ -6,6 +6,9 @@ export default defineNuxtConfig({
     experimental: {
       noVueServer: true,
     },
+    image: {
+      provider: 'ipxStatic',
+    },
   },
   devtools: { enabled: true },
   runtimeConfig: {
@@ -175,7 +178,6 @@ export default defineNuxtConfig({
   },
 
   image: {
-    provider: 'ipxStatic',
     domains: [
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
@@ -183,6 +185,8 @@ export default defineNuxtConfig({
       'cdn.bsky.social',
       'images.jsworldconference.com',
       'www.middlesbroughfe.co.uk',
+      'res.cloudinary.com',
+      'cityjsconf.org',
     ],
     screens: {
       logo: 40,
