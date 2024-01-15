@@ -50,7 +50,6 @@ export default defineNuxtConfig({
         routes.routes.clear()
       }
     },
-    // TODO: this is a hack that we surely do not need
     'nitro:config'(config) {
       if (process.env.DISABLE_PRERENDER) {
         config.prerender ||= {}
