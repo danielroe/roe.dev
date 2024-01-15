@@ -135,6 +135,7 @@ header dl dd:first-of-type {
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 1rem 50vw !important;
+
     @media (width < 767px) {
       white-space: pre-wrap;
     }
