@@ -57,24 +57,6 @@ export default defineNuxtConfig({
         config.prerender ||= {}
         config.prerender.crawlLinks = false
       }
-      ;(config.rollupConfig!.plugins as InputPluginOption[]).push({
-        name: 'purge-the-handler',
-        transform(_code, id) {
-          if (id.includes('og/[slug]') || id.includes('thumbnail/[slug]')) {
-            return 'export default defineEventHandler(() => {})'
-          }
-        },
-      })
-    },
-    'nitro:init'(nitro) {
-      nitro.options._config.rollupConfig!.plugins = (
-        nitro.options._config.rollupConfig!.plugins as InputPluginOption[]
-      ).filter(p => !p || !('name' in p) || p.name !== 'purge-the-handler')
-    },
-    'vite:extendConfig'(config, { isClient }) {
-      if (isClient) {
-        config.define!['process.env.prerender'] = 'false'
-      }
     },
   },
 

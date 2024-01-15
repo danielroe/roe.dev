@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
-const redirect = process.dev
+const redirect = import.meta.dev
   ? `&redirect_uri=http://localhost:3000/auth/github`
   : ''
 const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}&scope=read:org`
@@ -36,7 +36,7 @@ watch(showMenu, value => {
 
 function toggleMenu(input?: Event | boolean) {
   const newValue = typeof input === 'boolean' ? input : !showMenu.value
-  if (process.server || input === showMenu.value) return
+  if (import.meta.server || input === showMenu.value) return
   if (document.startViewTransition) {
     document.startViewTransition(async () => {
       showMenu.value = newValue

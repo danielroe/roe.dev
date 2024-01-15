@@ -130,7 +130,7 @@ export default defineComponent({
     path: String,
   },
   async setup(props) {
-    if (process.dev) {
+    if (import.meta.dev) {
       const { data } = await useAsyncData(() =>
         queryContent(props.path!).findOne()
       )

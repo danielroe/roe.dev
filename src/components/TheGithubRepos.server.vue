@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 const config = useRuntimeConfig()
 const { data: repos } = await useAsyncData('repos', () => {
-  if (process.client && !process.dev) return Promise.resolve([])
+  if (import.meta.client && !import.meta.dev) return Promise.resolve([])
   const formatter = new Intl.NumberFormat('en-GB', {
     notation: 'compact',
     compactDisplay: 'short',
@@ -57,7 +57,7 @@ const { data: repos } = await useAsyncData('repos', () => {
   ]
   return Promise.all(
     repos.map(async repo => {
-      if (process.dev) {
+      if (import.meta.dev) {
         return {
           repo,
           stars: formatter.format(1400),

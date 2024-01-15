@@ -3,7 +3,7 @@ import { getScreenshot } from '../../open-graph/index'
 const isDev = process.env.VERCEL_ENV === 'development'
 
 export default defineEventHandler(async event => {
-  if (!process.dev && !process.env.prerender) return
+  if (!import.meta.dev && !import.meta.prerender) return
 
   const website =
     (getQuery(event).website as string) ||

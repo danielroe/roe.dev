@@ -55,7 +55,7 @@ const path = computed(() =>
 const { data: page } = await useAsyncData(
   path.value,
   () =>
-    ((process.server || process.dev) as true) &&
+    ((import.meta.server || import.meta.dev) as true) &&
     queryContent(path.value)
       .only(['title', 'date', 'tags', 'description'])
       .findOne()
@@ -70,7 +70,7 @@ if (!page.value) {
 
 route.meta.title = page.value.title
 
-if (process.server) {
+if (import.meta.server) {
   const SLUG_RE = createRegExp(
     exactly('/')
       .and(charNotIn('/').times.any().as('slug'))

@@ -31,7 +31,7 @@ useHead({
   },
 })
 
-if (process.server) {
+if (import.meta.server) {
   const PATH_RE = createRegExp(
     exactly(char.times.any().and(charNotIn('/')))
       .as('path')

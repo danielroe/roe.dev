@@ -9,7 +9,7 @@ import {
 const isDev = process.env.VERCEL_ENV === 'development'
 
 export default defineEventHandler(async event => {
-  if (!process.dev && !process.env.prerender) return
+  if (!import.meta.dev && !import.meta.prerender) return
 
   const slug = getRouterParam(event, 'slug')!.replace(/\.jpg$/, '')
 
