@@ -4,7 +4,7 @@ import { Feed } from 'feed'
 import { metadata } from '#metadata.json'
 
 export default defineEventHandler(async () => {
-  if (!process.dev && !process.env.prerender) return
+  if (!import.meta.dev && !import.meta.prerender) return
 
   const feed = new Feed({
     title: 'Daniel Roe',

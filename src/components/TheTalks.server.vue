@@ -13,7 +13,7 @@ interface Talk {
   release?: string
 }
 
-// if (process.env.prerender && process.server) {
+// if (import.meta.prerender && import.meta.server) {
 //   for (const conference of upcomingConferences) {
 //     await useStorage().setItem(conference.image, conference.link)
 //     appendHeader(
@@ -26,7 +26,7 @@ interface Talk {
 
 const { data: groups } = await useAsyncData(
   () =>
-    ((process.server || process.dev) as true) &&
+    ((import.meta.server || import.meta.dev) as true) &&
     import('../data/talks.json').then(r => r.default as any as Talk[]),
   {
     transform: talks => {

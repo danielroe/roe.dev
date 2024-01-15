@@ -6,10 +6,8 @@ import {
   getScreenshot,
 } from '../../open-graph/index'
 
-const isDev = process.env.VERCEL_ENV === 'development'
-
 export default defineEventHandler(async event => {
-  if (!process.dev && !process.env.prerender) return
+  if (!import.meta.dev && !import.meta.prerender) return
 
   const slug = getRouterParam(event, 'slug')!.replace(/\.jpg$/, '')
 
@@ -31,7 +29,7 @@ export default defineEventHandler(async event => {
   const filePath = await writeTempFile(parsedReqs.title, html)
   const fileUrl = `file://${filePath}`
 
-  const file = await getScreenshot(fileUrl, isDev)
+  const file = await getScreenshot(fileUrl, import.meta.dev)
 
   // @ts-expect-error bug in h3 - https://github.com/unjs/h3/issues/614
   setHeaders(event, {

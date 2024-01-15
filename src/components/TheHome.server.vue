@@ -115,7 +115,7 @@ interface Talk {
 
 const { data: talks } = await useAsyncData(
   () =>
-    ((process.server || process.dev) as true) &&
+    ((import.meta.server || import.meta.dev) as true) &&
     import('../data/talks.json').then(r => r.default as any as Talk[]),
   {
     transform: talks => {

@@ -155,14 +155,14 @@ export default defineComponent({
 
     // Prefetching
     const prefetched = ref(false)
-    const el = process.server ? undefined : ref<HTMLElement | null>(null)
-    const elRef = process.server
+    const el = import.meta.server ? undefined : ref<HTMLElement | null>(null)
+    const elRef = import.meta.server
       ? undefined
       : (ref: any) => {
           el!.value = ref?.$el
         }
 
-    if (process.client) {
+    if (import.meta.client) {
       const shouldPrefetch =
         props.prefetch !== false &&
         props.noPrefetch !== true &&
@@ -266,7 +266,7 @@ type CallbackFn = () => void
 type ObserveFn = (element: Element, callback: CallbackFn) => () => void
 
 function useObserver(): { observe: ObserveFn } | undefined {
-  if (process.server) {
+  if (import.meta.server) {
     return
   }
 
@@ -311,7 +311,7 @@ function useObserver(): { observe: ObserveFn } | undefined {
 }
 
 function isSlowConnection() {
-  if (process.server) {
+  if (import.meta.server) {
     return
   }
 
