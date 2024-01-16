@@ -1,5 +1,4 @@
 export default defineCachedEventHandler(async () => {
-  // @ts-expect-error added in config
   if (import.meta.test) return []
 
   const config = useRuntimeConfig()
