@@ -199,7 +199,8 @@ const { data: talks } = await useAsyncData(
                 width="762"
                 height="400"
                 decoding="async"
-                :loading="index > 2 ? 'lazy' : 'eager'"
+                :preload="index < 2"
+                :loading="index > 1 ? 'lazy' : 'eager'"
                 :alt="`Still thumbnail for ${video.title}`"
                 :src="video.thumbnail"
               />
@@ -258,7 +259,7 @@ const { data: talks } = await useAsyncData(
         class="flex flex-row gap-2 mt-4 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
       >
         <li
-          v-for="conference in upcomingConferences"
+          v-for="(conference, index) in upcomingConferences"
           :key="conference.name"
           class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
         >
@@ -270,7 +271,8 @@ const { data: talks } = await useAsyncData(
               class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
             >
               <nuxt-img
-                loading="lazy"
+                :preload="index < 2"
+                :loading="index > 1 ? 'lazy' : 'eager'"
                 decoding="async"
                 format="webp"
                 :src="conference.image"
