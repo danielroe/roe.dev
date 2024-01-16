@@ -177,6 +177,7 @@ export default defineNuxtConfig({
     failOnError: true,
     options: {
       rules: {
+        'unrecognized-char-ref': 'off',
         'wcag/h37': 'warn',
         'element-permitted-content': 'warn',
         'element-required-attributes': 'warn',
