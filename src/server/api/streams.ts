@@ -1,4 +1,6 @@
 export default defineCachedEventHandler(async () => {
+  if (import.meta.test) return []
+
   const config = useRuntimeConfig()
   const token = await $fetch<TwitchTokenResponse>(
     'https://id.twitch.tv/oauth2/token',

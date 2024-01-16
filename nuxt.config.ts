@@ -1,4 +1,5 @@
 import { useNuxt } from 'nuxt/kit'
+import { isTest } from 'std-env'
 
 export default defineNuxtConfig({
   $production: {
@@ -90,6 +91,9 @@ export default defineNuxtConfig({
   srcDir: 'src',
 
   nitro: {
+    replace: {
+      'import.meta.test': isTest,
+    },
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
@@ -173,6 +177,7 @@ export default defineNuxtConfig({
     failOnError: true,
     options: {
       rules: {
+        'unrecognized-char-ref': 'off',
         'wcag/h37': 'warn',
         'element-permitted-content': 'warn',
         'element-required-attributes': 'warn',
