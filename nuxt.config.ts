@@ -159,6 +159,7 @@ export default defineNuxtConfig({
       'cityjsconf.org',
       'vuejsnation.com',
       'vueconf.us',
+      'media.graphassets.com',
     ],
     screens: {
       logo: 40,

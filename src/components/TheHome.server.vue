@@ -57,6 +57,13 @@ const upcomingConferences: Array<{
     image: 'https://cityjsconf.org/images/site/2019.jpg',
   },
   {
+    name: 'Vue.js Live',
+    dates: '25-26 April',
+    link: 'https://vuejslive.com/',
+    location: '🌍',
+    image: 'https://media.graphassets.com/F36hdpvUSY29kcHkVL3N',
+  },
+  {
     name: 'Vueconf US',
     dates: '15-17 May',
     link: 'https://vueconf.us/',
