@@ -108,7 +108,9 @@ const { data: talks } = await useAsyncData(
       <a
         class="underlined-link"
         href="https://nuxt.com"
-      >Nuxt core team</a>.
+      >
+        Nuxt core team
+      </a>.
       Previously, I was CTO of a SaaS startup and founder of a creative agency
       focusing on clarity of vision and message.
     </p>
