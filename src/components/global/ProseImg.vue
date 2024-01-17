@@ -4,16 +4,21 @@
     :alt="alt"
     :width="width"
     :height="height"
+    :class="className"
   />
 </template>
 
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   src: {
     type: String,
     default: '',
   },
   alt: {
+    type: String,
+    default: '',
+  },
+  class: {
     type: String,
     default: '',
   },
@@ -26,4 +31,6 @@ defineProps({
     default: undefined,
   },
 })
+
+const className = props.class
 </script>

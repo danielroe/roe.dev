@@ -112,12 +112,14 @@ const { data: talks } = await useAsyncData(
       Previously, I was CTO of a SaaS startup and founder of a creative agency
       focusing on clarity of vision and message.
     </p>
-    <!-- TODO: create /bio page -->
-    <!-- <p>
-          <NuxtLink class="underlined-link text-base" to="/bio">
-            more about Daniel &raquo;
-          </NuxtLink>
-        </p> -->
+    <p>
+      <NuxtLink
+        class="underlined-link text-base"
+        to="/bio"
+      >
+        more about Daniel &raquo;
+      </NuxtLink>
+    </p>
   </section>
   <hr
     class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700"

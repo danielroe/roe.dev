@@ -1,0 +1,18 @@
+Daniel leads the [Nuxt core team](https://nuxt.com). Previously, he was CTO of a SaaS startup and founder of a creative agency focusing on clarity of vision and message.
+
+His open-source work has a focus in the Vue.js and Nuxt ecosystems. He's a keynote speaker at conferences and involved in consultancy with companies around the world, particularly around JAMstack, serverless and software architecture.
+
+He continues to mentor founders as an expert-in-residence at the [Imperial Enterprise Lab](https://www.imperialenterpriselab.com/), and has been recognised as a [Microsoft MVP](https://mvp.microsoft.com/) and a [Google GDE](https://developers.google.com/community/experts/).
+
+He was identified as One to Watch by FreshMinds, has delivered a TEDx talk on the importance of clear communication, was a founding member of [Durham Young Professionals](https://durhamyoungprofessionals.org/) and has mentored students in the [Future Business Magnates programme](https://www.durhamstartups.co.uk/future-business-magnates/).
+
+He's based in Scotland where he lives with his family and a very affectionate ragdoll cat named Barley.
+
+Daniel holds an MA in Jurisprudence from Oxford University and an MTh in Theological and Pastoral Studies from Oak Hill College.
+
+<div class="flex flex-row gap-4 items-center mt-4 light:invert dark:mix-blend-lighten light:mix-blend-darken">
+<img width="100" src="/nuxtlabs.svg" alt="NuxtLabs Logo">
+<img width="100" src="/iel.svg" alt="Imperial Enterprise Lab Logo">
+<img class="grayscale" width="100" src="/gde.png" alt="Google GDE Logo">
+<img width="75" src="/mvp.png" alt="Microsoft MVP Logo">
+</div>
