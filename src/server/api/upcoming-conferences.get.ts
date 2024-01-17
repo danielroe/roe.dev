@@ -45,6 +45,8 @@ const upcomingConferences: Array<{
   ]
 
 export default defineEventHandler(async () => {
+  if (!import.meta.dev && !import.meta.prerender) return []
+
   return Promise.all(
     upcomingConferences.map(async conference => {
       const html = await $fetch<string>(conference.link)
