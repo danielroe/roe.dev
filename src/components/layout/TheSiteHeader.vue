@@ -181,7 +181,7 @@ function toggleMenu(input?: Event | boolean) {
                   {{ link.name }}
                 </NuxtLink>
               </li>
-              <li><ToggleColorMode /></li>
+              <li><ToggleColorMode class="flex" /></li>
             </ul>
           </nav>
         </Teleport>
