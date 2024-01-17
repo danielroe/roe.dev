@@ -108,7 +108,7 @@ export default defineNuxtConfig({
           )
 
         if (route.fileName?.endsWith('.html') && route.contents) {
-          route.contents = route.contents.replace(/(src|href)="\/_ipx[^"]+"/g, r => r.replaceAll('//', '/'))
+          route.contents = route.contents.replace(/(src|href|srcset)="\/_ipx[^"]+"/g, r => r.replaceAll('//', '/'))
         }
 
         if (route.error) {
