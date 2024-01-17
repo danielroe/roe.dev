@@ -27,57 +27,7 @@ const links = [
   },
 ]
 
-const upcomingConferences: Array<{
-  name: string
-  dates: string
-  link: string
-  location: string
-  image: string
-}> = [
-  {
-    name: 'Vue.js Nation',
-    dates: '24-25 January',
-    link: 'https://vuejsnation.com/',
-    location: '🌍',
-    image: 'https://vuejsnation.com/images/thumbnail-2024.jpg',
-  },
-  {
-    name: 'Vue.js Amsterdam',
-    dates: '28-29 February',
-    link: 'https://vuejs.amsterdam/',
-    location: '🇳🇱',
-    image:
-      'https://images.jsworldconference.com/logo_vuejs_amsterdam_b4b41918cb.svg?width=400',
-  },
-  {
-    name: 'CityJS London',
-    dates: '3-5 April',
-    link: 'https://london.cityjsconf.org/',
-    location: '🇬🇧',
-    image: 'https://cityjsconf.org/images/site/2019.jpg',
-  },
-  {
-    name: 'Vue.js Live',
-    dates: '25-26 April',
-    link: 'https://vuejslive.com/',
-    location: '🌍',
-    image: 'https://media.graphassets.com/F36hdpvUSY29kcHkVL3N',
-  },
-  {
-    name: 'Vueconf US',
-    dates: '15-17 May',
-    link: 'https://vueconf.us/',
-    location: '🇺🇸',
-    image: 'https://vueconf.us/__og-image__/image/og.png',
-  },
-  {
-    name: 'Middlesborough FE',
-    dates: '17 July',
-    link: 'https://middlesbroughfe.co.uk/',
-    location: '🇬🇧',
-    image: 'https://www.middlesbroughfe.co.uk/images/Web_OG.png',
-  },
-]
+const { data: upcomingConferences } = await useFetch('/api/upcoming-conferences')
 
 const { data: streams } = await useFetch('/api/streams', {
   transform: streams =>
@@ -271,11 +221,14 @@ const { data: talks } = await useAsyncData(
               class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
             >
               <nuxt-img
+                v-if="conference.image.url"
                 :preload="index < 2"
                 :loading="index > 1 ? 'lazy' : 'eager'"
                 decoding="async"
                 format="webp"
-                :src="conference.image"
+                :src="conference.image.url"
+                :width="conference.image.width"
+                :height="conference.image.height"
                 :alt="`Logo for ${conference.name}`"
                 class="object-cover object-center"
               />
