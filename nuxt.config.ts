@@ -96,7 +96,7 @@ export default defineNuxtConfig({
     },
     future: { nativeSWR: true },
     prerender: {
-      crawlLinks: true,
+      // crawlLinks: true,
       routes: ['/', '/og/og.jpg', '/rss.xml', '/voted', '/work'],
     },
     hooks: {
@@ -106,6 +106,10 @@ export default defineNuxtConfig({
             /(\.\w{3})\/index.html$/,
             '$1'
           )
+
+        if (route.fileName?.endsWith('.html') && route.contents) {
+          route.contents = route.contents.replace(/(src|href)="\/_ipx[^"]+"/g, r => r.replaceAll('//', '/'))
+        }
 
         if (route.error) {
           console.error(route.route, route.error, route)
