@@ -26,7 +26,7 @@ export default defineCachedEventHandler(async () => {
         Authorization: `Bearer ${token.access_token}`,
       },
     })
-    videos.push(...batch.data)
+    videos.push(...batch.data.filter(video => !video.thumbnail_url.includes('404')))
   } while (batch.pagination?.cursor)
 
   return videos
