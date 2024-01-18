@@ -6,7 +6,7 @@ Daniel leads the [Nuxt core team](https://nuxt.com). Previously, he was CTO of a
 
 His open-source work has a focus in the Vue.js and Nuxt ecosystems. He's a keynote speaker at conferences and involved in consultancy with companies around the world, particularly around JAMstack, serverless and software architecture.
 
-<p class="my-4"><img class="w-full" src="/talk.jpg" alt="Daniel giving a talk at Vuefes Japan"></p>
+<p class="my-4"><img class="w-full" src="/talk.jpg" alt="Daniel giving a talk at Vuefes Japan" width="600" height="400"></p>
 
 He continues to mentor founders as an expert-in-residence at the [Imperial Enterprise Lab](https://www.imperialenterpriselab.com/), and has been recognised as a [Microsoft MVP](https://mvp.microsoft.com/) and a [Google GDE](https://developers.google.com/community/experts/).
 
