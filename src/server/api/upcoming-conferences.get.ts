@@ -38,7 +38,7 @@ const upcomingConferences: Array<{
     },
   ]
 
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   if (!import.meta.dev && !import.meta.prerender) return []
 
   return Promise.all(
