@@ -25,6 +25,11 @@ const links = [
     icon: 'i-custom-threads',
     link: 'https://www.threads.net/@daniel.c.roe',
   },
+  {
+    name: 'Instagram',
+    icon: 'i-ri:instagram-fill',
+    link: 'https://www.instagram.com/daniel.c.roe',
+  },
 ]
 
 const { data: upcomingConferences } = await useFetch('/api/upcoming-conferences')
