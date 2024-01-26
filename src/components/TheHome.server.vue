@@ -73,6 +73,8 @@ interface Talk {
   type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
   video?: string
   release?: string
+  repo?: string
+  demo?: string
 }
 
 const { data: talks } = await useAsyncData(
@@ -306,6 +308,24 @@ const { data: talks } = await useAsyncData(
               >
                 <span class="h-4 w-4 i-ri:presentation-fill" />
                 <span class="sr-only"> Slides for {{ talk.title }} </span>
+              </NuxtLink>
+              <NuxtLink
+                v-if="talk.demo"
+                class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
+                :to="talk.demo"
+                data-external
+              >
+                <span class="i-tabler:sparkles" />
+                <span class="sr-only">A demo for {{ talk.title }} </span>
+              </NuxtLink>
+              <NuxtLink
+                v-if="talk.repo"
+                class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
+                :to="talk.repo"
+                data-external
+              >
+                <span class="i-ri:github-fill" />
+                <span class="sr-only">A repo for {{ talk.title }}</span>
               </NuxtLink>
             </ExpandableTray>
           </div>

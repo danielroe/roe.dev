@@ -11,6 +11,8 @@ interface Talk {
   type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
   video?: string
   release?: string
+  repo?: string
+  demo?: string
 }
 
 // if (import.meta.prerender && import.meta.server) {
@@ -72,14 +74,14 @@ const { data: groups } = await useAsyncData(
         {{ talks[0].description }}
       </div>
       <article
-        v-for="{ title, source, link, date, type, video, release } of talks"
-        :key="link"
-        :class="{ 'opacity-60': !video && !link && !release }"
-        :alt="title"
+        v-for="talk of talks"
+        :key="talk.link"
+        :class="{ 'opacity-60': !talk.video && !talk.link && !talk.release && !talk.demo && !talk.repo }"
+        :alt="talk.title"
       >
         <header class="flex flex-row mt-1">
           <dl
-            v-if="date"
+            v-if="talk.date"
             class="flex flex-row items-center gap-4 leading-normal text-sm w-full"
           >
             <dt class="sr-only">
@@ -87,48 +89,64 @@ const { data: groups } = await useAsyncData(
             </dt>
             <dd class="md:min-w-24 uppercase opacity-60 text-xs flex-shrink-0">
               <NuxtTime
-                :datetime="date"
+                :datetime="talk.date"
                 day="numeric"
                 month="short"
                 year="numeric"
               />
             </dd>
             <dt
-              v-if="source"
+              v-if="talk.source"
               class="sr-only"
             >
               Where
             </dt>
             <dd
-              v-if="source"
+              v-if="talk.source"
               class="text-ellipsis line-clamp-1"
             >
-              {{ source }}
+              {{ talk.source }}
             </dd>
           </dl>
           <ExpandableTray
-            v-if="video || link || release"
+            v-if="talk.video || talk.link || talk.release || talk.demo || talk.repo"
             class="ml-auto flex items-start"
           >
             <NuxtLink
-              v-if="video || link"
-              :href="video || link"
+              v-if="talk.video || talk.link"
+              :href="talk.video || talk.link"
               class="text-xs items-center"
             >
               <span
-                v-if="type === 'podcast' || video"
-                :class="video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
+                v-if="talk.type === 'podcast' || talk.video"
+                :class="talk.video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
                 class="h-4 w-4 flex-shrink-0"
               />
-              {{ video ? `watch` : `listen` }}
+              {{ talk.video ? `watch` : `listen` }}
             </NuxtLink>
             <NuxtLink
-              v-if="release"
+              v-if="talk.release"
               class="text-xs items-center"
-              :to="`/slides/${release}.pdf`"
+              :to="`/slides/${talk.release}.pdf`"
               data-external
             >
               <span class="i-ri:presentation-fill" /> slides
+            </NuxtLink>
+            <NuxtLink
+              v-if="talk.demo"
+              class="text-xs items-center"
+              :to="talk.demo"
+              data-external
+            >
+              <span class="i-tabler:sparkles" /> demo
+            </NuxtLink>
+            <NuxtLink
+              v-if="talk.repo"
+              class="text-xs items-center"
+              :to="talk.repo"
+              data-external
+            >
+              <span class="i-ri:github-fill" /> repo
             </NuxtLink>
           </ExpandableTray>
         </header>
