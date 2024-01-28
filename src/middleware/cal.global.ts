@@ -17,7 +17,7 @@ const styleConfig = {
 }
 
 export default defineNuxtRouteMiddleware(to => {
-  if (to.path === '/blog/open-invitation') {
+  if (to.path === '/blog/open-invitation' || to.path === '/blog/funding') {
     useHead({
       script: [
         {

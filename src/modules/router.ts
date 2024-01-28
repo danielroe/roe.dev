@@ -38,7 +38,7 @@ export default defineNuxtModule({
   meta: {
     name: 'custom-router',
   },
-  setup() {
+  setup () {
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
     nuxt.options.pages = false
@@ -87,44 +87,42 @@ export default defineNuxtModule({
 
     addTemplate({
       filename: 'routes.mjs',
-      async getContents() {
+      async getContents () {
         const files = await readRecursive(resolver.resolve('../pages'))
         const componentNames = Object.fromEntries(
           files.map(f => [f, genSafeVariableName(f)])
         )
+        const routes = files.map(f => {
+          const path = withLeadingSlash(
+            relative(resolver.resolve('../pages'), f).replace(
+              /(\/?index)?\.vue$/,
+              ''
+            )
+          )
+          return {
+            path: path.includes('[')
+              ? `/${path
+                .replace(/\[(.*)\]/g, '(?<$1>.+)')
+                .replace(/\//g, '\\/')}/`
+              : genString(path),
+            // component: `defineAsyncComponent(${genDynamicImport(f, {
+            //   interopDefault: true,
+            // })})`,
+            component: componentNames[f],
+            meta: JSON.stringify(routeMeta[path] || {}),
+          }
+        })
+
         return `
         // import { defineAsyncComponent } from 'vue';
-        ${Object.entries(componentNames)
-          .map(([path, name]) => genImport(path, { name }))
-          .join('\n')}
-        export default ${genArrayFromRaw(
-          files.map(f => {
-            const path = withLeadingSlash(
-              relative(resolver.resolve('../pages'), f).replace(
-                /(\/?index)?\.vue$/,
-                ''
-              )
-            )
-            return {
-              path: path.includes('[')
-                ? `/${path
-                    .replace(/\[(.*)\]/g, '(?<$1>.+)')
-                    .replace(/\//g, '\\/')}/`
-                : genString(path),
-              // component: `defineAsyncComponent(${genDynamicImport(f, {
-              //   interopDefault: true,
-              // })})`,
-              component: componentNames[f],
-              meta: JSON.stringify(routeMeta[path] || {}),
-            }
-          })
-        )}`
+        ${Object.entries(componentNames).map(([path, name]) => genImport(path, { name })).join('\n')}
+        export default ${genArrayFromRaw(routes)}`
       },
     })
   },
 })
 
-async function readRecursive(dir: string) {
+async function readRecursive (dir: string) {
   const files = await fsp.readdir(dir)
   const result: string[] = []
   for (const file of files) {
