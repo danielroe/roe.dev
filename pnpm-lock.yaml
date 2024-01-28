@@ -96,8 +96,8 @@ dependencies:
     specifier: ^0.1.1
     version: 0.1.1(rollup@4.9.5)
   partykit:
-    specifier: 0.0.72
-    version: 0.0.72
+    specifier: 0.0.80
+    version: 0.0.80
   partysocket:
     specifier: ^0.0.20
     version: 0.0.20
@@ -676,8 +676,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workers-types@4.20231218.0:
-    resolution: {integrity: sha512-Vs1FKjfUjXYGbCsXzkl+ITp0Iyb6QiW6+vTERTNThC+v96T0IvPVAioH4tT20rXwoxAfxh380mAaxYtTrJUNVg==}
+  /@cloudflare/workers-types@4.20240117.0:
+    resolution: {integrity: sha512-HQU8lJhaJVh8gQXFtVA7lZwd0hK1ckIFjRuxOXkVN2Z9t7DtzNbA2YTwBry5thKNgF5EwjN4THjHg5NUZzj05A==}
     dev: false
 
   /@commitlint/cli@18.4.4(@types/node@20.8.10)(typescript@5.3.3):
@@ -7219,8 +7219,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /miniflare@3.20231218.1:
-    resolution: {integrity: sha512-rl/wADgaRLpbl7EMobwbAt6BgVqkOoWsVQJAliIIUCRzC0s0xg7ZVeoV+DuQD4ffN4RySXsPnP97hp7ksc7ylA==}
+  /miniflare@3.20231218.2:
+    resolution: {integrity: sha512-rCUI2OjqCf3fZVdmSX4DOZQRzSDvHp/oL2vjER/cvJEdWSYiqRxDp2oO7A7JcEo1/Y+kPa5VQ1pFfdZpjBcpFg==}
     engines: {node: '>=16.13'}
     hasBin: true
     dependencies:
@@ -8085,14 +8085,14 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /partykit@0.0.72:
-    resolution: {integrity: sha512-IMpRImUHyPl9HI1pFkL6SgrgWasvhRziK5Kse3LYPOo3u675GXYgeYJW0kpy5WSpSxdziKgohP6g3VA9RVtQdA==}
+  /partykit@0.0.80:
+    resolution: {integrity: sha512-gxYrmrOtrsSXO4e3FNuQ/kZm0dX5QzQfJrDO1ggX7qabc5asauvSVfz+5rosHHkg8qRrzcqOzcXnZykG3wAduQ==}
     hasBin: true
     dependencies:
-      '@cloudflare/workers-types': 4.20231218.0
+      '@cloudflare/workers-types': 4.20240117.0
       clipboardy: 4.0.0
       esbuild: 0.19.11
-      miniflare: 3.20231218.1
+      miniflare: 3.20231218.2
       yoga-wasm-web: 0.3.3
     optionalDependencies:
       fsevents: 2.3.3
