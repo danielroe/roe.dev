@@ -17,7 +17,7 @@ But when I decided (with my co-founder) to shut down the startup, [Sébastien Ch
 
 <h2 id="nuxtlabs" class="mb-1"><img src="/img/work/nuxtlabs.svg" alt="NuxtLabs" width="90"></h2>
 
-The majority of my funding comes from a retainer with NuxtLabs.
+The majority of my funding comes from a retainer with [NuxtLabs](https://nuxtlabs.com).
 
 Sébastien Chopin, who created Nuxt and founded NuxtLabs, receives donations via the Nuxt GitHub Sponsors account (and other income streams) and in turn funnels that back into the community, sponsoring [a number of open-source developers](https://github.com/orgs/nuxtlabs/sponsoring) and enabling open-source work.
 
