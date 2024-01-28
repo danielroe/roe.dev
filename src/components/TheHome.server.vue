@@ -440,11 +440,14 @@ const { data: talks } = await useAsyncData(
     </header>
     <!-- TODO: use randomised sponsor list -->
     <TheSponsors />
-    <!-- <p class="mt-4">
-          <NuxtLink to="/blog/funding" class="underlined-link text-sm">
-            more about how I'm funded &raquo;
-          </NuxtLink>
-        </p> -->
+    <p class="mt-4">
+      <NuxtLink
+        to="/blog/funding"
+        class="underlined-link text-sm"
+      >
+        more about how I'm funded &raquo;
+      </NuxtLink>
+    </p>
   </section>
 </template>
 
