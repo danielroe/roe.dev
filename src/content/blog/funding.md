@@ -15,7 +15,7 @@ I had been increasingly involved in open source - and particularly in contributi
 
 But when I decided (with my co-founder) to shut down the startup, [Sébastien Chopin](https://atinux.com/) asked if he could sponsor me to work on Nuxt. I was already committed to the core team - so it didn't take me long to accept.
 
-## <img src="/img/work/nuxtlabs.svg" class="mb-1" alt="NuxtLabs" width="90">
+<h2 id="nuxtlabs" class="mb-1"><img src="/img/work/nuxtlabs.svg" alt="NuxtLabs" width="90"></h2>
 
 The majority of my funding comes from a retainer with NuxtLabs.
 
