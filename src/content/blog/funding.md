@@ -27,7 +27,7 @@ I prize my independence highly and deeply appreciate Sébastien's trust.
 
 While I don't receive any direct funding from Nuxt via GitHub Sponsors, I do have [a number of individual and corporate sponsors](https://github.com/sponsors/danielroe) that I value very highly.
 
-I see [open source as about 'mutual giving'](http://localhost:3000/blog/contributing-to-nuxt#what-open-source-is-to-me) and I appreciate these givers.
+I see [open source as about 'mutual giving'](/blog/contributing-to-nuxt#what-open-source-is-to-me) and I appreciate these givers.
 
 <!-- TODO: sponsor carousel -->
 
