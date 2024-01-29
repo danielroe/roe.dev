@@ -41,6 +41,10 @@ In addition, conferences cover the costs of my flights and hotel and (sometimes)
 
 If cost is ever a factor, **please ask**. I do not charge for community events, nor do I speak at conferences for financial reasons.
 
+## Streaming
+
+I receive some revenue from [streaming on Twitch](https://www.twitch.tv/danielroe). I do not enable ads or otherwise seek to monetise the streams.
+
 ## Consultancy
 
 The time I have to work on projects outside of open source is limited. However, real-world projects help keep me relevant and grounded.
