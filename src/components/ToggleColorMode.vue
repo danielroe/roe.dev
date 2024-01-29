@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const colorMode = useColorMode()
-</script>
-
 <template>
   <ColorScheme placeholder="...">
     <button
@@ -9,16 +5,13 @@ const colorMode = useColorMode()
       type="button"
       class="h-7 w-12 relative rounded-full bg-accent ml-2 items-center justify-start px-1 transition-opacity outline-none border-2 border-solid border-accent hover:border-primary focus:border-primary active:border-primary"
       @click="
-        colorMode.value === 'dark'
-          ? (colorMode.preference = 'light')
-          : (colorMode.preference = 'dark')
+        $colorMode.value === 'dark'
+          ? ($colorMode.preference = 'light')
+          : ($colorMode.preference = 'dark')
       "
     >
       <span
-        class="inline-block rounded-full h-4 w-4 bg-primary transition-transform"
-        :style="
-          colorMode.value === 'light' ? 'transform:translateX(1.25rem)' : ''
-        "
+        :class="['absolute -top-[50%] translate-y-[100%] inline-block rounded-full h-4 w-4 bg-primary transition-transform', $colorMode.value === 'dark' ? '-translate-x-4.5': 'translate-x-0.5']"
       />
     </button>
   </ColorScheme>
