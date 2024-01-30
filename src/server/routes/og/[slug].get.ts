@@ -31,7 +31,6 @@ export default defineEventHandler(async event => {
 
   const file = await getScreenshot(fileUrl, import.meta.dev)
 
-  // @ts-expect-error bug in h3 - https://github.com/unjs/h3/issues/614
   setHeaders(event, {
     'Content-Type': 'image/jpeg',
     'Cache-Control':
