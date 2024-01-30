@@ -64,6 +64,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    cookieStore: true,
     headNext: true,
     viewTransition: true,
     componentIslands: true,
