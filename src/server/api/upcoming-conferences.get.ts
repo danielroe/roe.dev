@@ -4,6 +4,11 @@ const upcomingConferences: Array<{
   name: string
   dates: string
   link: string
+  image?: {
+    url: string
+    width: number
+    height: number
+  }
   location: string
 }> = [
     {
@@ -11,6 +16,17 @@ const upcomingConferences: Array<{
       dates: '28-29 February',
       link: 'https://vuejs.amsterdam/',
       location: '🇳🇱',
+    },
+    {
+      name: 'EdinburghJS',
+      dates: '19 March',
+      link: 'https://www.edinburghjs.org/',
+      location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+      image: {
+        url: 'https://secure.meetupstatic.com/photos/event/3/9/b/2/clean_515474770.webp',
+        width: 653,
+        height: 367
+      }
     },
     {
       name: 'CityJS London',
@@ -43,6 +59,9 @@ export default defineCachedEventHandler(async () => {
 
   return Promise.all(
     upcomingConferences.map(async conference => {
+      if (conference.image) {
+        return conference
+      }
       const html = await $fetch<string>(conference.link)
       const ogImage = html.match(
         /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/

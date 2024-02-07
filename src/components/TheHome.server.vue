@@ -213,7 +213,7 @@ const { data: talks } = await useAsyncData(
   <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
   <section class="max-w-[37.50rem]">
     <h2 class="text-xl">
-      upcoming conferences
+      upcoming talks
     </h2>
     <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
       <ul
