@@ -60,7 +60,7 @@ export default defineCachedEventHandler(async () => {
   return Promise.all(
     upcomingConferences.map(async conference => {
       if (conference.image) {
-        return conference
+        return conference as Omit<typeof conference, 'image'> & { image: NonNullable<typeof conference.image> }
       }
       const html = await $fetch<string>(conference.link)
       const ogImage = html.match(
