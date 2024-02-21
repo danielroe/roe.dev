@@ -192,16 +192,6 @@ export default defineNuxtConfig({
     },
   },
 
-  fontMetrics: {
-    fonts: [
-      {
-        fallbackName: 'Barlow fallback',
-        family: 'Barlow',
-        fallbacks: ['Arial'],
-      },
-    ],
-  },
-
   modules: [
     'nuxt-time',
     '@nuxt/test-utils/module',
@@ -212,6 +202,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/content',
     '@nuxtjs/plausible',
-    '@nuxtjs/fontaine',
+    '@nuxt/fonts',
   ],
 })
