@@ -36,7 +36,7 @@ export default defineConfig({
       background: 'var(--background)',
     },
     fontFamily: {
-      sans: 'Barlow, sans-serif',
+      sans: 'Barlow, system-ui, sans-serif',
       code: 'Fira Code',
       serif: 'Vollkorn, serif',
     },
