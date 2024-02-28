@@ -26,7 +26,7 @@ export default {
 
     const body = await request.text().then(r => (r ? JSON.parse(r) : {}))
     const { status, type = status ? 'status' : 'vote' } = body as {
-      type?: 'vote' | 'status'
+      type?: 'vote' | 'status' | 'feedback'
       status?: string
     }
 
@@ -38,7 +38,19 @@ export default {
       return new Response(null, { status: 204 })
     }
 
-    // 5. tell people if I'm going live
+    // 5. allow one-off live voting via link
+    if (type === 'feedback') {
+      await party.storage.transaction(async (tx) => {
+        const feedback = await tx.get<string[]>('feedback') || []
+        feedback.push(status!)
+        await tx.put('feedback', feedback)
+        party.broadcast(`feedback:${JSON.stringify(feedback)}`)
+      })
+      console.log('added feedback', status)
+      return new Response(null, { status: 204 })
+    }
+
+    // 6. tell people if I'm going live
     if (type === 'status') {
       if (!status || !['live', 'default'].includes(status))
         return new Response('Invalid status', { status: 422 })
