@@ -1,7 +1,7 @@
 import type { PartyKitServer, Party } from 'partykit/server'
 
 export default {
-  async onConnect(ws, party) {
+  async onConnect (ws, party) {
     // 1. handle live voting in slide deck
     const setCount = async (val: number) => {
       await party.storage.put('count', val)
@@ -17,10 +17,14 @@ export default {
     // 2. let everyone know someone new is viewing the site
     party.broadcast(`connections:${[...party.getConnections()].length}`)
 
+    if (party.id === 'feedback') {
+      ws.send(`feedback:${JSON.stringify(await party.storage.get('feedback') || [])}`)
+    }
+
     // 3. let people know if I'm streaming
     ws.send(`status:${(await party.storage.get('status')) || 'default'}`)
   },
-  async onRequest(request, party) {
+  async onRequest (request, party) {
     if (request.method !== 'POST')
       return new Response('Invalid request', { status: 422 })
 
@@ -46,7 +50,6 @@ export default {
         await tx.put('feedback', feedback)
         party.broadcast(`feedback:${JSON.stringify(feedback)}`)
       })
-      console.log('added feedback', status)
       return new Response(null, { status: 204 })
     }
 
