@@ -12,6 +12,10 @@ export default {
     ws.addEventListener('message', async ({ data }) => {
       if (data === 'vote') await setCount((await getCount(party)) + 1)
       if (data === 'clear') await setCount(0)
+      if (data === 'clear' && party.id === 'feedback') {
+        await party.storage.put('feedback', [])
+        ws.send(`feedback:[]`)
+      }
     })
 
     // 2. let everyone know someone new is viewing the site
