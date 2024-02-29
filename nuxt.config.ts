@@ -64,6 +64,11 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    defaults: {
+      useAsyncData: {
+        deep: false
+      },
+    },
     cookieStore: true,
     headNext: true,
     viewTransition: true,
