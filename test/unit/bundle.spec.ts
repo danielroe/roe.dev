@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"1049k"`)
+      .toMatchInlineSnapshot(`"442k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"10841k"`)
+      .toMatchInlineSnapshot(`"5296k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -93,6 +93,8 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atproto/api",
+        "@shikijs/core",
+        "@shikijs/transformers",
         "@sindresorhus/is",
         "@ungap/structured-clone",
         "bail",
@@ -189,9 +191,7 @@ describe('project sizes', () => {
         "remark-rehype",
         "sax",
         "scule",
-        "shikiji",
-        "shikiji-core",
-        "shikiji-transformers",
+        "shiki",
         "skin-tone",
         "slugify",
         "space-separated-tokens",
