@@ -197,6 +197,12 @@ export default defineNuxtConfig({
     },
   },
 
+  fonts: {
+    experimental: {
+      addPreloadLinks: true
+    }
+  },
+
   modules: [
     'nuxt-time',
     '@nuxt/test-utils/module',
