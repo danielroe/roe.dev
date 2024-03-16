@@ -1,10 +1,10 @@
-import { defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
     name: 'reduce-chunks',
   },
-  setup() {
+  setup () {
     const nuxt = useNuxt()
     if (nuxt.options.dev) {
       return

@@ -1,4 +1,4 @@
-import { addVitePlugin, addWebpackPlugin, defineNuxtModule } from '@nuxt/kit'
+import { addVitePlugin, addWebpackPlugin, defineNuxtModule } from 'nuxt/kit'
 import { createUnplugin } from 'unplugin'
 import { parseURL } from 'ufo'
 import MagicString from 'magic-string'
@@ -8,10 +8,10 @@ const plugin = createUnplugin(() => {
   return {
     name: 'lazy-hydrate',
     enforce: 'post',
-    transformInclude(id) {
+    transformInclude (id) {
       return parseURL(id).pathname.endsWith('.vue')
     },
-    transform(code, id) {
+    transform (code, id) {
       const chunks = code.matchAll(
         /const _hoisted_(?<chunk>\d+)(?<value>[\s\S]*?)(;$|\n(?=const ))/gm
       )
@@ -41,7 +41,7 @@ const plugin = createUnplugin(() => {
         }
       }
     },
-    buildEnd() {
+    buildEnd () {
       console.log('Saved', Buffer.from(replaced.join('')).length, 'bytes')
     },
   }
@@ -51,7 +51,7 @@ export default defineNuxtModule({
   meta: {
     name: 'dedupe-hoisted-nodes',
   },
-  setup() {
+  setup () {
     addVitePlugin(plugin.vite())
     addWebpackPlugin(plugin.webpack())
   },

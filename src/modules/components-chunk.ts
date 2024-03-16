@@ -1,10 +1,10 @@
-import { addPlugin, createResolver, defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { addPlugin, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
     name: 'components-chunk',
   },
-  setup() {
+  setup () {
     const nuxt = useNuxt()
 
     const usedComponents = [

@@ -1,13 +1,13 @@
 import { writeFile } from 'node:fs/promises'
 import { gzipSync } from 'node:zlib'
-import { defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { join } from 'pathe'
 
 export default defineNuxtModule({
   meta: {
     name: 'sitemap',
   },
-  setup() {
+  setup () {
     const nuxt = useNuxt()
     nuxt.hook('nitro:init', nitro => {
       nitro.hooks.hook('close', async () => {
