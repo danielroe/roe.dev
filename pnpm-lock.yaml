@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  nitropack: latest
+  nitropack-nightly: npm:nitropack@latest
+
 dependencies:
   '@atproto/api':
     specifier: ^0.11.1
@@ -84,7 +88,7 @@ dependencies:
     specifier: ^1.6.1
     version: 1.6.1
   nitropack:
-    specifier: ^2.9.4
+    specifier: latest
     version: 2.9.4
   nuxt:
     specifier: npm:nuxt-nightly@3.11.0-28509293.adbd53a2
@@ -7837,104 +7841,6 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /nitropack-nightly@2.10.0-28509108.fdf7e70:
-    resolution: {integrity: sha512-sAJ7BfdQe80IW8WnzVdnIJPe577Vri9Gz8p7kkDB8yJuk6tjcXKs6HyPqKEIAL5bhJR1SqnZsKlt/lVpMpjybA==}
-    engines: {node: ^16.11.0 || >=17.0.0}
-    hasBin: true
-    peerDependencies:
-      xml2js: ^0.6.2
-    peerDependenciesMeta:
-      xml2js:
-        optional: true
-    dependencies:
-      '@cloudflare/kv-asset-handler': 0.3.1
-      '@netlify/functions': 2.6.0
-      '@rollup/plugin-alias': 5.1.0(rollup@4.13.0)
-      '@rollup/plugin-commonjs': 25.0.7(rollup@4.13.0)
-      '@rollup/plugin-inject': 5.0.5(rollup@4.13.0)
-      '@rollup/plugin-json': 6.1.0(rollup@4.13.0)
-      '@rollup/plugin-node-resolve': 15.2.3(rollup@4.13.0)
-      '@rollup/plugin-replace': 5.0.5(rollup@4.13.0)
-      '@rollup/plugin-terser': 0.4.4(rollup@4.13.0)
-      '@rollup/pluginutils': 5.1.0(rollup@4.13.0)
-      '@types/http-proxy': 1.17.14
-      '@vercel/nft': 0.26.4
-      archiver: 7.0.1
-      c12: 1.10.0
-      chalk: 5.3.0
-      chokidar: 3.6.0
-      citty: 0.1.6
-      consola: 3.2.3
-      cookie-es: 1.0.0
-      croner: 8.0.1
-      crossws: 0.2.4
-      db0: 0.1.4
-      defu: 6.1.4
-      destr: 2.0.3
-      dot-prop: 8.0.2
-      esbuild: 0.20.2
-      escape-string-regexp: 5.0.0
-      etag: 1.8.1
-      fs-extra: 11.2.0
-      globby: 14.0.1
-      gzip-size: 7.0.0
-      h3: /h3-nightly@1.11.2-1710122014.107ec8e
-      hookable: 5.5.3
-      httpxy: 0.1.5
-      ioredis: 5.3.2
-      is-primitive: 3.0.1
-      jiti: 1.21.0
-      klona: 2.0.6
-      knitwork: 1.0.0
-      listhen: 1.7.2
-      magic-string: 0.30.8
-      mime: 4.0.1
-      mlly: 1.6.1
-      mri: 1.2.0
-      node-fetch-native: 1.6.2
-      ofetch: 1.3.3
-      ohash: 1.1.3
-      openapi-typescript: 6.7.5
-      pathe: 1.1.2
-      perfect-debounce: 1.0.0
-      pkg-types: 1.0.3
-      pretty-bytes: 6.1.1
-      radix3: 1.1.1
-      rollup: 4.13.0
-      rollup-plugin-visualizer: 5.12.0(rollup@4.13.0)
-      scule: 1.3.0
-      semver: 7.6.0
-      serve-placeholder: 2.0.1
-      serve-static: 1.15.0
-      std-env: 3.7.0
-      ufo: 1.5.1
-      uncrypto: 0.1.3
-      unctx: 2.3.1
-      unenv: 1.9.0
-      unimport: 3.7.1(rollup@4.13.0)
-      unstorage: 1.10.2(ioredis@5.3.2)
-      unwasm: 0.3.8
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@libsql/client'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - better-sqlite3
-      - drizzle-orm
-      - encoding
-      - idb-keyval
-      - supports-color
-      - uWebSockets.js
-    dev: false
-
   /nitropack@2.9.4:
     resolution: {integrity: sha512-i/cbDW5qfZS6pQR4DrlQOFlNoNvQVBuiy7EEvMlrqkmMGXiIJY1WW7L7D4/6m9dF1cwitOu7k0lJWVn74gxfvw==}
     engines: {node: ^16.11.0 || >=17.0.0}
@@ -8291,7 +8197,7 @@ packages:
       knitwork: 1.0.0
       magic-string: 0.30.8
       mlly: 1.6.1
-      nitropack: /nitropack-nightly@2.10.0-28509108.fdf7e70
+      nitropack: 2.9.4
       nuxi: /nuxi-nightly@3.11.0-1710548106.cdb504f
       nypm: 0.3.8
       ofetch: 1.3.3
