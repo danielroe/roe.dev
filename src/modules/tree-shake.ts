@@ -1,4 +1,4 @@
-import { addVitePlugin, defineNuxtModule, useNuxt } from '@nuxt/kit'
+import { addVitePlugin, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { findStaticImports } from 'mlly'
 import MagicString from 'magic-string'
 
@@ -6,11 +6,11 @@ export default defineNuxtModule({
   meta: {
     name: 'tree-shake',
   },
-  setup() {
+  setup () {
     const nuxt = useNuxt()
     addVitePlugin({
       name: 'tree-shake',
-      transform(code, id) {
+      transform (code, id) {
         if (nuxt.options.dev) return
 
         if (!code.includes('Transition') && !code.includes('KeepAlive')) return
