@@ -45,22 +45,6 @@ export default defineNuxtConfig({
         }
       }
     },
-    // We disable prerendering to speed up the bundle test.
-    'prerender:routes' (routes) {
-      if (process.env.DISABLE_PRERENDER) {
-        routes.routes.clear()
-      }
-    },
-    'nitro:config' (config) {
-      if (process.env.DISABLE_PRERENDER) {
-        config.prerender ||= {}
-        config.prerender.crawlLinks = false
-      }
-    },
-  },
-
-  future: {
-    typescriptBundlerResolution: true,
   },
 
   experimental: {
@@ -72,8 +56,6 @@ export default defineNuxtConfig({
     cookieStore: true,
     headNext: true,
     viewTransition: true,
-    componentIslands: true,
-    payloadExtraction: true,
     typedPages: true,
   },
 

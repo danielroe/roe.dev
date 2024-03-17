@@ -20,5 +20,14 @@ export default defineNuxtModule({
         }
       }
     })
+
+    // We disable prerendering to speed up the bundle test.
+    nuxt.hook('prerender:routes', (routes) => {
+      routes.routes.clear()
+    })
+    nuxt.hook('nitro:config', (config) => {
+      config.prerender ||= {}
+      config.prerender.crawlLinks = false
+    })
   },
 })
