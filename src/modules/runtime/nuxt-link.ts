@@ -1,5 +1,4 @@
 import type { ComputedRef, DefineComponent, PropType } from 'vue'
-import { computed, defineComponent, h, ref, resolveComponent } from 'vue'
 import { hasProtocol } from 'ufo'
 
 import { useRouter } from '#app/composables/router'

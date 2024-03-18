@@ -1,4 +1,3 @@
-import { h } from 'vue'
 import { ContentRendererMarkdown } from '#components'
 
 export default defineComponent({

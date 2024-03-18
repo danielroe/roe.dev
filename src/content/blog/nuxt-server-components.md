@@ -122,7 +122,6 @@ One interesting use-case is to create a server component that simply renders a N
 <div>~/components/static-markdown-render.server.vue</div>
 
 ```ts
-import { h } from 'vue'
 import { ContentRendererMarkdown } from '#components'
 
 export default defineComponent({

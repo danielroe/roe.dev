@@ -114,7 +114,6 @@ export default defineNuxtModule({
         })
 
         return `
-        // import { defineAsyncComponent } from 'vue';
         ${Object.entries(componentNames).map(([path, name]) => genImport(path, { name })).join('\n')}
         export default ${genArrayFromRaw(routes)}`
       },
