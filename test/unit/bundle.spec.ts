@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"441k"`)
+      .toMatchInlineSnapshot(`"442k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"5360k"`)
+      .toMatchInlineSnapshot(`"6130k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -93,6 +93,10 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atproto/api",
+        "@atproto/common-web",
+        "@atproto/lexicon",
+        "@atproto/syntax",
+        "@atproto/xrpc",
         "@shikijs/core",
         "@shikijs/transformers",
         "@sindresorhus/is",
@@ -119,6 +123,7 @@ describe('project sizes', () => {
         "feed",
         "flat",
         "github-slugger",
+        "graphemer",
         "hast-util-from-parse5",
         "hast-util-is-element",
         "hast-util-parse-selector",
@@ -134,6 +139,7 @@ describe('project sizes', () => {
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
+        "iso-datestring-validator",
         "js-yaml",
         "json5",
         "longest-streak",
@@ -176,6 +182,7 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "multiformats",
         "node-emoji",
         "parse-entities",
         "parse5",
@@ -196,9 +203,11 @@ describe('project sizes', () => {
         "slugify",
         "space-separated-tokens",
         "stringify-entities",
+        "tlds",
         "trim-lines",
         "trough",
         "ts-custom-error",
+        "uint8arrays",
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-is",
@@ -212,6 +221,7 @@ describe('project sizes', () => {
         "web-namespaces",
         "ws",
         "xml-js",
+        "zod",
         "zwitch",
       ]
     `)
