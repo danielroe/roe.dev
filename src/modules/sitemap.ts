@@ -21,7 +21,7 @@ export default defineNuxtModule({
           `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
           ...routes.map(
             route =>
-              `<url><loc>https://roe.dev${route}</loc><lastmod>${timestamp}</lastmod></url>`
+              `<url><loc>https://roe.dev${route}</loc><lastmod>${timestamp}</lastmod></url>`,
           ),
           `</urlset>`,
         ].join('')

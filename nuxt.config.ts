@@ -50,7 +50,7 @@ export default defineNuxtConfig({
   experimental: {
     defaults: {
       useAsyncData: {
-        deep: false
+        deep: false,
       },
     },
     cookieStore: true,
@@ -92,7 +92,7 @@ export default defineNuxtConfig({
         if (route.fileName)
           route.fileName = route.fileName.replace(
             /(\.\w{3})\/index.html$/,
-            '$1'
+            '$1',
           )
 
         if (route.fileName?.endsWith('.html') && route.contents) {
@@ -156,7 +156,7 @@ export default defineNuxtConfig({
       'vuejsnation.com',
       'vueconf.us',
       'media.graphassets.com',
-      'secure.meetupstatic.com'
+      'secure.meetupstatic.com',
     ],
     screens: {
       logo: 40,
@@ -179,7 +179,14 @@ export default defineNuxtConfig({
     },
   },
 
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+
   modules: [
+    '@nuxt/eslint',
     'nuxt-time',
     '@nuxt/test-utils/module',
     'magic-regexp/nuxt',
@@ -191,7 +198,7 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     function (options, nuxt) {
-      nuxt.hook('vite:extendConfig', (config) => {
+      nuxt.hook('vite:extendConfig', config => {
         const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
         config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
       })

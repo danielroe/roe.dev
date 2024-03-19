@@ -12,7 +12,8 @@ export default defineNuxtPlugin(nuxtApp => {
     login: async () => {
       try {
         auth.user = await $fetch('/api/user')
-      } catch (err: any) {
+      }
+      catch (err: any) {
         if (err.name !== 'FetchError') {
           auth.user = {}
         }

@@ -8,12 +8,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
   augmentMatched(from)
   augmentMatched(to)
   if (matched?.path instanceof RegExp) {
-    to.params =
-      (path.match(matched.path)?.groups as Record<string, string>) || {}
+    to.params
+      = (path.match(matched.path)?.groups as Record<string, string>) || {}
   }
 })
 
-function augmentMatched(route: RouteLocationNormalized) {
+function augmentMatched (route: RouteLocationNormalized) {
   route.matched = [
     {
       components: {

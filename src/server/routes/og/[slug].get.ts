@@ -14,11 +14,12 @@ export default defineEventHandler(async event => {
   let parsedReqs: ParsedReqs
   try {
     parsedReqs = parseReqs(slug)
-  } catch (e) {
+  }
+  catch (e) {
     setHeader(
       event,
       'Cache-Control',
-      'public,immutable,no-transform,s-max-age=21600,max-age=21600'
+      'public,immutable,no-transform,s-max-age=21600,max-age=21600',
     )
     setResponseStatus(event, 404)
     return

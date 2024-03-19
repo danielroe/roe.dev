@@ -31,7 +31,7 @@ export default defineNuxtModule({
   defaults: {
     networks: {} as NetworkOptions,
   },
-  setup(options) {
+  setup (options) {
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
 
@@ -48,23 +48,23 @@ export default defineNuxtModule({
     nuxt.options.build.transpile.push(
       'masto',
       '@mastojs/ponyfills',
-      'magic-string'
+      'magic-string',
     )
 
     nuxt.options.nitro = defu(nuxt.options.nitro, {
       alias: {
-        eventemitter3: 'unenv/runtime/mock/proxy',
+        'eventemitter3': 'unenv/runtime/mock/proxy',
         'isomorphic-ws': 'unenv/runtime/mock/proxy',
       },
     })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
       '@jridgewell/sourcemap-codec': resolver.resolve(
-        './mocks/sourcemap-codec'
+        './mocks/sourcemap-codec',
       ),
-      qs: 'rollup-plugin-node-polyfills/polyfills/qs',
+      'qs': 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
-      semver: resolver.resolve('./mocks/semver'),
+      'semver': resolver.resolve('./mocks/semver'),
     })
 
     for (const network in options.networks) {
@@ -88,6 +88,6 @@ export default defineNuxtModule({
   },
 })
 
-function isSupportedNetwork(id: string): id is Network {
+function isSupportedNetwork (id: string): id is Network {
   return id in networks
 }

@@ -20,7 +20,7 @@ export default defineEventHandler(async event => {
         client_secret: config.github.clientSecret,
         code,
       },
-    }
+    },
   ).catch(err => {
     console.error('access', err)
     return {} as { access_token?: string }
@@ -32,8 +32,8 @@ export default defineEventHandler(async event => {
       query(access_token, organisationQuery)
         .then(r => {
           const viewer = r.data?.viewer || {}
-          viewer.orgs =
-            viewer.organizations.edges.map((e: any) => e.node.id) || []
+          viewer.orgs
+            = viewer.organizations.edges.map((e: any) => e.node.id) || []
           return viewer
         })
         .catch(err => {

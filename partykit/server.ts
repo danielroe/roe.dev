@@ -48,7 +48,7 @@ export default {
 
     // 5. allow one-off live voting via link
     if (type === 'feedback') {
-      await party.storage.transaction(async (tx) => {
+      await party.storage.transaction(async tx => {
         const feedback = await tx.get<string[]>('feedback') || []
         feedback.push(status!)
         await tx.put('feedback', feedback)

@@ -29,7 +29,7 @@ const [mastodon, bluesky] = await Promise.all([
 ])
 const sortedFeed = [...mastodon, ...bluesky]
   .sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
   .filter(p => !p.html.includes('twitch.tv/danielroe'))
 </script>

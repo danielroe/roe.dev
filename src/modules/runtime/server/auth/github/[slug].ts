@@ -25,7 +25,7 @@ export default defineEventHandler(async event => {
         client_secret: config.github.clientSecret,
         code,
       },
-    }
+    },
   ).catch(err => {
     console.error('access', err)
     return {} as { access_token?: string }
@@ -64,11 +64,12 @@ export default defineEventHandler(async event => {
           Accept: 'application/vnd.github+json',
           Authorization: `Bearer ${config.github.inviteToken}`,
         },
-      }
+      },
     )
 
     console.log({ res })
-  } catch (err) {
+  }
+  catch (err) {
     console.log('could not add collaborator', err)
   }
   return sendRedirect(event, `https://github.com/${repo}/invitations`)

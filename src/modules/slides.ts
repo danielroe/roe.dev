@@ -7,7 +7,7 @@ export default defineNuxtModule({
   meta: {
     name: 'slides',
   },
-  async setup() {
+  async setup () {
     const nuxt = useNuxt()
     if (!process.env.NUXT_GITHUB_TOKEN) return
 
@@ -45,7 +45,7 @@ export default defineNuxtModule({
         })
         await fsp.writeFile(
           join(slidesDir, `${talk.release}.pdf`),
-          Buffer.from(file)
+          Buffer.from(file),
         )
       }
     }
@@ -53,5 +53,5 @@ export default defineNuxtModule({
 })
 
 interface GitHubRelease {
-  assets: Array<{ id: number; name: string }>
+  assets: Array<{ id: number, name: string }>
 }

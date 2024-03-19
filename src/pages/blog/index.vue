@@ -22,7 +22,7 @@ onMounted(() => {
   nextTick(() =>
     document.querySelectorAll('main a').forEach(a => {
       nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
-    })
+    }),
   )
 })
 </script>

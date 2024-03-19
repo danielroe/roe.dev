@@ -34,7 +34,7 @@ watch(showMenu, value => {
   document.body.classList.toggle('overflow-hidden', value)
 })
 
-function toggleMenu(input?: Event | boolean) {
+function toggleMenu (input?: Event | boolean) {
   const newValue = typeof input === 'boolean' ? input : !showMenu.value
   if (import.meta.server || input === showMenu.value) return
   if (document.startViewTransition) {
@@ -42,7 +42,8 @@ function toggleMenu(input?: Event | boolean) {
       showMenu.value = newValue
       await nextTick()
     })
-  } else {
+  }
+  else {
     showMenu.value = newValue
   }
 }

@@ -9,5 +9,5 @@ export default defineCachedEventHandler(
       .map(s => s.avatarUrl?.replace(/(\?|%3Fu).*$/, ''))
       .filter((r): r is string => !!r)
   },
-  { maxAge: 60 }
+  { maxAge: 60 },
 )

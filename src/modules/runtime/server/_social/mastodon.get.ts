@@ -4,14 +4,14 @@ import { parseURL, withProtocol } from 'ufo'
 export default defineLazyEventHandler(async () => {
   const acct = useRuntimeConfig().social.networks.mastodon.identifier
 
-  const data = await $fetch<{ subject: string; aliases: string[] }>(
+  const data = await $fetch<{ subject: string, aliases: string[] }>(
     '.well-known/webfinger',
     {
       baseURL: withProtocol(acct.split('@')[1], 'https://'),
       query: {
         resource: `acct:${acct}`,
       },
-    }
+    },
   )
   const { host, protocol } = parseURL(data.aliases[0])
 
@@ -35,11 +35,11 @@ export default defineLazyEventHandler(async () => {
             /:([a-z-]+):/g,
             (string, shortcode) => {
               const emoji = p.account.emojis.find(
-                e => e.shortcode === shortcode
+                e => e.shortcode === shortcode,
               )
               if (!emoji) return string
               return `<img src="${emoji.url}" style="height:1em" alt="${shortcode} emoji" />`
-            }
+            },
           ),
           createdAt: p.createdAt,
           permalink: p.url?.replace('https://', 'https://elk.zone/') ?? p.uri,
@@ -50,7 +50,7 @@ export default defineLazyEventHandler(async () => {
             alt: m.description,
           })),
           html: p.content,
-        }))
+        })),
     )
   })
 })

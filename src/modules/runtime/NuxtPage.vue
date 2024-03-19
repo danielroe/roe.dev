@@ -19,7 +19,7 @@ if (import.meta.client) {
   nuxtApp.hook('page:finish', () =>
     document.documentElement.scrollTo({
       top: 0,
-    })
+    }),
   )
 }
 </script>

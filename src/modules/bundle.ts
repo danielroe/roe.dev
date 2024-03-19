@@ -14,18 +14,18 @@ export default defineNuxtModule({
           rollupOptions: {
             output: {
               chunkFileNames: '_nuxt/[name].js',
-              entryFileNames: '_nuxt/[name].js'
-            }
-          }
-        }
-      }
+              entryFileNames: '_nuxt/[name].js',
+            },
+          },
+        },
+      },
     })
 
     // We disable prerendering to speed up the bundle test.
-    nuxt.hook('prerender:routes', (routes) => {
+    nuxt.hook('prerender:routes', routes => {
       routes.routes.clear()
     })
-    nuxt.hook('nitro:config', (config) => {
+    nuxt.hook('nitro:config', config => {
       config.prerender ||= {}
       config.prerender.crawlLinks = false
     })

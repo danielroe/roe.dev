@@ -34,7 +34,7 @@ async function submitFeedback (event: Event) {
   const formData = new FormData(event.target as HTMLFormElement)
   await $fetch('/api/feedback', {
     method: 'POST',
-    body: { feedback: formData.get('feedback') }
+    body: { feedback: formData.get('feedback') },
   })
   await navigateTo('/voted')
 }

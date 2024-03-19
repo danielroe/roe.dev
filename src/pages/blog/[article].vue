@@ -59,16 +59,16 @@ const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
 const path = computed(() =>
-  route.path.replace(/(index)?\.json$/, '').replace(/\/$/, '')
+  route.path.replace(/(index)?\.json$/, '').replace(/\/$/, ''),
 )
 
 const { data: page } = await useAsyncData(
   path.value,
   () =>
-    ((import.meta.server || import.meta.dev) as true) &&
-    queryContent(path.value)
+    ((import.meta.server || import.meta.dev) as true)
+    && queryContent(path.value)
       .only(['title', 'date', 'tags', 'description'])
-      .findOne()
+      .findOne(),
 )
 
 if (!page.value) {
@@ -85,7 +85,7 @@ if (import.meta.server) {
     exactly('/')
       .and(charNotIn('/').times.any().as('slug'))
       .and(exactly('/').optionally())
-      .at.lineEnd()
+      .at.lineEnd(),
   )
   const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
   useRoute().meta.description = page.value.description
@@ -101,7 +101,7 @@ if (import.meta.server) {
   appendHeader(
     nuxtApp.ssrContext!.event,
     'x-nitro-prerender',
-    `/og/${ogSlug}.jpg`
+    `/og/${ogSlug}.jpg`,
   )
 }
 </script>

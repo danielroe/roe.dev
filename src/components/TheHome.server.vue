@@ -53,7 +53,7 @@ const { data: articles } = await useAsyncData(async () => {
   const result = await queryContent('/blog')
     .only(['title', 'date', '_path'])
     .find()
-  return (result as Array<{ title?: string; date: string; _path: string }>)
+  return (result as Array<{ title?: string, date: string, _path: string }>)
     .map(e => ({
       ...e,
       path: e._path,
@@ -79,8 +79,8 @@ interface Talk {
 
 const { data: talks } = await useAsyncData(
   () =>
-    ((import.meta.server || import.meta.dev) as true) &&
-    import('../data/talks.json').then(r => r.default as any as Talk[]),
+    ((import.meta.server || import.meta.dev) as true)
+    && import('../data/talks.json').then(r => r.default as any as Talk[]),
   {
     transform: talks => {
       const groupedTalks: Record<string, Talk[]> = {}
@@ -92,19 +92,19 @@ const { data: talks } = await useAsyncData(
 
       for (const group in groupedTalks) {
         groupedTalks[group].sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
         )
       }
 
       const groups = Object.entries(groupedTalks).sort(
         ([_s1, [a]], [_s2, [b]]) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime()
-        }
+        },
       )
 
       return groups.slice(0, 4).map(([slug, [firstTalk]]) => firstTalk)
     },
-  }
+  },
 )
 </script>
 

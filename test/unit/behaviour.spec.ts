@@ -13,7 +13,7 @@ await setup({
       },
     },
     hooks: {
-      'prerender:routes'(routes) {
+      'prerender:routes' (routes) {
         routes.routes.clear()
         routes.routes.add('/')
       },
@@ -30,16 +30,16 @@ describe(
       await page.route('**/feed/_payload.json', route =>
         route.fulfill({
           json: [{ data: 2, prerenderedAt: 3 }, {}, 1689517334625],
-        })
+        }),
       )
       page.on('console', msg => logs.push(msg.text()))
       await page.goto(url('/'))
       await page.waitForLoadState('networkidle')
       const year = new Date().getFullYear()
       expect(
-        await page.getByText(`2019-${year}`).innerHTML()
+        await page.getByText(`2019-${year}`).innerHTML(),
       ).toMatchInlineSnapshot(
-        `" © 2019-${year} Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"`
+        `" © 2019-${year} Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"`,
       )
       expect(logs).toMatchInlineSnapshot(`
         [
@@ -48,5 +48,5 @@ describe(
       `)
     })
   },
-  { timeout: 10000 }
+  { timeout: 10000 },
 )

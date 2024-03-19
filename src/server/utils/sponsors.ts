@@ -11,10 +11,9 @@ interface CacheEntry {
   mtime: number
 }
 
-export async function getSponsors(): Promise<Sponsor[]> {
+export async function getSponsors (): Promise<Sponsor[]> {
   if (!useRuntimeConfig().github.token) return []
-  const entry: CacheEntry =
-    ((await useStorage().getItem('sponsors')) as any) || {}
+  const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
 
   const ttl = 60
   entry.expires = Date.now() + ttl
@@ -23,7 +22,7 @@ export async function getSponsors(): Promise<Sponsor[]> {
   if (!entry.value || expired) {
     entry.value = await query(
       useRuntimeConfig().github.token,
-      sponsorQuery
+      sponsorQuery,
     ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
 
     // my ID

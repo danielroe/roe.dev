@@ -17,7 +17,7 @@ const route = useRoute()
 
 // TODO: interactive components within server components
 const highlightIslands = ref(false)
-function openSiteUI(e: MouseEvent | KeyboardEvent) {
+function openSiteUI (e: MouseEvent | KeyboardEvent) {
   if ((e.target as HTMLElement).hasAttribute('data-site-ui')) {
     highlightIslands.value = !highlightIslands.value
   }
@@ -36,7 +36,7 @@ if (import.meta.server) {
     exactly(char.times.any().and(charNotIn('/')))
       .as('path')
       .and(exactly('/').optionally())
-      .at.lineEnd()
+      .at.lineEnd(),
   )
 
   const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
@@ -61,14 +61,14 @@ if (import.meta.server) {
       {
         name: 'description',
         content:
-          (route.meta.description as string) ||
-          `The personal website of Daniel Roe`,
+          (route.meta.description as string)
+          || `The personal website of Daniel Roe`,
       },
       {
         property: 'og:description',
         content:
-          (route.meta.description as string) ||
-          `The personal website of Daniel Roe`,
+          (route.meta.description as string)
+          || `The personal website of Daniel Roe`,
       },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@danielcroe' },

@@ -7,7 +7,7 @@ interface SessionData {
   name?: string
 }
 
-export function getUserSession(event: H3Event) {
+export function getUserSession (event: H3Event) {
   const config = useRuntimeConfig()
   return getSession<SessionData>(event, {
     password: config.sessionPassword,
@@ -16,7 +16,7 @@ export function getUserSession(event: H3Event) {
   })
 }
 
-export function setUserSession(event: H3Event, data: any) {
+export function setUserSession (event: H3Event, data: any) {
   const config = useRuntimeConfig()
   return updateSession<SessionData>(
     event,
@@ -25,11 +25,11 @@ export function setUserSession(event: H3Event, data: any) {
       name: 'token',
       cookie: { httpOnly: false },
     },
-    data
+    data,
   )
 }
 
-export function clearUserSession(event: H3Event) {
+export function clearUserSession (event: H3Event) {
   const config = useRuntimeConfig()
   return clearSession(event, {
     password: config.sessionPassword,

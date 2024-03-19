@@ -5,7 +5,7 @@ import { useRouter } from '#app/composables/router'
 import { useNuxtApp } from '#app/nuxt'
 import type { RouteLocationRaw } from '#vue-router'
 
-const firstNonUndefined = <T>(...args: (T | undefined)[]) =>
+const firstNonUndefined = <T> (...args: (T | undefined)[]) =>
   args.find(arg => arg !== undefined)
 
 const DEFAULT_EXTERNAL_REL_ATTRIBUTE = 'noopener noreferrer'
@@ -123,13 +123,13 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, { slots }) {
+  setup (props, { slots }) {
     const router = useRouter()
 
     // Resolving `to` value from `to` and `href` props
     // Defaults to empty string (won't render any `href` attribute)
     const to: ComputedRef<string | RouteLocationRaw> = computed(
-      () => props.to || props.href || ''
+      () => props.to || props.href || '',
     )
 
     // Resolving link type
@@ -162,11 +162,11 @@ export default defineComponent({
         }
 
     if (import.meta.client) {
-      const shouldPrefetch =
-        props.prefetch !== false &&
-        props.noPrefetch !== true &&
-        props.target !== '_blank' &&
-        !isSlowConnection()
+      const shouldPrefetch
+        = props.prefetch !== false
+        && props.noPrefetch !== true
+        && props.target !== '_blank'
+        && !isSlowConnection()
 
       if (shouldPrefetch) {
         const nuxtApp = useNuxtApp()
@@ -183,22 +183,22 @@ export default defineComponent({
                     unobserve?.()
                     unobserve = null
 
-                    const path =
-                      typeof to.value === 'string'
+                    const path
+                      = typeof to.value === 'string'
                         ? to.value
                         : router.resolve(to.value).fullPath
                     await Promise.all([
                       nuxtApp.hooks
                         .callHook('link:prefetch', path)
                         .catch(() => {}),
-                      !isExternal.value &&
-                        preloadRouteComponents(
-                          to.value as string,
-                          router
-                        ).catch(() => {}),
+                      !isExternal.value
+                      && preloadRouteComponents(
+                        to.value as string,
+                        router,
+                      ).catch(() => {}),
                     ])
                     prefetched.value = true
-                  }
+                  },
                 )
               }
             })
@@ -238,8 +238,8 @@ export default defineComponent({
 
       // Resolves `to` value if it's a route location object
       // converts `""` to `null` to prevent the attribute from being added as empty (`href=""`)
-      const href =
-        typeof to.value === 'object'
+      const href
+        = typeof to.value === 'object'
           ? router.resolve(to.value)?.href ?? null
           : to.value || null
 
@@ -249,11 +249,10 @@ export default defineComponent({
       // Resolves `rel`
       const rel = props.noRel
         ? null
-        : // converts `""` to `null` to prevent the attribute from being added as empty (`rel=""`)
-          firstNonUndefined<string | null>(
-            props.rel,
-            href ? DEFAULT_EXTERNAL_REL_ATTRIBUTE : ''
-          ) || null
+        : firstNonUndefined<string | null>(
+          props.rel,
+          href ? DEFAULT_EXTERNAL_REL_ATTRIBUTE : '',
+        ) || null // converts `""` to `null` to prevent the attribute from being added as empty (`rel=""`)
 
       return h('a', { ref: el, href, rel, target }, slots.default?.())
     }
@@ -264,7 +263,7 @@ export default defineComponent({
 type CallbackFn = () => void
 type ObserveFn = (element: Element, callback: CallbackFn) => () => void
 
-function useObserver(): { observe: ObserveFn } | undefined {
+function useObserver (): { observe: ObserveFn } | undefined {
   if (import.meta.server) {
     return
   }
@@ -309,7 +308,7 @@ function useObserver(): { observe: ObserveFn } | undefined {
   return _observer
 }
 
-function isSlowConnection() {
+function isSlowConnection () {
   if (import.meta.server) {
     return
   }

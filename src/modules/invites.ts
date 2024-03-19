@@ -16,12 +16,12 @@ export default defineNuxtModule({
       // vueconf: 'danielroe/nailing-it-vueconf-us-2023',
     } satisfies Record<string, string>,
   },
-  setup(options) {
+  setup (options) {
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
-    const gitHubClientId =
-      process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID ||
-      nuxt.options.runtimeConfig.public.githubClientId
+    const gitHubClientId
+      = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID
+      || nuxt.options.runtimeConfig.public.githubClientId
 
     nuxt.options.runtimeConfig.invites = {
       map: options.map,

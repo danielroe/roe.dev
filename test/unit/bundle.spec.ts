@@ -28,7 +28,7 @@ describe('project sizes', () => {
   afterAll(async () => {
     await fsp.writeFile(
       join(rootDir, '.output/test-stats.json'),
-      JSON.stringify(stats, null, 2)
+      JSON.stringify(stats, null, 2),
     )
   })
 
@@ -228,7 +228,7 @@ describe('project sizes', () => {
   })
 })
 
-async function analyzeSizes(pattern: string | string[], rootDir: string) {
+async function analyzeSizes (pattern: string | string[], rootDir: string) {
   const files: string[] = await globby(pattern, { cwd: rootDir })
   let totalBytes = 0
   for (const file of files) {
@@ -245,6 +245,6 @@ async function analyzeSizes(pattern: string | string[], rootDir: string) {
   return { files, totalBytes }
 }
 
-function roundToKilobytes(bytes: number) {
+function roundToKilobytes (bytes: number) {
   return (bytes / 1024).toFixed(bytes > 100 * 1024 ? 0 : 1) + 'k'
 }

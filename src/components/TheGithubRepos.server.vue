@@ -79,14 +79,14 @@ const { data: repos } = await useAsyncData('repos', () => {
             Accept: 'application/vnd.github.v3+json',
             Authorization: `Bearer ${config.github.token}`,
           },
-        }
+        },
       )
       return {
         repo,
         stars: formatter.format(stars),
         language,
       }
-    })
+    }),
   )
 })
 </script>

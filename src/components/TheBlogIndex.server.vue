@@ -3,7 +3,7 @@ const entries = await queryContent('/blog')
   .only(['title', 'date', '_path'])
   .find()
   .then(result => {
-    return (result as Array<{ title?: string; date: string; _path: string }>)
+    return (result as Array<{ title?: string, date: string, _path: string }>)
       .map(e => ({
         ...e,
         path: e._path,

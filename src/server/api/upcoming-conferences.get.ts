@@ -11,42 +11,42 @@ const upcomingConferences: Array<{
   }
   location: string
 }> = [
-    {
-      name: 'EdinburghJS',
-      dates: '19 March',
-      link: 'https://www.edinburghjs.org/',
-      location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-      image: {
-        url: 'https://secure.meetupstatic.com/photos/event/3/9/b/2/clean_515474770.webp',
-        width: 653,
-        height: 367
-      }
+  {
+    name: 'EdinburghJS',
+    dates: '19 March',
+    link: 'https://www.edinburghjs.org/',
+    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+    image: {
+      url: 'https://secure.meetupstatic.com/photos/event/3/9/b/2/clean_515474770.webp',
+      width: 653,
+      height: 367,
     },
-    {
-      name: 'CityJS London',
-      dates: '3-5 April',
-      link: 'https://london.cityjsconf.org/',
-      location: '🇬🇧',
-    },
-    {
-      name: 'Vue.js Live',
-      dates: '25-26 April',
-      link: 'https://vuejslive.com/',
-      location: '🌍',
-    },
-    {
-      name: 'Vueconf US',
-      dates: '15-17 May',
-      link: 'https://vueconf.us/',
-      location: '🇺🇸',
-    },
-    {
-      name: 'Middlesborough FE',
-      dates: '17 July',
-      link: 'https://middlesbroughfe.co.uk/',
-      location: '🇬🇧',
-    },
-  ]
+  },
+  {
+    name: 'CityJS London',
+    dates: '3-5 April',
+    link: 'https://london.cityjsconf.org/',
+    location: '🇬🇧',
+  },
+  {
+    name: 'Vue.js Live',
+    dates: '25-26 April',
+    link: 'https://vuejslive.com/',
+    location: '🌍',
+  },
+  {
+    name: 'Vueconf US',
+    dates: '15-17 May',
+    link: 'https://vueconf.us/',
+    location: '🇺🇸',
+  },
+  {
+    name: 'Middlesborough FE',
+    dates: '17 July',
+    link: 'https://middlesbroughfe.co.uk/',
+    location: '🇬🇧',
+  },
+]
 
 export default defineCachedEventHandler(async () => {
   if (!import.meta.dev && !import.meta.prerender) return []
@@ -58,7 +58,7 @@ export default defineCachedEventHandler(async () => {
       }
       const html = await $fetch<string>(conference.link)
       const ogImage = html.match(
-        /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/
+        /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/,
       )?.[1]
 
       if (!ogImage) {
@@ -68,7 +68,7 @@ export default defineCachedEventHandler(async () => {
             url: null,
             width: null,
             height: null,
-          }
+          },
         }
       }
 
@@ -95,6 +95,6 @@ export default defineCachedEventHandler(async () => {
           height: metadata.height,
         },
       }
-    })
+    }),
   )
 })

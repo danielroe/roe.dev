@@ -1,4 +1,4 @@
-export function sendEmail(subject: string, body: string) {
+export function sendEmail (subject: string, body: string) {
   return $fetch('https://api.resend.com/email', {
     method: 'POST',
     headers: {

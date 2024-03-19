@@ -8,7 +8,7 @@ export default defineCachedEventHandler(async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `client_id=${config.twitch.clientId}&client_secret=${config.twitch.clientSecret}&grant_type=client_credentials`,
-    }
+    },
   )
 
   const videos: TwitchVideo[] = []
@@ -23,7 +23,7 @@ export default defineCachedEventHandler(async () => {
       },
       headers: {
         'Client-ID': config.twitch.clientId,
-        Authorization: `Bearer ${token.access_token}`,
+        'Authorization': `Bearer ${token.access_token}`,
       },
     })
     videos.push(...batch.data.filter(video => !video.thumbnail_url.includes('404')))

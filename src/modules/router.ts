@@ -45,7 +45,7 @@ export default defineNuxtModule({
 
     nuxt.hook('app:templates', app => {
       const routerTemplate = app.templates.find(
-        t => t.filename === 'vue-router-stub.d.ts'
+        t => t.filename === 'vue-router-stub.d.ts',
       )
       routerTemplate!.getContents = () => 'export * from "vue-router"'
     })
@@ -90,14 +90,14 @@ export default defineNuxtModule({
       async getContents () {
         const files = await readRecursive(resolver.resolve('../pages'))
         const componentNames = Object.fromEntries(
-          files.map(f => [f, genSafeVariableName(f)])
+          files.map(f => [f, genSafeVariableName(f)]),
         )
         const routes = files.map(f => {
           const path = withLeadingSlash(
             relative(resolver.resolve('../pages'), f).replace(
               /(\/?index)?\.vue$/,
-              ''
-            )
+              '',
+            ),
           )
           return {
             path: path.includes('[')
@@ -128,7 +128,8 @@ async function readRecursive (dir: string) {
     const path = join(dir, file)
     if (statSync(path).isDirectory()) {
       result.push(...(await readRecursive(path)))
-    } else {
+    }
+    else {
       result.push(path)
     }
   }

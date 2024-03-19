@@ -9,13 +9,13 @@ interface PostRecord {
   facets: {
     features: Array<
       | {
-          $type: 'app.bsky.richtext.facet#link'
-          uri: string
-        }
+        $type: 'app.bsky.richtext.facet#link'
+        uri: string
+      }
       | {
-          $type: 'app.bsky.richtext.facet#mention'
-          did: string
-        }
+        $type: 'app.bsky.richtext.facet#mention'
+        did: string
+      }
     >
     index: {
       byteEnd: number
@@ -63,11 +63,11 @@ export default defineLazyEventHandler(async () => {
       posts.data.feed
         .filter(
           p =>
-            '$type' in p.post.record &&
-            p.post.record.$type === 'app.bsky.feed.post' &&
-            p.post.author.handle === identifier &&
-            p.post.embed?.$type !== 'app.bsky.embed.record#view' &&
-            !p.reply
+            '$type' in p.post.record
+            && p.post.record.$type === 'app.bsky.feed.post'
+            && p.post.author.handle === identifier
+            && p.post.embed?.$type !== 'app.bsky.embed.record#view'
+            && !p.reply,
         )
         .map(p => {
           const post = p.post.record as PostRecord
@@ -76,13 +76,13 @@ export default defineLazyEventHandler(async () => {
           for (const facet of post.facets || []) {
             const startIndex = [...post.text].findIndex(
               (_, i) =>
-                Buffer.byteLength(post.text.slice(0, i + 1)) >
-                facet.index.byteStart
+                Buffer.byteLength(post.text.slice(0, i + 1))
+                > facet.index.byteStart,
             )
             const endIndex = [...post.text, 'z'].findIndex(
               (_, i) =>
-                Buffer.byteLength(post.text.slice(0, i + 1)) >=
-                facet.index.byteEnd
+                Buffer.byteLength(post.text.slice(0, i + 1))
+                >= facet.index.byteEnd,
             )
             for (const feature of facet.features) {
               if (feature.$type === 'app.bsky.richtext.facet#link') {
@@ -107,15 +107,15 @@ export default defineLazyEventHandler(async () => {
             handle: p.post.author.displayName,
             createdAt: post.createdAt,
             permalink:
-              `https://staging.bsky.app/profile/${p.post.author.handle}/post` +
-              p.post.uri.match(/(\/[^/]+)$/)?.[1],
+              `https://staging.bsky.app/profile/${p.post.author.handle}/post`
+              + p.post.uri.match(/(\/[^/]+)$/)?.[1],
             html: text.toString(),
             media: embed?.images?.map(i => ({
               url: i.fullsize,
               alt: i.alt,
             })),
           }
-        })
+        }),
     )
   })
 })

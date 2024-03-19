@@ -13,7 +13,7 @@ const plugin = createUnplugin(() => {
     },
     transform (code, id) {
       const chunks = code.matchAll(
-        /const _hoisted_(?<chunk>\d+)(?<value>[\s\S]*?)(;$|\n(?=const ))/gm
+        /const _hoisted_(?<chunk>\d+)(?<value>[\s\S]*?)(;$|\n(?=const ))/gm,
       )
       const s = new MagicString(code)
       const registeredChunks: Record<string, any> = {}
@@ -23,7 +23,7 @@ const plugin = createUnplugin(() => {
           const replacementChunk = registeredChunks[chunk.groups.value]
           s.replace(
             new RegExp(`(?<!const )_hoisted_${chunk.groups.chunk}\\b`, 'g'),
-            `_hoisted_${replacementChunk}`
+            `_hoisted_${replacementChunk}`,
           )
           replaced.push(chunk.groups.value)
           // console.log('replaced', chunk.groups.value, id)

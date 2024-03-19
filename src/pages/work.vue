@@ -51,7 +51,7 @@
 definePageMeta({ title: 'Work' })
 
 const ideaStatus = ref<'ready' | 'submitting' | 'submitted' | 'error'>('ready')
-async function handleSubmission(e: Event) {
+async function handleSubmission (e: Event) {
   const data = new FormData(e.target as HTMLFormElement)
   ideaStatus.value = 'submitting'
   try {
@@ -60,7 +60,8 @@ async function handleSubmission(e: Event) {
       body: Object.fromEntries([...data.entries()]),
     })
     ideaStatus.value = 'submitted'
-  } catch {
+  }
+  catch {
     ideaStatus.value = 'error'
   }
 }

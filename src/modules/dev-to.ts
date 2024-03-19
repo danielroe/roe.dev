@@ -20,7 +20,7 @@ export default defineNuxtModule({
     enabled: false,
     token: process.env.DEVTO_TOKEN,
   },
-  async setup(options) {
+  async setup (options) {
     const nuxt = useNuxt()
     if (nuxt.options.dev || !options.enabled) {
       return
@@ -43,7 +43,7 @@ export default defineNuxtModule({
     ])
     for (const markdownArticle of localArticles) {
       const article = publishedArticles.find(
-        article => article.canonical_url === markdownArticle.canonical_url
+        article => article.canonical_url === markdownArticle.canonical_url,
       )
       if (article) {
         await $devto(`articles/${article.id}`, {
@@ -75,7 +75,7 @@ export default defineNuxtModule({
   },
 })
 
-async function getMarkdownArticles() {
+async function getMarkdownArticles () {
   const nuxt = useNuxt()
   const articles = []
   const files = await globby('./content/blog/**/*.md', {
@@ -84,7 +84,7 @@ async function getMarkdownArticles() {
   for (const file of files) {
     let contents = await fsp.readFile(
       resolve(nuxt.options.srcDir, file),
-      'utf-8'
+      'utf-8',
     )
 
     if (contents.includes('skip_dev')) continue

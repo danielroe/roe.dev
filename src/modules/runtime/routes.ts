@@ -10,5 +10,5 @@ interface NuxtRoute {
 export const routes: NuxtRoute[] = _routes
 export const match = (path: string) =>
   routes.find(r =>
-    typeof r.path === 'string' ? r.path === path : r.path.test(path)
+    typeof r.path === 'string' ? r.path === path : r.path.test(path),
   )

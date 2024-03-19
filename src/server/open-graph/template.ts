@@ -1,6 +1,6 @@
 import type { ParsedReqs } from './parser'
 
-function getCss() {
+function getCss () {
   return `
 /* http://meyerweb.com/eric/tools/css/reset/
   v2.0 | 20110126
@@ -105,7 +105,7 @@ dd > span + span::before {
 `
 }
 
-export function getHtml(parsedReqs: ParsedReqs) {
+export function getHtml (parsedReqs: ParsedReqs) {
   const { title, date, tags } = parsedReqs
   const dateEntry = date
     ? `
@@ -119,9 +119,9 @@ export function getHtml(parsedReqs: ParsedReqs) {
     ? `
           <dt>Tags</dt>
           <dd>
-            ` +
-      tags.map(tag => `<span>${tag}</span>`).join('') +
-      `
+            `
+    + tags.map(tag => `<span>${tag}</span>`).join('')
+    + `
           </dd>`
     : ''
 

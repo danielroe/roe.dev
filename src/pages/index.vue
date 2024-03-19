@@ -22,7 +22,7 @@ onNuxtReady(() =>
     const href = a.getAttribute('href')
     if (href && !href.startsWith('mailto:'))
       nuxtApp.hooks.callHook('link:prefetch', href)
-  })
+  }),
 )
 </script>
 

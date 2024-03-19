@@ -1,18 +1,18 @@
 <script setup lang="ts">
 interface WebMention {
-  type: 'entry'
-  author: {
+  'type': 'entry'
+  'author': {
     type: 'card'
     name: string
     photo: string
     url: string
   }
-  content?: {
+  'content'?: {
     html: string
     text: string
   }
-  url: string
-  published: null
+  'url': string
+  'published': null
   'wm-id': number
   'wm-received': string
   'wm-source': string
@@ -33,10 +33,10 @@ const { data: mentions, pending } = useFetch(
     transform: (r: any) =>
       (r.children as WebMention[]).filter(
         c =>
-          !c.url.startsWith('https://geek.ds3783.com') &&
-          !c.url.startsWith('https://show-hn.com')
+          !c.url.startsWith('https://geek.ds3783.com')
+          && !c.url.startsWith('https://show-hn.com'),
       ),
-  }
+  },
 )
 </script>
 

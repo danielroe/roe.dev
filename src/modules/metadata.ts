@@ -13,7 +13,7 @@ export default defineNuxtModule({
   meta: {
     name: 'metadata',
   },
-  async setup() {
+  async setup () {
     const nuxt = useNuxt()
     const { resolve } = createResolver(import.meta.url)
     const files = await globby(resolve('../content/blog'))
@@ -44,8 +44,8 @@ export default defineNuxtModule({
     nuxt.options.nitro.virtual['#metadata.json'] = () =>
       `export const metadata = ${JSON.stringify(metadata)}`
     nuxt.options.nitro.externals = nuxt.options.nitro.externals || {}
-    nuxt.options.nitro.externals.inline =
-      nuxt.options.nitro.externals.inline || []
+    nuxt.options.nitro.externals.inline
+      = nuxt.options.nitro.externals.inline || []
     nuxt.options.nitro.externals.inline.push('#metadata.json')
   },
 })

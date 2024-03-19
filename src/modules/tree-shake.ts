@@ -25,7 +25,7 @@ export default defineNuxtModule({
           if (hasTransition || hasKeepAlive) {
             s.replace(
               i.code,
-              i.code.replace('Transition, ', '').replace('KeepAlive, ', '')
+              i.code.replace('Transition, ', '').replace('KeepAlive, ', ''),
             )
           }
           if (hasTransition) s.prepend('const Transition = {};\n')
