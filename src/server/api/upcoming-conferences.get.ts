@@ -12,17 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'EdinburghJS',
-    dates: '19 March',
-    link: 'https://www.edinburghjs.org/',
-    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-    image: {
-      url: 'https://secure.meetupstatic.com/photos/event/3/9/b/2/clean_515474770.webp',
-      width: 653,
-      height: 367,
-    },
-  },
-  {
     name: 'CityJS London',
     dates: '3-5 April',
     link: 'https://london.cityjsconf.org/',
