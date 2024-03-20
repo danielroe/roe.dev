@@ -7,16 +7,17 @@
 
 ## Terminal
 
-- [Alacritty](https://alacritty.org/) terminal emulator, running with [Starship prompt](https://starship.rs/) on [zsh](https://www.zsh.org/).
+<!-- - [Alacritty](https://alacritty.org/) terminal emulator, running with [Starship prompt](https://starship.rs/) on [zsh](https://www.zsh.org/). -->
+- [Warp](https://warp.dev/) terminal emulator, running with [Starship prompt](https://starship.rs/) on [zsh](https://www.zsh.org/). 
 - Font: [MesloLGS Nerd Font](https://www.nerdfonts.com/).
 - Cool tools: [exa](https://the.exa.website/), [difft](https://difftastic.wilfred.me.uk/).
 
 ## Desktop apps
 
 - [Arc Browser](https://arc.net/) or [Firefox Developer Edition] with Alpenglow theme.
-- Window management: [Rectangle](https://rectangleapp.com/).
-- App hotkeys: [Snap](https://apps.apple.com/us/app/snap/id418073146?mt=12).
-- Launcher: [Raycast](https://www.raycast.com/).
+- Window management: [Rectangle Pro](https://rectangleapp.com/).
+<!-- - App hotkeys: [Snap](https://apps.apple.com/us/app/snap/id418073146?mt=12). -->
+- Launcher & app hotkeys: [Raycast](https://www.raycast.com/).
 - Desktop: [Plash](https://sindresorhus.com/plash).
 - Time tracking: [Toggl](https://toggl.com/).
 - Code pairing: [Tuple](https://tuple.app).
