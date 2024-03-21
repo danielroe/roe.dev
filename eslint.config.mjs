@@ -1,7 +1,6 @@
-import nuxt from './.nuxt/eslint.config.mjs'
+import withNuxt from './.nuxt/eslint.config.mjs'
 
-export default [
-  ...nuxt,
+export default withNuxt([
   {
     rules: {
       '@stylistic/space-before-function-paren': ['error', 'always'],
@@ -16,11 +15,4 @@ export default [
       'no-undef': 'off',
     },
   },
-  {
-    // TODO: fix upstream
-    files: ['src/error.vue'],
-    rules: {
-      'vue/multi-word-component-names': 'off',
-    },
-  },
-]
+])
