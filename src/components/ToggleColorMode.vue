@@ -11,8 +11,7 @@ const colorMode = useColorMode()
     @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
   >
     <span
-      class="inline-block rounded-full h-4 w-4 bg-primary transition-transform light:translate-x-5"
-      :class="colorMode.unknown ? 'i-svg-spinners:90-ring-with-bg' : (colorMode.value === 'dark' ? 'i-tabler:moon' : 'i-tabler:sun-high')"
+      class="inline-block rounded-full h-4 w-4 bg-primary transition-transform light:translate-x-5 i-tabler:moon light:i-tabler:sun-high"
     />
   </button>
 </template>
