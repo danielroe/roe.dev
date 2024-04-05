@@ -48,6 +48,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    componentIslands: true,
     defaults: {
       useAsyncData: {
         deep: false,
