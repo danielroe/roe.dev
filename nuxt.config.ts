@@ -111,6 +111,7 @@ export default defineNuxtConfig({
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
+    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
   },
 
   content: {
