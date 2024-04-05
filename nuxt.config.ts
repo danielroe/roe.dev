@@ -147,6 +147,7 @@ export default defineNuxtConfig({
 
   image: {
     domains: [
+      'devoxx.gr',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
