@@ -239,7 +239,7 @@ const { data: talks } = await useAsyncData(
                 format="webp"
                 :src="conference.image.url"
                 :width="320"
-                :height="Math.round(conference.image.height / (conference.image.width / 320))"
+                :height="Math.round(conference.image.height! / (conference.image.width! / 320))"
                 :alt="`Logo for ${conference.name}`"
                 class="object-cover object-center"
               />

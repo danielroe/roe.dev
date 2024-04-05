@@ -1,4 +1,3 @@
-// @ts-expect-error virtual file
 import _routes from '#build/routes'
 
 interface NuxtRoute {
