@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
 

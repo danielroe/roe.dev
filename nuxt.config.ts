@@ -10,6 +10,13 @@ export default defineNuxtConfig({
       provider: 'ipxStatic',
     },
   },
+
+  $test: {
+    experimental: {
+      componentIslands: true,
+    },
+  },
+
   devtools: { enabled: true },
   runtimeConfig: {
     voteUrl: '',
@@ -111,6 +118,7 @@ export default defineNuxtConfig({
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
+    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
   },
 
   content: {
@@ -145,6 +153,7 @@ export default defineNuxtConfig({
 
   image: {
     domains: [
+      'devoxx.gr',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
