@@ -11,7 +11,7 @@ const colorMode = useColorMode()
     @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
   >
     <span
-      class="inline-block rounded-full h-4 w-4 bg-primary transition-transform light:translate-x-5"
+      class="inline-block rounded-full h-4 w-4 bg-primary transition-transform light:translate-x-5 i-tabler:moon light:i-tabler:sun-high light:h-4 light:w-4"
     />
   </button>
 </template>
