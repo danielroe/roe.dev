@@ -23,6 +23,7 @@ await setup({
 
 describe(
   'site behaviour',
+  { timeout: 10000 },
   () => {
     it('renders server components', async () => {
       const logs: string[] = []
@@ -41,12 +42,7 @@ describe(
       ).toMatchInlineSnapshot(
         `" © 2019-${year} Daniel Roe. <a class="underlined-link" href="https://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0 </a>"`,
       )
-      expect(logs).toMatchInlineSnapshot(`
-        [
-          "[Plausible] Ignoring event because website is running locally",
-        ]
-      `)
+      expect(logs).toMatchInlineSnapshot(`[]`)
     })
   },
-  { timeout: 10000 },
 )

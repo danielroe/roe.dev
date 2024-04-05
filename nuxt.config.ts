@@ -10,6 +10,13 @@ export default defineNuxtConfig({
       provider: 'ipxStatic',
     },
   },
+
+  $test: {
+    experimental: {
+      componentIslands: true,
+    },
+  },
+
   devtools: { enabled: true },
   runtimeConfig: {
     voteUrl: '',
