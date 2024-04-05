@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'CityJS London',
-    dates: '3-5 April',
-    link: 'https://london.cityjsconf.org/',
-    location: '🇬🇧',
-  },
-  {
     name: 'Devoxx Greece',
     dates: '18-20 April',
     link: 'https://devoxx.gr/',
