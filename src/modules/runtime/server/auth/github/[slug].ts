@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')

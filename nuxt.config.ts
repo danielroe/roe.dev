@@ -10,6 +10,13 @@ export default defineNuxtConfig({
       provider: 'ipxStatic',
     },
   },
+
+  $test: {
+    experimental: {
+      componentIslands: true,
+    },
+  },
+
   devtools: { enabled: true },
   runtimeConfig: {
     voteUrl: '',
@@ -48,7 +55,6 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    componentIslands: true,
     defaults: {
       useAsyncData: {
         deep: false,
@@ -147,6 +153,7 @@ export default defineNuxtConfig({
 
   image: {
     domains: [
+      'devoxx.gr',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',
