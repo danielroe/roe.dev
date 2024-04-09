@@ -201,10 +201,11 @@ export default defineNuxtConfig({
   ogImage: {
     compatibility: {
       runtime: {
-        chromium: false,
-        resvg: false,
-        satori: false,
-        sharp: false,
+        'css-inline': false,
+        'chromium': false,
+        'resvg': false,
+        'satori': false,
+        'sharp': false,
       },
       prerender: {},
     },
