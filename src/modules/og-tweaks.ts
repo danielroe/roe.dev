@@ -26,7 +26,7 @@ export default defineNuxtModule({
       (config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
         transform (_code, id) {
-          if (id.includes('__og-image__')) {
+          if (id.includes('runtime/nitro/routes/image')) {
             return 'export default defineEventHandler(() => {})'
           }
         },
