@@ -15,6 +15,12 @@
 <script lang="ts" setup>
 const route = useRoute()
 
+defineOgImageComponent('DefaultImage', {
+  date: '',
+  title: 'roe.dev',
+  tags: [],
+})
+
 // TODO: interactive components within server components
 const highlightIslands = ref(false)
 function openSiteUI (e: MouseEvent | KeyboardEvent) {

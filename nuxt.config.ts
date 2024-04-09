@@ -194,7 +194,19 @@ export default defineNuxtConfig({
     },
   },
 
+  site: {
+    url: 'https://roe.dev',
+  },
+
+  ogImage: {
+    fonts: [
+      'Barlow:400',
+      'Barlow:600',
+    ],
+  },
+
   modules: [
+    'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
     '@nuxt/test-utils/module',

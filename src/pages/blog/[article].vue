@@ -1,7 +1,5 @@
 <template>
-  <main
-    class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]"
-  >
+  <main class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]">
     <header
       v-if="page"
       class="leading-none mt-[5vw] mb-[1vw]"
@@ -52,8 +50,6 @@
 </template>
 
 <script lang="ts" setup>
-import { appendHeader } from 'h3'
-const nuxtApp = useNuxtApp()
 const route = useRoute('blog-article')
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
@@ -80,34 +76,25 @@ if (!page.value) {
 
 route.meta.title = page.value.title
 
+const formatter = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+})
+
+defineOgImageComponent('DefaultImage', {
+  date: formatter.format(new Date(page.value.date)),
+  title: page.value.title,
+  tags: page.value.tags,
+})
+
 if (import.meta.server) {
-  const SLUG_RE = createRegExp(
-    exactly('/')
-      .and(charNotIn('/').times.any().as('slug'))
-      .and(exactly('/').optionally())
-      .at.lineEnd(),
-  )
-  const { slug: ogSlug } = route.fullPath.match(SLUG_RE)?.groups ?? {}
   useRoute().meta.description = page.value.description
-  useServerHead({
-    meta: [
-      {
-        property: 'og:image',
-        content: `https://roe.dev/og/${ogSlug}.jpg`,
-        key: 'og:image',
-      },
-    ],
-  })
-  appendHeader(
-    nuxtApp.ssrContext!.event,
-    'x-nitro-prerender',
-    `/og/${ogSlug}.jpg`,
-  )
 }
 </script>
 
 <style scoped>
-header > h1:first-child {
+header>h1:first-child {
   view-transition-name: heading;
 }
 
@@ -128,13 +115,13 @@ header dl dd:first-of-type {
     letter-spacing: 0.1rem;
   }
 
-  * + h2,
-  * + h3,
-  * + h4 {
+  *+h2,
+  *+h3,
+  *+h4 {
     @apply mt-8;
   }
 
-  div + div {
+  div+div {
     @apply mb-6;
   }
 
@@ -150,13 +137,13 @@ header dl dd:first-of-type {
       white-space: pre-wrap;
     }
 
-    + h2,
-    + h3,
-    + h4 {
+    +h2,
+    +h3,
+    +h4 {
       @apply mt-8;
     }
 
-    + p {
+    +p {
       @apply mt-6;
     }
   }
@@ -194,27 +181,28 @@ header dl dd:first-of-type {
 
   /* stylelint-disable-next-line */
   p {
-    + pre,
-    + p {
+
+    +pre,
+    +p {
       @apply mt-4;
     }
 
-    + ul,
-    + ol {
+    +ul,
+    +ol {
       @apply my-2;
     }
 
-    + table {
+    +table {
       @apply my-4;
     }
   }
 
-  p > code,
-  li > code {
+  p>code,
+  li>code {
     @apply px-2 py-1 mx-1 text-sm text-background bg-primary;
   }
 
-  p + div {
+  p+div {
     @apply mt-6 py-1 uppercase text-xs text-gray-600;
 
     letter-spacing: 0.15rem;
