@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"878k"`)
+      .toMatchInlineSnapshot(`"671k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7401k"`)
+      .toMatchInlineSnapshot(`"7342k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -102,9 +102,6 @@ describe('project sizes', () => {
         "@shikijs/transformers",
         "@sindresorhus/is",
         "@ungap/structured-clone",
-        "@unhead/dom",
-        "@unhead/shared",
-        "@unhead/ssr",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/reactivity",
@@ -142,7 +139,6 @@ describe('project sizes', () => {
         "hast-util-to-parse5",
         "hast-util-to-string",
         "hastscript",
-        "hookable",
         "html-void-elements",
         "image-meta",
         "is-absolute-url",
@@ -223,7 +219,6 @@ describe('project sizes', () => {
         "trough",
         "ts-custom-error",
         "uint8arrays",
-        "unhead",
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-is",
