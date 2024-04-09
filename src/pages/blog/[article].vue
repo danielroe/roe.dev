@@ -181,7 +181,6 @@ header dl dd:first-of-type {
 
   /* stylelint-disable-next-line */
   p {
-
     +pre,
     +p {
       @apply mt-4;
