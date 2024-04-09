@@ -199,6 +199,9 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
+    compatibility: {
+      prerender: {},
+    },
     fonts: [
       'Barlow:400',
       'Barlow:600',
