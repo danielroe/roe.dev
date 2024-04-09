@@ -200,6 +200,12 @@ export default defineNuxtConfig({
 
   ogImage: {
     compatibility: {
+      runtime: {
+        chromium: false,
+        resvg: false,
+        satori: false,
+        sharp: false,
+      },
       prerender: {},
     },
     fonts: [
