@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"666k"`)
+      .toMatchInlineSnapshot(`"449k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7401k"`)
+      .toMatchInlineSnapshot(`"6182k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -97,20 +97,10 @@ describe('project sizes', () => {
         "@atproto/lexicon",
         "@atproto/syntax",
         "@atproto/xrpc",
-        "@babel/parser",
         "@shikijs/core",
         "@shikijs/transformers",
         "@sindresorhus/is",
         "@ungap/structured-clone",
-        "@unhead/dom",
-        "@unhead/shared",
-        "@unhead/ssr",
-        "@vue/compiler-core",
-        "@vue/compiler-dom",
-        "@vue/reactivity",
-        "@vue/runtime-core",
-        "@vue/runtime-dom",
-        "@vue/shared",
         "bail",
         "ccount",
         "char-regex",
@@ -127,7 +117,6 @@ describe('project sizes', () => {
         "entities",
         "entities/lib/esm",
         "escape-string-regexp",
-        "estree-walker",
         "events-to-async",
         "events-to-async/module",
         "extend",
@@ -142,7 +131,6 @@ describe('project sizes', () => {
         "hast-util-to-parse5",
         "hast-util-to-string",
         "hastscript",
-        "hookable",
         "html-void-elements",
         "image-meta",
         "is-absolute-url",
@@ -215,7 +203,6 @@ describe('project sizes', () => {
         "shiki",
         "skin-tone",
         "slugify",
-        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
         "tlds",
@@ -223,7 +210,6 @@ describe('project sizes', () => {
         "trough",
         "ts-custom-error",
         "uint8arrays",
-        "unhead",
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-is",
@@ -234,7 +220,6 @@ describe('project sizes', () => {
         "vfile",
         "vfile-location",
         "vfile-message",
-        "vue",
         "web-namespaces",
         "ws",
         "xml-js",
