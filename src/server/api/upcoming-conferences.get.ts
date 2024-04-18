@@ -12,17 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Devoxx Greece',
-    dates: '18-20 April',
-    link: 'https://devoxx.gr/',
-    location: '🇬🇷',
-    image: {
-      url: 'https://devoxx.gr/wp-content/uploads/2024/01/devoxxgreece.png',
-      height: 630,
-      width: 945,
-    },
-  },
-  {
     name: 'Vue.js Live',
     dates: '25-26 April',
     link: 'https://vuejslive.com/',
