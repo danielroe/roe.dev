@@ -1,4 +1,5 @@
 import { query } from './github'
+
 interface Sponsor {
   id: string
   avatarUrl?: string
