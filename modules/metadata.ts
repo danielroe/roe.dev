@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
+import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 import { globby } from 'globby'
 import grayMatter from 'gray-matter'
@@ -15,8 +15,7 @@ export default defineNuxtModule({
   },
   async setup () {
     const nuxt = useNuxt()
-    const { resolve } = createResolver(import.meta.url)
-    const files = await globby(resolve('../app/content/blog'))
+    const files = await globby('./content/blog/**/*.md', { cwd: nuxt.options.srcDir, absolute: true })
     const metadata: Record<string, any> = {}
 
     const md = remark().use(remarkHtml)
