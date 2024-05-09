@@ -28,7 +28,7 @@ export default defineNuxtModule({
     }
 
     nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
-      include: ['../src/modules/runtime/server/**/*'],
+      include: ['../modules/runtime/server/**/*'],
     })
 
     if (!gitHubClientId || Object.values(options.map).length === 0) return

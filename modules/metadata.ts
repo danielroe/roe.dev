@@ -16,7 +16,7 @@ export default defineNuxtModule({
   async setup () {
     const nuxt = useNuxt()
     const { resolve } = createResolver(import.meta.url)
-    const files = await globby(resolve('../content/blog'))
+    const files = await globby(resolve('../app/content/blog'))
     const metadata: Record<string, any> = {}
 
     const md = remark().use(remarkHtml)
