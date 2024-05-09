@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Vue.js Live',
-    dates: '25-26 April',
-    link: 'https://vuejslive.com/',
-    location: '🌍',
-  },
-  {
     name: 'Vueconf US',
     dates: '15-17 May',
     link: 'https://vueconf.us/',
