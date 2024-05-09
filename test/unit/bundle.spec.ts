@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"446k"`)
+      .toMatchInlineSnapshot(`"445k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"6130k"`)
+      .toMatchInlineSnapshot(`"6071k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -219,7 +219,6 @@ describe('project sizes', () => {
         "vfile-location",
         "vfile-message",
         "web-namespaces",
-        "ws",
         "xml-js",
         "zod",
         "zwitch",
