@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { joinURL } from 'ufo'
+import { joinURL, withTrailingSlash } from 'ufo'
 
 const baseURL = process.env.BASE_URL || 'https://roe.dev/'
 
@@ -36,7 +36,7 @@ test.describe(`pages`, () => {
 
       const ogImage = page.locator('[property="og:image"]').first()
       const ogURL = await ogImage.getAttribute('content')
-      await page.goto(ogURL!)
+      await page.goto(ogURL!.replace('https://roe.dev/', withTrailingSlash(baseURL)))
       await expect(page).toHaveScreenshot()
     })
   }

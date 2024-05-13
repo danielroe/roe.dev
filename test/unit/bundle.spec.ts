@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"217k"`)
+      .toMatchInlineSnapshot(`"218k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"445k"`)
+      .toMatchInlineSnapshot(`"667k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"6071k"`)
+      .toMatchInlineSnapshot(`"7286k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -97,10 +97,17 @@ describe('project sizes', () => {
         "@atproto/lexicon",
         "@atproto/syntax",
         "@atproto/xrpc",
+        "@babel/parser",
         "@shikijs/core",
         "@shikijs/transformers",
         "@sindresorhus/is",
         "@ungap/structured-clone",
+        "@vue/compiler-core",
+        "@vue/compiler-dom",
+        "@vue/reactivity",
+        "@vue/runtime-core",
+        "@vue/runtime-dom",
+        "@vue/shared",
         "bail",
         "ccount",
         "char-regex",
@@ -117,6 +124,7 @@ describe('project sizes', () => {
         "entities",
         "entities/lib/esm",
         "escape-string-regexp",
+        "estree-walker",
         "events-to-async",
         "events-to-async/module",
         "extend",
@@ -143,6 +151,8 @@ describe('project sizes', () => {
         "js-yaml",
         "json5",
         "longest-streak",
+        "lru-cache",
+        "lru-cache/dist/esm",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -201,6 +211,7 @@ describe('project sizes', () => {
         "shiki",
         "skin-tone",
         "slugify",
+        "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
         "tlds",
@@ -218,6 +229,7 @@ describe('project sizes', () => {
         "vfile",
         "vfile-location",
         "vfile-message",
+        "vue",
         "web-namespaces",
         "xml-js",
         "zod",
