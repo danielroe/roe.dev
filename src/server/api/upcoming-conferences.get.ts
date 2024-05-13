@@ -23,7 +23,7 @@ const upcomingConferences: Array<{
     image: {
       width: 940,
       height: 470,
-      url: 'https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F764645019%2F354574849553%2F1%2Foriginal.20240510-143946?w=940&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C2160%2C1080&s=c344463499ccbb6cd3bc7664c63f6380',
+      url: 'https://cdn.evbuc.com/images/764645019/354574849553/1/original.20240510-143946?w=940rect=0,0,2160,1080&s=c344463499ccbb6cd3bc7664c63f6380&a.png',
     },
     link: 'https://www.eventbrite.co.uk/e/devhub-north-may-tickets-903193505087',
     location: '🇬🇧',
