@@ -34,6 +34,12 @@ const upcomingConferences: Array<{
     link: 'https://middlesbroughfe.co.uk/',
     location: '🇬🇧',
   },
+  {
+    name: 'vuejs.de Conf',
+    dates: '8-9 October',
+    link: 'https://conf.vuejs.de/',
+    location: '🇩🇪',
+  },
 ]
 
 export default defineCachedEventHandler(async () => {
