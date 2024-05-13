@@ -1,5 +1,5 @@
+import { existsSync, promises as fsp } from 'node:fs'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { existsSync, promises as fsp } from 'fs'
 import { $fetch } from 'ofetch'
 import { join } from 'pathe'
 

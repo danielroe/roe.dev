@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"218k"`)
+      .toMatchInlineSnapshot(`"217k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -231,7 +231,6 @@ describe('project sizes', () => {
         "vfile-message",
         "vue",
         "web-namespaces",
-        "ws",
         "xml-js",
         "zod",
         "zwitch",

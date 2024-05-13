@@ -166,6 +166,8 @@ export default defineNuxtConfig({
       'vueconf.us',
       'media.graphassets.com',
       'secure.meetupstatic.com',
+      'cdn.evbuc.com',
+      'conf.vuejs.de',
     ],
     screens: {
       logo: 40,

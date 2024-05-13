@@ -102,7 +102,7 @@ const { data: talks } = await useAsyncData(
         },
       )
 
-      return groups.slice(0, 4).map(([slug, [firstTalk]]) => firstTalk)
+      return groups.slice(0, 4).map(([_slug, [firstTalk]]) => firstTalk)
     },
   },
 )

@@ -47,7 +47,6 @@ const colorSet = {
 const status = ref<keyof typeof colorSet>('default')
 const count = ref<null | number>(null)
 
-// eslint-disable-next-line vue/one-component-per-file
 const LiveWrapper = defineComponent({
   setup (_props, { slots }) {
     return () =>
@@ -63,7 +62,6 @@ const LiveWrapper = defineComponent({
   },
 })
 
-// eslint-disable-next-line vue/one-component-per-file
 const PresenceWrapper = defineComponent({
   setup (_props, { slots }) {
     return () =>
