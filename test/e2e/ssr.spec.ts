@@ -36,7 +36,7 @@ test.describe(`pages`, () => {
 
       const ogImage = page.locator('[property="og:image"]').first()
       const ogURL = await ogImage.getAttribute('content')
-      await page.goto(ogURL!)
+      await page.goto(ogURL!.replace('https://roe.dev/', baseURL))
       await expect(page).toHaveScreenshot()
     })
   }
