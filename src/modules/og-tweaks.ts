@@ -25,9 +25,9 @@ export default defineNuxtModule({
     nuxt.hook('nitro:config', config => {
       (config.rollupConfig!.plugins as InputPluginOption[]).push({
         name: 'purge-the-handler',
-        transform (_code, id) {
-          if (id.includes('runtime/nitro/routes/image')) {
-            return 'export default defineEventHandler(() => {})'
+        transform (code, id) {
+          if (id.includes('runtime/nitro/routes/image') || (code.includes('defineEventHandler') && id.includes('nuxt-site-config'))) {
+            return 'import { defineEventHandler } from "h3"; export default defineEventHandler(() => {})'
           }
         },
       })
