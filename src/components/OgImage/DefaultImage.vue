@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-v-for-key */
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
