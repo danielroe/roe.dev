@@ -13,7 +13,7 @@ export default defineNuxtModule({
   defaults: {
     map: {
       // zen: 'danielroe/nailing-it-japan-2023',
-      // vueconf: 'danielroe/nailing-it-vueconf-us-2023',
+      vueconf: 'danielroe/nailing-it-vueconf-us-2024',
     } satisfies Record<string, string>,
   },
   setup (options) {
