@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Vueconf US',
-    dates: '15-17 May',
-    link: 'https://vueconf.us/',
-    location: '🇺🇸',
-  },
-  {
     name: 'DevHub North',
     dates: '30 May',
     image: {
