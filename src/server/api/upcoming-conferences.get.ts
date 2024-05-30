@@ -12,17 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'DevHub North',
-    dates: '30 May',
-    image: {
-      width: 940,
-      height: 470,
-      url: 'https://cdn.evbuc.com/images/764645019/354574849553/1/original.20240510-143946?w=940rect=0,0,2160,1080&s=c344463499ccbb6cd3bc7664c63f6380&a.png',
-    },
-    link: 'https://www.eventbrite.co.uk/e/devhub-north-may-tickets-903193505087',
-    location: '🇬🇧',
-  },
-  {
     name: 'Middlesborough FE',
     dates: '17 July',
     link: 'https://middlesbroughfe.co.uk/',
