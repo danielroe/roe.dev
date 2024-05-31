@@ -154,6 +154,7 @@ export default defineNuxtConfig({
   image: {
     domains: [
       'devoxx.gr',
+      'conference.vueschool.io',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
       's3.nl-ams.scw.cloud',

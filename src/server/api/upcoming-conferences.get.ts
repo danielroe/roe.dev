@@ -12,6 +12,18 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
+    name: 'Frontend Nation',
+    dates: '4-7 June',
+    link: 'https://frontendnation.com/',
+    location: '🌎',
+  },
+  {
+    name: 'Google I/O Extended Portlaoise',
+    dates: '11 July',
+    link: 'https://gdg.community.dev/events/details/google-gdg-portlaoise-presents-google-io-extended-2024-portlaoise/',
+    location: '🇮🇪',
+  },
+  {
     name: 'Middlesborough FE',
     dates: '17 July',
     link: 'https://middlesbroughfe.co.uk/',
