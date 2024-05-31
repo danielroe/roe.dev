@@ -16,6 +16,8 @@ export default defineNuxtModule({
       })
     })
 
+    if (nuxt.options.dev) return
+
     // Prevent installing runtime nitro plugin to handle content hooks + SPA site config
     nuxt.hook('modules:done', () => {
       nuxt.options.nitro.plugins = nuxt.options.nitro.plugins?.filter(p => p && !p.includes('runtime/nitro/plugins/nuxt-content') && !p.includes('runtime/nitro/plugins/injectState')) || []
