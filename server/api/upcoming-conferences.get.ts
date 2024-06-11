@@ -12,22 +12,28 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Vue.js Live',
-    dates: '25-26 April',
-    link: 'https://vuejslive.com/',
-    location: '🌍',
+    name: 'Frontend Nation',
+    dates: '4-7 June',
+    link: 'https://frontendnation.com/',
+    location: '🌎',
   },
   {
-    name: 'Vueconf US',
-    dates: '15-17 May',
-    link: 'https://vueconf.us/',
-    location: '🇺🇸',
+    name: 'Google I/O Extended Portlaoise',
+    dates: '11 July',
+    link: 'https://gdg.community.dev/events/details/google-gdg-portlaoise-presents-google-io-extended-2024-portlaoise/',
+    location: '🇮🇪',
   },
   {
     name: 'Middlesborough FE',
     dates: '17 July',
     link: 'https://middlesbroughfe.co.uk/',
     location: '🇬🇧',
+  },
+  {
+    name: 'vuejs.de Conf',
+    dates: '8-9 October',
+    link: 'https://conf.vuejs.de/',
+    location: '🇩🇪',
   },
 ]
 
