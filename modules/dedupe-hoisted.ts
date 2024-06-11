@@ -18,7 +18,7 @@ const plugin = createUnplugin(() => {
       const s = new MagicString(code)
       const registeredChunks: Record<string, any> = {}
       for (const chunk of chunks) {
-        if (!chunk.groups) continue
+        if (!chunk.groups || !chunk.groups.value) continue
         if (chunk.groups.value in registeredChunks) {
           const replacementChunk = registeredChunks[chunk.groups.value]
           s.replace(

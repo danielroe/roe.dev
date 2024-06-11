@@ -86,6 +86,7 @@ if (import.meta.client) {
     partySocket.onmessage = evt => {
       const data = evt.data as string
       const [type, value] = data.split(':')
+      if (!value) return
       switch (type) {
         case 'connections':
           count.value = parseInt(value)

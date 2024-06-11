@@ -50,10 +50,11 @@ export default defineNuxtModule({
 
     nuxt.hook('build:manifest', manifest => {
       for (const file in manifest) {
-        manifest[file].imports = manifest[file].imports?.filter(
+        const chunk = manifest[file]!
+        chunk.imports = chunk.imports?.filter(
           i => !i.includes('ContentRendererMarkdown'),
         )
-        manifest[file].dynamicImports = manifest[file].dynamicImports?.filter(
+        chunk.dynamicImports = chunk.dynamicImports?.filter(
           i => !i.includes('ContentRendererMarkdown'),
         )
       }

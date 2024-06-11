@@ -28,7 +28,7 @@ export default defineNuxtModule({
       baseURL: '/slides',
     })
 
-    const talks = await import('../data/talks.json').then(r => r.default)
+    const talks = await import('../app/data/talks.json').then(r => r.default)
 
     for (const talk of talks) {
       if (!talk.release) continue

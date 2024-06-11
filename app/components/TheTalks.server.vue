@@ -32,15 +32,19 @@ const { data: groups } = await useAsyncData(
     && import('../data/talks.json').then(r => r.default as any as Talk[]),
   {
     transform: talks => {
-      const groupedTalks: Record<string, Talk[]> = {}
+      const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
       for (const talk of talks) {
         const slug = talk.group || talk.slug
-        groupedTalks[slug] ||= []
-        groupedTalks[slug].push(talk)
+        if (groupedTalks[slug]) {
+          groupedTalks[slug]!.push(talk)
+        }
+        else {
+          groupedTalks[slug] = [talk]
+        }
       }
 
       for (const group in groupedTalks) {
-        groupedTalks[group].sort(
+        groupedTalks[group]!.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
         )
       }

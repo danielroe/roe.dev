@@ -2,7 +2,6 @@ import fsp from 'node:fs/promises'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { globby } from 'globby'
 import { $fetch } from 'ofetch'
-import { resolve } from 'pathe'
 import { serializers } from './shared/serialisers'
 
 type RawArticle = {
@@ -80,12 +79,10 @@ async function getMarkdownArticles () {
   const articles = []
   const files = await globby('./content/blog/**/*.md', {
     cwd: nuxt.options.srcDir,
+    absolute: true,
   })
   for (const file of files) {
-    let contents = await fsp.readFile(
-      resolve(nuxt.options.srcDir, file),
-      'utf-8',
-    )
+    let contents = await fsp.readFile(file, 'utf-8')
 
     if (contents.includes('skip_dev')) continue
     const title = contents.match(/title: (.*)/)![1]

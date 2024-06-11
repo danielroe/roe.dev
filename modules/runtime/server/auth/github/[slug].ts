@@ -1,7 +1,10 @@
+import type { RuntimeConfig } from 'nuxt/schema'
+
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')
-  if (!slug || !config.invites?.map || !(slug in config.invites.map)) {
+  const repo = slug && config.invites?.map?.[slug as keyof RuntimeConfig['invites']['map']]
+  if (!repo) {
     throw createError({ statusCode: 404 })
   }
 
@@ -51,7 +54,6 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const repo = config.invites.map[slug]
   try {
     const res = await $fetch(
       `https://api.github.com/repos/${repo}/collaborators/${username}`,

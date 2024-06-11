@@ -17,6 +17,9 @@ export default defineNuxtConfig({
     },
   },
 
+  future: {
+    compatibilityVersion: 4,
+  },
   devtools: { enabled: true },
   runtimeConfig: {
     voteUrl: '',
@@ -82,8 +85,6 @@ export default defineNuxtConfig({
   devTo: {
     enabled: !!process.env.SYNC_DEV_TO,
   },
-
-  srcDir: 'src',
 
   nitro: {
     replace: {
