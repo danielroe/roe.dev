@@ -4,10 +4,12 @@ import { parseURL, withProtocol } from 'ufo'
 export default defineLazyEventHandler(async () => {
   const acct = useRuntimeConfig().social.networks.mastodon.identifier
 
+  const server = acct.split('@')[1]
+  if (!server) throw createError('Invalid Mastodon account identifier')
   const data = await $fetch<{ subject: string, aliases: string[] }>(
     '.well-known/webfinger',
     {
-      baseURL: withProtocol(acct.split('@')[1], 'https://'),
+      baseURL: withProtocol(server, 'https://'),
       query: {
         resource: `acct:${acct}`,
       },

@@ -64,14 +64,14 @@ defineProps({
         v-html="html"
       />
       <nuxt-img
-        v-if="media?.length && media[0].url && !media[0].url.endsWith('.mp4')"
+        v-if="media?.length && media[0] && media[0].url && !media[0].url.endsWith('.mp4')"
         :src="media[0].url"
         :width="media[0].width"
         :height="media[0].height"
         :alt="media[0].alt || undefined"
       />
       <video
-        v-else-if="media?.length && media[0].url?.endsWith('.mp4')"
+        v-else-if="media?.[0] && media[0].url?.endsWith('.mp4')"
         loop
         playsinline
         controls
