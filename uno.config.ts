@@ -11,21 +11,24 @@ export default defineConfig({
     },
   ],
   variants: [
-    matcher => {
-      if (!matcher.startsWith('*:')) return matcher
-      matcher = matcher.slice('*:'.length)
-      const child = matcher.match(/(first|last):/)?.[1]
-      if (child) {
-        matcher = matcher.slice(child.length + 1)
+    {
+      order: -10,
+      match: matcher => {
+        if (!matcher.startsWith('*:')) return matcher
+        matcher = matcher.slice('*:'.length)
+        const child = matcher.match(/(first|last):/)?.[1]
+        if (child) {
+          matcher = matcher.slice(child.length + 1)
+          return {
+            matcher,
+            selector: s => `${s} > *:${child}-child`,
+          }
+        }
         return {
           matcher,
-          selector: s => `${s} > *:${child}-child`,
+          selector: s => `${s} > *`,
         }
-      }
-      return {
-        matcher,
-        selector: s => `${s} > *`,
-      }
+      },
     },
   ],
   theme: {
