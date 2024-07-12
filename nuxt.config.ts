@@ -109,6 +109,7 @@ export default defineNuxtConfig({
 
         if (route.error) {
           if (route.route.startsWith('/_ipx')) {
+            console.warn('Could not prerender', route.route)
             // ignore IPX rendering errors
             delete route.error
           }

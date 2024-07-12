@@ -94,5 +94,10 @@
     "commit-msg": "npx commitlint --edit $1",
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@8.15.6"
+  "packageManager": "pnpm@8.15.6",
+  "pnpm": {
+    "patchedDependencies": {
+      "nitropack@2.9.6": "patches/nitropack@2.9.6.patch"
+    }
+  }
 }
