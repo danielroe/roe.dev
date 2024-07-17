@@ -37,9 +37,9 @@
     "@nuxtjs/plausible": "1.0.0",
     "@nuxtjs/web-vitals": "0.2.7",
     "@unhead/vue": "^1.9.15",
-    "@unocss/nuxt": "^0.61.3",
-    "@unocss/postcss": "^0.61.3",
-    "@unocss/reset": "^0.61.3",
+    "@unocss/nuxt": "^0.61.5",
+    "@unocss/postcss": "^0.61.5",
+    "@unocss/reset": "^0.61.5",
     "defu": "^6.1.4",
     "feed": "^4.2.2",
     "globby": "^14.0.2",
@@ -64,7 +64,7 @@
     "std-env": "^3.7.0",
     "ufo": "^1.5.3",
     "unenv": "^1.9.0",
-    "unocss": "^0.61.3",
+    "unocss": "^0.61.5",
     "unplugin": "^1.11.0",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0"
@@ -98,5 +98,10 @@
     "commit-msg": "npx commitlint --edit $1",
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@9.5.0"
+  "packageManager": "pnpm@9.5.0",
+  "pnpm": {
+    "patchedDependencies": {
+      "nitropack@2.9.7": "patches/nitropack@2.9.6.patch"
+    }
+  }
 }
