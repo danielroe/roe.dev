@@ -9,7 +9,7 @@
           for="feedback"
           class="text-2xl leading-none mt-[5vw] mb-[1vw] max-w-[37.50rem]"
         >
-          What do you think of Nuxt, in one word or one sentence?
+          What do you think, in one word or one sentence?
         </label>
         <textarea
           id="feedback"
