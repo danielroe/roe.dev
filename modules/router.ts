@@ -43,13 +43,6 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
     nuxt.options.pages = false
 
-    nuxt.hook('app:templates', app => {
-      const routerTemplate = app.templates.find(
-        t => t.filename === 'vue-router-stub.d.ts',
-      )
-      routerTemplate!.getContents = () => 'export * from "vue-router"'
-    })
-
     addImports({
       name: 'definePageMeta',
       from: resolver.resolve('./runtime/route-composables'),

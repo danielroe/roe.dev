@@ -2,6 +2,7 @@ import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 
 export default defineNuxtConfig({
+  compatibilityDate: '2024-04-03',
   $production: {
     experimental: {
       noVueServer: true,
