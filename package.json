@@ -90,11 +90,6 @@
     "vitest": "2.0.3",
     "vue-tsc": "2.0.26"
   },
-  "resolutions": {
-    "@nuxt/kit": "^3.12.4",
-    "@nuxt/schema": "^3.12.4",
-    "@nuxtjs/mdc": "0.6.1"
-  },
   "simple-git-hooks": {
     "commit-msg": "npx commitlint --edit $1",
     "pre-commit": "npx lint-staged"
@@ -103,6 +98,11 @@
   "pnpm": {
     "patchedDependencies": {
       "nitropack@2.9.7": "patches/nitropack@2.9.6.patch"
+    },
+    "overrides": {
+      "@nuxt/kit": "^3.12.4",
+      "@nuxt/schema": "^3.12.4",
+      "@nuxtjs/mdc": "0.6.1"
     }
   }
 }
