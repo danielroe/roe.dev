@@ -14,7 +14,7 @@
     "test": "vitest run test/unit && vitest run test/nuxt --config vitest.nuxt.config.mts",
     "test:types": "nuxi prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
-    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.45.2-focal npx playwright test test/e2e --update-snapshots",
+    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.46.0-focal npx playwright test test/e2e --update-snapshots",
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install && npx playwright install"
   },
   "lint-staged": {
