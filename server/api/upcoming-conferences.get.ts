@@ -12,16 +12,34 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Middlesborough FE',
-    dates: '17 July',
-    link: 'https://middlesbroughfe.co.uk/',
-    location: '🇬🇧',
+    name: 'PragVue',
+    dates: '17 September',
+    link: 'https://pragvue.com/',
+    location: '🇨🇿',
+  },
+  {
+    name: 'ScotSoft 2024',
+    dates: '26 September',
+    link: 'https://www.scotlandis.com/scotsoft-2024',
+    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
   },
   {
     name: 'vuejs.de Conf',
     dates: '8-9 October',
     link: 'https://conf.vuejs.de/',
     location: '🇩🇪',
+  },
+  {
+    name: 'performance.now()',
+    dates: '14-15 November',
+    link: 'https://perfnow.nl/',
+    location: '🇳🇱',
+  },
+  {
+    name: 'Vue Toronto',
+    dates: '18-20 November',
+    link: 'https://www.vuetoronto.com/',
+    location: '🇨🇦',
   },
 ]
 
