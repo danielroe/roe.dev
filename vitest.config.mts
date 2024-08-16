@@ -4,6 +4,13 @@ export default defineVitestConfig({
   test: {
     dir: 'test/unit',
     environment: 'nuxt',
+    environmentOptions: {
+      nuxt: {
+        overrides: {
+          ogImage: { enabled: false },
+        },
+      },
+    },
     poolOptions: {
       threads: {
         maxThreads: 1,
