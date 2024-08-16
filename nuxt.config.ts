@@ -177,6 +177,11 @@ export default defineNuxtConfig({
       'secure.meetupstatic.com',
       'cdn.evbuc.com',
       'conf.vuejs.de',
+      'pragvue.com',
+      'www.scotlandis.com',
+      'conf.vuejs.de',
+      'perfnow.nl',
+      'www.vuetoronto.com',
     ],
     screens: {
       logo: 40,
