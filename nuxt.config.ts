@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     image: {
       provider: 'ipxStatic',
     },
+    modules: ['nuxt-security'],
   },
 
   $test: {
