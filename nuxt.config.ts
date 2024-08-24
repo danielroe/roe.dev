@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     image: {
       provider: 'ipxStatic',
     },
+    modules: ['nuxt-security'],
   },
 
   $test: {
@@ -233,7 +234,6 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    'nuxt-security',
     'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
