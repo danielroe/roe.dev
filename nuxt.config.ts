@@ -233,6 +233,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    'nuxt-security',
     'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
