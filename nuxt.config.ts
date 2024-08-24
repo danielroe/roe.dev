@@ -94,7 +94,7 @@ export default defineNuxtConfig({
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/rss.xml', '/voted', '/work', '/feedback'],
+      routes: ['/', '/rss.xml', '/voted', '/work', '/feedback', '/ama'],
     },
     hooks: {
       'prerender:generate' (route) {
