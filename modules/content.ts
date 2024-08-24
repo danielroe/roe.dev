@@ -6,6 +6,7 @@ export default defineNuxtModule({
   },
   setup () {
     const nuxt = useNuxt()
+    if (nuxt.options.dev) return
     nuxt.hook('modules:done', () => {
       const purgedHandlers: any[] = []
       nuxt.hook('nitro:init', nitro => {
