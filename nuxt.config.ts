@@ -149,6 +149,14 @@ export default defineNuxtConfig({
     layoutTransition: false,
   },
 
+  vite: {
+    vue: {
+      features: {
+        optionsAPI: false,
+      },
+    },
+  },
+
   plausible: {
     domain: 'roe.dev',
     apiHost: 'https://v.roe.dev',
