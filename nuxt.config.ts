@@ -60,6 +60,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    buildCache: true,
     defaults: {
       useAsyncData: {
         deep: false,
