@@ -227,6 +227,9 @@ export default defineNuxtConfig({
 
   ogImage: {
     zeroRuntime: true,
+    compatibility: {
+      prerender: {},
+    },
     fonts: [
       'Barlow:400',
       'Barlow:600',
