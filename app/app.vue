@@ -61,7 +61,7 @@ if (import.meta.server) {
       { property: 'og:url', content: url },
       {
         property: 'og:image',
-        content: `https://roe.dev/__og-image__/static/og.jpg`,
+        content: `https://roe.dev/__og-image__/static/og.png`,
         key: 'og:image',
       },
       { property: 'og:image:width', content: '1200' },
