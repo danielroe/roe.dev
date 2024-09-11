@@ -24,7 +24,7 @@ defineOgImageComponent('DefaultImage', {
 })
 
 if (import.meta.server) {
-  prerenderRoutes(joinURL('/__og-image__/image', route.path, 'og.png'))
+  prerenderRoutes(joinURL('/__og-image__/static', route.path, 'og.png'))
 }
 
 // TODO: interactive components within server components
