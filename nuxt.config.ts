@@ -228,6 +228,13 @@ export default defineNuxtConfig({
   ogImage: {
     zeroRuntime: true,
     compatibility: {
+      runtime: {
+        'css-inline': false,
+        'chromium': false,
+        'resvg': false,
+        'satori': false,
+        'sharp': false,
+      },
       prerender: {},
     },
     fonts: [
