@@ -13,6 +13,8 @@
 </template>
 
 <script lang="ts" setup>
+import { joinURL } from 'ufo'
+
 const route = useRoute()
 
 defineOgImageComponent('DefaultImage', {
@@ -20,6 +22,10 @@ defineOgImageComponent('DefaultImage', {
   title: 'roe.dev',
   tags: [],
 })
+
+if (import.meta.server) {
+  prerenderRoutes(joinURL('/__og-image__/static', route.path, 'og.png'))
+}
 
 // TODO: interactive components within server components
 const highlightIslands = ref(false)
@@ -55,11 +61,11 @@ if (import.meta.server) {
       { property: 'og:url', content: url },
       {
         property: 'og:image',
-        content: `https://roe.dev/og/og.jpg`,
+        content: `https://roe.dev/__og-image__/static/og.jpg`,
         key: 'og:image',
       },
       { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:height', content: '600' },
       {
         property: 'og:title',
         content: (route.meta.title as string) || 'Daniel Roe',

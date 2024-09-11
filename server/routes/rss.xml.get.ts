@@ -13,7 +13,7 @@ export default defineEventHandler(async () => {
     id: 'https://roe.dev/',
     link: 'https://roe.dev/blog',
     language: 'en',
-    image: 'https://roe.dev/og/og.jpg',
+    image: 'https://roe.dev/__og-image__/static/og.jpg',
     favicon: 'https://roe.dev/favicon.svg',
     copyright: `© 2019-${new Date().getFullYear()} Daniel Roe. All rights reserved.`,
     feedLinks: {
@@ -43,7 +43,7 @@ export default defineEventHandler(async () => {
         },
       ],
       date: new Date(blog.date),
-      image: `https://roe.dev/og/${slug}.jpg`,
+      image: `https://roe.dev/__og-image__/static/blog/${slug}/og.jpg`,
     })
   }
 
