@@ -45,7 +45,7 @@ export default defineNuxtModule({
         })
         await fsp.writeFile(
           join(slidesDir, `${talk.release}.pdf`),
-          Buffer.from(file),
+          new Uint8Array(file),
         )
       }
     }

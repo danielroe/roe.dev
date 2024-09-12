@@ -80,7 +80,7 @@ export default defineCachedEventHandler(async () => {
 
       const res = await $fetch(ogImage!, { responseType: 'arrayBuffer' }) as ArrayBuffer
       const data = Buffer.from(res)
-      const metadata = imageMeta(data)
+      const metadata = imageMeta(new Uint8Array(data))
 
       return {
         ...conference,

@@ -27,7 +27,7 @@ export default defineNuxtModule({
         ].join('')
         const dir = nitro.options.output.publicDir
         await writeFile(join(dir, 'sitemap.xml'), sitemap)
-        await writeFile(join(dir, 'sitemap.xml.gz'), gzipSync(sitemap))
+        await writeFile(join(dir, 'sitemap.xml.gz'), new Uint8Array(gzipSync(sitemap)))
       })
     })
   },
