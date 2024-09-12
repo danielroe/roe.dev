@@ -1793,20 +1793,14 @@ packages:
   '@unhead/dom@1.11.2':
     resolution: {integrity: sha512-e5Ilqa1ktwGJGhFt3jEI78LywNuvqOR4GdEa+sV2OuKbldWBoS8DosCf7jzwEIPYgn2ubDQ0ygn9JH+m/x88gA==}
 
-  '@unhead/schema@1.10.4':
-    resolution: {integrity: sha512-nX9sJgKPy2t4GHB9ky/vkMLbYqXl9Num5NZToTr0rKrIGkshzHhUrbn/EiHreIjcGI1eIpu+edniCDIwGTJgmw==}
-
   '@unhead/schema@1.11.2':
     resolution: {integrity: sha512-ALyIIA0084JjGQJD6tJetQdqVNw/V6d2LaCC06jSm+JUqxsRWRZcSbNZUg5xr0T4xQPrefZYrGp76PbOdotPbQ==}
-
-  '@unhead/shared@1.10.4':
-    resolution: {integrity: sha512-C5wsps9i/XCBObMVQUrbXPvZG17a/e5yL0IsxpICaT4QSiZAj9v7JrNQ5WpM5JOZVMKRI5MYRdafNDw3iSmqZg==}
 
   '@unhead/shared@1.11.2':
     resolution: {integrity: sha512-Zg56xBrqkr9f9m3/+G/2CzbLba6g3/M2myWmyuZtn/ncUk3K2IXvXvlZAzMHx4yO++Xeik2QUWpHEdXRh+PxAA==}
 
-  '@unhead/ssr@1.10.4':
-    resolution: {integrity: sha512-2nDG08q9bTvMB24YGNJCXimAs1vuG9yVa01i/Et1B2y4P8qhweXOxnialGmt5j8xeXwPFUBCe36tC5kLCSuJoQ==}
+  '@unhead/ssr@1.11.2':
+    resolution: {integrity: sha512-Ilc+QmG4foMBr+f4u1GMSQjybSPjqi3vXfLTlqOVbr1voSlGtblYxJbZDw6KSCvfXu/s2YOPW+gCvvDLSZl3vg==}
 
   '@unhead/vue@1.11.2':
     resolution: {integrity: sha512-m4GnwOd1ltXiSxp4ahIT6lziVyg6dgqKyLyWxrRWuPjZ8nXsPcpIOCjVwYB1MK0UBKMuIlgeuzVeDrTY9+APbA==}
@@ -8254,28 +8248,19 @@ snapshots:
       '@unhead/schema': 1.11.2
       '@unhead/shared': 1.11.2
 
-  '@unhead/schema@1.10.4':
-    dependencies:
-      hookable: 5.5.3
-      zhead: 2.2.4
-
   '@unhead/schema@1.11.2':
     dependencies:
       hookable: 5.5.3
       zhead: 2.2.4
 
-  '@unhead/shared@1.10.4':
-    dependencies:
-      '@unhead/schema': 1.10.4
-
   '@unhead/shared@1.11.2':
     dependencies:
       '@unhead/schema': 1.11.2
 
-  '@unhead/ssr@1.10.4':
+  '@unhead/ssr@1.11.2':
     dependencies:
-      '@unhead/schema': 1.10.4
-      '@unhead/shared': 1.10.4
+      '@unhead/schema': 1.11.2
+      '@unhead/shared': 1.11.2
 
   '@unhead/vue@1.11.2(vue@3.5.4(typescript@5.6.2))':
     dependencies:
@@ -8737,7 +8722,7 @@ snapshots:
     dependencies:
       '@unhead/dom': 1.11.2
       '@unhead/schema': 1.11.2
-      '@unhead/ssr': 1.10.4
+      '@unhead/ssr': 1.11.2
       '@unhead/vue': 1.11.2(vue@3.5.4(typescript@5.6.2))
       vue: 3.5.4(typescript@5.6.2)
 
@@ -11824,7 +11809,7 @@ snapshots:
       '@nuxt/telemetry': 2.5.4(magicast@0.3.4)(rollup@4.21.3)(webpack-sources@3.2.3)
       '@nuxt/vite-builder': 3.13.1(@types/node@20.14.2)(eslint@9.10.0(jiti@1.21.6))(magicast@0.3.4)(optionator@0.9.4)(rollup@4.21.3)(sass@1.77.1)(stylelint@16.9.0(typescript@5.6.2))(terser@5.31.6)(typescript@5.6.2)(vue-tsc@2.1.6(typescript@5.6.2))(vue@3.5.4(typescript@5.6.2))(webpack-sources@3.2.3)
       '@unhead/dom': 1.11.2
-      '@unhead/ssr': 1.10.4
+      '@unhead/ssr': 1.11.2
       '@unhead/vue': 1.11.2(vue@3.5.4(typescript@5.6.2))
       '@vue/shared': 3.5.4
       acorn: 8.12.1
