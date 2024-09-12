@@ -1,9 +1,9 @@
 import type { ComputedRef, DefineComponent, PropType } from 'vue'
 import { hasProtocol } from 'ufo'
+import type { RouteLocationRaw } from 'vue-router'
 
 import { useRouter } from '#app/composables/router'
 import { useNuxtApp } from '#app/nuxt'
-import type { RouteLocationRaw } from '#vue-router'
 
 const firstNonUndefined = <T> (...args: (T | undefined)[]) =>
   args.find(arg => arg !== undefined)
