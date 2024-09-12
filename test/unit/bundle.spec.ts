@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"228k"`)
+      .toMatchInlineSnapshot(`"233k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7580k"`)
+      .toMatchInlineSnapshot(`"7650k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -103,8 +103,10 @@ describe('project sizes', () => {
         "@sindresorhus/is",
         "@ungap/structured-clone",
         "@unhead/dom",
+        "@unhead/dom/node_modules/@unhead/shared",
         "@unhead/shared",
         "@unhead/ssr",
+        "@unhead/ssr/node_modules/@unhead/shared",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/reactivity",
@@ -225,6 +227,7 @@ describe('project sizes', () => {
         "ts-custom-error",
         "uint8arrays",
         "unhead",
+        "unhead/node_modules/@unhead/shared",
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-is",
