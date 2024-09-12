@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"233k"`)
+      .toMatchInlineSnapshot(`"229k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7650k"`)
+      .toMatchInlineSnapshot(`"7620k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -99,7 +99,11 @@ describe('project sizes', () => {
         "@atproto/xrpc",
         "@babel/parser",
         "@shikijs/core",
+        "@shikijs/engine-javascript",
+        "@shikijs/engine-oniguruma",
         "@shikijs/transformers",
+        "@shikijs/types",
+        "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@ungap/structured-clone",
         "@unhead/dom",
@@ -144,8 +148,10 @@ describe('project sizes', () => {
         "hast-util-is-element",
         "hast-util-parse-selector",
         "hast-util-raw",
+        "hast-util-to-html",
         "hast-util-to-parse5",
         "hast-util-to-string",
+        "hast-util-whitespace",
         "hastscript",
         "hookable",
         "html-void-elements",
@@ -202,9 +208,11 @@ describe('project sizes', () => {
         "micromark-util-subtokenize",
         "multiformats",
         "node-emoji",
+        "oniguruma-to-js",
         "parse-entities",
         "parse5",
         "property-information",
+        "regex",
         "rehype-external-links",
         "rehype-raw",
         "rehype-sort-attribute-values",
