@@ -24,7 +24,7 @@ defineOgImageComponent('DefaultImage', {
 })
 
 if (import.meta.server) {
-  prerenderRoutes(joinURL('/__og-image__/image', route.path, 'og.png'))
+  prerenderRoutes(joinURL('/__og-image__/static', route.path, 'og.png'))
 }
 
 // TODO: interactive components within server components
@@ -61,11 +61,11 @@ if (import.meta.server) {
       { property: 'og:url', content: url },
       {
         property: 'og:image',
-        content: `https://roe.dev/og/og.jpg`,
+        content: `https://roe.dev/__og-image__/static/og.png`,
         key: 'og:image',
       },
       { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:height', content: '600' },
       {
         property: 'og:title',
         content: (route.meta.title as string) || 'Daniel Roe',
