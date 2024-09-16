@@ -5986,11 +5986,6 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-0
 
-  vite-node@2.1.0:
-    resolution: {integrity: sha512-+ybYqBVUjYyIscoLzMWodus2enQDZOpGhcU6HdOVD6n8WZdk12w1GFL3mbnxLs7hPtRtqs1Wo5YF6/Tsr6fmhg==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-
   vite-node@2.1.1:
     resolution: {integrity: sha512-N/mGckI1suG/5wQI35XeR9rsMsPqKXzq1CdUndzVstBj/HvyxxGctwnK6WX43NGt5L3Z5tcRf83g4TITKJhPrA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -7670,7 +7665,7 @@ snapshots:
       unenv: 1.10.0
       unplugin: 1.14.1(webpack-sources@3.2.3)
       vite: 5.4.3(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)
-      vite-node: 2.1.0(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)
+      vite-node: 2.1.1(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)
       vite-plugin-checker: 0.7.2(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(stylelint@16.9.0(typescript@5.6.2))(typescript@5.6.2)(vite@5.4.3(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6))(vue-tsc@2.1.6(typescript@5.6.2))
       vue: 3.5.4(typescript@5.6.2)
       vue-bundle-renderer: 2.1.0
@@ -13613,23 +13608,6 @@ snapshots:
   vite-hot-client@0.2.3(vite@5.4.3(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)):
     dependencies:
       vite: 5.4.3(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)
-
-  vite-node@2.1.0(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.7
-      pathe: 1.1.2
-      vite: 5.4.3(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
 
   vite-node@2.1.1(@types/node@20.14.2)(sass@1.77.1)(terser@5.31.6):
     dependencies:
