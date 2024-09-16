@@ -1790,9 +1790,6 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@unhead/dom@1.11.2':
-    resolution: {integrity: sha512-e5Ilqa1ktwGJGhFt3jEI78LywNuvqOR4GdEa+sV2OuKbldWBoS8DosCf7jzwEIPYgn2ubDQ0ygn9JH+m/x88gA==}
-
   '@unhead/dom@1.11.5':
     resolution: {integrity: sha512-wANVBEVU1+ydnX/xW4AMejXoYTJw1NZF/d9jc9bZaNd93tS10/6Rg0qAC4L/9tGKTIaj9rmj1lSFnL9WpSWeuw==}
 
@@ -5448,10 +5445,6 @@ packages:
     resolution: {integrity: sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==}
     engines: {node: '>=10.0.0'}
 
-  source-map-js@1.2.0:
-    resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
-    engines: {node: '>=0.10.0'}
-
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -5714,11 +5707,6 @@ packages:
         optional: true
       uglify-js:
         optional: true
-
-  terser@5.31.6:
-    resolution: {integrity: sha512-PQ4DAriWzKj+qgehQ7LK5bQqCFNMmlhjR2PFFLuqGCpuCAauxemVBWwWOxo3UIwWQx8+Pr61Df++r76wDmkQBg==}
-    engines: {node: '>=10'}
-    hasBin: true
 
   terser@5.32.0:
     resolution: {integrity: sha512-v3Gtw3IzpBJ0ugkxEX8U0W6+TnPKRRCWGh1jC/iM/e3Ki5+qvO1L1EAZ56bZasc64aXHwRHNIQEzm6//i5cemQ==}
@@ -8053,7 +8041,7 @@ snapshots:
     dependencies:
       serialize-javascript: 6.0.2
       smob: 1.5.0
-      terser: 5.31.6
+      terser: 5.32.0
     optionalDependencies:
       rollup: 4.21.3
 
@@ -8324,11 +8312,6 @@ snapshots:
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.2.0': {}
-
-  '@unhead/dom@1.11.2':
-    dependencies:
-      '@unhead/schema': 1.11.2
-      '@unhead/shared': 1.11.2
 
   '@unhead/dom@1.11.5':
     dependencies:
@@ -8706,7 +8689,7 @@ snapshots:
       '@vue/shared': 3.5.4
       entities: 4.5.0
       estree-walker: 2.0.2
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   '@vue/compiler-dom@3.5.4':
     dependencies:
@@ -8723,7 +8706,7 @@ snapshots:
       estree-walker: 2.0.2
       magic-string: 0.30.11
       postcss: 8.4.45
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.4':
     dependencies:
@@ -8816,7 +8799,7 @@ snapshots:
 
   '@vueuse/head@2.0.0(vue@3.5.4(typescript@5.6.2))':
     dependencies:
-      '@unhead/dom': 1.11.2
+      '@unhead/dom': 1.11.5
       '@unhead/schema': 1.11.5
       '@unhead/ssr': 1.11.2
       '@unhead/vue': 1.11.5(vue@3.5.4(typescript@5.6.2))
@@ -9579,12 +9562,12 @@ snapshots:
   css-tree@2.2.1:
     dependencies:
       mdn-data: 2.0.28
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   css-tree@2.3.1:
     dependencies:
       mdn-data: 2.0.30
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   css-what@6.1.0: {}
 
@@ -11216,7 +11199,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.25.6
       '@babel/types': 7.25.6
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   make-dir@3.1.0:
     dependencies:
@@ -11964,7 +11947,7 @@ snapshots:
       '@nuxt/schema': 3.13.1(rollup@4.21.3)(webpack-sources@3.2.3)
       '@nuxt/telemetry': 2.5.4(magicast@0.3.4)(rollup@4.21.3)(webpack-sources@3.2.3)
       '@nuxt/vite-builder': 3.13.1(@types/node@20.14.2)(eslint@9.10.0(jiti@1.21.6))(magicast@0.3.4)(optionator@0.9.4)(rollup@4.21.3)(sass@1.77.1)(stylelint@16.9.0(typescript@5.6.2))(terser@5.32.0)(typescript@5.6.2)(vue-tsc@2.1.6(typescript@5.6.2))(vue@3.5.4(typescript@5.6.2))(webpack-sources@3.2.3)
-      '@unhead/dom': 1.11.2
+      '@unhead/dom': 1.11.5
       '@unhead/ssr': 1.11.2
       '@unhead/vue': 1.11.5(vue@3.5.4(typescript@5.6.2))
       '@vue/shared': 3.5.4
@@ -12501,7 +12484,7 @@ snapshots:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   prebuild-install@7.1.2:
     dependencies:
@@ -13084,10 +13067,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  source-map-js@1.2.0: {}
-
-  source-map-js@1.2.1:
-    optional: true
+  source-map-js@1.2.1: {}
 
   source-map-support@0.5.21:
     dependencies:
@@ -13394,13 +13374,6 @@ snapshots:
       webpack: 5.91.0(esbuild@0.23.1)
     optionalDependencies:
       esbuild: 0.23.1
-
-  terser@5.31.6:
-    dependencies:
-      '@jridgewell/source-map': 0.3.6
-      acorn: 8.12.1
-      commander: 2.20.3
-      source-map-support: 0.5.21
 
   terser@5.32.0:
     dependencies:
