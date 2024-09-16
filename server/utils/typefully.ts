@@ -17,10 +17,6 @@ https://ray.so/#code=${btoa(text)}&language=markdown&theme=breeze&width=520`
     },
     body: {
       content,
-      media: {
-        type: 'image',
-        url: 'https://example.com/image.jpg',
-      },
     },
   })
 }
