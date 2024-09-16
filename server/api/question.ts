@@ -4,7 +4,7 @@ export default defineEventHandler(async event => {
   assertMethod(event, 'POST')
   const { question } = await readBody(event)
   if (!question) throw createError({ statusCode: 422 })
-  event.waitUntil(sendEmail('Anonymous question', question))
-  event.waitUntil(createTypefullyDraft(event, question))
+  event.waitUntil(createTypefullyDraft(event, question).catch(console.error))
+  await sendEmail('Anonymous question', question)
   return null
 })
