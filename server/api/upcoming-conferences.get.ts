@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'PragVue',
-    dates: '17 September',
-    link: 'https://pragvue.com/',
-    location: '🇨🇿',
-  },
-  {
     name: 'ScotSoft 2024',
     dates: '26 September',
     link: 'https://www.scotlandis.com/scotsoft-2024',
