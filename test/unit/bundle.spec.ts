@@ -2,9 +2,9 @@
 
 import { fileURLToPath } from 'node:url'
 import fsp from 'node:fs/promises'
+import { execSync } from 'node:child_process'
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { execa } from 'execa'
 import { globby } from 'globby'
 import { join } from 'pathe'
 
@@ -19,9 +19,9 @@ describe('project sizes', () => {
   }
 
   beforeAll(async () => {
-    await execa('pnpm', ['nuxi', 'build'], {
+    execSync('pnpm nuxt build', {
       cwd: rootDir,
-      env: { DISABLE_PRERENDER: 'true' },
+      env: { ...process.env, NODE_ENV: 'production', DISABLE_PRERENDER: 'true' },
     })
   }, 120 * 1000)
 
