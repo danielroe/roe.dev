@@ -206,6 +206,12 @@ export default defineNuxtConfig({
     },
   },
 
+  scripts: {
+    defaultScriptOptions: {
+      bundle: true,
+    },
+  },
+
   htmlValidator: {
     failOnError: true,
     options: {
@@ -250,7 +256,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
-    function (options, nuxt) {
+    '@nuxt/scripts',
+    function (_options, nuxt) {
       nuxt.hook('vite:extendConfig', config => {
         const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
         config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
