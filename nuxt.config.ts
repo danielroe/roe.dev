@@ -89,6 +89,14 @@ export default defineNuxtConfig({
     },
   },
 
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
+      },
+    },
+  },
+
   devTo: {
     enabled: !!process.env.SYNC_DEV_TO,
   },
