@@ -17,6 +17,13 @@ export default defineNuxtConfig({
     experimental: {
       componentIslands: true,
     },
+    modules: [
+      function (_options, nuxt) {
+        nuxt.hook('vite:extendConfig', config => {
+          config.plugins = config.plugins?.filter(p => !p || !('name' in p) || p.name !== 'nuxt:scripts:bundler-transformer')
+        })
+      },
+    ],
   },
 
   future: {
