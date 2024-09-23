@@ -1,6 +1,6 @@
 export default defineNuxtPlugin(() => {
   onPrehydrate(() => {
-    const cal = window.Cal = Object.assign(
+    const cal = Object.assign(
       function (...args: unknown[]) {
         cal.q.push(args)
       },
@@ -10,6 +10,7 @@ export default defineNuxtPlugin(() => {
         loaded: false,
       },
     )
+    window.Cal = cal
   })
 
   const $script = useScript('https://app.cal.com/embed/embed.js')
