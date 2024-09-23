@@ -98,6 +98,7 @@ export default defineNuxtConfig({
 
   security: {
     headers: {
+      crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
       },
