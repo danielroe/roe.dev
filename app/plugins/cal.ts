@@ -13,7 +13,9 @@ export default defineNuxtPlugin(() => {
     window.Cal = cal
   })
 
-  const $script = useScript('https://app.cal.com/embed/embed.js')
+  const $script = useScript('https://app.cal.com/embed/embed.js', {
+    trigger: 'manual',
+  })
   $script.onLoaded(() => {
     window.Cal.loaded = true
     window.Cal('init', {
