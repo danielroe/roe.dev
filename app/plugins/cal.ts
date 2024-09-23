@@ -34,7 +34,7 @@ export default defineNuxtPlugin(() => {
       layout: 'month_view',
     })
   })
-  useRouter().afterEach(to => {
+  useRouter().beforeEach(to => {
     if (to.path === '/blog/open-invitation' || to.path === '/blog/funding') {
       $script.load()
     }
