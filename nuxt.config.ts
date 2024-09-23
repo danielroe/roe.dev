@@ -17,6 +17,13 @@ export default defineNuxtConfig({
     experimental: {
       componentIslands: true,
     },
+    modules: [
+      function (_options, nuxt) {
+        nuxt.hook('vite:extendConfig', config => {
+          config.plugins = config.plugins?.filter(p => !p || !('name' in p) || p.name !== 'nuxt:scripts:bundler-transformer')
+        })
+      },
+    ],
   },
 
   future: {
@@ -85,6 +92,15 @@ export default defineNuxtConfig({
       },
       mastodon: {
         identifier: 'daniel@roe.dev',
+      },
+    },
+  },
+
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: {
+        'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
       },
     },
   },
@@ -206,6 +222,12 @@ export default defineNuxtConfig({
     },
   },
 
+  scripts: {
+    defaultScriptOptions: {
+      bundle: true,
+    },
+  },
+
   htmlValidator: {
     failOnError: true,
     options: {
@@ -250,7 +272,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
-    function (options, nuxt) {
+    '@nuxt/scripts',
+    function (_options, nuxt) {
       nuxt.hook('vite:extendConfig', config => {
         const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
         config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
