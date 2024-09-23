@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"230k"`)
+      .toMatchInlineSnapshot(`"266k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')))
       .toMatchInlineSnapshot(`
         [
@@ -71,6 +71,7 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
+          "_scripts/cRmAqS7OXB.js",
         ]
       `)
   })
