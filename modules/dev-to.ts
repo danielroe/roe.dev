@@ -78,7 +78,7 @@ async function getMarkdownArticles () {
   const nuxt = useNuxt()
   const articles = []
   const files = await globby('./content/blog/**/*.md', {
-    cwd: nuxt.options.srcDir,
+    cwd: nuxt.options.rootDir,
     absolute: true,
   })
   for (const file of files) {

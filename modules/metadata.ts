@@ -15,7 +15,7 @@ export default defineNuxtModule({
   },
   async setup () {
     const nuxt = useNuxt()
-    const files = await globby('./content/blog/**/*.md', { cwd: nuxt.options.srcDir, absolute: true })
+    const files = await globby('./content/blog/**/*.md', { cwd: nuxt.options.rootDir, absolute: true })
     const metadata: Record<string, any> = {}
 
     const md = remark().use(remarkHtml)
