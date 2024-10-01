@@ -26,6 +26,7 @@
 
 - MacBook Air 13" M2 24GB
 - Microphone: Røde NT-USB
+- Monitor: LG UltraFine 32-inch
 - Camera: Sony Alpha ZV-E10 with Sigma 16 mm lens, running to an Elgato Cam Link
 - Headphones: Bose NC 700
 - Keyboard: [Keychron Q5 QMK](https://www.keychron.com/products/keychron-q5-qmk-custom-mechanical-keyboard) with Gateron G Pro Brown switches
