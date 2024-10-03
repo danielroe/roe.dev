@@ -9,7 +9,7 @@
         <h1>
           <label
             for="question"
-            class="text-white text-2xl leading-none mt-[5vw] mb-[1vw] max-w-[37.50rem]"
+            class="text-2xl leading-none mt-[5vw] mb-[1vw] max-w-[37.50rem]"
           >
             ask me anything
           </label>
