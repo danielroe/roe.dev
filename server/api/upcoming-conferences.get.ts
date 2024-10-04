@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'ScotSoft 2024',
-    dates: '26 September',
-    link: 'https://www.scotlandis.com/scotsoft-2024',
-    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-  },
-  {
     name: 'vuejs.de Conf',
     dates: '8-9 October',
     link: 'https://conf.vuejs.de/',
