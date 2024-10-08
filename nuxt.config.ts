@@ -70,8 +70,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    // TODO: address nuxt fonts issue with buildCache
-    // buildCache: true,
+    buildCache: true,
     defaults: {
       useAsyncData: {
         deep: false,
