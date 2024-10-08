@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'vuejs.de Conf',
-    dates: '8-9 October',
-    link: 'https://conf.vuejs.de/',
-    location: '🇩🇪',
-  },
-  {
     name: 'performance.now()',
     dates: '14-15 November',
     link: 'https://perfnow.nl/',
