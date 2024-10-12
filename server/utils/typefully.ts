@@ -6,9 +6,7 @@ ${text}
 
 https://roe.dev/ama
 
-#ama
-
-https://ray.so/#code=${btoa(text)}&language=markdown&theme=breeze&width=520`
+#ama`
   return await $fetch('/drafts/', {
     baseURL: 'https://api.typefully.com/v1',
     method: 'POST',
