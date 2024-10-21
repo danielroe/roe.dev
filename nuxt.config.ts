@@ -1,5 +1,7 @@
+import process from 'node:process'
 import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
+import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
@@ -23,6 +25,21 @@ export default defineNuxtConfig({
       })
     },
   ],
+
+  // TODO: remove when Nuxt v3.14 is released
+  $development: {
+    modules: [
+      function (_options, nuxt) {
+        if (process.env.IDX_CHANNEL) {
+          nuxt.hook('modules:done', () => {
+            nuxt.options.vite.server ||= {}
+            nuxt.options.vite.server.hmr ||= {}
+            ;(nuxt.options.vite.server.hmr as HmrOptions).protocol = 'wss'
+          })
+        }
+      },
+    ],
+  },
 
   $production: {
     modules: ['nuxt-security'],
@@ -65,6 +82,7 @@ export default defineNuxtConfig({
   },
 
   content: {
+    watch: false,
     highlight: {
       preload: ['js', 'ts', 'json', 'vue'],
       theme: 'material-theme-palenight',
@@ -167,6 +185,10 @@ export default defineNuxtConfig({
         optionsAPI: false,
       },
     },
+  },
+
+  typescript: {
+    hoist: ['vite'],
   },
 
   postcss: {
