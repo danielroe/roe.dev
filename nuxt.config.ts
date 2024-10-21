@@ -2,21 +2,39 @@ import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  modules: [
+    'nuxt-og-image',
+    '@nuxt/eslint',
+    'nuxt-time',
+    '@nuxt/test-utils/module',
+    'magic-regexp/nuxt',
+    '@nuxt/image',
+    '@nuxtjs/html-validator',
+    '@unocss/nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxt/content',
+    '@nuxtjs/plausible',
+    '@nuxt/fonts',
+    '@nuxt/scripts',
+    function (_options, nuxt) {
+      nuxt.hook('vite:extendConfig', config => {
+        const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
+        config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
+      })
+    },
+  ],
+
   $production: {
+    modules: ['nuxt-security'],
     experimental: {
       noVueServer: true,
     },
     image: {
       provider: 'ipxStatic',
     },
-    modules: ['nuxt-security'],
   },
 
   $test: {
-    experimental: {
-      componentIslands: true,
-    },
     modules: [
       function (_options, nuxt) {
         nuxt.hook('vite:extendConfig', config => {
@@ -24,12 +42,35 @@ export default defineNuxtConfig({
         })
       },
     ],
+    experimental: {
+      componentIslands: true,
+    },
   },
 
-  future: {
-    compatibilityVersion: 4,
-  },
   devtools: { enabled: true },
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      title: 'Daniel Roe',
+    },
+    pageTransition: false,
+    layoutTransition: false,
+  },
+
+  css: ['@unocss/reset/tailwind.css', '~/assets/main.css'],
+
+  site: {
+    url: 'https://roe.dev',
+  },
+
+  content: {
+    highlight: {
+      preload: ['js', 'ts', 'json', 'vue'],
+      theme: 'material-theme-palenight',
+    },
+  },
+
   runtimeConfig: {
     voteUrl: '',
     sessionPassword: '',
@@ -56,17 +97,17 @@ export default defineNuxtConfig({
     },
   },
 
-  hooks: {
-    'components:extend' (components) {
-      // This code ensures that we can run our markdown renderer on the
-      // client side in development mode (for HMR).
-      const nuxt = useNuxt()
-      for (const comp of components) {
-        if (comp.pascalName === 'StaticMarkdownRender' && nuxt.options.dev) {
-          comp.mode = 'all'
-        }
-      }
-    },
+  routeRules: {
+    '/api/hi': { cors: true },
+    '/feed.xml': { redirect: '/rss.xml' },
+    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
+    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
+  },
+
+  sourcemap: false,
+
+  future: {
+    compatibilityVersion: 4,
   },
 
   experimental: {
@@ -82,31 +123,7 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  sourcemap: false,
-
-  social: {
-    networks: {
-      bluesky: {
-        identifier: 'roe.dev',
-      },
-      mastodon: {
-        identifier: 'daniel@roe.dev',
-      },
-    },
-  },
-
-  security: {
-    headers: {
-      crossOriginEmbedderPolicy: false,
-      contentSecurityPolicy: {
-        'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
-      },
-    },
-  },
-
-  devTo: {
-    enabled: !!process.env.SYNC_DEV_TO,
-  },
+  compatibilityDate: '2024-04-03',
 
   nitro: {
     replace: {
@@ -144,31 +161,6 @@ export default defineNuxtConfig({
     },
   },
 
-  routeRules: {
-    '/api/hi': { cors: true },
-    '/feed.xml': { redirect: '/rss.xml' },
-    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
-    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
-  },
-
-  content: {
-    highlight: {
-      preload: ['js', 'ts', 'json', 'vue'],
-      theme: 'material-theme-palenight',
-    },
-  },
-
-  css: ['@unocss/reset/tailwind.css', '~/assets/main.css'],
-
-  app: {
-    head: {
-      htmlAttrs: { lang: 'en' },
-      title: 'Daniel Roe',
-    },
-    pageTransition: false,
-    layoutTransition: false,
-  },
-
   vite: {
     vue: {
       features: {
@@ -177,15 +169,46 @@ export default defineNuxtConfig({
     },
   },
 
-  plausible: {
-    domain: 'roe.dev',
-    apiHost: 'https://v.roe.dev',
-  },
-
   postcss: {
     plugins: {
       'postcss-nesting': {},
       '@unocss/postcss': {},
+    },
+  },
+
+  hooks: {
+    'components:extend' (components) {
+      // This code ensures that we can run our markdown renderer on the
+      // client side in development mode (for HMR).
+      const nuxt = useNuxt()
+      for (const comp of components) {
+        if (comp.pascalName === 'StaticMarkdownRender' && nuxt.options.dev) {
+          comp.mode = 'all'
+        }
+      }
+    },
+  },
+
+  devTo: {
+    enabled: !!process.env.SYNC_DEV_TO,
+  },
+
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+
+  htmlValidator: {
+    failOnError: true,
+    options: {
+      rules: {
+        'unrecognized-char-ref': 'off',
+        'wcag/h37': 'warn',
+        'element-permitted-content': 'warn',
+        'element-required-attributes': 'warn',
+        'attribute-empty-style': 'off',
+      },
     },
   },
 
@@ -221,35 +244,6 @@ export default defineNuxtConfig({
     },
   },
 
-  scripts: {
-    defaultScriptOptions: {
-      bundle: true,
-    },
-  },
-
-  htmlValidator: {
-    failOnError: true,
-    options: {
-      rules: {
-        'unrecognized-char-ref': 'off',
-        'wcag/h37': 'warn',
-        'element-permitted-content': 'warn',
-        'element-required-attributes': 'warn',
-        'attribute-empty-style': 'off',
-      },
-    },
-  },
-
-  eslint: {
-    config: {
-      stylistic: true,
-    },
-  },
-
-  site: {
-    url: 'https://roe.dev',
-  },
-
   ogImage: {
     zeroRuntime: true,
     fonts: [
@@ -258,25 +252,34 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: [
-    'nuxt-og-image',
-    '@nuxt/eslint',
-    'nuxt-time',
-    '@nuxt/test-utils/module',
-    'magic-regexp/nuxt',
-    '@nuxt/image',
-    '@nuxtjs/html-validator',
-    '@unocss/nuxt',
-    '@nuxtjs/color-mode',
-    '@nuxt/content',
-    '@nuxtjs/plausible',
-    '@nuxt/fonts',
-    '@nuxt/scripts',
-    function (_options, nuxt) {
-      nuxt.hook('vite:extendConfig', config => {
-        const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
-        config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
-      })
+  plausible: {
+    domain: 'roe.dev',
+    apiHost: 'https://v.roe.dev',
+  },
+
+  scripts: {
+    defaultScriptOptions: {
+      bundle: true,
     },
-  ],
+  },
+
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: {
+        'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
+      },
+    },
+  },
+
+  social: {
+    networks: {
+      bluesky: {
+        identifier: 'roe.dev',
+      },
+      mastodon: {
+        identifier: 'daniel@roe.dev',
+      },
+    },
+  },
 })
