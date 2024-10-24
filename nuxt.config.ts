@@ -116,6 +116,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/.well-known/webfinger/**': {
+      redirect: {
+        to: 'https://mastodon.roe.dev/.well-known/webfinger/**',
+        statusCode: 301,
+      },
+    },
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
@@ -240,8 +246,10 @@ export default defineNuxtConfig({
       'conference.vueschool.io',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
+      'raw.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
+      'cdn.bsky.app',
       'images.jsworldconference.com',
       'www.middlesbroughfe.co.uk',
       'res.cloudinary.com',
@@ -290,6 +298,7 @@ export default defineNuxtConfig({
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
+        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com'],
       },
     },
   },
