@@ -249,6 +249,7 @@ export default defineNuxtConfig({
       'conference.vueschool.io',
       'static-cdn.jtvnw.net',
       'avatars.githubusercontent.com',
+      'raw.githubusercontent.com',
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
       'images.jsworldconference.com',
