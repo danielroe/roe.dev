@@ -6,14 +6,6 @@ import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
-    function (_options, nuxt) {
-      // ensure image domains are included in CSP
-      nuxt.options.security.headers = defu(nuxt.options.security.headers, {
-        contentSecurityPolicy: {
-          'img-src': ['\'self\'', 'data:', ...nuxt.options.image.domains.map(d => `https://${d}`)],
-        },
-      })
-    },
     'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
@@ -51,7 +43,17 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    modules: ['nuxt-security'],
+    modules: [
+      function (_options, nuxt) {
+      // ensure image domains are included in CSP
+        nuxt.options.security.headers = defu(nuxt.options.security.headers, {
+          contentSecurityPolicy: {
+            'img-src': ['\'self\'', 'data:', ...nuxt.options.image.domains.map(d => `https://${d}`)],
+          },
+        })
+      },
+      'nuxt-security',
+    ],
     experimental: {
       noVueServer: true,
     },
