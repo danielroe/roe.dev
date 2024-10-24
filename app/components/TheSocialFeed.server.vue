@@ -32,6 +32,7 @@ const sortedFeed = [...mastodon, ...bluesky]
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
   .filter(p => !p.html.includes('twitch.tv/danielroe'))
+  .filter(p => !p.html.includes('tv.algora.io/danielroe'))
 </script>
 
 <style scoped>
