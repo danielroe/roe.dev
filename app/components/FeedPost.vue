@@ -36,7 +36,7 @@ defineProps({
               :class="
                 network === 'mastodon'
                   ? 'i-ri:mastodon-fill'
-                  : 'i-ri:checkbox-blank-fill'
+                  : 'i-tabler-brand-bluesky'
               "
             />
             <span
