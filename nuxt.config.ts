@@ -1,5 +1,5 @@
 import process from 'node:process'
-import defu from 'defu'
+import { defu } from 'defu'
 import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
