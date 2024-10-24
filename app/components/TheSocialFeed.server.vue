@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 const [mastodon, bluesky] = await Promise.all([
   $fetch('/_social/mastodon'),
-  $fetch('/_social/bluesky'),
+  $fetch('/_social/bluesky').then(r => r.filter(p => !p.html.includes('#ama'))),
 ])
 const sortedFeed = [...mastodon, ...bluesky]
   .sort(
