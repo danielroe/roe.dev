@@ -290,7 +290,7 @@ export default defineNuxtConfig({
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
-        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://raw.githubusercontent.com']
+        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://raw.githubusercontent.com'],
       },
     },
   },
