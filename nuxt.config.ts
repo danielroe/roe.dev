@@ -116,6 +116,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/.well-known/webfinger/**': {
+      redirect: {
+        to: 'https://mastodon.roe.dev/.well-known/webfinger/**',
+        statusCode: 301,
+      },
+    },
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
