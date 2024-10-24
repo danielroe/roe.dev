@@ -1,50 +1,6 @@
+import type { AppBskyFeedPost, AppBskyEmbedImages } from '@atproto/api'
 import { AtpAgent } from '@atproto/api'
 import MagicString from 'magic-string'
-
-interface PostRecord {
-  $type: 'app.bsky.feed.post'
-  createdAt: string
-  facets: {
-    features: Array<
-      | {
-        $type: 'app.bsky.richtext.facet#link'
-        uri: string
-      }
-      | {
-        $type: 'app.bsky.richtext.facet#mention'
-        did: string
-      }
-    >
-    index: {
-      byteEnd: number
-      byteStart: number
-    }
-  }[]
-  embed?: {
-    $type: 'app.bsky.embed.images'
-    images: {
-      alt: string
-      image: {
-        $type: 'blob'
-        mimeType: 'image/jpeg'
-        ref: {
-          $link: string
-        }
-        size: number
-      }
-    }[]
-  }
-  text: string
-}
-
-interface PostEmbed {
-  $type: 'app.bsky.embed.images#view'
-  images: {
-    alt: string
-    fullsize: string
-    thumb: string
-  }[]
-}
 
 export default defineLazyEventHandler(async () => {
   const { identifier, password } = useRuntimeConfig().social.networks.bluesky
@@ -68,8 +24,8 @@ export default defineLazyEventHandler(async () => {
             && !p.reply,
         )
         .map(p => {
-          const post = p.post.record as PostRecord
-          const embed = p.post.embed as PostEmbed | undefined
+          const post = p.post.record as AppBskyFeedPost.Record
+          const embed = p.post.embed as AppBskyEmbedImages.Main | undefined
           const text = new MagicString(post.text)
           for (const facet of post.facets || []) {
             const startIndex = [...post.text].findIndex(
