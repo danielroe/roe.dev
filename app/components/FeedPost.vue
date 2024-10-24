@@ -60,7 +60,7 @@ defineProps({
         </a>
       </header>
       <div
-        :class="$style.html"
+        class="html"
         v-html="html"
       />
       <nuxt-img
@@ -88,7 +88,7 @@ defineProps({
   </article>
 </template>
 
-<style module>
+<style>
 .html a {
   @apply underlined-link;
 }
