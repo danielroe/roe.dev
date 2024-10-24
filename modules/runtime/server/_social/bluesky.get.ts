@@ -73,6 +73,11 @@ export default defineLazyEventHandler(async () => {
           const post = p.post.record as PostRecord
           const embed = p.post.embed as PostEmbed | undefined
           const text = new MagicString(post.text)
+          text.replaceAll(/[<>&]/g, r => ({
+            '<': '&lt;',
+            '>': '&gt;',
+            '&': '&amp;',
+          }[r]!))
           for (const facet of post.facets || []) {
             const startIndex = [...post.text].findIndex(
               (_, i) =>
@@ -109,7 +114,7 @@ export default defineLazyEventHandler(async () => {
             permalink:
               `https://staging.bsky.app/profile/${p.post.author.handle}/post`
               + p.post.uri.match(/(\/[^/]+)$/)?.[1],
-            html: text.toString(),
+            html: text.toString().replace(/\n/g, '<br>'),
             media: embed?.images?.map(i => ({
               url: i.fullsize,
               alt: i.alt,
