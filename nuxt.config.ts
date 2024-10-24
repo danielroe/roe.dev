@@ -45,7 +45,7 @@ export default defineNuxtConfig({
   $production: {
     modules: [
       function (_options, nuxt) {
-      // ensure image domains are included in CSP
+        // ensure image domains are included in CSP
         nuxt.options.security.headers = defu(nuxt.options.security.headers, {
           contentSecurityPolicy: {
             'img-src': ['\'self\'', 'data:', ...nuxt.options.image.domains.map(d => `https://${d}`)],
