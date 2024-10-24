@@ -1,10 +1,19 @@
 import process from 'node:process'
+import defu from 'defu'
 import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
+    function (_options, nuxt) {
+      // ensure image domains are included in CSP
+      nuxt.options.security.headers = defu(nuxt.options.security.headers, {
+        contentSecurityPolicy: {
+          'img-src': ['\'self\'', 'data:', ...nuxt.options.image.domains.map(d => `https://${d}`)],
+        },
+      })
+    },
     'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
