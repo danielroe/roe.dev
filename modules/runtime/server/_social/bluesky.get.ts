@@ -1,5 +1,4 @@
-import type { AppBskyFeedPost, AppBskyEmbedImages } from '@atproto/api'
-import { AtpAgent } from '@atproto/api'
+import { AppBskyEmbedImages, AppBskyFeedPost, AtpAgent } from '@atproto/api'
 import MagicString from 'magic-string'
 
 export default defineLazyEventHandler(async () => {
@@ -15,17 +14,10 @@ export default defineLazyEventHandler(async () => {
     const posts = await agent.getAuthorFeed({ actor: identifier })
     return Promise.all(
       posts.data.feed
-        .filter(
-          p =>
-            '$type' in p.post.record
-            && p.post.record.$type === 'app.bsky.feed.post'
-            && p.post.author.handle === identifier
-            && p.post.embed?.$type !== 'app.bsky.embed.record#view'
-            && !p.reply,
-        )
+        .filter(p => AppBskyFeedPost.isRecord(p.post.record) && p.post.author.handle === identifier && !p.reply && (!p.post.embed || AppBskyEmbedImages.isMain(p.post.embed)))
         .map(p => {
           const post = p.post.record as AppBskyFeedPost.Record
-          const embed = p.post.embed as AppBskyEmbedImages.Main | undefined
+          const embed = AppBskyEmbedImages.isMain(p.post.embed) ? p.post.embed : undefined
           const text = new MagicString(post.text)
           for (const facet of post.facets || []) {
             const startIndex = [...post.text].findIndex(
