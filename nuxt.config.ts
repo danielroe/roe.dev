@@ -306,7 +306,7 @@ export default defineNuxtConfig({
   social: {
     networks: {
       bluesky: {
-        identifier: 'roe.dev',
+        identifier: 'danielroe.dev',
       },
       mastodon: {
         identifier: 'daniel@roe.dev',
