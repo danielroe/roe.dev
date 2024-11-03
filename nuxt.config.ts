@@ -194,7 +194,8 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    hoist: ['vite'],
+    // TODO: remove nitropack/types when nuxt v3.14 is released
+    hoist: ['vite', 'nitropack/types'],
   },
 
   postcss: {
