@@ -24,10 +24,10 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@atproto/api": "^0.13.12",
-    "@iconify-json/ri": "^1.2.2",
+    "@atproto/api": "^0.13.14",
+    "@iconify-json/ri": "^1.2.3",
     "@iconify-json/svg-spinners": "^1.2.1",
-    "@iconify-json/tabler": "^1.2.6",
+    "@iconify-json/tabler": "^1.2.7",
     "@nuxt/content": "2.13.4",
     "@nuxt/eslint": "0.6.1",
     "@nuxt/fonts": "0.10.2",
@@ -37,7 +37,7 @@
     "@nuxtjs/html-validator": "1.8.2",
     "@nuxtjs/plausible": "1.0.3",
     "@nuxtjs/web-vitals": "0.2.7",
-    "@unhead/vue": "^1.11.10",
+    "@unhead/vue": "1.11.10",
     "@unocss/nuxt": "^0.63.6",
     "@unocss/postcss": "^0.63.6",
     "@unocss/reset": "^0.63.6",
@@ -67,8 +67,8 @@
     "ufo": "^1.5.4",
     "unenv": "^1.10.0",
     "unocss": "^0.63.6",
-    "unplugin": "^1.14.1",
-    "vue": "^3.5.12",
+    "unplugin": "^1.15.0",
+    "vue": "3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
@@ -97,9 +97,6 @@
   },
   "packageManager": "pnpm@9.12.3",
   "pnpm": {
-    "patchedDependencies": {
-      "nitropack@2.9.7": "patches/nitropack@2.9.6.patch"
-    },
     "overrides": {
       "@nuxt/kit": "3.13.2",
       "@nuxt/schema": "3.13.2",
