@@ -15,5 +15,5 @@ export default defineCachedEventHandler(async event => {
     },
   })
 
-  return await getSignedUrl(s3Client, new GetObjectCommand({ Bucket: 'slides', Key }), { expiresIn: 60 * 60 * 24 * 2 })
+  await sendRedirect(event, await getSignedUrl(s3Client, new GetObjectCommand({ Bucket: 'slides', Key }), { expiresIn: 60 * 60 * 24 * 2 }))
 }, { maxAge: 60 * 60 * 24 })
