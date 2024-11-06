@@ -12,15 +12,13 @@ export default defineNuxtModule({
   },
   defaults: {
     map: {
-      bonn: 'danielroe/nailing-it-vuejs-de-conf-2024',
+      // slug: 'danielroe/<repo>',
     } satisfies Record<string, string>,
   },
   setup (options) {
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
-    const gitHubClientId
-      = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID
-      || nuxt.options.runtimeConfig.public.githubClientId
+    const gitHubClientId = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID || nuxt.options.runtimeConfig.public.githubClientId
 
     nuxt.options.runtimeConfig.invites = {
       map: options.map,
