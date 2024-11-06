@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { addServerHandler, createResolver, defineNuxtModule, updateRuntimeConfig, useRuntimeConfig } from 'nuxt/kit'
+import { defineNuxtModule, updateRuntimeConfig, useNuxt, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
 import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 
@@ -8,8 +8,8 @@ export default defineNuxtModule({
     name: 'slides',
   },
   async setup () {
+    const nuxt = useNuxt()
     const config = useRuntimeConfig()
-    const resolver = createResolver(import.meta.url)
 
     if (!config.github.token) return
 
@@ -61,11 +61,10 @@ export default defineNuxtModule({
         await s3Client.send(new PutObjectCommand({ Bucket, Key, Body: Buffer.from(file) }))
       }
 
-      // add handler for this endpoint
-      addServerHandler({
-        handler: resolver.resolve('./runtime/server/slides'),
-        route: `/slides/${Key}`,
-      })
+      nuxt.options.routeRules ||= {}
+      nuxt.options.routeRules[`/slides/${Key}`] = {
+        redirect: `https://slides.roe.dev/${Bucket}/${Key}`,
+      }
     }
   },
 })
