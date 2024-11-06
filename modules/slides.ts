@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { addServerHandler, createResolver, defineNuxtModule, useNuxt, useRuntimeConfig } from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
 import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 
