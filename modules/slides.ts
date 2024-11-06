@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { addServerHandler, createResolver, defineNuxtModule, useRuntimeConfig } from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule, updateRuntimeConfig, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
 import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 
@@ -20,6 +20,12 @@ export default defineNuxtModule({
       },
     })
 
+    config.cloudflare.r2TokenKey = crypto.createHash('sha256').update(config.cloudflare.r2TokenKey).digest('hex')
+
+    updateRuntimeConfig({
+      cloudflare: config.cloudflare,
+    })
+
     // Configure the S3 client for Cloudflare R2
     const s3Client = new S3Client({
       endpoint: config.cloudflare.s3Url,
@@ -27,7 +33,7 @@ export default defineNuxtModule({
       credentials: {
         accessKeyId: config.cloudflare.r2TokenId,
         // Hash the secret access key
-        secretAccessKey: crypto.createHash('sha256').update(config.cloudflare.r2TokenKey).digest('hex'),
+        secretAccessKey: config.cloudflare.r2TokenKey,
       },
     })
 

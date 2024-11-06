@@ -1,4 +1,3 @@
-import crypto from 'node:crypto'
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
@@ -12,8 +11,7 @@ export default defineCachedEventHandler(async event => {
     region: 'auto',
     credentials: {
       accessKeyId: config.cloudflare.r2TokenId,
-      // Hash the secret access key
-      secretAccessKey: crypto.createHash('sha256').update(config.cloudflare.r2TokenKey).digest('hex'),
+      secretAccessKey: config.cloudflare.r2TokenKey,
     },
   })
 
