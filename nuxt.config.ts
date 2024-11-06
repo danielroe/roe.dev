@@ -147,7 +147,7 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-09-19',
 
   nitro: {
     replace: {
