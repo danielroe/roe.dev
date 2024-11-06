@@ -1,7 +1,7 @@
-import { existsSync, promises as fsp } from 'node:fs'
-import { defineNuxtModule, useNuxt } from 'nuxt/kit'
+import crypto from 'node:crypto'
+import { defineNuxtModule, updateRuntimeConfig, useNuxt, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
-import { join } from 'pathe'
+import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 
 export default defineNuxtModule({
   meta: {
@@ -9,44 +9,61 @@ export default defineNuxtModule({
   },
   async setup () {
     const nuxt = useNuxt()
-    if (!process.env.NUXT_GITHUB_TOKEN) return
+    const config = useRuntimeConfig()
+
+    if (!config.github.token) return
 
     const $gh = $fetch.create({
       baseURL: 'https://api.github.com/repos/danielroe/slides/releases',
       headers: {
-        Authorization: `token ${process.env.NUXT_GITHUB_TOKEN}`,
+        Authorization: `token ${config.github.token}`,
       },
     })
 
-    const slidesDir = join(nuxt.options.rootDir, 'node_modules/.cache/slides')
-    await fsp.mkdir(slidesDir, { recursive: true })
+    config.cloudflare.r2TokenKey = crypto.createHash('sha256').update(config.cloudflare.r2TokenKey).digest('hex')
 
-    nuxt.options.nitro.publicAssets ||= []
-    nuxt.options.nitro.publicAssets.push({
-      dir: slidesDir,
-      maxAge: 1000 * 60 * 60 * 24 * 365,
-      baseURL: '/slides',
+    updateRuntimeConfig({
+      cloudflare: config.cloudflare,
+    })
+
+    // Configure the S3 client for Cloudflare R2
+    const s3Client = new S3Client({
+      endpoint: config.cloudflare.s3Url,
+      region: 'auto',
+      credentials: {
+        accessKeyId: config.cloudflare.r2TokenId,
+        // Hash the secret access key
+        secretAccessKey: config.cloudflare.r2TokenKey,
+      },
     })
 
     const talks = await import('../app/data/talks.json').then(r => r.default)
 
+    const Bucket = 'slides'
     for (const talk of talks) {
       if (!talk.release) continue
 
-      if (existsSync(join(slidesDir, `${talk.release}.pdf`))) continue
+      const Key = `${talk.release}.pdf`
 
-      const release = await $gh<GitHubRelease>(`/tags/${talk.release}`)
-      const id = release?.assets.find(a => a.name.endsWith('.pdf'))?.id
+      const headResponse = await s3Client.send(new HeadObjectCommand({ Bucket, Key })).catch(() => null)
+      if (!headResponse) {
+        const release = await $gh<GitHubRelease>(`/tags/${talk.release}`)
+        const id = release?.assets.find(a => a.name.endsWith('.pdf'))?.id
 
-      if (id) {
+        if (!id) continue
+
         const file = await $gh(`/assets/${id}`, {
           responseType: 'arrayBuffer',
           headers: { Accept: 'application/octet-stream' },
         })
-        await fsp.writeFile(
-          join(slidesDir, `${talk.release}.pdf`),
-          new Uint8Array(file),
-        )
+
+        // Upload file to Cloudflare R2
+        await s3Client.send(new PutObjectCommand({ Bucket, Key, Body: Buffer.from(file) }))
+      }
+
+      nuxt.options.routeRules ||= {}
+      nuxt.options.routeRules[`/slides/${Key}`] = {
+        redirect: `https://slides.roe.dev/${Bucket}/${Key}`,
       }
     }
   },
@@ -55,3 +72,33 @@ export default defineNuxtModule({
 interface GitHubRelease {
   assets: Array<{ id: number, name: string }>
 }
+
+/**
+
+// How to obtain a Cloudflare R2 token with the necessary permissions
+
+await $fetch(`https://api.cloudflare.com/client/v4/user/tokens`, {
+  method: 'post',
+  headers: {
+    authorization: `Bearer ${'<token with permission to create tokens>'}`,
+  },
+  body: {
+    name: 'r2 upload token',
+    policies: [
+      {
+        effect: 'allow',
+        resources: {
+          [`com.cloudflare.edge.r2.bucket.${config.accountId}_default_slides`]: '*',
+        },
+        permission_groups: [
+          {
+            id: '2efd5506f9c8494dacb1fa10a3e7d5b6',
+            name: 'Workers R2 Storage Bucket Item Write',
+          },
+        ],
+      },
+    ],
+  },
+})
+
+*/

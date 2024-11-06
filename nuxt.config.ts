@@ -90,6 +90,11 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    cloudflare: {
+      s3Url: '',
+      r2TokenId: '',
+      r2TokenKey: '',
+    },
     voteUrl: '',
     sessionPassword: '',
     // emailing ideas
@@ -116,16 +121,16 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/api/hi': { cors: true },
+    '/feed.xml': { redirect: '/rss.xml' },
+    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
+    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
     '/.well-known/webfinger/**': {
       redirect: {
         to: 'https://mastodon.roe.dev/.well-known/webfinger/**',
         statusCode: 301,
       },
     },
-    '/api/hi': { cors: true },
-    '/feed.xml': { redirect: '/rss.xml' },
-    '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
-    '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
   },
 
   sourcemap: false,
@@ -147,7 +152,7 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-09-19',
 
   nitro: {
     replace: {
