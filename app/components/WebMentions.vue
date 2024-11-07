@@ -70,6 +70,7 @@ const { data: mentions, pending } = useFetch(
       class="flex gap-4"
     >
       <a
+        v-if="mention.author.photo"
         :href="mention.author.url"
         class="flex-shrink-0"
       >
