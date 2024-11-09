@@ -271,6 +271,7 @@ export default defineNuxtConfig({
       'conf.vuejs.de',
       'perfnow.nl',
       'www.vuetoronto.com',
+      'gdg.community.dev',
     ],
     screens: {
       logo: 40,

@@ -23,6 +23,12 @@ const upcomingConferences: Array<{
     link: 'https://www.vuetoronto.com/',
     location: '🇨🇦',
   },
+  {
+    name: 'DevFest Scotland',
+    dates: '30 November',
+    link: 'https://gdg.community.dev/events/details/google-gdg-glasgow-presents-devfest-scotland-2024-1/cohost-gdg-glasgow',
+    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  },
 ]
 
 export default defineCachedEventHandler(async () => {
