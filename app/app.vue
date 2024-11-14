@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { joinURL } from 'ufo'
+import { joinURL, withTrailingSlash } from 'ufo'
 
 const route = useRoute()
 
@@ -52,7 +52,7 @@ if (import.meta.server) {
   )
 
   const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
-  const url = `https://roe.dev${path}`
+  const url = withTrailingSlash(`https://roe.dev${path}`)
 
   useServerHead({
     meta: () => [

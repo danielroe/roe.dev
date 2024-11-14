@@ -142,6 +142,9 @@ export default defineNuxtConfig({
   experimental: {
     buildCache: false,
     defaults: {
+      nuxtLink: {
+        trailingSlash: 'append',
+      },
       useAsyncData: {
         deep: false,
       },
@@ -161,7 +164,7 @@ export default defineNuxtConfig({
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/rss.xml', '/voted', '/work', '/feedback', '/ama', '/ai'],
+      routes: ['/', '/rss.xml', '/voted/', '/work/', '/feedback/', '/ama/', '/ai/'],
     },
     hooks: {
       'prerender:generate' (route) {
