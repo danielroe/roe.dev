@@ -1,3 +1,4 @@
+import { withoutTrailingSlash } from 'ufo'
 import _routes from '#build/routes'
 
 interface NuxtRoute {
@@ -9,5 +10,5 @@ interface NuxtRoute {
 export const routes: NuxtRoute[] = _routes
 export const match = (path: string) =>
   routes.find(r =>
-    typeof r.path === 'string' ? r.path === path : r.path.test(path),
+    typeof r.path === 'string' ? r.path === withoutTrailingSlash(path) : r.path.test(withoutTrailingSlash(path)),
   )
