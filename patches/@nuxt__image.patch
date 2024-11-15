@@ -1,0 +1,14 @@
+diff --git a/dist/runtime/providers/ipx.js b/dist/runtime/providers/ipx.js
+index 434c1a9ffa42cfcff730623dd22cdf89f1efcc47..5e914567a6743e5e2527eed61f88489bd58c8624 100644
+--- a/dist/runtime/providers/ipx.js
++++ b/dist/runtime/providers/ipx.js
+@@ -24,7 +24,8 @@ export const getImage = (src, { modifiers = {}, baseURL } = {}, ctx) => {
+     baseURL = joinURL(ctx.options.nuxt.baseURL, "/_ipx");
+   }
+   return {
+-    url: joinURL(baseURL, params, encodePath(src))
++    // TODO: port to ipxStatic
++    url: joinURL(baseURL, params, encodePath(src).replace(/\/\//g, '/'))
+   };
+ };
+ export const validateDomains = true;

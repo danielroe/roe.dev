@@ -174,10 +174,6 @@ export default defineNuxtConfig({
             '$1',
           )
 
-        if (route.fileName?.endsWith('.html') && route.contents) {
-          route.contents = route.contents.replace(/(src|href|srcset)="\/_ipx[^"]+"/g, r => r.replaceAll('//', '/'))
-        }
-
         if (route.error) {
           if (route.route.startsWith('/_ipx')) {
             console.warn('Could not prerender', route.route)
