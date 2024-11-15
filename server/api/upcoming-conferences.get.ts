@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'performance.now()',
-    dates: '14-15 November',
-    link: 'https://perfnow.nl/',
-    location: '🇳🇱',
-  },
-  {
     name: 'Vue Toronto',
     dates: '18-20 November',
     link: 'https://www.vuetoronto.com/',
