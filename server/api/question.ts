@@ -5,6 +5,6 @@ export default defineEventHandler(async event => {
   const { question } = await readBody(event)
   if (!question) throw createError({ statusCode: 422 })
   event.waitUntil(createTypefullyDraft(event, question).catch(console.error))
-  await sendEmail('Anonymous question', question)
+  await sendEmail(event, 'Anonymous question', question)
   return null
 })

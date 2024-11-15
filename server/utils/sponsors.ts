@@ -1,3 +1,4 @@
+import type { H3Event } from 'h3'
 import { query } from './github'
 
 interface Sponsor {
@@ -12,8 +13,8 @@ interface CacheEntry {
   mtime: number
 }
 
-export async function getSponsors (): Promise<Sponsor[]> {
-  if (!useRuntimeConfig().github.token) return []
+export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
+  if (!useRuntimeConfig(event).github.token) return []
   const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
 
   const ttl = 60
@@ -22,12 +23,12 @@ export async function getSponsors (): Promise<Sponsor[]> {
   const expired = Date.now() - (entry.mtime || 0) > ttl
   if (!entry.value || expired) {
     entry.value = await query(
-      useRuntimeConfig().github.token,
+      useRuntimeConfig(event).github.token,
       sponsorQuery,
     ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
 
     // my ID
-    entry.value.push({ id: useRuntimeConfig().github.id })
+    entry.value.push({ id: useRuntimeConfig(event).github.id })
 
     // NuxtLabs
     entry.value.push({

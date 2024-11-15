@@ -16,6 +16,7 @@ export default defineEventHandler(async event => {
   }
   const { idea } = await readBody(event)
   await sendEmail(
+    event,
     'Idea from website',
     [`Idea from ${payload.name}:`, '', idea].join('\n'),
   )

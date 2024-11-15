@@ -1,8 +1,10 @@
-export function sendEmail (subject: string, body: string) {
+import type { H3Event } from 'h3'
+
+export function sendEmail (event: H3Event, subject: string, body: string) {
   return $fetch('https://api.resend.com/email', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${useRuntimeConfig().resendApiKey}`,
+      Authorization: `Bearer ${useRuntimeConfig(event).resendApiKey}`,
     },
     body: {
       subject,

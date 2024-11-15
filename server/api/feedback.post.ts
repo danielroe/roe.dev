@@ -1,5 +1,5 @@
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const { feedback } = await readBody(event)
   if (!feedback) {
     throw createError({ statusCode: 400, statusMessage: 'Missing feedback' })

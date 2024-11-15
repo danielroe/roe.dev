@@ -1,7 +1,7 @@
 import type { RuntimeConfig } from 'nuxt/schema'
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const slug = getRouterParam(event, 'slug')
   const repo = slug && config.invites?.map?.[slug as keyof RuntimeConfig['invites']['map']]
   if (!repo) {

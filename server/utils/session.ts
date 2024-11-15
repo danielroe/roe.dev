@@ -8,7 +8,7 @@ interface SessionData {
 }
 
 export function getUserSession (event: H3Event) {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   return getSession<SessionData>(event, {
     password: config.sessionPassword,
     name: 'token',
@@ -17,7 +17,7 @@ export function getUserSession (event: H3Event) {
 }
 
 export function setUserSession (event: H3Event, data: any) {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   return updateSession<SessionData>(
     event,
     {
@@ -30,7 +30,7 @@ export function setUserSession (event: H3Event, data: any) {
 }
 
 export function clearUserSession (event: H3Event) {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   return clearSession(event, {
     password: config.sessionPassword,
     name: 'token',

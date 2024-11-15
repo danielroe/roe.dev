@@ -8,7 +8,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const { access_token } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
@@ -38,7 +38,7 @@ export default defineEventHandler(async event => {
           console.error('viewer', err)
           return {}
         }),
-      getSponsors()
+      getSponsors(event)
         .then(r => r.map(s => s.id))
         .catch(err => {
           console.error('sponsor', err)
