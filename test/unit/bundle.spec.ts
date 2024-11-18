@@ -85,7 +85,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7439k"`)
+      .toMatchInlineSnapshot(`"7489k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -207,11 +207,10 @@ describe('project sizes', () => {
         "micromark-util-subtokenize",
         "multiformats",
         "node-emoji",
-        "oniguruma-to-js",
+        "oniguruma-to-es",
         "parse-entities",
         "parse5",
         "property-information",
-        "regex",
         "rehype-external-links",
         "rehype-raw",
         "rehype-sort-attribute-values",
