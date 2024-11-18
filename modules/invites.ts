@@ -12,6 +12,7 @@ export default defineNuxtModule({
   },
   defaults: {
     map: {
+      toronto: 'danielroe/advanced-apps-toronto-2024',
       // slug: 'danielroe/<repo>',
     } satisfies Record<string, string>,
   },
