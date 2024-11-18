@@ -5,4 +5,8 @@ export const query = (accessToken: string, query: string) =>
       Authorization: `Bearer ${accessToken}`,
     },
     body: { query },
+    async onResponseError (ctx) {
+      console.log(ctx.error)
+      console.log(await ctx.response.text())
+    },
   })
