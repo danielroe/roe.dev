@@ -1,12 +1,9 @@
 export const query = (accessToken: string, query: string) =>
-  $fetch<{ data: any }>('https://api.github.com/graphql', {
+  fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      'authorization': `Bearer ${accessToken}`,
+      'user-agent': 'roe (https://roe.dev, 0.1)',
     },
-    body: { query },
-    async onResponseError (ctx) {
-      console.log(ctx.error)
-      console.log(await ctx.response.text())
-    },
-  })
+    body: JSON.stringify({ query }),
+  }).then(r => r.json() as Promise<{ data: any }>)
