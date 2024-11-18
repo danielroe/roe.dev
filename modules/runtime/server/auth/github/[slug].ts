@@ -17,7 +17,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const { access_token } = await $fetch<{ access_token: string }>(
+  const { access_token, ...rest } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
       method: 'POST',
@@ -38,6 +38,8 @@ export default defineEventHandler(async event => {
       statusMessage: 'Authorisation code invalid.',
     })
   }
+
+  console.log(access_token, config, rest)
 
   const username = await query(access_token, `{ viewer { login } }`)
     .then(r => r.data?.viewer.login)
