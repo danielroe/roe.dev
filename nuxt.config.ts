@@ -251,6 +251,7 @@ export default defineNuxtConfig({
 
   image: {
     domains: [
+      'www.dundeescript.co.uk',
       'devoxx.gr',
       'conference.vueschool.io',
       'static-cdn.jtvnw.net',
