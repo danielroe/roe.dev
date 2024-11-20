@@ -19,12 +19,6 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
-    function (_options, nuxt) {
-      nuxt.hook('vite:extendConfig', config => {
-        const deps = ['slugify', 'remark-gfm', 'remark-emoji', 'remark-mdc', 'remark-rehype', 'rehype-raw', 'parse5', 'unist-util-visit', 'unified', 'debug']
-        config.optimizeDeps!.include = config.optimizeDeps!.include?.map(d => deps.includes(d) ? `@nuxt/content > ${d}` : d)
-      })
-    },
   ],
 
   // TODO: remove when Nuxt v3.14 is released
