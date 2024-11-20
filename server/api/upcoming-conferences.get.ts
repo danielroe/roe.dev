@@ -12,12 +12,6 @@ const upcomingConferences: Array<{
   location: string
 }> = [
   {
-    name: 'Vue Toronto',
-    dates: '18-20 November',
-    link: 'https://www.vuetoronto.com/',
-    location: '🇨🇦',
-  },
-  {
     name: 'DevFest Scotland',
     dates: '30 November',
     link: 'https://gdg.community.dev/events/details/google-gdg-glasgow-presents-devfest-scotland-2024-1/cohost-gdg-glasgow',
