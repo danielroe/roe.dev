@@ -17,6 +17,17 @@ const upcomingConferences: Array<{
     link: 'https://gdg.community.dev/events/details/google-gdg-glasgow-presents-devfest-scotland-2024-1/cohost-gdg-glasgow',
     location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
   },
+  {
+    name: 'DundeeScript Meetup',
+    dates: '10 December',
+    link: 'https://www.eventbrite.co.uk/e/dundeescript-meetup-tickets-1038765113417',
+    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+    image: {
+      url: 'https://www.dundeescript.co.uk/images/dundeescript-logo.png',
+      width: 684,
+      height: 466,
+    },
+  },
 ]
 
 export default defineCachedEventHandler(async () => {
