@@ -1,0 +1,24 @@
+{
+  "name": "roedev",
+  "private": true,
+  "main": "package.json",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^3.64.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sanity": "^3.64.2",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^4.0.0",
+    "@types/react": "^18.0.25",
+    "typescript": "^5.1.6"
+  }
+}

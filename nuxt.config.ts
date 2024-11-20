@@ -5,6 +5,7 @@ import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
+    '@nuxtjs/sanity',
     'nuxt-og-image',
     '@nuxt/eslint',
     'nuxt-time',
@@ -90,6 +91,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    sanity: {
+      token: '',
+    },
     cloudflare: {
       s3Url: '',
       r2TokenId: '',
