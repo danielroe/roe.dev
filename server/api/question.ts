@@ -1,6 +1,6 @@
 export default defineEventHandler(async event => {
   if (event.method === 'OPTIONS') return null
-  const sanity = useSanity()
+  const sanity = useSanity(event)
 
   assertMethod(event, 'POST')
   const { question } = await readBody(event)
