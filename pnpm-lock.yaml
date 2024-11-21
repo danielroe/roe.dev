@@ -68,8 +68,8 @@ importers:
         specifier: 1.0.3
         version: 1.0.3(magicast@0.3.5)(rollup@4.24.4)
       '@nuxtjs/sanity':
-        specifier: ^1.12.2
-        version: 1.12.2(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.24.4)
+        specifier: ^1.13.0
+        version: 1.13.0(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.24.4)
       '@nuxtjs/web-vitals':
         specifier: 0.2.7
         version: 0.2.7(magicast@0.3.5)(rollup@4.24.4)
@@ -2200,8 +2200,8 @@ packages:
   '@nuxtjs/plausible@1.0.3':
     resolution: {integrity: sha512-jf6W9+Q/VhfHk/jal1gp0OpYU2qwq7eOV4evNKvHWKVM0Qbps+LbKSxNcewgqN91tVx9sv4RbnOEJ8Uq0/FRkg==}
 
-  '@nuxtjs/sanity@1.12.2':
-    resolution: {integrity: sha512-3vApztz3rdCnS9+K4mFEaAV11pgQBB2j4bLC/p/L6l8zsEyNzdpz9BeLfctDtPdQkhYxl+RYBU12xhKybRl8Qg==}
+  '@nuxtjs/sanity@1.13.0':
+    resolution: {integrity: sha512-tAoh3IDzihYm3nHVeej6K7oL5E61mNZ7qKxks+IpHBv8TrRTLE8Le83u0pjVx4nWDur90YPmxhDwRaZrHocnBA==}
 
   '@nuxtjs/web-vitals@0.2.7':
     resolution: {integrity: sha512-ztqk+PsdozVExk0IkzH64+5LnHhyUQboIBp/IdDHaOZEHybMZRtdMB53z6OqSg/DCK3638sHDXoza44DYvveaw==}
@@ -2725,12 +2725,6 @@ packages:
     engines: {node: '>=16.14'}
     peerDependencies:
       '@sanity/client': ^6.22.5
-
-  '@sanity/preview-url-secret@1.6.21':
-    resolution: {integrity: sha512-ZAIT4I5Nrsax+RBQVhSBY4PnnHgaI+eybSd5aHhjZi97+ziMTtTLnL1Hsg+ViLtPqJWwX0GiB0l8nSfGAt7+QA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@sanity/client': ^6.21.3
 
   '@sanity/preview-url-secret@2.0.4':
     resolution: {integrity: sha512-II8MtIqXpwTsNe0MzhOtD2QbOSaD0mFCswJJRM0W4eyg4nT6/QDniDznV7/5XdqpssAnwl7JUEHFAzLle417hg==}
@@ -12730,17 +12724,17 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nuxtjs/sanity@1.12.2(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.24.4)':
+  '@nuxtjs/sanity@1.13.0(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.24.4)':
     dependencies:
       '@nuxt/kit': 3.14.159(magicast@0.3.5)(rollup@4.24.4)
       '@portabletext/types': 2.0.13
       '@sanity/client': 6.22.5(debug@4.3.7)
       '@sanity/core-loader': 1.7.12(@sanity/client@6.22.5)
-      '@sanity/preview-url-secret': 1.6.21(@sanity/client@6.22.5)
+      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5(debug@4.3.7))
       '@sanity/visual-editing': 2.8.0(@sanity/client@6.22.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       chalk: 5.3.0
       defu: 6.1.4
-      jiti: 1.21.6
+      jiti: 2.4.0
       knitwork: 1.1.0
       magic-regexp: 0.8.0
       mlly: 1.7.3
@@ -13364,11 +13358,6 @@ snapshots:
       - react-dom
       - react-is
       - styled-components
-
-  '@sanity/preview-url-secret@1.6.21(@sanity/client@6.22.5)':
-    dependencies:
-      '@sanity/client': 6.22.5(debug@4.3.7)
-      '@sanity/uuid': 3.0.2
 
   '@sanity/preview-url-secret@2.0.4(@sanity/client@6.22.5(debug@4.3.7))':
     dependencies:
