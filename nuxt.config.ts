@@ -1,4 +1,6 @@
 import process from 'node:process'
+
+import { defineNuxtConfig } from 'nuxt/config'
 import { useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
@@ -19,6 +21,12 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
+    function (_options, nuxt) {
+      // todo: refactor into nuxt
+      nuxt.hook('prepare:types', ctx => {
+        ctx.tsConfig.include = ctx.tsConfig.include?.filter(i => i !== '..' && i !== '../**/*')
+      })
+    },
   ],
 
   // TODO: remove when Nuxt v3.14 is released
