@@ -45,7 +45,6 @@ describe('project sizes', () => {
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
-          "_nuxt/ProseCode.js",
           "_nuxt/ProseCodeInline.js",
           "_nuxt/ProseEm.js",
           "_nuxt/ProseH1.js",
@@ -80,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"441k"`)
+      .toMatchInlineSnapshot(`"443k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8137k"`)
+      .toMatchInlineSnapshot(`"8324k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -173,7 +172,6 @@ describe('project sizes', () => {
         "is-retry-allowed",
         "isarray",
         "iso-datestring-validator",
-        "js-yaml",
         "longest-streak",
         "lru-cache",
         "lru-cache/dist/esm",
@@ -275,6 +273,7 @@ describe('project sizes', () => {
         "xml-js",
         "xss",
         "xtend",
+        "yaml",
         "zod",
         "zwitch",
       ]
