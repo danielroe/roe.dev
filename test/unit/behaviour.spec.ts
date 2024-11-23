@@ -7,6 +7,7 @@ import { createPage, setup, url } from '@nuxt/test-utils/e2e'
 await setup({
   rootDir: fileURLToPath(new URL('../..', import.meta.url)),
   nuxtConfig: {
+    sourcemap: false,
     nitro: {
       prerender: {
         crawlLinks: false,
