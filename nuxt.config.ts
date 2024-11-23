@@ -124,7 +124,7 @@ export default defineNuxtConfig({
     },
     public: {
       sentry: {
-        dns: '',
+        dsn: '',
       },
       githubClientId: '',
     },
