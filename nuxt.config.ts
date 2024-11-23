@@ -7,6 +7,7 @@ import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
+    '@sentry/nuxt/module',
     '@nuxtjs/sanity',
     'nuxt-og-image',
     '@nuxt/eslint',
@@ -122,6 +123,9 @@ export default defineNuxtConfig({
       inviteToken: '',
     },
     public: {
+      sentry: {
+        dns: '',
+      },
       githubClientId: '',
     },
   },
@@ -139,7 +143,7 @@ export default defineNuxtConfig({
     },
   },
 
-  sourcemap: false,
+  sourcemap: { client: true },
 
   future: {
     compatibilityVersion: 4,
@@ -313,6 +317,13 @@ export default defineNuxtConfig({
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
         'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com'],
       },
+    },
+  },
+
+  sentry: {
+    sourceMapsUploadOptions: {
+      org: 'poetryco',
+      project: 'roe-dev',
     },
   },
 
