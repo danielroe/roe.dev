@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"269k"`)
+      .toMatchInlineSnapshot(`"270k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -80,12 +80,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"430k"`)
+      .toMatchInlineSnapshot(`"441k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"7489k"`)
+      .toMatchInlineSnapshot(`"8137k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -99,6 +99,8 @@ describe('project sizes', () => {
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
+        "@sanity/client",
+        "@sanity/eventsource",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -125,8 +127,11 @@ describe('project sizes', () => {
         "character-entities-legacy",
         "character-reference-invalid",
         "comma-separated-tokens",
+        "core-util-is",
         "cssfilter",
+        "debug",
         "decode-named-character-reference",
+        "decompress-response",
         "detab",
         "devalue",
         "devlop",
@@ -138,9 +143,12 @@ describe('project sizes', () => {
         "estree-walker",
         "events-to-async",
         "events-to-async/module",
+        "eventsource",
         "extend",
         "feed",
         "flat",
+        "follow-redirects",
+        "get-it",
         "github-slugger",
         "graphemer",
         "hast-util-from-parse5",
@@ -155,12 +163,15 @@ describe('project sizes', () => {
         "hookable",
         "html-void-elements",
         "image-meta",
+        "inherits",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
+        "is-retry-allowed",
+        "isarray",
         "iso-datestring-validator",
         "js-yaml",
         "longest-streak",
@@ -205,12 +216,18 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "mimic-response",
+        "ms",
         "multiformats",
         "node-emoji",
         "oniguruma-to-es",
         "parse-entities",
         "parse5",
+        "process-nextick-args",
+        "progress-stream",
         "property-information",
+        "readable-stream",
+        "readable-stream/node_modules/safe-buffer",
         "rehype-external-links",
         "rehype-raw",
         "rehype-sort-attribute-values",
@@ -220,17 +237,26 @@ describe('project sizes', () => {
         "remark-mdc",
         "remark-parse",
         "remark-rehype",
+        "rxjs",
+        "safe-buffer",
         "sax",
         "scule",
         "shiki",
         "skin-tone",
         "source-map-js",
         "space-separated-tokens",
+        "speedometer",
+        "string_decoder",
+        "string_decoder/node_modules/safe-buffer",
         "stringify-entities",
+        "supports-color",
+        "through2",
         "tlds",
         "trim-lines",
         "trough",
         "ts-custom-error",
+        "tunnel-agent",
+        "tunnel-agent/node_modules/safe-buffer",
         "uint8arrays",
         "unhead",
         "unicode-emoji-modifier-base",
@@ -240,6 +266,7 @@ describe('project sizes', () => {
         "unist-util-stringify-position",
         "unist-util-visit",
         "unist-util-visit-parents",
+        "util-deprecate",
         "vfile",
         "vfile-location",
         "vfile-message",
@@ -247,6 +274,7 @@ describe('project sizes', () => {
         "web-namespaces",
         "xml-js",
         "xss",
+        "xtend",
         "zod",
         "zwitch",
       ]
