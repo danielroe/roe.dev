@@ -139,7 +139,7 @@ export default defineNuxtConfig({
     },
   },
 
-  sourcemap: false,
+  sourcemap: { client: true, server: false },
 
   future: {
     compatibilityVersion: 4,
