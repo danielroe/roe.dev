@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - renovate/*
     paths:
       - "src/content/blog/**"
       - ".github/workflows/test.yml"
