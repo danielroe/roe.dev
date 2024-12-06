@@ -164,8 +164,8 @@ importers:
         specifier: ^0.64.1
         version: 0.64.1(@unocss/webpack@0.64.1(rollup@4.27.4)(webpack@5.96.1(esbuild@0.23.1)))(postcss@8.4.49)(rollup@4.27.4)(vite@5.4.11(@types/node@22.9.3)(terser@5.36.0))(vue@3.5.13(typescript@5.6.2))
       unplugin:
-        specifier: ^1.16.0
-        version: 1.16.0
+        specifier: ^2.0.0
+        version: 2.0.0
       vue:
         specifier: 3.5.13
         version: 3.5.13(typescript@5.6.2)
@@ -9220,6 +9220,10 @@ packages:
     resolution: {integrity: sha512-5liCNPuJW8dqh3+DM6uNM2EI3MLLpCKp/KY+9pB5M2S2SR2qvvDHhKgBOaTWEbZTAws3CXfB0rKTIolWKL05VQ==}
     engines: {node: '>=14.0.0'}
 
+  unplugin@2.0.0:
+    resolution: {integrity: sha512-26eihuX14zPtiW6gzz8B112Buhi9CaWH/5ezO67pzBhKoz3MfHyc2lz/QOMOyEd/DWk+OnS0zCiYixnm8Q3dqA==}
+    engines: {node: '>=18.12.0'}
+
   unstorage@1.13.1:
     resolution: {integrity: sha512-ELexQHUrG05QVIM/iUeQNdl9FXDZhqLJ4yP59fnmn2jGUh0TEulwOgov1ubOb3Gt2ZGK/VMchJwPDNVEGWQpRg==}
     peerDependencies:
@@ -12736,7 +12740,7 @@ snapshots:
       '@portabletext/types': 2.0.13
       '@sanity/client': 6.22.5(debug@4.3.7)
       '@sanity/core-loader': 1.7.12(@sanity/client@6.22.5)
-      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5(debug@4.3.7))
+      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5)
       '@sanity/visual-editing': 2.8.0(@sanity/client@6.22.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       chalk: 5.3.0
       defu: 6.1.4
@@ -13344,7 +13348,7 @@ snapshots:
       '@sanity/comlink': 1.1.3
       '@sanity/icons': 3.4.0(react@18.3.1)
       '@sanity/logos': 2.1.13(@sanity/color@3.0.6)(react@18.3.1)
-      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5(debug@4.3.7))
+      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5)
       '@sanity/ui': 2.8.24(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/uuid': 3.0.2
       '@types/lodash.isequal': 4.5.8
@@ -13365,7 +13369,7 @@ snapshots:
       - react-is
       - styled-components
 
-  '@sanity/preview-url-secret@2.0.4(@sanity/client@6.22.5(debug@4.3.7))':
+  '@sanity/preview-url-secret@2.0.4(@sanity/client@6.22.5)':
     dependencies:
       '@sanity/client': 6.22.5(debug@4.3.7)
       '@sanity/uuid': 3.0.2
@@ -13482,7 +13486,7 @@ snapshots:
     dependencies:
       '@sanity/comlink': 1.1.3
       '@sanity/mutate': 0.11.0-canary.3(xstate@5.19.0)
-      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5(debug@4.3.7))
+      '@sanity/preview-url-secret': 2.0.4(@sanity/client@6.22.5)
       '@vercel/stega': 0.1.2
       get-random-values-esm: 1.0.2
       react: 18.3.1
@@ -21829,6 +21833,11 @@ snapshots:
       - vue
 
   unplugin@1.16.0:
+    dependencies:
+      acorn: 8.14.0
+      webpack-virtual-modules: 0.6.2
+
+  unplugin@2.0.0:
     dependencies:
       acorn: 8.14.0
       webpack-virtual-modules: 0.6.2
