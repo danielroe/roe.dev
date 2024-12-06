@@ -6,29 +6,19 @@ const links = [
     link: 'https://github.com/danielroe/',
   },
   {
-    name: 'LinkedIn',
-    icon: 'i-ri:linkedin-fill',
-    link: 'https://www.linkedin.com/in/daniel-roe/',
-  },
-  {
-    name: 'Twitter',
-    icon: 'i-custom-twitter',
-    link: 'https://twitter.com/danielcroe',
-  },
-  {
-    name: 'Mastodon',
-    icon: 'i-ri:mastodon-fill',
-    link: 'https://mastodon.roe.dev/@daniel',
-  },
-  {
     name: 'Bluesky',
     icon: 'i-tabler-brand-bluesky',
     link: 'https://bsky.app/profile/danielroe.dev',
   },
   {
-    name: 'Threads',
-    icon: 'i-custom-threads',
-    link: 'https://www.threads.net/@daniel.c.roe',
+    name: 'LinkedIn',
+    icon: 'i-ri:linkedin-fill',
+    link: 'https://www.linkedin.com/in/daniel-roe/',
+  },
+  {
+    name: 'Mastodon',
+    icon: 'i-ri:mastodon-fill',
+    link: 'https://mastodon.roe.dev/@daniel',
   },
   {
     name: 'Instagram',
