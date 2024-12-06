@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"443k"`)
+      .toMatchInlineSnapshot(`"442k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8325k"`)
+      .toMatchInlineSnapshot(`"8337k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -126,6 +126,7 @@ describe('project sizes', () => {
         "character-entities-legacy",
         "character-reference-invalid",
         "comma-separated-tokens",
+        "consola",
         "core-util-is",
         "cssfilter",
         "debug",
