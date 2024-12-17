@@ -53,9 +53,9 @@ const LiveWrapper = defineComponent({
       h(
         'a',
         {
-          href: 'https://tv.algora.io/danielroe',
+          href: 'https://twitch.tv/danielroe',
           target: '_blank',
-          title: 'Live now on Algora',
+          title: 'Live now on Twitch',
         },
         slots,
       )
