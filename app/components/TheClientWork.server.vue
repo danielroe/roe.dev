@@ -23,7 +23,7 @@ const clients = {
   <section
     class="flex flex-row flex-wrap justify-center items-center my-12 gap-8 *:h-full *:w-auto *:flex-grow-0 *:flex-shrink *:max-h-8 *:max-w-[5rem]"
   >
-    <nuxt-picture
+    <NuxtPicture
       v-for="([image, dimensions], name) in clients"
       :key="name"
       :alt="name"

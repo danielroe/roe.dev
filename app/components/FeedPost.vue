@@ -20,7 +20,7 @@ defineProps({
   <article
     class="p-4 relative text-base flex flex-row gap-4 shadow min-h-12 transition-all border-[1px] border-solid border-transparent after:text-transparent flex-[100%]"
   >
-    <nuxt-img
+    <NuxtImg
       :src="avatar ?? '/me.jpg'"
       class="rounded-full self-start w-12 h-12"
       height="48"
@@ -63,7 +63,7 @@ defineProps({
         class="html"
         v-html="html"
       />
-      <nuxt-img
+      <NuxtImg
         v-if="media?.length && media[0] && media[0].url && !media[0].url.endsWith('.mp4')"
         :src="media[0].url"
         :width="media[0].width"

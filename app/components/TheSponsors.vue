@@ -4,7 +4,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
 
 <template>
   <div class="flex gap-3 flex-row flex-wrap mx-auto justify-start relative">
-    <nuxt-img
+    <NuxtImg
       v-for="sponsor of sponsors"
       :key="sponsor"
       :data-image-src="sponsor"
@@ -18,13 +18,13 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
       height="35"
       width="35"
     />
-    <nuxt-link
+    <NuxtLink
       to="https://github.com/sponsors/danielroe"
       class="pure rounded-full border-primary outline-none border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:border-solid focus:border-solid active:border-solid hover:bg-accent focus:bg-accent active:bg-accent"
       target="_blank"
     >
       <div class="block i-ri:add-fill h-6 w-6" />
       <span class="sr-only">Sponsor me on GitHub</span>
-    </nuxt-link>
+    </NuxtLink>
   </div>
 </template>

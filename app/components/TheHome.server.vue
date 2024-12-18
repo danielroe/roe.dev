@@ -148,7 +148,7 @@ const { data: talks } = await useAsyncData(
               <div
                 class="relative flex flex-col justify-end bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
               >
-                <nuxt-img
+                <NuxtImg
                   class="aspect-[1.9] object-cover"
                   format="webp"
                   style="transform: scale(1.11)"
@@ -226,7 +226,7 @@ const { data: talks } = await useAsyncData(
               <div
                 class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
               >
-                <nuxt-img
+                <NuxtImg
                   v-if="conference.image.url"
                   :preload="index < 2"
                   :loading="index > 1 ? 'lazy' : 'eager'"
