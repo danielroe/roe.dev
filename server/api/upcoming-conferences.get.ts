@@ -1,40 +1,54 @@
 import { imageMeta } from 'image-meta'
 
-const upcomingConferences: Array<{
+const eventQuery = groq`
+*[_type == 'event' && date > now()] {
+  name,
+  "dates": date,
+  endDate,
+  link,
+  location,
+  "image": image.asset->{
+    "height": metadata.dimensions.height,
+    "width": metadata.dimensions.width,
+    url
+  }
+} | order(date)
+`
+
+interface Event {
   name: string
   dates: string
+  endDate?: string
   link: string
+  location: string
   image?: {
     url: string
     width: number
     height: number
   }
-  location: string
-}> = [
-  {
-    name: 'DevFest Scotland',
-    dates: '30 November',
-    link: 'https://gdg.community.dev/events/details/google-gdg-glasgow-presents-devfest-scotland-2024-1/cohost-gdg-glasgow',
-    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-  },
-  {
-    name: 'DundeeScript Meetup',
-    dates: '10 December',
-    link: 'https://www.eventbrite.co.uk/e/dundeescript-meetup-tickets-1038765113417',
-    location: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-    image: {
-      url: 'https://www.dundeescript.co.uk/images/dundeescript-logo.png',
-      width: 684,
-      height: 466,
-    },
-  },
-]
+}
 
-export default defineCachedEventHandler(async () => {
+export default defineEventHandler(async event => {
   if (!import.meta.dev && !import.meta.prerender) return []
+
+  const sanity = useSanity(event)
+
+  const upcomingConferences = await sanity.client.fetch<Event[]>(eventQuery)
+
+  console.log(upcomingConferences)
+  const formatter = new Intl.DateTimeFormat('en', {
+    month: 'long',
+    day: 'numeric',
+  })
 
   return Promise.all(
     upcomingConferences.map(async conference => {
+      let dates = formatter.format(new Date(conference.dates))
+      if (conference.endDate) {
+        dates += ` - ${formatter.format(new Date(conference.endDate))}`
+        delete conference.endDate
+      }
+      conference.dates = dates
       if (conference.image) {
         return conference as Omit<typeof conference, 'image'> & { image: NonNullable<typeof conference.image> }
       }
