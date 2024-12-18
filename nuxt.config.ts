@@ -262,6 +262,7 @@ export default defineNuxtConfig({
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
       'cdn.bsky.app',
+      'cdn.sanity.io',
       'images.jsworldconference.com',
       'www.middlesbroughfe.co.uk',
       'res.cloudinary.com',
