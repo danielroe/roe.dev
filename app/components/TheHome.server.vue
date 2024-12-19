@@ -125,141 +125,146 @@ const { data: talks } = await useAsyncData(
         </NuxtLink>
       </p>
     </section>
-    <hr
-      class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700"
-    >
-    <section class="max-w-[37.50rem]">
-      <h2 class="text-xl">
-        some recent streams
-      </h2>
-      <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
-        <ul
-          class="flex flex-row gap-2 mt-4 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
-        >
-          <li
-            v-for="(video, index) of streams"
-            :key="video.title"
-            class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
+    <template v-if="streams.length">
+      <hr class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700">
+      <section class="max-w-[37.50rem]">
+        <h2 class="text-xl">
+          some recent streams
+        </h2>
+        <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
+          <ul
+            class="flex flex-row gap-2 mt-4 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
           >
-            <NuxtLink
-              class="bg-accent w-[20rem] justify-between flex flex-col"
-              :to="video.link"
+            <li
+              v-for="(video, index) of streams"
+              :key="video.title"
+              class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
             >
-              <div
-                class="relative flex flex-col justify-end bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+              <NuxtLink
+                class="bg-accent w-[20rem] justify-between flex flex-col"
+                :to="video.link"
               >
-                <NuxtImg
-                  class="aspect-[1.9] object-cover"
-                  format="webp"
-                  style="transform: scale(1.11)"
-                  width="320"
-                  height="168"
-                  decoding="async"
-                  :preload="index < 2"
-                  :loading="index > 1 ? 'lazy' : 'eager'"
-                  :alt="`Still thumbnail for ${video.title}`"
-                  :src="video.thumbnail"
-                />
-              </div>
-              <div class="px-2 py-1 flex flex-row justify-between items-end">
-                <div class="text-ellipsis line-clamp-1 py-1 leading-none">
-                  {{ video.title }}
+                <div
+                  class="relative flex flex-col justify-end bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+                >
+                  <NuxtImg
+                    class="aspect-[1.9] object-cover"
+                    format="webp"
+                    style="transform: scale(1.11)"
+                    width="320"
+                    height="168"
+                    decoding="async"
+                    :preload="index < 2"
+                    :loading="index > 1 ? 'lazy' : 'eager'"
+                    :alt="`Still thumbnail for ${video.title}`"
+                    :src="video.thumbnail"
+                  />
                 </div>
-                <NuxtTime
-                  :datetime="video.date"
-                  class="flex-shrink-0 uppercase text-xs text-muted leading-none py-1"
-                  day="numeric"
-                  month="long"
-                />
-              </div>
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-      <div class="mt-4 flex flex-row gap-2 items-center flex-wrap w-100vw">
-        <span class="text-base"> you can watch more videos </span>
-        <ExpandableTray>
-          <a
-            href="https://twitch.tv/danielroe"
-            class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
-            aria-label="Watch more streams on Twitch"
-          >
-            <span class="i-ri-twitch-fill h-5 w-5 md:h-4 md:w-4" />
-            <span class="hidden md:inline-block">twitch</span>
-          </a>
-          <a
-            href="https://youtube.com/@danielroe"
-            class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
-            aria-label="Watch more videos on YouTube"
-          >
-            <span class="i-ri-youtube-fill h-5 w-5 md:h-4 md:w-4" />
-            <span class="hidden md:inline-block">youtube</span>
-          </a>
-        </ExpandableTray>
-        <span class="text-base">
-          or check out
-          <NuxtLink
-            class="underlined-link"
-            to="/uses"
-          > what I use </NuxtLink>.
-        </span>
-      </div>
-    </section>
-    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
-    <section class="max-w-[37.50rem]">
-      <h2 class="text-xl">
-        upcoming talks
-      </h2>
-      <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
-        <ul
-          class="flex flex-row gap-2 mt-4 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
-        >
-          <li
-            v-for="(conference, index) in upcomingConferences"
-            :key="conference.name"
-            class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
-          >
-            <NuxtLink
-              :to="conference.link"
-              class="bg-accent w-[20rem] justify-between flex flex-col"
+                <div class="px-2 py-1 flex flex-row justify-between items-end">
+                  <div class="text-ellipsis line-clamp-1 py-1 leading-none">
+                    {{ video.title }}
+                  </div>
+                  <NuxtTime
+                    :datetime="video.date"
+                    class="flex-shrink-0 uppercase text-xs text-muted leading-none py-1"
+                    day="numeric"
+                    month="long"
+                  />
+                </div>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-4 flex flex-row gap-2 items-center flex-wrap w-100vw">
+          <span class="text-base"> you can watch more videos </span>
+          <ExpandableTray>
+            <a
+              href="https://twitch.tv/danielroe"
+              class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+              aria-label="Watch more streams on Twitch"
             >
-              <div
-                class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+              <span class="i-ri-twitch-fill h-5 w-5 md:h-4 md:w-4" />
+              <span class="hidden md:inline-block">twitch</span>
+            </a>
+            <a
+              href="https://youtube.com/@danielroe"
+              class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+              aria-label="Watch more videos on YouTube"
+            >
+              <span class="i-ri-youtube-fill h-5 w-5 md:h-4 md:w-4" />
+              <span class="hidden md:inline-block">youtube</span>
+            </a>
+          </ExpandableTray>
+          <span class="text-base">
+            or check out
+            <NuxtLink
+              class="underlined-link"
+              to="/uses"
+            > what I use </NuxtLink>.
+          </span>
+        </div>
+      </section>
+    </template>
+    <template v-if="upcomingConferences.length">
+      <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+      <section
+
+        class="max-w-[37.50rem]"
+      >
+        <h2 class="text-xl">
+          upcoming talks
+        </h2>
+        <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
+          <ul
+            class="flex flex-row gap-2 mt-4 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
+          >
+            <li
+              v-for="(conference, index) in upcomingConferences"
+              :key="conference.name"
+              class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
+            >
+              <NuxtLink
+                :to="conference.link"
+                class="bg-accent w-[20rem] justify-between flex flex-col"
               >
-                <NuxtImg
-                  v-if="conference.image.url"
-                  :preload="index < 2"
-                  :loading="index > 1 ? 'lazy' : 'eager'"
-                  decoding="async"
-                  format="webp"
-                  :src="conference.image.url"
-                  :width="320"
-                  :height="Math.round(conference.image.height! / (conference.image.width! / 320))"
-                  :alt="`Logo for ${conference.name}`"
-                  class="object-cover object-center"
-                />
-              </div>
-              <div
-                class="px-2 py-2 flex flex-row justify-between items-end leading-none"
-              >
-                <span class="flex flex-row items-center gap-2">
-                  <span
-                    class="rounded-full h-5 w-5 bg-primary inline-flex items-center justify-center"
-                  >
-                    {{ conference.location }}
+                <div
+                  class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+                >
+                  <NuxtImg
+                    v-if="conference.image.url"
+                    :preload="index < 2"
+                    :loading="index > 1 ? 'lazy' : 'eager'"
+                    decoding="async"
+                    format="webp"
+                    :src="conference.image.url"
+                    :width="320"
+                    :height="Math.round(conference.image.height! / (conference.image.width! / 320))"
+                    :alt="`Logo for ${conference.name}`"
+                    class="object-cover object-center"
+                  />
+                </div>
+                <div
+                  class="px-2 py-2 flex flex-row justify-between items-end leading-none"
+                >
+                  <span class="flex flex-row items-center gap-2">
+                    <span
+                      class="rounded-full h-5 w-5 bg-primary inline-flex items-center justify-center"
+                    >
+                      {{ conference.location }}
+                    </span>
+                    {{ conference.name }}
                   </span>
-                  {{ conference.name }}
-                </span>
-                <span class="uppercase text-xs text-muted">
-                  {{ conference.dates }}
-                </span>
-              </div>
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-    <!-- TODO: add link for conference organisers -->
-    </section>
+                  <span class="uppercase text-xs text-muted">
+                    {{ conference.dates }}
+                  </span>
+                </div>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+        <!-- TODO: add link for conference organisers -->
+      </section>
+    </template>
     <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
     <section class="max-w-[37.50rem] overflow-visible">
       <h2 class="text-xl">

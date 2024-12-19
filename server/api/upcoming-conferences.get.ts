@@ -33,9 +33,8 @@ export default defineEventHandler(async event => {
 
   const sanity = useSanity(event)
 
-  const upcomingConferences = await sanity.client.fetch<Event[]>(eventQuery)
+  const upcomingConferences = sanity.config.token ? await sanity.client.fetch<Event[]>(eventQuery) : []
 
-  console.log(upcomingConferences)
   const formatter = new Intl.DateTimeFormat('en', {
     month: 'long',
     day: 'numeric',
