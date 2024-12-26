@@ -20,7 +20,7 @@ export default defineType({
     defineField({
       name: 'content',
       title: 'Content',
-      type: 'string',
+      type: 'text',
       readOnly: true,
     }),
     defineField({
@@ -28,6 +28,11 @@ export default defineType({
       title: 'Answered',
       type: 'boolean',
       initialValue: false,
+    }),
+    defineField({
+      name: 'link',
+      title: 'Bluesky link',
+      type: 'url',
     }),
   ],
 })
