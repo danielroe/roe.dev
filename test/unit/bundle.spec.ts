@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8344k"`)
+      .toMatchInlineSnapshot(`"8669k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -98,6 +98,7 @@ describe('project sizes', () => {
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
+        "@jridgewell/sourcemap-codec",
         "@sanity/client",
         "@sanity/eventsource",
         "@shikijs/core",
@@ -111,6 +112,11 @@ describe('project sizes', () => {
         "@unhead/dom",
         "@unhead/shared",
         "@unhead/ssr",
+        "@unocss/core",
+        "@unocss/extractor-arbitrary-variants",
+        "@unocss/preset-mini",
+        "@unocss/preset-wind",
+        "@unocss/rule-utils",
         "@vue/compiler-core",
         "@vue/compiler-dom",
         "@vue/reactivity",
@@ -126,6 +132,7 @@ describe('project sizes', () => {
         "character-entities-legacy",
         "character-reference-invalid",
         "comma-separated-tokens",
+        "consola",
         "core-util-is",
         "cssfilter",
         "debug",
@@ -175,6 +182,7 @@ describe('project sizes', () => {
         "longest-streak",
         "lru-cache",
         "lru-cache/dist/esm",
+        "magic-string",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
