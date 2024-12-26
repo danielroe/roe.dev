@@ -11,7 +11,7 @@ export default defineType({
     },
     prepare ({ title, answered }) {
       return {
-        title: title,
+        title: title.slice(0, 30),
         subtitle: answered ? '✅ Answered' : '🚧 Not answered',
       }
     },
