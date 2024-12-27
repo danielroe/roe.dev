@@ -28,10 +28,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Dedupe dependencies
-        if: ${{ contains(github.head_ref, 'renovate') }}
-        run: pnpm dedupe
-
       - name: Update bundle size
         run: pnpm vitest run bundle -u
 
