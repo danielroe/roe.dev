@@ -1,8 +1,11 @@
 import { defineConfig, presetUno, presetIcons } from 'unocss'
+import { createResolver } from 'nuxt/kit'
+
+const resolver = createResolver(import.meta.url)
 
 export default defineConfig({
   content: {
-    filesystem: ['content/**/*.md'],
+    filesystem: [resolver.resolve('./content/**/*.md')],
   },
   shortcuts: [
     {
