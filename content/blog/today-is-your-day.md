@@ -34,7 +34,7 @@ I'd like to see more folk I don't already know. That will mean answering CFPs at
 This was the second year that I have [led Nuxt](https://nuxt.com/blog/vision-2023). It's been exhilarating to see how things have grown.
 
 <a class="my-4" href="https://2024.stateofjs.com/en-US/libraries/meta-frameworks/">
-<img src="/img/today-is-your-day/state-of-js-nuxt-positivity.png" alt="Git Wrapped profile for @danielroe" height="1104" width="2148">
+<img src="/img/today-is-your-day/state-of-js-nuxt-positivity.png" alt="A chart of meta-framework positivity, showing Nuxt rising to #4 in 2024, from #7 in 2023." height="1104" width="2148">
 </a>
 
 We're rising both in retention, positivity and awareness compared to other meta-frameworks. I don't claim credit for that - but it's a pleasure to be a part of the community that make that possible.
@@ -57,7 +57,7 @@ I _love_ coding. It's fun and my hobby. I don't have an objective to be 'active'
 
 <figure class="my-4">
 <a href="https://git-wrapped.com/profiles/danielroe">
-<img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe" height="1282" width="1536">
+<img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe, showing my 2024 Year in Code, with 👑 Universal Rank: Top 0.5%, ⚡️ Longest Streak: 364 days, 🏆 Total Commits: 13,003, 📅 Most Active Month: December, 📊 Most Active Day: Wednesday, ⭐ Stars Earned: 81,711, 🚀 Top Language: TypeScript, 🪐 Power Level: God Mode" height="1282" width="1536">
 </a>
 
 <figcaption class="text-xs">
@@ -71,7 +71,7 @@ I count myself incredibly fortunate to be able to make a living from being a [fu
 
 It's something I _get_ to do rather than _have_ to.
 
-<p><img src="/img/today-is-your-day/twitch-recap.png" alt="Flighty 'passport'" height="2200" width="1760" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
+<p><img src="/img/today-is-your-day/twitch-recap.png" alt="Twitch recap titled 'Grass-Toucher of the Year', with 839 new followers, 4.27K total hours watched, 118 new subscribers, 40 streams, 7.22K total chats sent, 8 clips and the Nuxt logo as the top channel emote" height="2200" width="1760" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
 
 That's one reason I stream maintenance, building things or talking to people. (You can find me on [Algora](https://tv.algora.io/danielroe), [Twitch](https://www.twitch.tv/danielroe) or [YouTube](https://www.youtube.com/@danielroe)). I think of it as 'coding with friends' and it's part of the fun.
 
