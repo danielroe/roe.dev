@@ -55,6 +55,8 @@ Nevertheless it feels like my idea list is full to overflowing, and I would _lov
 
 I _love_ coding. It's fun and my hobby. I don't have an objective to be 'active' on GitHub every day. But, as it happens, I have been.
 
+That's a side-effect of doing something that I enjoy.
+
 <figure class="my-4">
 <a href="https://git-wrapped.com/profiles/danielroe">
 <img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe, showing my 2024 Year in Code, with 👑 Universal Rank: Top 0.5%, ⚡️ Longest Streak: 364 days, 🏆 Total Commits: 13,003, 📅 Most Active Month: December, 📊 Most Active Day: Wednesday, ⭐ Stars Earned: 81,711, 🚀 Top Language: TypeScript, 🪐 Power Level: God Mode" height="1282" width="1536">
