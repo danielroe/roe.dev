@@ -19,9 +19,9 @@ This year, I've attended conferences or meetups in Toronto, Prague, Seattle, Ams
 
 <p><img src="/img/today-is-your-day/flighty-passport.png" alt="Flighty 'passport'" height="1572" width="1179" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
 
-I've loved every moment of it. Not the places, so much as the _people_. The tech world is amazing - and the greatest part for me is meeting people I respect and collaborate with.
+I've loved every moment of it. Not the places, so much as the _people_. The tech world is amazing - but the greatest part for me is meeting people I respect and collaborate with.
 
-It's not just holiday though. For me, time spent travelling is productive. I love coding on the plane or train - it's often joyously focused - and I always notice bursts of creativity after conferences.
+I also find that travelling can be productive. I love coding on the plane or train - it's often joyously focused - and I always notice bursts of creativity after conferences.
 
 - **Next year, I'd like to widen the circle**.
 
@@ -37,23 +37,23 @@ This was the second year that I have [led Nuxt](https://nuxt.com/blog/vision-202
 <img src="/img/today-is-your-day/state-of-js-nuxt-positivity.png" alt="A chart of meta-framework positivity, showing Nuxt rising to #4 in 2024, from #7 in 2023." height="1104" width="2148">
 </a>
 
-We're rising both in retention, positivity and awareness compared to other meta-frameworks. I don't claim credit for that - but it's a pleasure to be a part of the community that make that possible.
+We're rising in retention, positivity and awareness compared to other meta-frameworks. I don't claim credit for that - but it's a pleasure to be a part of the community that makes that possible.
 
 This isn't a zero-sum game. Nuxt doesn't 'lose' when other frameworks do well. I want to see our community characterised by the kind of relentless kindness that (I firmly believe) will in the end lead to continued growth and success.
 
-The [unjs project](https://github.com/unjs) is an example of our communitment to go further, together, and I'm delighted to see [other](https://analogjs.org/) [frameworks](https://start.solidjs.com/) [are](https://tanstack.com/start) joining us in building on top of [Nitro](https://nitro.build/).
+The [unjs project](https://github.com/unjs) is an example of our commitment to go further, together, and I'm delighted to see [other](https://analogjs.org/) [frameworks](https://start.solidjs.com/) [are](https://tanstack.com/start) joining us in building on top of [Nitro](https://nitro.build/).
 
-I've spent most of this year focusing on improving the _stability_ and _trustworthiness_ of the Nuxt ecosystem in the run-up to the release of Nuxt v4, but that has meant feeling a little bit lost in the details.
+I've spent most of this year focusing on improving the _stability_ and _trustworthiness_ of the Nuxt ecosystem in the run-up to the release of Nuxt v4, but I do feel a bit lost in the details.
 
 I have managed to launch a few projects, from [Nuxt Fonts](https://github.com/nuxt/fonts), [unifont](https://github.com/unjs/unifont), [page-speed.dev](https://github.com/danielroe/page-speed.dev) to smaller ones like [oxc-walker](https://github.com/danielroe/oxc-walker), [impound](https://github.com/unjs/impound), [errx](http://github.com/unjs/errx), [zero-vue](https://github.com/danielroe/zero-vue), [nuxt-workers](https://github.com/danielroe/nuxt-workers) or [nuxt-rebundle](https://github.com/danielroe/nuxt-rebundle).
 
-Nevertheless it feels like my idea list is overflowing, and I would _love_ more time to create features or launch new projects! ✨
+Nevertheless it feels like my idea list is full to overflowing, and I would _love_ more time to create features or launch new projects! ✨
 
 - **Next year, I want to do more _pioneering_**.
 
 ## You’re off and away!
 
-I _love_ coding. It's fun and my hobby. I don't have an objective to be 'active' every day. But, as it happens, I have been.
+I _love_ coding. It's fun and my hobby. I don't have an objective to be 'active' on GitHub every day. But, as it happens, I have been.
 
 <figure class="my-4">
 <a href="https://git-wrapped.com/profiles/danielroe">
@@ -73,9 +73,9 @@ It's something I _get_ to do rather than _have_ to.
 
 <p><img src="/img/today-is-your-day/twitch-recap.png" alt="Twitch recap titled 'Grass-Toucher of the Year', with 839 new followers, 4.27K total hours watched, 118 new subscribers, 40 streams, 7.22K total chats sent, 8 clips and the Nuxt logo as the top channel emote" height="2200" width="1760" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
 
-That's one reason I stream maintenance, building things or talking to people. (You can find me on [Algora](https://tv.algora.io/danielroe), [Twitch](https://www.twitch.tv/danielroe) or [YouTube](https://www.youtube.com/@danielroe)). I think of it as 'coding with friends' and it's part of the fun.
+That's one reason I stream maintenance, building things or talking to people. You can find me on [Algora](https://tv.algora.io/danielroe), [Twitch](https://www.twitch.tv/danielroe) or [YouTube](https://www.youtube.com/@danielroe). I think of it as 'coding with friends' and it's part of the fun.
 
-If you've joined me on stream, sponsored me, contributed to Nuxt - or supported me in any of the other many ways people have made my life a joy this year, thank you ❤️
+If you've joined me on stream, sponsored me, contributed to Nuxt - or supported me in any of the many other ways people have made my life a joy this year, thank you ❤️
 
 - **Next year, I want to continue to take joy in my work**.
 
@@ -89,15 +89,15 @@ That year I lost 15 kg - and found my way back to good health. I also discovered
 <img src="/img/climbing.jpg" alt="Daniel climbing a route with pink holds in a bouldering gym" height="525" width="720">
 </a>
 
-I've been bouldering just over a year (I started in September 2023), and in that time - mostly in 2024 - I've climbed in 35 gyms around the world. It's a lovely, inclusive community.
+It's a lovely, inclusive community, and if you ever fancy joining me for a climb (even as a total beginner!) you'd be very welcome.
 
-(If you ever fancy joining me for a climb (even as a total beginner!) you'd be very welcome.)
+I've been bouldering just over a year (I started in September 2023), and in that time - mostly in 2024 - I've climbed in 35 gyms around the world. Blending physical fun and intellectual work has been a recipe for feeling like more of a whole person
 
-More importantly, along the way, I discovered the importance of looking after my own needs. Rather than living entirely in my head, I think it's important to enjoy physicality and being 'embodied'.
+I can't attribute it just to bouldering, but over these last two years, I've begun to discover the importance of looking after my own needs. Rather than living entirely in my head, I think it's important to enjoy physicality and being 'embodied'.
 
-- **Next year, I want to get more in touch with myself**.
+I don't entirely know what that will mean, but I want to continue to live in sync with what I need.
 
-I don't entirely know what that means, but I want to continue to live in sync with what I need.
+- **Next year, I want to continue to look after myself**.
 
 ## You’ll join the high fliers who soar to high heights
 
@@ -109,7 +109,7 @@ I was also mentioned by some of those filling out the State of JS 2024 survey. T
 <img src="/img/today-is-your-day/state-of-js-people.png" alt="A list of influential developers for non-video channels, showing Daniel Roe in position 12" height="1946" width="2200">
 </a>
 
-- **Next year, I don't want to settle for where I am right now**.
+- **Next year, I don't want to stop learning and growing**.
 
 ## Bang-ups and hang-ups can happen to you
 
