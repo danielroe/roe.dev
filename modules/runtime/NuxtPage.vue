@@ -35,6 +35,6 @@ if (import.meta.client) {
       }
     "
   >
-    <component :is="component" />
+    <component :is="component" :key="route.path.includes('blog') ? route.path : undefined" />
   </Suspense>
 </template>
