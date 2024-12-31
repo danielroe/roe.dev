@@ -127,5 +127,4 @@ To finish with a few more words from [the poem](https://www.amazon.co.uk/PLACES-
 
 > You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.
 
-
 I'm optimistic about the future. I don't know exactly what it will hold, of course - but let's surf the chaos together. Here's to another year of joy and love, friendship and fun! 🍻
