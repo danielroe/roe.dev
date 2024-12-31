@@ -59,7 +59,7 @@ That's a side-effect of doing something that I enjoy.
 
 <figure class="my-4">
 <a href="https://git-wrapped.com/profiles/danielroe">
-<img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe, showing my 2024 Year in Code, with 👑 Universal Rank: Top 0.5%, ⚡️ Longest Streak: 364 days, 🏆 Total Commits: 13,003, 📅 Most Active Month: December, 📊 Most Active Day: Wednesday, ⭐ Stars Earned: 81,711, 🚀 Top Language: TypeScript, 🪐 Power Level: God Mode" height="1282" width="1536">
+<img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe, showing my 2024 Year in Code, with 👑 Universal Rank: Top 0.5%, ⚡️ Longest Streak: 366 days, 🏆 Total Commits: 13,020, 📅 Most Active Month: December, 📊 Most Active Day: Tuesday, ⭐ Stars Earned: 81,796, 🚀 Top Language: TypeScript, 🪐 Power Level: God Mode" height="1282" width="1536">
 </a>
 
 <figcaption class="text-xs">
@@ -123,8 +123,9 @@ I don't particularly want to write about them here, but for me it's important th
 
 ## And YOU are the one who’ll decide where to go
 
-I'm optimistic about the future. I don't know exactly what it will hold, of course - but let's surf the chaos together. Here's to another year of joy and love, friendship and fun! 🍻
+To finish with a few more words from [the poem](https://www.amazon.co.uk/PLACES-YOULL-GO_DR-SEUSS-illustrated/dp/0007413572) that's inspired the title and headings of this post:
 
 > You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.
 
-<small>headings from <a href="https://www.amazon.co.uk/PLACES-YOULL-GO_DR-SEUSS-illustrated/dp/0007413572"><em>Oh, The Places You'll Go!</em></a>  by Dr Seuss</small>
+
+I'm optimistic about the future. I don't know exactly what it will hold, of course - but let's surf the chaos together. Here's to another year of joy and love, friendship and fun! 🍻
