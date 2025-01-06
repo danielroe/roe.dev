@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8670k"`)
+      .toMatchInlineSnapshot(`"8701k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -104,6 +104,8 @@ describe('project sizes', () => {
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
+        "@shikijs/langs",
+        "@shikijs/themes",
         "@shikijs/transformers",
         "@shikijs/types",
         "@shikijs/vscode-textmate",
@@ -141,6 +143,7 @@ describe('project sizes', () => {
         "detab",
         "devalue",
         "devlop",
+        "emoji-regex-xs",
         "emojilib",
         "emoticon",
         "entities",
@@ -234,6 +237,9 @@ describe('project sizes', () => {
         "property-information",
         "readable-stream",
         "readable-stream/node_modules/safe-buffer",
+        "regex",
+        "regex-recursion",
+        "regex-utilities",
         "rehype-external-links",
         "rehype-raw",
         "rehype-sort-attribute-values",
