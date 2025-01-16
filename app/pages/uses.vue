@@ -9,7 +9,10 @@
       class="text-muted text-lg max-w-[37.50rem] text-base"
       :class="$style.uses"
     >
-      <StaticMarkdownRender path="/uses" />
+      <StaticMarkdownRender
+        collection="page"
+        path="/uses"
+      />
     </main>
   </div>
 </template>

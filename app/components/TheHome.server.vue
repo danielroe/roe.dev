@@ -40,14 +40,8 @@ const { data: streams } = await useFetch('/api/streams', {
 })
 
 const { data: articles } = await useAsyncData(async () => {
-  const result = await queryContent('/blog')
-    .only(['title', 'date', '_path'])
-    .find()
-  return (result as Array<{ title?: string, date: string, _path: string }>)
-    .map(e => ({
-      ...e,
-      path: e._path,
-    }))
+  const result = await queryCollection('blog').select('title', 'date', 'path').all()
+  return result
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 4)
 })
@@ -355,7 +349,7 @@ const { data: talks } = await useAsyncData(
       <ul class="flex flex-col mt-4">
         <li
           v-for="article in articles"
-          :key="article._path"
+          :key="article.path"
           class="py-2"
         >
           <NuxtLink
