@@ -7,7 +7,10 @@
     </header>
 
     <main class="text-muted text-lg max-w-[37.50rem]">
-      <StaticMarkdownRender path="/bio" />
+      <StaticMarkdownRender
+        collection="page"
+        path="/bio"
+      />
     </main>
   </div>
 </template>

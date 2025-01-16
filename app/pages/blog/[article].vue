@@ -43,7 +43,10 @@
       v-if="page"
       :class="$style.blog"
     >
-      <StaticMarkdownRender :path="path" />
+      <StaticMarkdownRender
+        collection="blog"
+        :path="path"
+      />
     </section>
     <WebMentions />
   </main>
@@ -62,9 +65,9 @@ const { data: page } = await useAsyncData(
   path.value,
   () =>
     ((import.meta.server || import.meta.dev) as true)
-    && queryContent(path.value)
-      .only(['title', 'date', 'tags', 'description'])
-      .findOne(),
+    && queryCollection('blog').path(path.value)
+      .select('title', 'date', 'tags', 'description')
+      .first(),
 )
 
 if (!page.value) {

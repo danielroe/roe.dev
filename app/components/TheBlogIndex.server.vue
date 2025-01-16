@@ -1,13 +1,9 @@
 <script setup lang="ts">
-const entries = await queryContent('/blog')
-  .only(['title', 'date', '_path'])
-  .find()
+const entries = await queryCollection('blog')
+  .select('title', 'date', 'path')
+  .all()
   .then(result => {
-    return (result as Array<{ title?: string, date: string, _path: string }>)
-      .map(e => ({
-        ...e,
-        path: e._path,
-      }))
+    return result
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   })
 </script>

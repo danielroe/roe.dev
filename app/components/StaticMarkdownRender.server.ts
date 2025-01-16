@@ -1,17 +1,18 @@
-import { ContentRendererMarkdown } from '#components'
+import { ContentRenderer } from '#components'
 
 export default defineComponent({
   props: {
-    path: String,
+    collection: { type: String as () => 'page' | 'blog', required: true },
+    path: { type: String, required: true },
   },
   async setup (props) {
     if (import.meta.dev) {
       const { data } = await useAsyncData(() =>
-        queryContent(props.path!).findOne(),
+        queryCollection(props.collection).path(props.path!).first(),
       )
-      return () => h(ContentRendererMarkdown, { value: data.value! })
+      return () => h(ContentRenderer, { value: data.value! })
     }
-    const value = await queryContent(props.path!).findOne()
-    return () => h(ContentRendererMarkdown, { value })
+    const value = await queryCollection(props.collection).path(props.path!).first()
+    return () => h(ContentRenderer, { value })
   },
 })
