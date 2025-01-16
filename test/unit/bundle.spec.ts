@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"456k"`)
+      .toMatchInlineSnapshot(`"454k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8702k"`)
+      .toMatchInlineSnapshot(`"8840k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -160,17 +160,26 @@ describe('project sizes', () => {
         "get-it",
         "github-slugger",
         "graphemer",
+        "hast-util-embedded",
+        "hast-util-format",
         "hast-util-from-parse5",
+        "hast-util-has-property",
+        "hast-util-is-body-ok-link",
         "hast-util-is-element",
+        "hast-util-minify-whitespace",
         "hast-util-parse-selector",
+        "hast-util-phrasing",
         "hast-util-raw",
         "hast-util-to-html",
+        "hast-util-to-mdast",
         "hast-util-to-parse5",
         "hast-util-to-string",
+        "hast-util-to-text",
         "hast-util-whitespace",
         "hastscript",
         "hookable",
         "html-void-elements",
+        "html-whitespace-sensitive-tag-names",
         "image-meta",
         "inherits",
         "is-absolute-url",
@@ -230,6 +239,7 @@ describe('project sizes', () => {
         "multiformats",
         "node-emoji",
         "oniguruma-to-es",
+        "packrup",
         "parse-entities",
         "parse5",
         "process-nextick-args",
@@ -241,6 +251,7 @@ describe('project sizes', () => {
         "regex-recursion",
         "regex-utilities",
         "rehype-external-links",
+        "rehype-minify-whitespace",
         "rehype-raw",
         "rehype-sort-attribute-values",
         "rehype-sort-attributes",
@@ -249,6 +260,7 @@ describe('project sizes', () => {
         "remark-mdc",
         "remark-parse",
         "remark-rehype",
+        "remark-stringify",
         "rxjs",
         "safe-buffer",
         "sax",
@@ -265,6 +277,7 @@ describe('project sizes', () => {
         "through2",
         "tlds",
         "trim-lines",
+        "trim-trailing-lines",
         "trough",
         "ts-custom-error",
         "tunnel-agent",
@@ -273,6 +286,7 @@ describe('project sizes', () => {
         "unhead",
         "unicode-emoji-modifier-base",
         "unified",
+        "unist-util-find-after",
         "unist-util-is",
         "unist-util-position",
         "unist-util-stringify-position",
