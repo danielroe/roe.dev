@@ -36,16 +36,14 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"271k"`)
+      .toMatchInlineSnapshot(`"444k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/CalSchedule.js",
-          "_nuxt/ContentRendererMarkdown.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
-          "_nuxt/ProseCodeInline.js",
           "_nuxt/ProseEm.js",
           "_nuxt/ProseH1.js",
           "_nuxt/ProseH2.js",
@@ -70,6 +68,8 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
+          "_nuxt/sqlite3-opfs-async-proxy-DYi00U5L.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-arcNmnJH.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"454k"`)
+      .toMatchInlineSnapshot(`"431k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8840k"`)
+      .toMatchInlineSnapshot(`"11151k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -127,6 +127,8 @@ describe('project sizes', () => {
         "@vue/shared",
         "await-lock",
         "bail",
+        "better-sqlite3",
+        "bindings",
         "ccount",
         "char-regex",
         "character-entities",
@@ -155,6 +157,7 @@ describe('project sizes', () => {
         "eventsource",
         "extend",
         "feed",
+        "file-uri-to-path",
         "flat",
         "follow-redirects",
         "get-it",
@@ -239,6 +242,7 @@ describe('project sizes', () => {
         "multiformats",
         "node-emoji",
         "oniguruma-to-es",
+        "oniguruma-to-es/dist/esm",
         "packrup",
         "parse-entities",
         "parse5",
