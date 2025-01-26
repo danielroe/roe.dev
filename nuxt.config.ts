@@ -85,10 +85,16 @@ export default defineNuxtConfig({
   },
 
   content: {
-    watch: false,
-    highlight: {
-      preload: ['js', 'ts', 'json', 'vue'],
-      theme: 'material-theme-palenight',
+    watch: {
+      enabled: false,
+    },
+    build: {
+      markdown: {
+        highlight: {
+          preload: ['js', 'ts', 'json', 'vue'],
+          theme: 'material-theme-palenight',
+        },
+      },
     },
   },
 
