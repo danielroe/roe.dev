@@ -7,6 +7,9 @@ import type { HmrOptions } from 'vite'
 
 export default defineNuxtConfig({
   modules: [
+    '~~/modules/social',
+    '~~/modules/invites',
+    '~~/modules/router',
     '@nuxtjs/sanity',
     'nuxt-og-image',
     '@nuxt/eslint',
