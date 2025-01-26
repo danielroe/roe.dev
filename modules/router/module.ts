@@ -87,7 +87,7 @@ export default defineNuxtModule({
         )
         const routes = files.map(f => {
           const path = withLeadingSlash(
-            relative(resolver.resolve('../app/pages'), f).replace(
+            relative(resolver.resolve('../../app/pages'), f).replace(
               /(\/?index)?\.vue$/,
               '',
             ),
