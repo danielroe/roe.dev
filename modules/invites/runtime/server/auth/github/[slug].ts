@@ -57,11 +57,11 @@ export default defineEventHandler(async event => {
   }
 
   try {
-    const res = await $fetch(
+    const res = await fetch(
       `https://api.github.com/repos/${repo}/collaborators/${username}`,
       {
         method: 'PUT',
-        body: { permission: 'push' },
+        body: JSON.stringify({ permission: 'push' }),
         headers: {
           'Accept': 'application/vnd.github+json',
           'X-GitHub-Api-Version': '2022-11-28',
@@ -70,7 +70,7 @@ export default defineEventHandler(async event => {
       },
     )
 
-    console.log({ res })
+    console.log({ res: await res.json() })
   }
   catch (err) {
     console.log('could not add collaborator', err)
