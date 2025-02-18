@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11158k"`)
+      .toMatchInlineSnapshot(`"11186k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -241,6 +241,7 @@ describe('project sizes', () => {
         "ms",
         "multiformats",
         "node-emoji",
+        "node-mock-http",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
         "packrup",
