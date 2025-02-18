@@ -63,8 +63,9 @@ export default defineEventHandler(async event => {
         method: 'PUT',
         body: { permission: 'push' },
         headers: {
-          Accept: 'application/vnd.github+json',
-          Authorization: `Bearer ${config.github.inviteToken}`,
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'Authorization': `Bearer ${config.github.inviteToken}`,
         },
       },
     )
@@ -73,6 +74,7 @@ export default defineEventHandler(async event => {
   }
   catch (err) {
     console.log('could not add collaborator', err)
+    console.log({ inviteToken: config.github.inviteToken })
   }
   return sendRedirect(event, `https://github.com/${repo}/invitations`)
 })
