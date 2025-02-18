@@ -12,6 +12,7 @@ export default defineNuxtModule({
   },
   defaults: {
     map: {
+      euricom: 'danielroe/nailing-it-euricom-2024',
       // slug: 'danielroe/<repo>',
     } satisfies Record<string, string>,
   },
