@@ -63,6 +63,7 @@ export default defineEventHandler(async event => {
         method: 'PUT',
         body: JSON.stringify({ permission: 'push' }),
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/vnd.github+json',
           'X-GitHub-Api-Version': '2022-11-28',
           'Authorization': `Bearer ${config.github.inviteToken}`,
