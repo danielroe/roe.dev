@@ -164,9 +164,9 @@ export default defineComponent({
     if (import.meta.client) {
       const shouldPrefetch
         = props.prefetch !== false
-        && props.noPrefetch !== true
-        && props.target !== '_blank'
-        && !isSlowConnection()
+          && props.noPrefetch !== true
+          && props.target !== '_blank'
+          && !isSlowConnection()
 
       if (shouldPrefetch) {
         const nuxtApp = useNuxtApp()
