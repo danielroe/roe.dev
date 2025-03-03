@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19346k"`)
+      .toMatchInlineSnapshot(`"18931k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -217,12 +217,9 @@ describe('project sizes', () => {
         "mdast-util-to-string",
         "micromark",
         "micromark-core-commonmark",
-        "micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "micromark-extension-gfm",
         "micromark-extension-gfm-autolink-literal",
         "micromark-extension-gfm-footnote",
-        "micromark-extension-gfm-footnote/node_modules/micromark-core-commonmark",
-        "micromark-extension-gfm-footnote/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "micromark-extension-gfm-strikethrough",
         "micromark-extension-gfm-table",
         "micromark-extension-gfm-tagfilter",
@@ -244,9 +241,6 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
-        "micromark/node_modules/micromark-core-commonmark",
-        "micromark/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
-        "micromark/node_modules/micromark-util-subtokenize",
         "mimic-response",
         "ms",
         "multiformats",
@@ -273,8 +267,6 @@ describe('project sizes', () => {
         "remark-emoji",
         "remark-gfm",
         "remark-mdc",
-        "remark-mdc/node_modules/micromark-core-commonmark",
-        "remark-mdc/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
