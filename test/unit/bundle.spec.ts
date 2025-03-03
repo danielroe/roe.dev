@@ -68,8 +68,8 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
-          "_nuxt/sqlite3-opfs-async-proxy-DYi00U5L.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-CNFk6SUA.js",
+          "_nuxt/sqlite3-opfs-async-proxy-MFda9Fch.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-Ca5tXwC4.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"431k"`)
+      .toMatchInlineSnapshot(`"433k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11062k"`)
+      .toMatchInlineSnapshot(`"19346k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -166,6 +166,7 @@ describe('project sizes', () => {
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
+        "hast-util-from-parse5/node_modules/property-information",
         "hast-util-has-property",
         "hast-util-is-body-ok-link",
         "hast-util-is-element",
@@ -174,12 +175,15 @@ describe('project sizes', () => {
         "hast-util-phrasing",
         "hast-util-raw",
         "hast-util-to-html",
+        "hast-util-to-html/node_modules/property-information",
         "hast-util-to-mdast",
         "hast-util-to-parse5",
+        "hast-util-to-parse5/node_modules/property-information",
         "hast-util-to-string",
         "hast-util-to-text",
         "hast-util-whitespace",
         "hastscript",
+        "hastscript/node_modules/property-information",
         "hookable",
         "html-void-elements",
         "html-whitespace-sensitive-tag-names",
@@ -213,9 +217,12 @@ describe('project sizes', () => {
         "mdast-util-to-string",
         "micromark",
         "micromark-core-commonmark",
+        "micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "micromark-extension-gfm",
         "micromark-extension-gfm-autolink-literal",
         "micromark-extension-gfm-footnote",
+        "micromark-extension-gfm-footnote/node_modules/micromark-core-commonmark",
+        "micromark-extension-gfm-footnote/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "micromark-extension-gfm-strikethrough",
         "micromark-extension-gfm-table",
         "micromark-extension-gfm-tagfilter",
@@ -237,6 +244,9 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
+        "micromark/node_modules/micromark-core-commonmark",
+        "micromark/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
+        "micromark/node_modules/micromark-util-subtokenize",
         "mimic-response",
         "ms",
         "multiformats",
@@ -263,6 +273,8 @@ describe('project sizes', () => {
         "remark-emoji",
         "remark-gfm",
         "remark-mdc",
+        "remark-mdc/node_modules/micromark-core-commonmark",
+        "remark-mdc/node_modules/micromark-core-commonmark/node_modules/micromark-util-subtokenize",
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
