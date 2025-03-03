@@ -213,8 +213,8 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(postcss-html@1.7.0)(stylelint@16.15.0(typescript@5.8.2))
       stylelint-config-standard:
-        specifier: 36.0.1
-        version: 36.0.1(stylelint@16.15.0(typescript@5.8.2))
+        specifier: 37.0.0
+        version: 37.0.0(stylelint@16.15.0(typescript@5.8.2))
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -9190,11 +9190,17 @@ packages:
     peerDependencies:
       stylelint: ^16.1.0
 
-  stylelint-config-standard@36.0.1:
-    resolution: {integrity: sha512-8aX8mTzJ6cuO8mmD5yon61CWuIM4UD8Q5aBcWKGSf6kg+EC3uhB+iOywpTK4ca6ZL7B49en8yanOFtUW0qNzyw==}
+  stylelint-config-recommended@15.0.0:
+    resolution: {integrity: sha512-9LejMFsat7L+NXttdHdTq94byn25TD+82bzGRiV1Pgasl99pWnwipXS5DguTpp3nP1XjvLXVnEJIuYBfsRjRkA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
-      stylelint: ^16.1.0
+      stylelint: ^16.13.0
+
+  stylelint-config-standard@37.0.0:
+    resolution: {integrity: sha512-+6eBlbSTrOn/il2RlV0zYGQwRTkr+WtzuVSs1reaWGObxnxLpbcspCUYajVQHonVfxVw2U+h42azGhrBvcg8OA==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      stylelint: ^16.13.0
 
   stylelint@16.15.0:
     resolution: {integrity: sha512-OK6Rs7EPdcdmjqiDycadZY4fw3f5/TC1X6/tGjnF3OosbwCeNs7nG+79MCAtjEg7ckwqTJTsku08e0Rmaz5nUw==}
@@ -13283,7 +13289,7 @@ snapshots:
       '@portabletext/types': 2.0.13
       '@sanity/client': 6.28.2(debug@4.4.0)
       '@sanity/core-loader': 1.7.22
-      '@sanity/preview-url-secret': 2.1.5(@sanity/client@6.28.2(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.5(@sanity/client@6.28.2)
       '@sanity/visual-editing': 2.11.3(@sanity/client@6.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       consola: 3.4.0
       defu: 6.1.4
@@ -14090,7 +14096,7 @@ snapshots:
       '@sanity/client': 6.28.2(debug@4.4.0)
       '@sanity/uuid': 3.0.2
 
-  '@sanity/preview-url-secret@2.1.5(@sanity/client@6.28.2(debug@4.4.0))':
+  '@sanity/preview-url-secret@2.1.5(@sanity/client@6.28.2)':
     dependencies:
       '@sanity/client': 6.28.2(debug@4.4.0)
       '@sanity/uuid': 3.0.2
@@ -21454,7 +21460,7 @@ snapshots:
       '@sanity/migrate': 3.77.2(@types/react@18.3.18)
       '@sanity/mutator': 3.77.2(@types/react@18.3.18)
       '@sanity/presentation-comlink': 1.0.9(@sanity/client@6.28.2(debug@4.4.0))(@sanity/types@3.77.2(@types/react@18.3.18)(debug@4.4.0))
-      '@sanity/preview-url-secret': 2.1.5(@sanity/client@6.28.2(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.5(@sanity/client@6.28.2)
       '@sanity/schema': 3.77.2(@types/react@18.3.18)(debug@4.4.0)
       '@sanity/telemetry': 0.7.9(react@18.3.1)
       '@sanity/types': 3.77.2(@types/react@18.3.18)(debug@4.4.0)
@@ -22166,10 +22172,14 @@ snapshots:
     dependencies:
       stylelint: 16.15.0(typescript@5.8.2)
 
-  stylelint-config-standard@36.0.1(stylelint@16.15.0(typescript@5.8.2)):
+  stylelint-config-recommended@15.0.0(stylelint@16.15.0(typescript@5.8.2)):
     dependencies:
       stylelint: 16.15.0(typescript@5.8.2)
-      stylelint-config-recommended: 14.0.1(stylelint@16.15.0(typescript@5.8.2))
+
+  stylelint-config-standard@37.0.0(stylelint@16.15.0(typescript@5.8.2)):
+    dependencies:
+      stylelint: 16.15.0(typescript@5.8.2)
+      stylelint-config-recommended: 15.0.0(stylelint@16.15.0(typescript@5.8.2))
 
   stylelint@16.15.0(typescript@5.8.2):
     dependencies:
