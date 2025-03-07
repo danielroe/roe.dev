@@ -1,0 +1,176 @@
+name: Cloudflare Deployment Sync
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  process-cloudflare-comment:
+    # Only process comments from the Cloudflare bot on PRs
+    if: github.event.issue.pull_request && github.event.comment.user.login == 'cloudflare-workers-and-pages[bot]'
+    runs-on: ubuntu-latest
+    # Add workflow permissions to create deployments
+    permissions:
+      pull-requests: read
+      contents: write
+      deployments: write
+
+    steps:
+      - name: Get PR branch
+        id: get-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number
+            });
+            return {
+              branch: pr.data.head.ref,
+              sha: pr.data.head.sha
+            };
+
+      - name: Parse comment for deployment status
+        id: parse-comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const commentBody = context.payload.comment.body;
+
+            const isDeployStarting = commentBody.includes('Build in progress');
+            const isDeployFinished = commentBody.includes('Deploy successful');
+            const isDeployFailed = commentBody.includes('Build failed');
+
+            let status = '';
+            let deployUrl = '';
+
+            if (isDeployStarting) {
+              status = 'starting';
+            } else if (isDeployFinished) {
+              status = 'finished';
+              deployUrl = commentBody.match(/<strong>Preview URL:[\S\s]+?<a href='([^']+)'>/)[1];
+            } else if (isDeployFailed) {
+              status = 'failed';
+            } else {
+              status = 'unknown';
+            }
+
+            console.log(`Detected deployment status: ${status}`);
+            // Set outputs directly
+            core.setOutput('status', status);
+            core.setOutput('deployUrl', deployUrl || '');
+
+      - name: Create deployment
+        id: deployment
+        # Use outputs directly, not nested in result
+        if: steps.parse-comment.outputs.status == 'starting' || steps.parse-comment.outputs.status == 'finished' || steps.parse-comment.outputs.status == 'failed'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+
+            // Parse the JSON result string from get-pr step
+            const prData = JSON.parse('${{ steps.get-pr.outputs.result }}');
+            const sha = prData.sha;
+            const branch = prData.branch;
+
+            const status = '${{ steps.parse-comment.outputs.status }}';
+
+            console.log(`Creating/updating deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}, status: ${status}`);
+
+            // Get existing deployments for this environment and PR
+            const existingDeployments = await github.rest.repos.listDeployments({
+              owner,
+              repo,
+              environment: 'cloudflare-preview',
+              ref: sha
+            });
+
+            let deploymentId;
+
+            // If there's no existing deployment or we're starting a new one
+            if (existingDeployments.data.length === 0 || status === 'starting') {
+              console.log(`Creating new deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}`);
+
+              const deployment = await github.rest.repos.createDeployment({
+                owner,
+                repo,
+                ref: sha,
+                description: `Cloudflare Pages deployment for PR #${prNumber}`,
+                environment: 'cloudflare-preview',
+                auto_merge: false,
+                required_contexts: []
+              });
+
+              deploymentId = deployment.data.id;
+              console.log(`Created new deployment with ID: ${deploymentId}`);
+
+              // If we're starting, set status to in_progress
+              if (status === 'starting') {
+                await github.rest.repos.createDeploymentStatus({
+                  owner,
+                  repo,
+                  deployment_id: deploymentId,
+                  state: 'in_progress',
+                  description: 'Cloudflare Pages is deploying'
+                });
+              }
+            } else {
+              deploymentId = existingDeployments.data[0].id;
+              console.log(`Using existing deployment ID: ${deploymentId}`);
+            }
+
+            // Set deployment ID as output
+            core.setOutput('deploymentId', deploymentId.toString());
+
+      - name: Update deployment status (finished)
+        if: steps.parse-comment.outputs.status == 'finished'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const deployUrl = '${{ steps.parse-comment.outputs.deployUrl }}';
+            const deploymentId = parseInt('${{ steps.deployment.outputs.deploymentId }}');
+
+            console.log(`Updating deployment ${deploymentId} for PR #${prNumber} with URL ${deployUrl}`);
+
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id: deploymentId,
+              state: 'success',
+              environment_url: deployUrl,
+              log_url: deployUrl,
+              description: 'Cloudflare Pages deployment successful'
+            });
+
+            console.log(`Updated deployment ${deploymentId} status to success with URL ${deployUrl}`);
+
+      - name: Update deployment status (failed)
+        if: steps.parse-comment.outputs.status == 'failed'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const deploymentId = parseInt('${{ steps.deployment.outputs.deploymentId }}');
+
+            console.log(`Updating deployment ${deploymentId} for PR #${prNumber} as failed`);
+
+            // Mark the deployment as failed
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id: deploymentId,
+              state: 'failure',
+              description: 'Cloudflare Pages deployment failed'
+            });
+
+            console.log(`Updated deployment ${deploymentId} status to failure`);
