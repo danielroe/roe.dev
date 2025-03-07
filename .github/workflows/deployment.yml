@@ -6,7 +6,8 @@ on:
 
 jobs:
   process-cloudflare-comment:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'cloudflare')
+    # Only process comments from the Cloudflare bot on PRs
+    if: github.event.issue.pull_request && github.event.comment.user.login == 'cloudflare-workers-and-pages[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Get PR branch
@@ -47,10 +48,12 @@ jobs:
               status = 'unknown';
             }
 
+            console.log(`Detected deployment status: ${status}`);
             return { status, deployUrl };
 
-      - name: Create deployment (starting)
-        if: steps.parse-comment.outputs.result.status == 'starting'
+      - name: Create deployment
+        id: deployment
+        if: steps.parse-comment.outputs.result.status == 'starting' || steps.parse-comment.outputs.result.status == 'finished'
         uses: actions/github-script@v6
         with:
           script: |
@@ -58,28 +61,51 @@ jobs:
             const prNumber = context.issue.number;
             const sha = steps.get-pr.outputs.result.sha;
             const branch = steps.get-pr.outputs.result.branch;
+            const status = steps.parse-comment.outputs.result.status;
 
-            console.log(`Creating deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}`);
-
-            const deployment = await github.rest.repos.createDeployment({
+            // Get existing deployments for this environment and PR
+            const existingDeployments = await github.rest.repos.listDeployments({
               owner,
               repo,
-              ref: sha,
-              description: `Cloudflare Pages deployment for PR #${prNumber}`,
               environment: 'cloudflare-preview',
-              auto_merge: false,
-              required_contexts: []
+              ref: sha
             });
 
-            console.log(`Deployment created with ID: ${deployment.data.id}`);
+            let deploymentId;
 
-            await github.rest.repos.createDeploymentStatus({
-              owner,
-              repo,
-              deployment_id: deployment.data.id,
-              state: 'in_progress',
-              description: 'Cloudflare Pages is deploying'
-            });
+            // If there's no existing deployment or we're starting a new one
+            if (existingDeployments.data.length === 0 || status === 'starting') {
+              console.log(`Creating new deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}`);
+
+              const deployment = await github.rest.repos.createDeployment({
+                owner,
+                repo,
+                ref: sha,
+                description: `Cloudflare Pages deployment for PR #${prNumber}`,
+                environment: 'cloudflare-preview',
+                auto_merge: false,
+                required_contexts: []
+              });
+
+              deploymentId = deployment.data.id;
+              console.log(`Created new deployment with ID: ${deploymentId}`);
+
+              // If we're starting, set status to in_progress
+              if (status === 'starting') {
+                await github.rest.repos.createDeploymentStatus({
+                  owner,
+                  repo,
+                  deployment_id: deploymentId,
+                  state: 'in_progress',
+                  description: 'Cloudflare Pages is deploying'
+                });
+              }
+            } else {
+              deploymentId = existingDeployments.data[0].id;
+              console.log(`Using existing deployment ID: ${deploymentId}`);
+            }
+
+            return { id: deploymentId };
 
       - name: Update deployment status (finished)
         if: steps.parse-comment.outputs.result.status == 'finished'
@@ -89,30 +115,18 @@ jobs:
             const { owner, repo } = context.repo;
             const prNumber = context.issue.number;
             const deployUrl = steps.parse-comment.outputs.result.deployUrl;
+            const deploymentId = steps.deployment.outputs.result.id;
 
-            console.log(`Updating deployment for PR #${prNumber} with URL ${deployUrl}`);
+            console.log(`Updating deployment ${deploymentId} for PR #${prNumber} with URL ${deployUrl}`);
 
-            // Get the most recent deployment for this PR's environment
-            const deployments = await github.rest.repos.listDeployments({
+            await github.rest.repos.createDeploymentStatus({
               owner,
               repo,
-              environment: 'cloudflare-preview'
+              deployment_id: deploymentId,
+              state: 'success',
+              environment_url: deployUrl,
+              log_url: deployUrl,
+              description: 'Cloudflare Pages deployment successful'
             });
 
-            if (deployments.data.length > 0) {
-              const latestDeployment = deployments.data[0];
-
-              await github.rest.repos.createDeploymentStatus({
-                owner,
-                repo,
-                deployment_id: latestDeployment.id,
-                state: 'success',
-                environment_url: deployUrl,
-                log_url: deployUrl,
-                description: 'Cloudflare Pages deployment successful'
-              });
-
-              console.log(`Updated deployment ${latestDeployment.id} status to success`);
-            } else {
-              console.log('No existing deployment found to update');
-            }
+            console.log(`Updated deployment ${deploymentId} status to success with URL ${deployUrl}`);
