@@ -1,2 +1,10 @@
 packages:
-  - "cms"
+  - cms
+onlyBuiltDependencies:
+  - better-sqlite3
+  - sharp
+  - simple-git-hooks
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - workerd
