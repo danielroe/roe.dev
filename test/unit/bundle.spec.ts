@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"453k"`)
+      .toMatchInlineSnapshot(`"449k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"433k"`)
+      .toMatchInlineSnapshot(`"413k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"18931k"`)
+      .toMatchInlineSnapshot(`"19007k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -245,7 +245,6 @@ describe('project sizes', () => {
         "ms",
         "multiformats",
         "node-emoji",
-        "node-mock-http",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
         "packrup",
