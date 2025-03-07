@@ -51,6 +51,10 @@ jobs:
             console.log(`Detected deployment status: ${status}`);
             return { status, deployUrl };
 
+      # log the result of parse-comment
+      - name: Log parse-comment result
+        run: echo "${{ steps.parse-comment.outputs }}"
+
       - name: Create deployment
         id: deployment
         if: steps.parse-comment.outputs.result.status == 'starting' || steps.parse-comment.outputs.result.status == 'finished'
