@@ -30,6 +30,7 @@ jobs:
         id: parse-comment
         uses: actions/github-script@v6
         with:
+          result-encoding: json
           script: |
             const commentBody = context.payload.comment.body;
 
