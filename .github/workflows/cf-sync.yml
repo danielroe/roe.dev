@@ -49,7 +49,7 @@ jobs:
               status = 'starting';
             } else if (isDeployFinished) {
               status = 'finished';
-              deployUrl = commentBody.match(/<strong>Preview URL:[\S\s]+<a href='([^']+)'>/)[1];
+              deployUrl = commentBody.match(/<strong>Preview URL:[\S\s]+?<a href='([^']+)'>/)[1];
             } else {
               status = 'unknown';
             }
