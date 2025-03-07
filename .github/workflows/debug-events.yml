@@ -1,0 +1,22 @@
+name: Debug Events
+
+on:
+  deployment_status:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Output specific event fields
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Deployment state: ${{ github.event.deployment_status.state }}"
+          echo "Target URL: ${{ github.event.deployment_status.target_url }}"
+          echo "Environment URL: ${{ github.event.deployment_status.environment_url }}"
+          echo "Log URL: ${{ github.event.deployment_status.log_url }}"
+          echo "Environment: ${{ github.event.deployment.environment }}"

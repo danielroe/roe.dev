@@ -9,6 +9,12 @@ jobs:
     # Only process comments from the Cloudflare bot on PRs
     if: github.event.issue.pull_request && github.event.comment.user.login == 'cloudflare-workers-and-pages[bot]'
     runs-on: ubuntu-latest
+    # Add workflow permissions to create deployments
+    permissions:
+      pull-requests: read
+      contents: write
+      deployments: write
+
     steps:
       - name: Get PR branch
         id: get-pr
@@ -59,6 +65,7 @@ jobs:
         if: steps.parse-comment.outputs.status == 'starting' || steps.parse-comment.outputs.status == 'finished'
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
             const prNumber = context.issue.number;
@@ -121,6 +128,7 @@ jobs:
         if: steps.parse-comment.outputs.status == 'finished'
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
             const prNumber = context.issue.number;
