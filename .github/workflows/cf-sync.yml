@@ -53,7 +53,7 @@ jobs:
 
       # log the result of parse-comment
       - name: Log parse-comment result
-        run: echo "${{ steps.parse-comment.outputs }}"
+        run: echo "${{ toJSON(steps.parse-comment.outputs) }}"
 
       - name: Create deployment
         id: deployment
