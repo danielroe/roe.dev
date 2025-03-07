@@ -3,6 +3,7 @@ module.exports = {
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
+    'at-rule-no-deprecated': null,
     'function-no-unknown': [
       true,
       {
