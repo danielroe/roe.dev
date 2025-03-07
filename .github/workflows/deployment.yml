@@ -1,0 +1,118 @@
+name: Cloudflare Deployment Sync
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  process-cloudflare-comment:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, 'cloudflare')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR branch
+        id: get-pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number
+            });
+            return {
+              branch: pr.data.head.ref,
+              sha: pr.data.head.sha
+            };
+
+      - name: Parse comment for deployment status
+        id: parse-comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const commentBody = context.payload.comment.body;
+
+            const isDeployStarting = commentBody.includes('Build in progress');
+            const isDeployFinished = commentBody.includes('Deploy successful');
+
+            let status = '';
+            let deployUrl = '';
+
+            if (isDeployStarting) {
+              status = 'starting';
+            } else if (isDeployFinished) {
+              status = 'finished';
+              deployUrl = commentBody.match(/<strong>Branch Preview URL:[\S\s]+<a href='([']+)'>/)[1];
+            } else {
+              status = 'unknown';
+            }
+
+            return { status, deployUrl };
+
+      - name: Create deployment (starting)
+        if: steps.parse-comment.outputs.result.status == 'starting'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const sha = steps.get-pr.outputs.result.sha;
+            const branch = steps.get-pr.outputs.result.branch;
+
+            console.log(`Creating deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}`);
+
+            const deployment = await github.rest.repos.createDeployment({
+              owner,
+              repo,
+              ref: sha,
+              description: `Cloudflare Pages deployment for PR #${prNumber}`,
+              environment: 'cloudflare-preview',
+              auto_merge: false,
+              required_contexts: []
+            });
+
+            console.log(`Deployment created with ID: ${deployment.data.id}`);
+
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id: deployment.data.id,
+              state: 'in_progress',
+              description: 'Cloudflare Pages is deploying'
+            });
+
+      - name: Update deployment status (finished)
+        if: steps.parse-comment.outputs.result.status == 'finished'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const deployUrl = steps.parse-comment.outputs.result.deployUrl;
+
+            console.log(`Updating deployment for PR #${prNumber} with URL ${deployUrl}`);
+
+            // Get the most recent deployment for this PR's environment
+            const deployments = await github.rest.repos.listDeployments({
+              owner,
+              repo,
+              environment: 'cloudflare-preview'
+            });
+
+            if (deployments.data.length > 0) {
+              const latestDeployment = deployments.data[0];
+
+              await github.rest.repos.createDeploymentStatus({
+                owner,
+                repo,
+                deployment_id: latestDeployment.id,
+                state: 'success',
+                environment_url: deployUrl,
+                log_url: deployUrl,
+                description: 'Cloudflare Pages deployment successful'
+              });
+
+              console.log(`Updated deployment ${latestDeployment.id} status to success`);
+            } else {
+              console.log('No existing deployment found to update');
+            }
