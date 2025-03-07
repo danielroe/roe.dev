@@ -90,4 +90,4 @@ But I think it's important to speak clearly about this for several reasons:
 
 The strength of open source has always been its community. The strongest communities are those where everyone can contribute their unique perspectives and talents.
 
-I would be very glad of welcome your thoughts on how we can better implement these values.
+I would be very glad of your thoughts on how we can better implement these values.
