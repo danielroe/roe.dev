@@ -80,7 +80,7 @@ jobs:
 
             const status = '${{ steps.parse-comment.outputs.status }}';
 
-            console.log(`Creating/updating deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}, status: ${status}`);
+            console.log(`Processing deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}, status: ${status}`);
 
             // Get existing deployments for this environment and PR
             const existingDeployments = await github.rest.repos.listDeployments({
@@ -91,9 +91,30 @@ jobs:
             });
 
             let deploymentId;
+            let existingInProgressDeployment = false;
 
-            // If there's no existing deployment or we're starting a new one
-            if (existingDeployments.data.length === 0 || status === 'starting') {
+            // Check if we already have a deployment in progress
+            if (existingDeployments.data.length > 0) {
+              // For each existing deployment, check if it's in progress
+              for (const deployment of existingDeployments.data) {
+                const statuses = await github.rest.repos.listDeploymentStatuses({
+                  owner,
+                  repo,
+                  deployment_id: deployment.id
+                });
+
+                const latestStatus = statuses.data[0];
+                if (latestStatus && latestStatus.state === 'in_progress') {
+                  existingInProgressDeployment = true;
+                  deploymentId = deployment.id;
+                  console.log(`Found existing in-progress deployment with ID: ${deploymentId}`);
+                  break;
+                }
+              }
+            }
+
+            // If there's no existing deployment or no in-progress deployment and we're starting a new one
+            if ((existingDeployments.data.length === 0 || !existingInProgressDeployment) && status === 'starting') {
               console.log(`Creating new deployment for PR #${prNumber}, branch ${branch}, SHA ${sha}`);
 
               const deployment = await github.rest.repos.createDeployment({
@@ -109,19 +130,18 @@ jobs:
               deploymentId = deployment.data.id;
               console.log(`Created new deployment with ID: ${deploymentId}`);
 
-              // If we're starting, set status to in_progress
-              if (status === 'starting') {
-                await github.rest.repos.createDeploymentStatus({
-                  owner,
-                  repo,
-                  deployment_id: deploymentId,
-                  state: 'in_progress',
-                  description: 'Cloudflare Pages is deploying'
-                });
-              }
-            } else {
+              // Set status to in_progress
+              await github.rest.repos.createDeploymentStatus({
+                owner,
+                repo,
+                deployment_id: deploymentId,
+                state: 'in_progress',
+                description: 'Cloudflare Pages is deploying'
+              });
+            } else if (!deploymentId) {
+              // If we didn't find an in-progress deployment but we have existing ones
               deploymentId = existingDeployments.data[0].id;
-              console.log(`Using existing deployment ID: ${deploymentId}`);
+              console.log(`Using most recent deployment ID: ${deploymentId}`);
             }
 
             // Set deployment ID as output
