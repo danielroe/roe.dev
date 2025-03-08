@@ -70,7 +70,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   app: {
     head: {
@@ -313,6 +313,12 @@ export default defineNuxtConfig({
   plausible: {
     domain: 'roe.dev',
     apiHost: 'https://v.roe.dev',
+  },
+
+  scripts: {
+    defaultScriptOptions: {
+      bundle: true,
+    },
   },
 
   security: {
