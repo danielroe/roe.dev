@@ -315,12 +315,6 @@ export default defineNuxtConfig({
     apiHost: 'https://v.roe.dev',
   },
 
-  scripts: {
-    defaultScriptOptions: {
-      bundle: true,
-    },
-  },
-
   security: {
     headers: {
       crossOriginEmbedderPolicy: false,
