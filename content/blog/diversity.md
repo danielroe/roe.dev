@@ -64,19 +64,19 @@ It should go without saying, but I would _love_ to see increased diversity of ba
 
 There's a very strong sense of fairness in open source. Projects like Nuxt are community-based. It really matters how things feel and how people are treated.
 
-If people are treated badly, or unfairly, then we need to make it right. Please don't be silent about it. I've written [a little bit about it](/blog/governance-and-abuse).
+It's important to recognise that we don't all start from the same place. Making adjustments to accommodate differences isn't special treatment - it's creating a level playing field.
 
-The essence of equity is recognizing that we don't all start from the same place, and that making adjustments to accommodate differences isn't special treatment—it's creating a level playing field where everyone can participate fully.
+If people are treated badly, or unfairly, then we need to make it right. Please don't be silent about it. I've written [a little bit about it](/blog/governance-and-abuse).
 
 ## Inclusion
 
-I'm an outsider to the tech world, even if I'm privileged in many other ways, and I know what it was to be welcomed in. I'd like that to be true for many more people too. 'Freely you have received, freely give,' are words that mean a lot to me. Plus, half of the fun of open source is in working collaboratively.
+I'm an outsider to the tech world, even if I'm privileged in many other ways. I know what it was to be welcomed in. I'd like that to be true for many more people too. 'Freely you have received, freely give,' are words that mean a lot to me. Plus, half of the fun of open source is in working collaboratively.
 
 So from my point of view, open source is and should be _open_. Come on in! We'd love to have you. And [have a chat with me](/blog/open-invitation/) if that would be helpful!
 
 ## Why write this?
 
-Nuxt, like many other projects, adheres to the [Contributor Covenant](https://www.contributor-covenant.org/). You can read our code of conduct [here](https://github.com/nuxt/.github/blob/main/CODE_OF_CONDUCT.md). We're not unique to care about diversity, equity and inclusion.
+Nuxt, like many other projects, adheres to the [Contributor Covenant](https://www.contributor-covenant.org/). You can read our code of conduct [here](https://github.com/nuxt/.github/blob/main/CODE_OF_CONDUCT.md). We're not unique in caring about diversity, equity and inclusion.
 
 I'm not winning any friends by writing this. People who like me already probably know where I stand on this. And those who disagree might find me overbearing.
 
@@ -84,10 +84,10 @@ But I think it's important to speak clearly about this for several reasons:
 
 1. I want people of all backgrounds to know that you are welcome in projects I'm involved with.
 
-1. Right now, there's increasing pushback against 'diversity, equity and inclusion'. In places they are _banned terms_. Silence in the face of this becomes implicit acceptance.
+1. 'Diversity, equity and inclusion' are being rejected at government and corporate levels. In places they are _banned terms_. Silence in the face of this becomes implicit acceptance.
 
 1. I want people to reconsider letting their values be shaped by their politics. Whatever country you live in, and whoever you vote for there, this is more important.
 
-The strength of open source has always been its community. The strongest communities are those where everyone can contribute their unique perspectives and talents.
+The strength of open source has always been its community. And the strongest communities are those where everyone can contribute their unique perspectives and talents.
 
 I would be very glad of your thoughts on how we can better implement these values.
