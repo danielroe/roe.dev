@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"408k"`)
+      .toMatchInlineSnapshot(`"453k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -70,6 +70,7 @@ describe('project sizes', () => {
           "_nuxt/entry.js",
           "_nuxt/sqlite3-opfs-async-proxy-MFda9Fch.js",
           "_nuxt/sqlite3-worker1-bundler-friendly-DZqsmh1G.js",
+          "_scripts/script.js",
         ]
       `)
   })
@@ -78,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"417k"`)
+      .toMatchInlineSnapshot(`"418k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19014k"`)
+      .toMatchInlineSnapshot(`"19017k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -110,6 +111,9 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@ungap/structured-clone",
+        "@unhead/dom",
+        "@unhead/shared",
+        "@unhead/ssr",
         "@unocss/core",
         "@unocss/extractor-arbitrary-variants",
         "@unocss/preset-mini",
@@ -244,6 +248,7 @@ describe('project sizes', () => {
         "node-emoji",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
+        "packrup",
         "parse-entities",
         "parse5",
         "process-nextick-args",
