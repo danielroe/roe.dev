@@ -54,9 +54,9 @@ That is true for developer tooling too. It's a bit easier because we're develope
 
 But there's diversity amongst developers. We have different needs.
 
-If we take that seriously - if value empathy - then the value of diversity within a team isn't controversial at all.
+If we take that seriously - if we value empathy - then the value of diversity within a team isn't controversial at all.
 
-Sometimes diversity and capability are seen as opposite poles. And that's an insult, honestly, that I won't even bother to respond to. If you think that, please take a long hard look in the mirror.
+Sometimes diversity and capability are seen as opposite poles. And that's an insult, honestly, that I won't even bother responding to. If you think that, please take a long hard look in the mirror.
 
 It should go without saying, but I would _love_ to see increased diversity of backgrounds in the Nuxt team and contributors.
 
