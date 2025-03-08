@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"453k"`)
+      .toMatchInlineSnapshot(`"448k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -163,7 +163,6 @@ describe('project sizes', () => {
         "get-it",
         "github-slugger",
         "graphemer",
-        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
