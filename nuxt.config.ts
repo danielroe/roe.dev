@@ -205,6 +205,11 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    build: {
+      modulePreload: {
+        polyfill: false,
+      },
+    },
     vue: {
       features: {
         optionsAPI: false,
