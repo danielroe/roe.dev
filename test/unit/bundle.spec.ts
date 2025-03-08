@@ -69,7 +69,7 @@ describe('project sizes', () => {
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
           "_nuxt/sqlite3-opfs-async-proxy-MFda9Fch.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-Ca5tXwC4.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-DZqsmh1G.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"415k"`)
+      .toMatchInlineSnapshot(`"418k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19022k"`)
+      .toMatchInlineSnapshot(`"19014k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -111,9 +111,6 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@ungap/structured-clone",
-        "@unhead/dom",
-        "@unhead/shared",
-        "@unhead/ssr",
         "@unocss/core",
         "@unocss/extractor-arbitrary-variants",
         "@unocss/preset-mini",
@@ -163,6 +160,7 @@ describe('project sizes', () => {
         "get-it",
         "github-slugger",
         "graphemer",
+        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -247,7 +245,6 @@ describe('project sizes', () => {
         "node-emoji",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
-        "packrup",
         "parse-entities",
         "parse5",
         "process-nextick-args",
