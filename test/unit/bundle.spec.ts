@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19014k"`)
+      .toMatchInlineSnapshot(`"19017k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -240,6 +240,7 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
+        "mocked-exports",
         "ms",
         "multiformats",
         "node-emoji",
