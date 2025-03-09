@@ -70,7 +70,11 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: true },
+  imports: {
+    polyfills: true,
+  },
+
+  devtools: { enabled: false },
 
   app: {
     head: {
@@ -228,7 +232,6 @@ export default defineNuxtConfig({
       '@unocss/postcss': {},
     },
   },
-  debug: true,
 
   hooks: {
     'components:extend' (components) {
