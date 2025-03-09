@@ -1,4 +1,5 @@
-import proxy from 'unenv/runtime/mock/proxy'
+// @ts-expect-error missing types
+import proxy from 'mocked-exports/proxy'
 
 export const lt = proxy
 export const gt = proxy

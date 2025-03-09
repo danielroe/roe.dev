@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"453k"`)
+      .toMatchInlineSnapshot(`"448k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -79,7 +79,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"418k"`)
+      .toMatchInlineSnapshot(`"420k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
@@ -111,9 +111,6 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@ungap/structured-clone",
-        "@unhead/dom",
-        "@unhead/shared",
-        "@unhead/ssr",
         "@unocss/core",
         "@unocss/extractor-arbitrary-variants",
         "@unocss/preset-mini",
@@ -243,12 +240,12 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
+        "mocked-exports",
         "ms",
         "multiformats",
         "node-emoji",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
-        "packrup",
         "parse-entities",
         "parse5",
         "process-nextick-args",

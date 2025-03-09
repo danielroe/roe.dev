@@ -70,6 +70,10 @@ export default defineNuxtConfig({
     },
   },
 
+  imports: {
+    polyfills: true,
+  },
+
   devtools: { enabled: false },
 
   app: {

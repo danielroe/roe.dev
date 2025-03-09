@@ -1,9 +1,5 @@
-import {
-  addServerHandler,
-  createResolver,
-  defineNuxtModule,
-  useNuxt,
-} from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
+import { resolveModulePath } from 'exsolve'
 import { defu } from 'defu'
 
 const networks = {
@@ -51,10 +47,11 @@ export default defineNuxtModule({
       'magic-string',
     )
 
+    const mockProxy = resolveModulePath('mocked-exports/proxy')
     nuxt.options.nitro = defu(nuxt.options.nitro, {
       alias: {
-        'eventemitter3': 'unenv/runtime/mock/proxy',
-        'isomorphic-ws': 'unenv/runtime/mock/proxy',
+        'eventemitter3': mockProxy,
+        'isomorphic-ws': mockProxy,
       },
     })
 
