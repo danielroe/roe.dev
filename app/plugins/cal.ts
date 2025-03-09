@@ -1,5 +1,4 @@
 export default defineNuxtPlugin(() => {
-  return
   onPrehydrate(() => {
     const cal = Object.assign(
       function (...args: unknown[]) {

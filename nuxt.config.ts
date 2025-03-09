@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
-    // '@nuxt/scripts',
+    '@nuxt/scripts',
     function (_options, nuxt) {
       // todo: refactor into nuxt
       nuxt.hook('prepare:types', ctx => {
@@ -323,11 +323,11 @@ export default defineNuxtConfig({
     apiHost: 'https://v.roe.dev',
   },
 
-  // scripts: {
-  //   defaultScriptOptions: {
-  //     bundle: true,
-  //   },
-  // },
+  scripts: {
+    defaultScriptOptions: {
+      bundle: true,
+    },
+  },
 
   security: {
     headers: {
