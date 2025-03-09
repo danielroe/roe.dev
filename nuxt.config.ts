@@ -236,6 +236,7 @@ export default defineNuxtConfig({
       '@unocss/postcss': {},
     },
   },
+  debug: true,
 
   hooks: {
     'components:extend' (components) {
