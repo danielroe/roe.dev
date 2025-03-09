@@ -134,14 +134,6 @@ export default defineNuxtConfig({
       githubClientId: '',
     },
   },
-  // TODO: remove when nuxt/scripts is updated
-  alias: {
-    'unenv/runtime/mock/noop': 'mocked-exports/noop',
-  },
-
-  build: {
-    transpile: ['mocked-exports'],
-  },
 
   routeRules: {
     '/api/hi': { cors: true },
