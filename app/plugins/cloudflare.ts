@@ -2,6 +2,7 @@ export default defineNuxtPlugin({
   enforce: 'pre',
   env: { islands: false },
   setup () {
+    return
     if (import.meta.test || import.meta.dev) {
       return
     }
