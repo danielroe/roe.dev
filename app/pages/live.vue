@@ -35,7 +35,7 @@
           v-for="emoji in predefinedEmojis"
           :key="emoji"
           type="button"
-          class="aspect-square text-[1.75rem] rounded-lg flex items-center justify-center bg-muted bg-opacity-10 transition-all duration-200 hover:bg-opacity-20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed user-select-none"
+          class="aspect-square text-[1.75rem] rounded-lg flex items-center justify-center bg-muted bg-opacity-10 transition-all duration-200 hover:bg-opacity-20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed select-none"
           :disabled="!isConnected"
           @click="sendEmoji(emoji)"
           @dblclick="sendEmoji(emoji, 3)"
