@@ -38,7 +38,7 @@ export default defineConfig({
     colors: {
       primary: 'var(--primary)',
       accent: 'var(--accent)',
-      muted: 'var(--muted)',
+      muted: 'rgb(var(--muted) / var(--un-bg-opacity, 1))',
       background: 'var(--background)',
     },
     fontFamily: {
