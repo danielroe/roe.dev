@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19017k"`)
+      .toMatchInlineSnapshot(`"19016k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -160,7 +160,6 @@ describe('project sizes', () => {
         "get-it",
         "github-slugger",
         "graphemer",
-        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
