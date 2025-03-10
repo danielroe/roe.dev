@@ -134,9 +134,7 @@ function sendCustomEmoji (emoji: string) {
   }
 
   sendEmoji(emoji)
-  setTimeout(() => {
-    customEmoji.value = ''
-  }, 300)
+  customEmoji.value = ''
 }
 
 function displayReaction (emoji: string) {
