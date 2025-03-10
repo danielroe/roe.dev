@@ -26,11 +26,6 @@ export default {
       ws.send(`feedback:${JSON.stringify(await party.storage.get('feedback') || [])}`)
     }
 
-    // Handle reactions
-    if (party.id === 'reactions') {
-      ws.send(`reactions:${JSON.stringify(await party.storage.get('reactions') || [])}`)
-    }
-
     // 3. let people know if I'm streaming
     ws.send(`status:${(await party.storage.get('status')) || 'default'}`)
   },
@@ -74,27 +69,6 @@ export default {
 
       party.storage.put('status', status)
       party.broadcast(`status:${status}`)
-      return new Response(null, { status: 204 })
-    }
-
-    // 7. handle emoji reactions via HTTP request
-    if (type === 'reaction') {
-      if (!emoji) return new Response('Missing emoji', { status: 422 })
-
-      // Validate emoji
-      if (!isValidEmoji(emoji)) {
-        return new Response('Invalid emoji', { status: 422 })
-      }
-
-      await party.storage.transaction(async tx => {
-        const reactions = await tx.get<string[]>('reactions') || []
-        reactions.push(emoji)
-        // Keep only the last 100 reactions to avoid memory issues
-        if (reactions.length > 100) reactions.shift()
-        await tx.put('reactions', reactions)
-      })
-
-      party.broadcast(`reaction:${emoji}`)
       return new Response(null, { status: 204 })
     }
 

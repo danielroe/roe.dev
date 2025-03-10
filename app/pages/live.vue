@@ -106,16 +106,6 @@ if (import.meta.client) {
         const emoji = data.replace('reaction:', '')
         displayReaction(emoji)
       }
-      if (data?.startsWith('reactions:')) {
-        try {
-          const reactions = JSON.parse(data.replace('reactions:', ''))
-          // Only display the last 5 reactions from history to avoid overwhelming the UI
-          reactions.slice(-5).forEach((emoji: string) => displayReaction(emoji))
-        }
-        catch (e) {
-          console.error('Failed to parse reactions data', e)
-        }
-      }
     }
   })
 
