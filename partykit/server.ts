@@ -1,4 +1,5 @@
 import type { PartyKitServer, Room } from 'partykit/server'
+import { isValidEmoji } from '../shared/utils/emoji'
 
 export default {
   async onConnect (ws, party) {
@@ -33,9 +34,10 @@ export default {
       return new Response('Invalid request', { status: 422 })
 
     const body = await request.text().then(r => (r ? JSON.parse(r) : {}))
-    const { status, type = status ? 'status' : 'vote' } = body as {
-      type?: 'vote' | 'status' | 'feedback'
+    const { status, emoji, type = status ? 'status' : (emoji ? 'reaction' : 'vote') } = body as {
+      type?: 'vote' | 'status' | 'feedback' | 'reaction'
       status?: string
+      emoji?: string
     }
 
     // 4. allow one-off live voting via link
@@ -71,6 +73,32 @@ export default {
     }
 
     return new Response('Invalid request', { status: 422 })
+  },
+  async onMessage (message, ws, party) {
+    // Handle messages from WebSocket clients
+    const messageStr = message.toString()
+
+    // Handle reaction messages
+    if (party.id === 'reactions' && messageStr.startsWith('reaction:')) {
+      const emoji = messageStr.replace('reaction:', '')
+
+      // Validate emoji
+      if (!isValidEmoji(emoji)) {
+        return
+      }
+
+      // Store the reaction
+      await party.storage.transaction(async tx => {
+        const reactions = await tx.get<string[]>('reactions') || []
+        reactions.push(emoji)
+        // Keep only the last 100 reactions
+        if (reactions.length > 100) reactions.shift()
+        await tx.put('reactions', reactions)
+      })
+
+      // Broadcast to all clients
+      party.broadcast(messageStr)
+    }
   },
 } satisfies PartyKitServer
 
