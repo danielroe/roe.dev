@@ -1,7 +1,6 @@
-// Regex to validate if a string contains only emoji characters
-// This is not perfect but catches most common emojis
-// eslint-disable-next-line
-const emojiRegex = /^(?:[\p{Emoji}\u200d\u{1f1e6}-\u{1f1ff}\u{1f3fb}-\u{1f3ff}\u{1f9b0}-\u{1f9b3}])/u
+// Regex to validate if a string contains exactly one emoji character (including complex emoji)
+// including standard emoji, ZWJ sequences, country flags, and regional flags like Scotland (🏴󠁧󠁢󠁳󠁣󠁴󠁿)
+const emojiRegex = /^(\p{ExtPict}|\p{Emoji}(\p{EMod})?|\p{Emoji}\uFE0F|\p{Emoji}\u20E3|[\u{1F3FB}-\u{1F3FF}]|[\u{1F1E6}-\u{1F1FF}]{2}|\p{Emoji}[\u{E0020}-\u{E007E}]+\u{E007F}|\p{Emoji}(\uFE0F)?(\u200D\p{Emoji}(\uFE0F)?)+)$/u
 
 // Helper function to validate emoji
 export function isValidEmoji (str: string): boolean {
