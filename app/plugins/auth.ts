@@ -27,7 +27,7 @@ export default defineNuxtPlugin(nuxtApp => {
     status: ref<UserStatus>('pending'),
   })
 
-  nuxtApp.hook('app:mounted', () => {
+  nuxtApp.hook('app:suspense:resolve', () => {
     if (useCookie('token').value) auth.login()
     else auth.status = 'logged-out'
   })
