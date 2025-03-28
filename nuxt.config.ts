@@ -188,6 +188,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       routes: ['/', '/live', '/rss.xml', '/voted/', '/work/', '/feedback/', '/ama/', '/ai/'],
+      ignore: ['/__nuxt_content'],
     },
     hooks: {
       'prerender:generate' (route) {
