@@ -223,11 +223,6 @@ export default defineNuxtConfig({
         optionsAPI: false,
       },
     },
-    server: {
-      allowedHosts: [
-        '5184-87-75-141-134.ngrok-free.app',
-      ],
-    },
   },
 
   typescript: {
