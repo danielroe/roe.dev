@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   if (apiKey !== config.locationApiKey) {
     return createError({
       statusCode: 401,
