@@ -433,7 +433,7 @@ interface Talk {
           >
             Drop me a line
           </a>
-          if you'd like to meet up in person! I'm planning to be in {{ currentLocation.city }}, {{ currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country }} today.
+          if you'd like to meet up in person! I'm planning to be in {{ currentLocation.city }}, {{ currentLocation.area }} today.
         </span>
       </p>
     </section>

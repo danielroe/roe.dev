@@ -18,31 +18,27 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const response = await $fetch<OpenCageResponse>(`https://api.opencagedata.com/geocode/v1/json`, {
+  const response = await $fetch<BigDataResponse>(`https://api.bigdatacloud.net/data/reverse-geocode-client`, {
     params: {
-      q: `${latitude},${longitude}`,
-      key: config.openCageApiKey,
-      no_annotations: 1,
-      language: 'en',
+      latitude,
+      longitude,
+      localityLanguage: 'en',
     },
   })
 
-  if (!response.results || response.results.length === 0) {
+  if (!response || !response.city) {
     return createError({
       statusCode: 400,
       statusMessage: 'Could not geocode the provided coordinates',
     })
   }
 
-  const location = response.results[0]
-  const components = location.components
-
   // Extract relevant information
   const locationData = {
-    city: components.city || components.town || components.village || components.hamlet || 'Unknown',
-    region: components.state || components.province || components.county || '',
-    country: components.country || 'Unknown',
-    countryCode: components.country_code ? components.country_code.toUpperCase() : 'XX',
+    city: response.city || response.locality || 'Unknown',
+    region: response.principalSubdivision || response.localityInfo?.administrative?.[1]?.name || '',
+    country: response.countryName || 'Unknown',
+    countryCode: response.countryCode || 'XX',
     latitude,
     longitude,
     meetupAvailable: meetupAvailable !== undefined ? meetupAvailable : true,
@@ -69,24 +65,16 @@ export default defineEventHandler(async event => {
   return null
 })
 
-type OpenCageResponse = {
-  results: Array<{
-    components: {
-      city?: string
-      town?: string
-      village?: string
-      hamlet?: string
-      state?: string
-      province?: string
-      county?: string
-      country?: string
-      country_code?: string
-    }
-    geometry: {
-      lat: number
-      lng: number
-    }
-  }>
-  status: { code: number, message: string }
-  total_results: number
+type BigDataResponse = {
+  city: string
+  locality?: string
+  principalSubdivision?: string
+  countryName: string
+  countryCode: string
+  localityInfo?: {
+    administrative?: Array<{
+      name: string
+      level: number
+    }>
+  }
 }

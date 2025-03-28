@@ -9,7 +9,7 @@ const showMenu = ref(false)
 
 const { data: currentLocation } = await useFetch('/api/current-location', {
   transform: location => ({
-    country: location.country,
+    area: location.area,
     flagEmoji: location.flagEmoji,
   }),
 })
@@ -78,7 +78,7 @@ function toggleMenu (input?: Event | boolean) {
             class="ml-1"
           >
             <span class="sr-only">
-              is currently in {{currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country}}
+              is currently in {{ currentLocation.area }}
             </span>
             {{ currentLocation.flagEmoji }}
           </span>

@@ -20,12 +20,6 @@ interface Location {
   _updatedAt: string
 }
 
-const locationMaps: Record<string, string | undefined> = {
-  'City of Edinburgh': 'Edinburgh',
-  'United Kingdom': 'the UK',
-  'United States': 'the US',
-}
-
 export default defineEventHandler(async event => {
   const sanity = useSanity(event)
 
@@ -43,10 +37,15 @@ export default defineEventHandler(async event => {
           char.charCodeAt(0) + 127397))
       : '🌍'
 
+  const locationMaps: Record<string, string | undefined> = {
+    'United Kingdom of Great Britain and Northern Ireland (the)': location.region,
+    'United States of America (the)': location.region,
+  }
+
   return {
-    ...location,
+    meetupAvailable: location.meetupAvailable,
     city: locationMaps[location.city] || location.city,
-    country: location.region === 'Scotland' ? 'Scotland' : locationMaps[location.country] || location.country,
+    area: location.region === 'Scotland' ? 'Scotland' : locationMaps[location.country] || location.country,
     flagEmoji,
   }
 })

@@ -120,8 +120,7 @@ export default defineNuxtConfig({
     resendApiKey: '',
     // Location API key for secure updates
     locationApiKey: '',
-    // OpenCage API key for geocoding coordinates
-    openCageApiKey: '',
+    bigdataApiKey: '',
     twitch: {
       clientId: '',
       clientSecret: '',
