@@ -22,29 +22,63 @@ const links = [
   },
 ]
 
-const { data: upcomingConferences } = await useFetch('/api/upcoming-conferences')
+const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams }, { data: articles }, { data: talks }] = await Promise.all([
+  useFetch('/api/current-location'),
+  useFetch('/api/upcoming-conferences'),
+  useFetch('/api/streams', {
+    transform: streams =>
+      streams.slice(0, 5).map(stream => ({
+        title: stream.title,
+        thumbnail: stream.thumbnail_url
+          .replace('%{width}', '1200')
+          .replace('%{height}', '630'),
+        source: 'Twitch',
+        link: stream.url,
+        date: stream.created_at,
+        type: 'video',
+        video: stream.url,
+      })),
+  }),
+  useAsyncData(async () => {
+    const result = await queryCollection('blog').select('title', 'date', 'path').all()
+    return result
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 4)
+  }),
+  useAsyncData(
+    () =>
+      ((import.meta.server || import.meta.dev) as true)
+      && import('../data/talks.json').then(r => r.default as any as Talk[]),
+    {
+      transform: talks => {
+        const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
+        for (const talk of talks) {
+          const slug = talk.group || talk.slug
+          if (groupedTalks[slug]) {
+            groupedTalks[slug]!.push(talk)
+          }
+          else {
+            groupedTalks[slug] = [talk]
+          }
+        }
 
-const { data: streams } = await useFetch('/api/streams', {
-  transform: streams =>
-    streams.slice(0, 5).map(stream => ({
-      title: stream.title,
-      thumbnail: stream.thumbnail_url
-        .replace('%{width}', '1200')
-        .replace('%{height}', '630'),
-      source: 'Twitch',
-      link: stream.url,
-      date: stream.created_at,
-      type: 'video',
-      video: stream.url,
-    })),
-})
+        for (const group in groupedTalks) {
+          groupedTalks[group]!.sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+          )
+        }
 
-const { data: articles } = await useAsyncData(async () => {
-  const result = await queryCollection('blog').select('title', 'date', 'path').all()
-  return result
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 4)
-})
+        const groups = Object.entries(groupedTalks).sort(
+          ([_s1, [a]], [_s2, [b]]) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime()
+          },
+        )
+
+        return groups.slice(0, 4).map(([_slug, [firstTalk]]) => firstTalk)
+      },
+    },
+  ),
+])
 
 interface Talk {
   slug: string
@@ -60,40 +94,6 @@ interface Talk {
   repo?: string
   demo?: string
 }
-
-const { data: talks } = await useAsyncData(
-  () =>
-    ((import.meta.server || import.meta.dev) as true)
-    && import('../data/talks.json').then(r => r.default as any as Talk[]),
-  {
-    transform: talks => {
-      const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
-      for (const talk of talks) {
-        const slug = talk.group || talk.slug
-        if (groupedTalks[slug]) {
-          groupedTalks[slug]!.push(talk)
-        }
-        else {
-          groupedTalks[slug] = [talk]
-        }
-      }
-
-      for (const group in groupedTalks) {
-        groupedTalks[group]!.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-        )
-      }
-
-      const groups = Object.entries(groupedTalks).sort(
-        ([_s1, [a]], [_s2, [b]]) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime()
-        },
-      )
-
-      return groups.slice(0, 4).map(([_slug, [firstTalk]]) => firstTalk)
-    },
-  },
-)
 </script>
 
 <template>
@@ -420,6 +420,21 @@ const { data: talks } = await useAsyncData(
         >
           book a meeting
         </NuxtLink>.
+      </p>
+      <p
+        v-if="currentLocation && currentLocation.meetupAvailable"
+        class="mt-4"
+      >
+        <span>
+          <a
+            class="underlined-link"
+            :href="`mailto:daniel@roe.dev?subject=Let's meet up in ${currentLocation.city}`"
+            data-external
+          >
+            Drop me a line
+          </a>
+          if you'd like to meet up in person! I'm planning to be in {{ currentLocation.city }}, {{ currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country }} today.
+        </span>
       </p>
     </section>
     <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">

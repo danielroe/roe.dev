@@ -118,6 +118,10 @@ export default defineNuxtConfig({
     sessionPassword: '',
     // emailing ideas
     resendApiKey: '',
+    // Location API key for secure updates
+    locationApiKey: '',
+    // OpenCage API key for geocoding coordinates
+    openCageApiKey: '',
     twitch: {
       clientId: '',
       clientSecret: '',
@@ -218,6 +222,11 @@ export default defineNuxtConfig({
       features: {
         optionsAPI: false,
       },
+    },
+    server: {
+      allowedHosts: [
+        '5184-87-75-141-134.ngrok-free.app',
+      ],
     },
   },
 
