@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'location',
-  title: 'Current Location',
+  title: 'Current location',
   type: 'document',
   preview: {
     select: {
@@ -21,8 +21,8 @@ export default defineType({
 
       return {
         title: `${city}${country ? `, ${country}` : ''}`,
-        subtitle: 'Current Location',
-        media: flagEmoji,
+        subtitle: 'Current location',
+        media: <span>{flagEmoji}</span>,
       }
     },
   },
@@ -54,12 +54,12 @@ export default defineType({
     defineField({
       name: 'latitude',
       title: 'Latitude',
-      type: 'number',
+      type: 'string',
     }),
     defineField({
       name: 'longitude',
       title: 'Longitude',
-      type: 'number',
+      type: 'string',
     }),
     defineField({
       name: 'meetupAvailable',
