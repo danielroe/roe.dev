@@ -7,6 +7,13 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
 
 const showMenu = ref(false)
 
+const { data: currentLocation } = await useFetch('/api/current-location', {
+  transform: location => ({
+    country: location.country,
+    flagEmoji: location.flagEmoji,
+  }),
+})
+
 const menu = [
   {
     name: 'Home',
@@ -66,6 +73,13 @@ function toggleMenu (input?: Event | boolean) {
           to="/"
         >
           Daniel Roe
+          <span
+            v-if="currentLocation?.flagEmoji"
+            class="ml-1"
+            :title="`currently in ${currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country}`"
+          >
+            {{ currentLocation.flagEmoji }}
+          </span>
         </NuxtLink>
       </li>
       <template
