@@ -76,8 +76,10 @@ function toggleMenu (input?: Event | boolean) {
           <span
             v-if="currentLocation?.flagEmoji"
             class="ml-1"
-            :title="`currently in ${currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country}`"
           >
+            <span class="sr-only">
+              is currently in {{currentLocation.country === 'United Kingdom' ? 'the UK' : currentLocation.country === 'United States' ? 'the US' : currentLocation.country}}
+            </span>
             {{ currentLocation.flagEmoji }}
           </span>
         </NuxtLink>
