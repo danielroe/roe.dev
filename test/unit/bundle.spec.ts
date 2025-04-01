@@ -160,6 +160,7 @@ describe('project sizes', () => {
         "get-it",
         "github-slugger",
         "graphemer",
+        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
