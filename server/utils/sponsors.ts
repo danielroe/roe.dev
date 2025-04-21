@@ -14,7 +14,7 @@ interface CacheEntry {
 }
 
 export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
-  if (!useRuntimeConfig(event).github.token) return []
+  if (!useRuntimeConfig(event).github.profileToken) return []
   const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
 
   const ttl = 60
@@ -23,7 +23,7 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
   const expired = Date.now() - (entry.mtime || 0) > ttl
   if (!entry.value || expired) {
     entry.value = await query(
-      useRuntimeConfig(event).github.token,
+      useRuntimeConfig(event).github.profileToken,
       sponsorQuery,
     ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
 
