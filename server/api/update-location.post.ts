@@ -62,8 +62,34 @@ export default defineEventHandler(async event => {
     await sanity.client.create({ _type: 'location', ...locationData })
   }
 
+  try {
+    const emoji = locationData.city.includes('Edinburgh')
+      ? '🏠'
+      : locationData.region === 'Scotland'
+        ? '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
+        : locationData.countryCode
+          ? String.fromCodePoint(...[...locationData.countryCode.toUpperCase()].map(char => char.charCodeAt(0) + 127397))
+          : '🌍'
+    await updateGitHubStatus(config.github.token, emoji)
+  }
+  catch (error) {
+    console.error('Failed to update GitHub status:', error)
+  }
+
   return null
 })
+
+async function updateGitHubStatus (token: string, emoji: string) {
+  await query(token, `
+    mutation {
+      changeUserStatus(input: {
+        emoji: "${emoji}",
+      }) {
+        status { emoji }
+      }
+    }
+  `)
+}
 
 type BigDataResponse = {
   city: string
