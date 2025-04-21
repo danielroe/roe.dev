@@ -132,8 +132,9 @@ export default defineNuxtConfig({
       // my GH ID
       id: 'MDQ6VXNlcjI4NzA2Mzcy',
       // fetching GH repos in build + sponsors when deployed
-      // as well as updating my GH status
       token: '',
+      // token used to update GitHub status
+      profileToken: '',
       // oauth flow
       clientSecret: '',
       inviteToken: '',

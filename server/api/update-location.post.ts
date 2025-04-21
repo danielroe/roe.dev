@@ -70,7 +70,14 @@ export default defineEventHandler(async event => {
         : locationData.countryCode
           ? String.fromCodePoint(...[...locationData.countryCode.toUpperCase()].map(char => char.charCodeAt(0) + 127397))
           : '🌍'
-    await updateGitHubStatus(config.github.token, emoji)
+
+    await query(config.github.profileToken, `
+      mutation {
+        changeUserStatus(input: { emoji: "${emoji}" }) {
+          status { emoji }
+        }
+      }
+    `)
   }
   catch (error) {
     console.error('Failed to update GitHub status:', error)
@@ -78,18 +85,6 @@ export default defineEventHandler(async event => {
 
   return null
 })
-
-async function updateGitHubStatus (token: string, emoji: string) {
-  await query(token, `
-    mutation {
-      changeUserStatus(input: {
-        emoji: "${emoji}",
-      }) {
-        status { emoji }
-      }
-    }
-  `)
-}
 
 type BigDataResponse = {
   city: string
