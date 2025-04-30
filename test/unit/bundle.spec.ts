@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"485k"`)
+      .toMatchInlineSnapshot(`"487k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"426k"`)
+      .toMatchInlineSnapshot(`"812k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"18910k"`)
+      .toMatchInlineSnapshot(`"19033k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -118,9 +118,11 @@ describe('project sizes', () => {
         "@unocss/rule-utils",
         "@vue/compiler-core",
         "@vue/compiler-dom",
+        "@vue/compiler-ssr",
         "@vue/reactivity",
         "@vue/runtime-core",
         "@vue/runtime-dom",
+        "@vue/server-renderer",
         "@vue/shared",
         "await-lock",
         "bail",
@@ -248,6 +250,8 @@ describe('project sizes', () => {
         "oniguruma-to-es/dist/esm",
         "parse-entities",
         "parse5",
+        "partysocket",
+        "perfect-debounce",
         "process-nextick-args",
         "progress-stream",
         "property-information",
@@ -288,6 +292,7 @@ describe('project sizes', () => {
         "ts-custom-error",
         "tunnel-agent",
         "tunnel-agent/node_modules/safe-buffer",
+        "ufo",
         "uint8arrays",
         "unhead",
         "unicode-emoji-modifier-base",
@@ -303,6 +308,7 @@ describe('project sizes', () => {
         "vfile-location",
         "vfile-message",
         "vue",
+        "vue-bundle-renderer",
         "web-namespaces",
         "xml-js",
         "xss",
