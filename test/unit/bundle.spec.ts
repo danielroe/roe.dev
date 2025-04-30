@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"812k"`)
+      .toMatchInlineSnapshot(`"813k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"19033k"`)
+      .toMatchInlineSnapshot(`"11465k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -117,6 +117,7 @@ describe('project sizes', () => {
         "@unocss/preset-wind3",
         "@unocss/rule-utils",
         "@vue/compiler-core",
+        "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-dom",
         "@vue/compiler-ssr",
         "@vue/reactivity",
@@ -148,7 +149,7 @@ describe('project sizes', () => {
         "emojilib",
         "emoticon",
         "entities",
-        "entities/lib/esm",
+        "entities/dist/esm",
         "escape-string-regexp",
         "estree-walker",
         "events-to-async",
@@ -250,6 +251,8 @@ describe('project sizes', () => {
         "oniguruma-to-es/dist/esm",
         "parse-entities",
         "parse5",
+        "parse5/node_modules/entities",
+        "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "perfect-debounce",
         "process-nextick-args",
