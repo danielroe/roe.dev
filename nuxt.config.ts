@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     '@nuxtjs/sanity',
     'nuxt-og-image',
     '@nuxt/eslint',
-    'nuxt-time',
     '@nuxt/test-utils/module',
     'magic-regexp/nuxt',
     '@nuxt/image',
