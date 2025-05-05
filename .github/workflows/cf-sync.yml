@@ -97,6 +97,9 @@ jobs:
             if (existingDeployments.data.length > 0) {
               // For each existing deployment, check if it's in progress
               for (const deployment of existingDeployments.data) {
+                // Ensure deployment is defined before accessing its id
+                if (!deployment) continue;
+                
                 const statuses = await github.rest.repos.listDeploymentStatuses({
                   owner,
                   repo,
@@ -127,25 +130,35 @@ jobs:
                 required_contexts: []
               });
 
-              deploymentId = deployment.data.id;
-              console.log(`Created new deployment with ID: ${deploymentId}`);
+              // Ensure deployment.data exists before accessing id
+              if (deployment && deployment.data) {
+                deploymentId = deployment.data.id;
+                console.log(`Created new deployment with ID: ${deploymentId}`);
 
-              // Set status to in_progress
-              await github.rest.repos.createDeploymentStatus({
-                owner,
-                repo,
-                deployment_id: deploymentId,
-                state: 'in_progress',
-                description: 'Cloudflare Pages is deploying'
-              });
-            } else if (!deploymentId) {
+                // Set status to in_progress
+                await github.rest.repos.createDeploymentStatus({
+                  owner,
+                  repo,
+                  deployment_id: deploymentId,
+                  state: 'in_progress',
+                  description: 'Cloudflare Pages is deploying'
+                });
+              } else {
+                console.log('Failed to create deployment: deployment or deployment.data is undefined');
+              }
+            } else if (!deploymentId && existingDeployments.data.length > 0 && existingDeployments.data[0]) {
               // If we didn't find an in-progress deployment but we have existing ones
               deploymentId = existingDeployments.data[0].id;
               console.log(`Using most recent deployment ID: ${deploymentId}`);
             }
 
-            // Set deployment ID as output
-            core.setOutput('deploymentId', deploymentId.toString());
+            // Only set deployment ID as output if it's defined
+            if (deploymentId) {
+              core.setOutput('deploymentId', deploymentId.toString());
+            } else {
+              console.log('No valid deployment ID found');
+              core.setOutput('deploymentId', '');
+            }
 
       - name: Update deployment status (finished)
         if: steps.parse-comment.outputs.status == 'finished'
