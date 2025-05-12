@@ -14,7 +14,8 @@ interface CacheEntry {
 }
 
 export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
-  if (!useRuntimeConfig(event).github.profileToken) return []
+  const token = useRuntimeConfig(event).github.token
+  if (!token) return []
   const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
 
   const ttl = 60
@@ -23,7 +24,7 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
   const expired = Date.now() - (entry.mtime || 0) > ttl
   if (!entry.value || expired) {
     entry.value = await query(
-      useRuntimeConfig(event).github.profileToken,
+      token,
       sponsorQuery,
     ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
 
@@ -31,7 +32,7 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
     entry.value.push({ id: useRuntimeConfig(event).github.id })
 
     // NuxtLabs
-    entry.value.push({
+    entry.value.unshift({
       name: 'NuxtLabs',
       id: 'MDEyOk9yZ2FuaXphdGlvbjYyMDE3NDAw',
       avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
