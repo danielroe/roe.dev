@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11485k"`)
+      .toMatchInlineSnapshot(`"11501k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -137,7 +137,6 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
-        "core-util-is",
         "cssfilter",
         "debug",
         "decode-named-character-reference",
@@ -196,7 +195,6 @@ describe('project sizes', () => {
         "is-hexadecimal",
         "is-plain-obj",
         "is-retry-allowed",
-        "isarray",
         "iso-datestring-validator",
         "longest-streak",
         "lru-cache",
@@ -254,11 +252,8 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "perfect-debounce",
-        "process-nextick-args",
-        "progress-stream",
         "property-information",
         "readable-stream",
-        "readable-stream/node_modules/safe-buffer",
         "regex",
         "regex-recursion",
         "regex-utilities",
@@ -281,9 +276,7 @@ describe('project sizes', () => {
         "skin-tone",
         "source-map-js",
         "space-separated-tokens",
-        "speedometer",
         "string_decoder",
-        "string_decoder/node_modules/safe-buffer",
         "stringify-entities",
         "supports-color",
         "through2",
@@ -293,7 +286,6 @@ describe('project sizes', () => {
         "trough",
         "ts-custom-error",
         "tunnel-agent",
-        "tunnel-agent/node_modules/safe-buffer",
         "ufo",
         "uint8arrays",
         "unhead",
@@ -314,7 +306,6 @@ describe('project sizes', () => {
         "web-namespaces",
         "xml-js",
         "xss",
-        "xtend",
         "yaml",
         "zod",
         "zwitch",
