@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11376k"`)
+      .toMatchInlineSnapshot(`"11375k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
