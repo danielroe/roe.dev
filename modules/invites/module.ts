@@ -6,7 +6,7 @@ export default defineNuxtModule({
   meta: {
     name: 'invites',
   },
-  async setup (options, nuxt) {
+  async setup (_, nuxt) {
     nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
       include: ['../modules/runtime/server/**/*'],
     })
@@ -35,14 +35,14 @@ export default defineNuxtModule({
 
     nuxt.options.runtimeConfig.invites = { map }
 
-    if (!gitHubClientId || Object.values(options.map).length === 0) return
+    if (!gitHubClientId || invitations.length === 0) return
 
     const redirect = nuxt.options.dev
       ? '&redirect_uri=http://localhost:3000/auth/github'
       : '&redirect_uri=https://roe.dev/auth/github'
 
     nuxt.options.nitro.routeRules ||= {}
-    for (const slug in options.map) {
+    for (const slug in map) {
       nuxt.options.nitro.routeRules['/' + slug] = {
         redirect: `https://github.com/login/oauth/authorize?client_id=${gitHubClientId}${redirect}/${slug}`,
       }
