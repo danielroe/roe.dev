@@ -1,33 +1,39 @@
-import {
-  addServerHandler,
-  createResolver,
-  defineNuxtModule,
-  useNuxt,
-} from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit'
 import { defu } from 'defu'
+import { createClient } from '@sanity/client'
 
 export default defineNuxtModule({
   meta: {
     name: 'invites',
   },
-  defaults: {
-    map: {
-      euricom: 'danielroe/nailing-it-euricom-2025',
-      // slug: 'danielroe/<repo>',
-    } satisfies Record<string, string>,
-  },
-  setup (options) {
-    const nuxt = useNuxt()
-    const resolver = createResolver(import.meta.url)
-    const gitHubClientId = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID || nuxt.options.runtimeConfig.public.githubClientId
-
-    nuxt.options.runtimeConfig.invites = {
-      map: options.map,
-    }
-
+  async setup (options, nuxt) {
     nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
       include: ['../modules/runtime/server/**/*'],
     })
+
+    if (nuxt.options._prepare) {
+      return
+    }
+
+    const resolver = createResolver(import.meta.url)
+    const gitHubClientId = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID || nuxt.options.runtimeConfig.public.githubClientId
+
+    // fetch invitations from Sanity
+    const sanityClient = createClient({
+      projectId: '9bj3w2vo',
+      dataset: 'production',
+      apiVersion: '2025-02-19',
+      token: process.env.NUXT_SANITY_TOKEN,
+    })
+
+    const invitations = await sanityClient.fetch<Array<{ slug: string, repo: string }>>(`*[_type == "invite" && isActive == true]{
+      "slug": slug.current,
+      repo
+    }`)
+
+    const map = Object.fromEntries(invitations.map(invite => [invite.slug, invite.repo]))
+
+    nuxt.options.runtimeConfig.invites = { map }
 
     if (!gitHubClientId || Object.values(options.map).length === 0) return
 
