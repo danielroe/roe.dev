@@ -99,14 +99,6 @@ if (import.meta.client) {
     partySocket.onopen = () => {
       isConnected.value = true
     }
-
-    partySocket.onmessage = event => {
-      const data = event.data?.toString()
-      if (data?.startsWith('reaction:')) {
-        const emoji = data.replace('reaction:', '')
-        displayReaction(emoji)
-      }
-    }
   })
 
   onBeforeUnmount(() => partySocket?.close())
@@ -118,6 +110,7 @@ async function sendEmoji (emoji: string, count = 1) {
   if (!isConnected.value) return
   for (let i = 0; i < count; i++) {
     partySocket.send(`reaction:${emoji}`)
+    displayReaction(emoji)
     await new Promise(resolve => setTimeout(resolve, 100))
   }
 }
