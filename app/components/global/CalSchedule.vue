@@ -6,15 +6,15 @@ defineProps({
 </script>
 
 <template>
-  <button
+  <a
     class="underlined-link mt-4"
     :data-cal-link="`danielroe/${meeting}`"
-    type="button"
+    :href="`https://cal.com/danielroe/${meeting}`"
   >
     <span
       class="i-ri:calendar-check-fill h-4 w-4"
       alt=""
     />
     {{ message }}
-  </button>
+  </a>
 </template>

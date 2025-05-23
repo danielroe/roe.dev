@@ -48,7 +48,7 @@
         :path="path"
       />
     </section>
-    <WebMentions />
+    <!-- <WebMentions /> -->
   </main>
 </template>
 
