@@ -21,12 +21,12 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
   const ttl = 60
   entry.expires = Date.now() + ttl
 
-  const expired = Date.now() - (entry.mtime || 0) > ttl
+  const expired = (Date.now() - (entry.mtime || 0)) > ttl
   if (!entry.value || expired) {
     entry.value = await query(
       token,
       sponsorQuery,
-    ).then(r => r.data?.user.sponsors.edges.map((e: any) => e.node) || [])
+    ).then(r => r?.user.sponsors.edges.map((e: any) => e.node) || [])
 
     // my ID
     entry.value.push({ id: useRuntimeConfig(event).github.id })
