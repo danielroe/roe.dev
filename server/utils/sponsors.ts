@@ -9,8 +9,6 @@ interface Sponsor {
 
 interface CacheEntry {
   value: Sponsor[]
-  expires: number
-  mtime: number
 }
 
 export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
@@ -18,11 +16,7 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
   if (!token) return []
   const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
 
-  const ttl = 60
-  entry.expires = Date.now() + ttl
-
-  const expired = (Date.now() - (entry.mtime || 0)) > ttl
-  if (!entry.value || expired) {
+  if (!entry.value || !import.meta.dev) {
     entry.value = await query(
       token,
       sponsorQuery,
@@ -38,7 +32,6 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
       avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
     })
 
-    entry.mtime = Date.now()
     useStorage()
       .setItem('sponsors', entry)
       .catch((error: any) => console.error('[nitro] [cache]', error))

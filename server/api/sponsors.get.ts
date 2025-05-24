@@ -1,6 +1,6 @@
 import { getSponsors } from '../utils/sponsors'
 
-export default defineCachedEventHandler(
+export default defineEventHandler(
   async event => {
     if (import.meta.test) return []
 
@@ -9,5 +9,4 @@ export default defineCachedEventHandler(
       .map(s => s.avatarUrl?.replace(/(\?|%3Fu).*$/, ''))
       .filter((r): r is string => !!r)
   },
-  { maxAge: 60 },
 )

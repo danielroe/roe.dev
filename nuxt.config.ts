@@ -144,6 +144,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
