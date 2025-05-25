@@ -304,6 +304,10 @@ export default defineNuxtConfig({
       'www.vuetoronto.com',
       'gdg.community.dev',
     ],
+    sanity: {
+      projectId: '9bj3w2vo',
+      perspective: 'production',
+    },
     screens: {
       logo: 40,
       avatar: 70,
