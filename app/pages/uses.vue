@@ -7,12 +7,8 @@
     </header>
     <main
       class="text-muted text-lg max-w-[37.50rem] text-base"
-      :class="$style.uses"
     >
-      <StaticMarkdownRender
-        collection="page"
-        path="/uses"
-      />
+      <TheUses />
     </main>
   </div>
 </template>
@@ -20,27 +16,3 @@
 <script lang="ts" setup>
 definePageMeta({ title: 'Uses' })
 </script>
-
-<style module>
-.uses {
-  h2,
-  h3 {
-    @apply text-lg;
-  }
-
-  h2:not(:first-child),
-  h3 {
-    @apply mt-6;
-  }
-
-  ul {
-    @apply mt-4 pl-4;
-
-    list-style-type: '✦ ';
-
-    ul {
-      list-style-type: '‣ ';
-    }
-  }
-}
-</style>
