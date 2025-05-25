@@ -341,7 +341,7 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
         'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://static.cloudflareinsights.com'],
-        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com'],
+        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://www.google.com', 'https://cdn.sanity.io'],
       },
     },
   },
