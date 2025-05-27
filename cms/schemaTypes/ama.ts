@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'ama',
-  title: 'Ask me anything',
+  title: 'Questions',
   type: 'document',
   preview: {
     select: {
@@ -12,7 +12,7 @@ export default defineType({
     prepare ({ title, answered }) {
       return {
         title: title.slice(0, 30),
-        subtitle: answered ? '✅ Answered' : '🚧 Not answered',
+        subtitle: answered ? '✅ Answered' : '✨ Not answered',
       }
     },
   },
