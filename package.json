@@ -57,7 +57,7 @@
     "masto": "^7.1.0",
     "mlly": "^1.7.4",
     "mocked-exports": "^0.1.1",
-    "nuxt": "^3.17.4",
+    "nuxt": "^4.0.0-alpha.1",
     "nuxt-og-image": "5.1.4",
     "nuxt-security": "2.2.0",
     "partykit": "0.0.115",
@@ -101,13 +101,14 @@
   "packageManager": "pnpm@10.11.1",
   "pnpm": {
     "overrides": {
-      "@nuxt/kit": "3.17.4",
-      "@nuxt/schema": "3.17.4",
+      "@nuxt/kit": "4.0.0-alpha.1",
+      "@nuxt/schema": "4.0.0-alpha.1",
       "@nuxtjs/mdc": "0.17.0",
       "vue": "3.5.16"
     },
     "patchedDependencies": {
-      "@nuxt/image": "patches/@nuxt__image.patch"
+      "@nuxt/image": "patches/@nuxt__image.patch",
+      "@nuxtjs/sanity": "patches/@nuxtjs__sanity.patch"
     }
   }
 }
