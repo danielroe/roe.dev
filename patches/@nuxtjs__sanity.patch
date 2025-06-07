@@ -1,0 +1,38 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 5b578b702df35303ee68de0347ef195da6530421..d4913ebed249ab0688b8b17220df111745ba2696 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -20,8 +20,7 @@ const module = defineNuxtModule({
+     version,
+     configKey: CONFIG_KEY,
+     compatibility: {
+-      nuxt: "^3.7.0",
+-      bridge: true
++      nuxt: ">=3.7.0",
+     }
+   },
+   defaults: {
+@@ -139,7 +138,7 @@ const module = defineNuxtModule({
+       { name: "groq", from: join(runtimeDir, "groq") },
+       { name: "useSanity", from: composablesFile },
+       { name: "useLazySanityQuery", from: join(runtimeDir, "composables/index") },
+-      ...isNuxtMajorVersion(3) ? [{ name: "useSanityQuery", from: composablesFile }] : []
++      { name: "useSanityQuery", from: composablesFile },
+     ]);
+     const clientPath = await resolvePath(clientSpecifier);
+     nuxt.hook("prepare:types", async ({ tsConfig }) => {
+@@ -203,14 +202,12 @@ const module = defineNuxtModule({
+           "@sanity/client"
+         ]
+       });
+-      if (isNuxtMajorVersion(3)) {
+         addImports([
+           { name: "useSanityLiveMode", from: composablesFile },
+           { name: "useSanityVisualEditing", from: composablesFile },
+           { name: "useSanityVisualEditingState", from: composablesFile },
+           { name: "createDataAttribute", from: "@sanity/visual-editing", as: "createSanityDataAttribute" }
+         ]);
+-      }
+       addPlugin({
+         mode: "server",
+         src: join(runtimeDir, "plugins", "visual-editing.server")
