@@ -179,9 +179,20 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  compatibilityDate: '2024-09-19',
+  compatibilityDate: '2025-06-09',
 
   nitro: {
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+      wrangler: {
+        observability: {
+          logs: {
+            enabled: true,
+          },
+        },
+      },
+    },
     replace: {
       'import.meta.test': isTest,
     },
