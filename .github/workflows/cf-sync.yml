@@ -39,9 +39,9 @@ jobs:
           script: |
             const commentBody = context.payload.comment.body;
 
-            const isDeployStarting = commentBody.includes('Build in progress');
-            const isDeployFinished = commentBody.includes('Deploy successful');
-            const isDeployFailed = commentBody.includes('Build failed');
+            const isDeployStarting = commentBody.includes('In progress');
+            const isDeployFinished = commentBody.includes('Deployment successful!');
+            const isDeployFailed = commentBody.includes('❌') || commentBody.includes('Build failed') || commentBody.includes('Deployment failed');
 
             let status = '';
             let deployUrl = '';
@@ -50,7 +50,11 @@ jobs:
               status = 'starting';
             } else if (isDeployFinished) {
               status = 'finished';
-              deployUrl = commentBody.match(/<strong>Preview URL:[\S\s]+?<a href='([^']+)'>/)[1];
+              // Extract URL from the new Cloudflare Workers format: <a href='https://...'>Commit Preview URL</a>
+              const urlMatch = commentBody.match(/<a href='([^']+)'>Commit Preview URL<\/a>/);
+              if (urlMatch) {
+                deployUrl = urlMatch[1];
+              }
             } else if (isDeployFailed) {
               status = 'failed';
             } else {
@@ -58,6 +62,7 @@ jobs:
             }
 
             console.log(`Detected deployment status: ${status}`);
+            console.log(`Deploy URL: ${deployUrl}`);
             // Set outputs directly
             core.setOutput('status', status);
             core.setOutput('deployUrl', deployUrl || '');
@@ -99,7 +104,7 @@ jobs:
               for (const deployment of existingDeployments.data) {
                 // Ensure deployment is defined before accessing its id
                 if (!deployment) continue;
-                
+
                 const statuses = await github.rest.repos.listDeploymentStatuses({
                   owner,
                   repo,
@@ -124,7 +129,7 @@ jobs:
                 owner,
                 repo,
                 ref: sha,
-                description: `Cloudflare Pages deployment for PR #${prNumber}`,
+                description: `Cloudflare Workers deployment for PR #${prNumber}`,
                 environment: 'cloudflare-preview',
                 auto_merge: false,
                 required_contexts: []
@@ -141,7 +146,7 @@ jobs:
                   repo,
                   deployment_id: deploymentId,
                   state: 'in_progress',
-                  description: 'Cloudflare Pages is deploying'
+                  description: 'Cloudflare Workers is deploying'
                 });
               } else {
                 console.log('Failed to create deployment: deployment or deployment.data is undefined');
@@ -180,7 +185,7 @@ jobs:
               state: 'success',
               environment_url: deployUrl,
               log_url: deployUrl,
-              description: 'Cloudflare Pages deployment successful'
+              description: 'Cloudflare Workers deployment successful'
             });
 
             console.log(`Updated deployment ${deploymentId} status to success with URL ${deployUrl}`);
@@ -203,7 +208,7 @@ jobs:
               repo,
               deployment_id: deploymentId,
               state: 'failure',
-              description: 'Cloudflare Pages deployment failed'
+              description: 'Cloudflare Workers deployment failed'
             });
 
             console.log(`Updated deployment ${deploymentId} status to failure`);
