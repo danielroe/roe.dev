@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { Stack, Text, Card, Box } from '@sanity/ui'
+import type { PortableTextBlock } from 'sanity'
 
 interface CharacterCountInputProps {
   value?: any
@@ -10,7 +11,7 @@ interface CharacterCountInputProps {
 
 const BLUESKY_LIMIT = 300
 
-function extractTextFromBlocks (blocks: any[]): string {
+function extractTextFromBlocks (blocks: PortableTextBlock[]): string {
   if (!blocks || !Array.isArray(blocks)) return ''
 
   return blocks
@@ -18,8 +19,8 @@ function extractTextFromBlocks (blocks: any[]): string {
     .map(block => {
       if (!block.children || !Array.isArray(block.children)) return ''
       return block.children
-        .filter((child: any) => child._type === 'span')
-        .map((child: any) => child.text || '')
+        .filter(child => child._type === 'span')
+        .map(child => child.text || '')
         .join('')
     })
     .join('\n\n')
@@ -29,7 +30,7 @@ export function CharacterCountInput (props: CharacterCountInputProps) {
   const { value, onChange, schemaType, renderDefault } = props
 
   const textContent = useMemo(() => {
-    return extractTextFromBlocks(value || [])
+    return extractTextFromBlocks(value || []) + '\n\nroe.dev/ama\n\n#ama'
   }, [value])
 
   const characterCount = textContent.length

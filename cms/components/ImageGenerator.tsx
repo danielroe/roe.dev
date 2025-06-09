@@ -74,7 +74,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
     const words = text.split(' ')
     const lines: string[] = []
     let currentLine = ''
-    const length = 55
+    const length = 58
 
     for (const word of words) {
       if (currentLine.length + word.length + 1 <= length) {
@@ -120,7 +120,10 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                 style={{
                   width: '1200px',
                   height: '630px',
-                  padding: '80px 96px',
+                  padding: '0px 96px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   boxSizing: 'border-box',
                   transform: 'scale(0.47)',
                   transformOrigin: 'top left',
@@ -132,7 +135,6 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                 <div
                   style={{
                     width: '100%',
-                    height: '100%',
                     background: '#ffffff',
                     borderRadius: '16px',
                     boxShadow: 'rgb(4, 4, 4) 0px 0px 0px 1px, rgba(255, 255, 255, 0.18) 0px 1px 0px inset, rgba(0, 0, 0, 0.6) 0px 0px 18px 1px',
@@ -153,11 +155,11 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                     }}
                   >
                     {/* Traffic Light Buttons */}
-                    <div style={{ display: 'flex', gap: '12px' }}>
+                    <div style={{ display: 'flex', gap: '14px' }}>
                       <div
                         style={{
-                          width: '14px',
-                          height: '14px',
+                          width: '20px',
+                          height: '20px',
                           borderRadius: '50%',
                           background: '#ff5f57',
                           border: '1px solid #e53e3e',
@@ -165,8 +167,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                       />
                       <div
                         style={{
-                          width: '14px',
-                          height: '14px',
+                          width: '20px',
+                          height: '20px',
                           borderRadius: '50%',
                           background: '#ffbd2e',
                           border: '1px solid #d69e2e',
@@ -174,8 +176,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                       />
                       <div
                         style={{
-                          width: '14px',
-                          height: '14px',
+                          width: '20px',
+                          height: '20px',
                           borderRadius: '50%',
                           background: '#28ca42',
                           border: '1px solid #38a169',
@@ -203,13 +205,14 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                   <div
                     style={{
                       padding: '40px',
-                      height: 'calc(100% - 72px)',
                       display: 'flex',
                       flexDirection: 'column',
                       fontWeight: 600,
                       fontFamily: 'JetBrains Mono',
                       fontSize: '24px',
-                      lineHeight: '40px',
+                      lineHeight: '32px',
+                      paddingTop: '48px',
+                      paddingBottom: '64px',
                       color: '#d0d0d0',
                       background: '#292d3e',
                     }}
@@ -221,7 +224,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                           {/* Line Number */}
                           <div
                             style={{
-                              width: '50px',
+                              width: '36px',
                               textAlign: 'right',
                               color: '#94a3b8',
                               paddingRight: '32px',
@@ -240,21 +243,22 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                         </div>
                       ))}
                     </div>
-
                   </div>
                 </div>
                 {/* Bottom Branding */}
                 <div
                   style={{
                     color: '#ffffff',
+                    height: 0,
                     fontSize: '24px',
-                    marginTop: '1.25rem',
                     marginRight: '1rem',
                     textAlign: 'right',
                     fontWeight: '500',
                   }}
                 >
-                  roe.dev/ama
+                  <div style={{ marginTop: '1.25rem' }}>
+                    roe.dev/ama
+                  </div>
                 </div>
                 <div style={{
                   position: 'absolute',
