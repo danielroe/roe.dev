@@ -39,6 +39,12 @@ export function resolveTextForPlatform (blocks: PortableTextBlock[], platform: '
                   }
                 }
               }
+              else if (markDef?._type === 'link' && (platform === 'mastodon' || platform === 'linkedin')) {
+                const uri = markDef.href as string
+                if (uri) {
+                  text = `${text} (${uri})`
+                }
+              }
             }
           }
 

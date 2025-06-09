@@ -64,6 +64,41 @@ const exampleBlocks = [
   },
 ]
 
+const linkTestBlocks = [
+  {
+    _key: 'test-block',
+    _type: 'block',
+    children: [
+      {
+        _key: 'text-before',
+        _type: 'span',
+        marks: [],
+        text: 'you can see the code on ',
+      },
+      {
+        _key: 'link-span',
+        _type: 'span',
+        marks: ['link-mark'],
+        text: 'my website',
+      },
+      {
+        _key: 'text-after',
+        _type: 'span',
+        marks: [],
+        text: ' ....and even make a PR if you have an idea of a better approach...',
+      },
+    ],
+    markDefs: [
+      {
+        _key: 'link-mark',
+        _type: 'link',
+        href: 'https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts',
+      },
+    ],
+    style: 'normal',
+  },
+]
+
 describe('mentions', () => {
   const testCases = {
     bluesky: '@nuxt.com',
@@ -72,7 +107,10 @@ describe('mentions', () => {
   }
 
   it.each(Object.entries(testCases))('should extract mentions from a block - %s', async (network, handle) => {
-    expect(resolveTextForPlatform(exampleBlocks, network as 'bluesky')).toEqual(`aJust doing a test of ${handle} on bluesky...? `)
+    const expectedText = network === 'mastodon' || network === 'linkedin'
+      ? `aJust doing a test of ${handle} on bluesky (https://bsky.app)...? `
+      : `aJust doing a test of ${handle} on bluesky...? `
+    expect(resolveTextForPlatform(exampleBlocks, network as 'bluesky')).toEqual(expectedText)
   })
 
   it('should process mentions with facets', async () => {
@@ -169,5 +207,34 @@ describe('mentions', () => {
       #ama",
       }
     `)
+  })
+})
+
+describe('link handling for different platforms', () => {
+  it('should include URLs for mastodon and linkedin', () => {
+    const mastodonText = resolveTextForPlatform(linkTestBlocks, 'mastodon')
+    const linkedinText = resolveTextForPlatform(linkTestBlocks, 'linkedin')
+    const blueskyText = resolveTextForPlatform(linkTestBlocks, 'bluesky')
+
+    expect(mastodonText).toContain('my website (https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts)')
+    expect(linkedinText).toContain('my website (https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts)')
+    expect(blueskyText).toEqual('you can see the code on my website ....and even make a PR if you have an idea of a better approach...')
+  })
+
+  it('should generate correct facets for bluesky links', () => {
+    const result = resolveTextWithFacets(linkTestBlocks)
+
+    expect(result.text).toEqual('you can see the code on my website ....and even make a PR if you have an idea of a better approach...')
+    expect(result.facets).toHaveLength(1)
+    expect(result.facets[0]).toEqual({
+      index: {
+        byteStart: 24,
+        byteEnd: 34,
+      },
+      features: [{
+        $type: 'app.bsky.richtext.facet#link',
+        uri: 'https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts',
+      }],
+    })
   })
 })
