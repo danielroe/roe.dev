@@ -17,7 +17,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const { access_token, ...rest } = await $fetch<{ access_token: string }>(
+  const { access_token } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
       method: 'POST',
@@ -39,11 +39,8 @@ export default defineEventHandler(async event => {
     })
   }
 
-  console.log(access_token, config, rest)
-
   const username = await query(access_token, `{ viewer { login } }`)
-    .then(r => r.data?.viewer.login)
-    .then(r => encodeURIComponent(r))
+    .then(r => r?.viewer.login)
     .catch(err => {
       console.error('viewer', err)
       return null
@@ -58,7 +55,7 @@ export default defineEventHandler(async event => {
 
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${repo}/collaborators/${username}`,
+      `https://api.github.com/repos/${repo}/collaborators/${encodeURIComponent(username)}`,
       {
         method: 'PUT',
         body: JSON.stringify({ permission: 'push' }),
