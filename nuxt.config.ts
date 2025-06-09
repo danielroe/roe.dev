@@ -226,6 +226,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    css: {
+      lightningcss: {},
+    },
     build: {
       modulePreload: {
         polyfill: false,
