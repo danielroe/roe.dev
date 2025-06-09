@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"844k"`)
+      .toMatchInlineSnapshot(`"869k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11583k"`)
+      .toMatchInlineSnapshot(`"11579k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -101,6 +101,7 @@ describe('project sizes', () => {
         "@jridgewell/sourcemap-codec",
         "@sanity/client",
         "@sanity/eventsource",
+        "@sanity/webhook",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
