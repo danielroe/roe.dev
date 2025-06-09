@@ -249,7 +249,7 @@ describe('mentions', () => {
             },
           },
         ],
-        "text": "aJust doing a test of @nuxt.com on bluesky...?
+        "text": "aJust doing a test of @nuxt.com on bluesky...? 
 
       roe.dev/ama
 
