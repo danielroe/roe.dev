@@ -161,7 +161,7 @@ export default defineType({
         ],
       },
       initialValue: 'draft',
-      // readOnly: ({ document }) => document?.publishStatus === 'ready' || document?.publishStatus === 'published',
+      readOnly: ({ document }) => document?.publishStatus === 'ready' || document?.publishStatus === 'published',
     }),
     defineField({
       name: 'generatedImage',

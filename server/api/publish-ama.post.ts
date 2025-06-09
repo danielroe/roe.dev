@@ -188,7 +188,7 @@ export default defineEventHandler(async event => {
       message: result.success ? `Published: ${result.url}` : result.error,
     }))
 
-    const finalStatus = results.some(r => r.success) ? 'success' : 'failed'
+    const finalStatus = results.some(r => r.success) ? 'published' : 'failed'
     await sanity.client
       .patch(document._id)
       .set({
