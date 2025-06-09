@@ -27,7 +27,7 @@ export default defineConfig({
                       .child(
                         S.documentList()
                           .title('Unanswered questions')
-                          .filter('_type == "ama" && answered != true')
+                          .filter('_type == "ama" && (answered != true && publishStatus != "published")')
                           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                           .child(documentId =>
                             S.document().documentId(documentId).schemaType('ama'),
