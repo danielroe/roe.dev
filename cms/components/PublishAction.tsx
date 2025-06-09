@@ -7,24 +7,32 @@ export const PublishAction: DocumentActionComponent = props => {
   const { patch } = useDocumentOperation(props.id, props.type)
 
   const document = props.draft || props.published
-  const isReady = document?.publishStatus === 'ready'
   const isPublished = document?.publishStatus === 'published'
-  const hasResponse = (document?.posts as any[])?.length > 0
 
-  // Don't show the action if there's no response or if already published
-  if (!hasResponse || isPublished) {
+  const hasTextContent = (document?.posts as any[])?.some(post => {
+    if (!post.content || !Array.isArray(post.content)) return false
+    return post.content.some((block: any) => {
+      if (block._type === 'block' && block.children) {
+        return block.children.some((child: any) => child.text && child.text.trim().length > 0)
+      }
+      return false
+    })
+  })
+
+  const hasImage = !!(document as any)?.generatedImage?.asset?._ref
+  const hasContent = hasTextContent && hasImage
+
+  if (isPublished) {
     return null
   }
 
   return {
-    label: isReady ? 'Ready to publish ✓' : 'Mark as ready to publish',
+    label: 'Mark as ready to publish',
     icon: CheckIcon,
-    disabled: isReady,
-    tone: isReady ? 'positive' : 'primary',
-    shortcut: !isReady ? 'mod+shift+p' : undefined,
+    disabled: !hasContent,
+    tone: 'positive',
+    shortcut: 'mod+shift+p',
     onHandle: () => {
-      if (isReady) return
-
       // Set the publish status to 'ready'
       patch.execute([
         {
