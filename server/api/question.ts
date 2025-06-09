@@ -6,7 +6,16 @@ export default defineEventHandler(async event => {
   const { question } = await readBody(event)
   if (!question) throw createError({ statusCode: 422 })
 
-  event.waitUntil(sanity.client.create({ _type: 'ama', content: question }).catch(console.error))
+  event.waitUntil(sanity.client.create({
+    _type: 'ama',
+    content: question,
+    publishStatus: 'draft',
+    platforms: {
+      bluesky: true,
+      linkedin: true,
+      mastodon: true,
+    },
+  }).catch(console.error))
 
   await sendEmail(event, 'Anonymous question', question)
   return null

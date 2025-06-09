@@ -5,6 +5,7 @@ import { defu } from 'defu'
 const networks = {
   bluesky: 'bluesky',
   mastodon: 'mastodon',
+  linkedin: 'linkedin',
 }
 
 type Network = keyof typeof networks
@@ -15,6 +16,9 @@ type NetworkOptions = {
     password?: string
   }
   mastodon?: {
+    identifier: string
+  }
+  linkedin?: {
     identifier: string
   }
 }
@@ -56,9 +60,7 @@ export default defineNuxtModule({
     })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
-      '@jridgewell/sourcemap-codec': resolver.resolve(
-        './mocks/sourcemap-codec',
-      ),
+      '@jridgewell/sourcemap-codec': resolver.resolve('./mocks/sourcemap-codec'),
       'qs': 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
       'semver': resolver.resolve('./mocks/semver'),

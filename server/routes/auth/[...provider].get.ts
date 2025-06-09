@@ -1,6 +1,10 @@
 export default defineEventHandler(async event => {
   const { code } = getQuery(event)
 
+  if (import.meta.dev) {
+    console.log(event.path)
+  }
+
   if (!code) {
     throw createError({
       statusCode: 422,
