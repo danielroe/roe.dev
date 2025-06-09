@@ -9,10 +9,15 @@ export default defineType({
   preview: {
     select: {
       title: 'content',
+      posts: 'posts',
       status: 'publishStatus',
+      answered: 'answered',
       createdAt: '_createdAt',
     },
-    prepare ({ title, status, createdAt }) {
+    prepare ({ title, answered, status, posts, createdAt }) {
+      if (answered) {
+        status = 'published'
+      }
       const now = new Date()
       const created = new Date(createdAt)
       const diffMs = now.getTime() - created.getTime()
@@ -57,11 +62,14 @@ export default defineType({
         failed: '❌',
       }
 
-      const statusDisplay = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Draft'
+      const hasDraft = posts && posts.length > 0
+      const emoji = !answered && !hasDraft ? '✨' : statusEmoji[status || 'draft'] || '📝'
+
+      const statusDisplay = !answered && !hasDraft ? 'not answered' : status || 'draft'
 
       return {
         title: title.slice(0, 50),
-        subtitle: `${statusEmoji[status || 'draft']} ${statusDisplay} • ${timeAgo}`,
+        subtitle: `${emoji} ${statusDisplay} • ${timeAgo}`,
       }
     },
   },
