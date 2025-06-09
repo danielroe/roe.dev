@@ -134,9 +134,6 @@ export default defineNuxtConfig({
       clientId: '',
       clientSecret: '',
     },
-    typefully: {
-      apiKey: '',
-    },
     github: {
       // my GH ID
       id: 'MDQ6VXNlcjI4NzA2Mzcy',
