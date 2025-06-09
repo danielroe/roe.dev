@@ -317,6 +317,7 @@ export default defineNuxtConfig({
     sanity: {
       projectId: '9bj3w2vo',
       perspective: 'production',
+      useCdn: true,
     },
     screens: {
       logo: 40,
