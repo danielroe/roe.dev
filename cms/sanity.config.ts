@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
+import { PublishAction } from './components/PublishAction'
 
 export default defineConfig({
   name: 'default',
@@ -27,7 +28,7 @@ export default defineConfig({
                       .child(
                         S.documentList()
                           .title('Unanswered questions')
-                          .filter('_type == "ama" && answered != true')
+                          .filter('_type == "ama" && (answered != true && publishStatus != "published")')
                           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                           .child(documentId =>
                             S.document().documentId(documentId).schemaType('ama'),
@@ -52,6 +53,17 @@ export default defineConfig({
     }),
     visionTool(),
   ],
+
+  document: {
+    actions: (prev, context) => {
+      if (context.schemaType === 'ama') {
+        // Filter out the default publish action for AMA documents
+        const filteredActions = prev.filter(action => action.name !== 'publish')
+        return [PublishAction, ...filteredActions]
+      }
+      return prev
+    },
+  },
 
   schema: {
     types: schemaTypes,

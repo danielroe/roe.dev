@@ -107,11 +107,21 @@ export default defineNuxtConfig({
   runtimeConfig: {
     sanity: {
       token: '',
+      webhookToken: '',
     },
     cloudflare: {
       s3Url: '',
       r2TokenId: '',
       r2TokenKey: '',
+    },
+    mastodon: {
+      accessToken: '',
+    },
+    linkedin: {
+      accessToken: '',
+    },
+    bluesky: {
+      accessToken: '',
     },
     voteUrl: '',
     sessionPassword: '',
@@ -321,6 +331,7 @@ export default defineNuxtConfig({
     sanity: {
       projectId: '9bj3w2vo',
       perspective: 'production',
+      useCdn: true,
     },
     screens: {
       logo: 40,
@@ -367,6 +378,9 @@ export default defineNuxtConfig({
       },
       mastodon: {
         identifier: 'daniel@roe.dev',
+      },
+      linkedin: {
+        identifier: 'daniel-roe',
       },
     },
   },

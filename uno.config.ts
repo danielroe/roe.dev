@@ -6,6 +6,9 @@ const resolver = createResolver(import.meta.url)
 export default defineConfig({
   content: {
     filesystem: [resolver.resolve('./content/**/*.md')],
+    pipeline: {
+      exclude: ['**/@nuxt/content/**'],
+    },
   },
   shortcuts: [
     {

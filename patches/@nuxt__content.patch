@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 35568524e96afce6a786f69269c7dc26fb2eab8a..b5dd2020fbdfc4c1274c645fa341d5fd3f05f327 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1673,7 +1673,7 @@ async function startSocketServer(nuxt, options, manifest) {
+   }
+   nuxt.hook("close", async () => {
+     await websocket?.close();
+-    await listener.server.close();
++    await listener?.server?.close();
+   });
+   return {
+     broadcast
