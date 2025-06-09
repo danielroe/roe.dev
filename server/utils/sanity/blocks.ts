@@ -69,6 +69,11 @@ export function resolveTextWithFacets (blocks: PortableTextBlock[], footer?: str
       continue
     }
 
+    // Add separator if this isn't the first block
+    if (fullText) {
+      fullText += '\n\n'
+    }
+
     let blockText = ''
     for (const child of block.children.filter(child => child._type === 'span')) {
       let text = child.text || ''
@@ -127,9 +132,6 @@ export function resolveTextWithFacets (blocks: PortableTextBlock[], footer?: str
       blockText += text
     }
 
-    if (fullText && blockText) {
-      fullText += '\n\n'
-    }
     fullText += blockText
   }
 

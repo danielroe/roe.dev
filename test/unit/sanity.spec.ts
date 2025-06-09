@@ -99,6 +99,55 @@ const linkTestBlocks = [
   },
 ]
 
+const emojiLinkTestBlocks = [
+  {
+    _key: 'emoji-block',
+    _type: 'block',
+    children: [
+      {
+        _key: 'text-with-emoji',
+        _type: 'span',
+        marks: [],
+        text: 'it\'s not difficult to clean up the _very few_ messages I get that aren\'t genuine 🤷',
+      },
+    ],
+    markDefs: [],
+    style: 'normal',
+  },
+  {
+    _key: 'link-block',
+    _type: 'block',
+    children: [
+      {
+        _key: 'text-before-link',
+        _type: 'span',
+        marks: [],
+        text: 'you can see the code on ',
+      },
+      {
+        _key: 'link-text',
+        _type: 'span',
+        marks: ['link-key'],
+        text: 'my website',
+      },
+      {
+        _key: 'text-after-link',
+        _type: 'span',
+        marks: [],
+        text: ' ....and even make a PR if you have an idea of a better approach...',
+      },
+    ],
+    markDefs: [
+      {
+        _key: 'link-key',
+        _type: 'link',
+        href: 'https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts',
+      },
+    ],
+    style: 'normal',
+  },
+]
+
 describe('mentions', () => {
   const testCases = {
     bluesky: '@nuxt.com',
@@ -230,6 +279,45 @@ describe('link handling for different platforms', () => {
       index: {
         byteStart: 24,
         byteEnd: 34,
+      },
+      features: [{
+        $type: 'app.bsky.richtext.facet#link',
+        uri: 'https://github.com/danielroe/roe.dev/blob/main/server/api/question.ts',
+      }],
+    })
+  })
+
+  it('should handle emojis correctly in byte offset calculation', () => {
+    const result = resolveTextWithFacets(emojiLinkTestBlocks)
+
+    // The text should be: "it's not difficult to clean up the _very few_ messages I get that aren't genuine 🤷\n\nyou can see the code on my website ....and even make a PR if you have an idea of a better approach..."
+    // The emoji 🤷 is 4 bytes in UTF-8
+    // First block: "it's not difficult to clean up the _very few_ messages I get that aren't genuine 🤷" (83 bytes)
+    // Then "\n\n" (2 bytes)
+    // Second block starts at byte 85
+    // "you can see the code on " (25 bytes)
+    // Link "my website" should start at byte 85 + 25 = 110
+    const expectedText = 'it\'s not difficult to clean up the _very few_ messages I get that aren\'t genuine 🤷\n\nyou can see the code on my website ....and even make a PR if you have an idea of a better approach...'
+
+    expect(result.text).toEqual(expectedText)
+    expect(result.facets).toHaveLength(1)
+
+    // Calculate expected byte positions
+    const firstBlockText = 'it\'s not difficult to clean up the _very few_ messages I get that aren\'t genuine 🤷'
+    const firstBlockBytes = Buffer.byteLength(firstBlockText, 'utf8')
+    const newlineBytes = Buffer.byteLength('\n\n', 'utf8')
+    const beforeLinkText = 'you can see the code on '
+    const beforeLinkBytes = Buffer.byteLength(beforeLinkText, 'utf8')
+    const linkText = 'my website'
+    const linkBytes = Buffer.byteLength(linkText, 'utf8')
+
+    const expectedByteStart = firstBlockBytes + newlineBytes + beforeLinkBytes
+    const expectedByteEnd = expectedByteStart + linkBytes
+
+    expect(result.facets[0]).toEqual({
+      index: {
+        byteStart: expectedByteStart,
+        byteEnd: expectedByteEnd,
       },
       features: [{
         $type: 'app.bsky.richtext.facet#link',
