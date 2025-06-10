@@ -85,7 +85,7 @@ export default defineEventHandler(async event => {
   const webhookSecret = config.sanity.webhookToken
 
   if (!webhookSecret) {
-    console.error('SANITY_WEBHOOK_SECRET environment variable not set')
+    console.error('NUXT_SANITY_WEBHOOK_TOKEN environment variable not set')
     throw createError({
       statusCode: 500,
       statusMessage: 'Webhook secret not configured',
