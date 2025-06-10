@@ -250,6 +250,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                   style={{
                     color: '#ffffff',
                     height: 0,
+                    fontFamily: 'JetBrains Mono',
                     fontSize: '24px',
                     marginRight: '1rem',
                     textAlign: 'right',
