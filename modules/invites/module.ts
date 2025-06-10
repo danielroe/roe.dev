@@ -23,6 +23,7 @@ export default defineNuxtModule({
       projectId: '9bj3w2vo',
       dataset: 'production',
       apiVersion: '2025-02-19',
+      useCdn: false,
       token: process.env.NUXT_SANITY_TOKEN,
     })
 
