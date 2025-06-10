@@ -166,24 +166,14 @@ export default defineNuxtConfig({
 
   sourcemap: { client: true, server: false },
 
-  future: {
-    compatibilityVersion: 4,
-  },
-
   experimental: {
     buildCache: false,
     defaults: {
       nuxtLink: {
         trailingSlash: 'append',
       },
-      useAsyncData: {
-        deep: false,
-      },
     },
-    cookieStore: true,
-    headNext: true,
     viewTransition: true,
-    typedPages: true,
   },
 
   compatibilityDate: '2025-06-09',
