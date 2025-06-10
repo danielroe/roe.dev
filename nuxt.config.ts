@@ -181,7 +181,6 @@ export default defineNuxtConfig({
   nitro: {
     cloudflare: {
       deployConfig: true,
-      nodeCompat: true,
       wrangler: {
         observability: {
           logs: {
