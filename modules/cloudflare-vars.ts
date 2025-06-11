@@ -26,6 +26,8 @@ export default defineNuxtModule({
 
       walkConfig(runtimeConfig)
 
+      console.log(vars)
+
       config.cloudflare ||= {}
       config.cloudflare.wrangler ||= {}
       config.cloudflare.wrangler.vars = {
