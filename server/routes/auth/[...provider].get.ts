@@ -1,8 +1,13 @@
 export default defineEventHandler(async event => {
-  const { code } = getQuery(event)
+  const { code, error, error_description, error_uri } = getQuery(event)
 
   if (import.meta.dev) {
     console.log(event.path)
+  }
+
+  if (error) {
+    console.log(error, error_description, error_uri)
+    return sendRedirect(event, '/?auth_error=true')
   }
 
   if (!code) {
