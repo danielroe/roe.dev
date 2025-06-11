@@ -20,6 +20,7 @@ export default defineNuxtModule({
       nitro.options.handlers = nitro.options.handlers.filter(handler => !handler.handler.includes('node_modules/nuxt-security/'))
       // remove nuxt-security's rate limiter storage (requires lru-cache)
       delete nitro.options.storage['#rate-limiter-storage']
+      delete (nitro.options.runtimeConfig as any).security
     })
   },
 })

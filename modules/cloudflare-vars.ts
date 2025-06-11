@@ -17,7 +17,7 @@ export default defineNuxtModule({
           if (typeof value === 'object' && value !== null) {
             walkConfig(value, `${prefix}${key}.`)
           }
-          else if (typeof value !== 'object') {
+          else if (typeof value !== 'object' && value) {
             const varKey = kebabCase(`${prefix}${key}`).toUpperCase().replace(/-/g, '_')
             vars[varKey] = value
           }
