@@ -182,6 +182,7 @@ export default defineNuxtConfig({
     cloudflare: {
       deployConfig: true,
       wrangler: {
+        name: 'roe',
         observability: {
           logs: {
             enabled: true,
