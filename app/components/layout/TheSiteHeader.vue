@@ -123,7 +123,7 @@ function toggleMenu (input?: Event | boolean) {
         @click="$auth.status = 'pending'"
       >
         <span
-          class="h-5 w-5 i-ri:github-fill"
+          class="h-5 w-5 i-ri:login-circle-line"
           alt=""
         />
         <span class="sr-only"> Login </span>
