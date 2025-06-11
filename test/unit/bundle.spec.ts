@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"497k"`)
+      .toMatchInlineSnapshot(`"501k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -68,8 +68,8 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
-          "_nuxt/sqlite3-opfs-async-proxy-MFda9Fch.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-DZqsmh1G.js",
+          "_nuxt/sqlite3-opfs-async-proxy-DZdsd1Kz.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-B2XAK-sM.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"869k"`)
+      .toMatchInlineSnapshot(`"822k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11590k"`)
+      .toMatchInlineSnapshot(`"11481k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -138,7 +138,6 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
-        "cssfilter",
         "debug",
         "decode-named-character-reference",
         "decompress-response",
@@ -198,8 +197,6 @@ describe('project sizes', () => {
         "is-retry-allowed",
         "iso-datestring-validator",
         "longest-streak",
-        "lru-cache",
-        "lru-cache/dist/esm",
         "magic-string",
         "markdown-table",
         "mdast-util-find-and-replace",
@@ -308,7 +305,6 @@ describe('project sizes', () => {
         "vue-bundle-renderer",
         "web-namespaces",
         "xml-js",
-        "xss",
         "yaml",
         "zod",
         "zod/dist/cjs",
