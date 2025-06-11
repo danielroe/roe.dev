@@ -20,6 +20,9 @@ patchedDependencies:
   '@nuxtjs/sanity':
     hash: cdee2d630d64c71602ffb4f987198ee7fdae06d54141c2e06c46529e5362c3ae
     path: patches/@nuxtjs__sanity.patch
+  nitropack:
+    hash: c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b
+    path: patches/nitropack.patch
 
 importers:
 
@@ -3630,9 +3633,6 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  '@types/estree@1.0.8':
-    resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
   '@types/event-source-polyfill@1.0.5':
     resolution: {integrity: sha512-iaiDuDI2aIFft7XkcwMzDWLqo7LVDixd2sR6B4wxJut9xcp/Ev9bO4EFg4rm6S9QxATLBj5OPxdeocgmhjwKaw==}
 
@@ -4278,11 +4278,6 @@ packages:
 
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -13610,7 +13605,7 @@ snapshots:
       magic-string: 0.30.17
       mlly: 1.7.4
       mocked-exports: 0.1.1
-      nitropack: 2.11.12(better-sqlite3@11.10.0)
+      nitropack: 2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0)
       pathe: 2.0.3
       pkg-types: 2.1.0
       postcss: 8.5.4
@@ -14615,11 +14610,11 @@ snapshots:
     transitivePeerDependencies:
       - '@sanity/types'
 
-  '@sanity/presentation-comlink@1.0.21(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))':
+  '@sanity/presentation-comlink@1.0.21(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))':
     dependencies:
       '@sanity/client': 7.5.0(debug@4.4.1)
       '@sanity/comlink': 3.0.5
-      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
+      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
     transitivePeerDependencies:
       - '@sanity/types'
 
@@ -14627,7 +14622,7 @@ snapshots:
     dependencies:
       '@sanity/client': 7.5.0(debug@4.4.1)
       '@sanity/comlink': 3.0.5
-      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
+      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
     transitivePeerDependencies:
       - '@sanity/types'
 
@@ -14636,7 +14631,7 @@ snapshots:
       '@sanity/client': 6.29.1(debug@4.4.1)
       '@sanity/uuid': 3.0.2
 
-  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.5.0(debug@4.4.1))':
+  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.5.0)':
     dependencies:
       '@sanity/client': 7.5.0(debug@4.4.1)
       '@sanity/uuid': 3.0.2
@@ -14832,7 +14827,7 @@ snapshots:
   '@sanity/visual-editing-csm@2.0.17(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23))(typescript@5.8.3)':
     dependencies:
       '@sanity/client': 7.5.0(debug@4.4.1)
-      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
+      '@sanity/visual-editing-types': 1.1.0(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
       valibot: 1.1.0(typescript@5.8.3)
     transitivePeerDependencies:
       - '@sanity/types'
@@ -14844,7 +14839,7 @@ snapshots:
     optionalDependencies:
       '@sanity/types': 3.91.0(@types/react@18.3.23)(debug@4.4.1)
 
-  '@sanity/visual-editing-types@1.1.0(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))':
+  '@sanity/visual-editing-types@1.1.0(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))':
     dependencies:
       '@sanity/client': 7.5.0(debug@4.4.1)
     optionalDependencies:
@@ -15390,16 +15385,14 @@ snapshots:
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.7
 
   '@types/eslint@9.6.1':
     dependencies:
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.7': {}
-
-  '@types/estree@1.0.8': {}
 
   '@types/event-source-polyfill@1.0.5': {}
 
@@ -16277,8 +16270,6 @@ snapshots:
       acorn: 8.14.1
 
   acorn@8.14.1: {}
-
-  acorn@8.15.0: {}
 
   adm-zip@0.5.16: {}
 
@@ -20360,7 +20351,7 @@ snapshots:
       p-wait-for: 5.0.2
       qs: 6.14.0
 
-  nitropack@2.11.12(better-sqlite3@11.10.0):
+  nitropack@2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@netlify/functions': 3.1.9(rollup@4.42.0)
@@ -20699,7 +20690,7 @@ snapshots:
       mlly: 1.7.4
       mocked-exports: 0.1.1
       nanotar: 0.2.0
-      nitropack: 2.11.12(better-sqlite3@11.10.0)
+      nitropack: 2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0)
       nypm: 0.6.0
       ofetch: 1.4.1
       ohash: 2.0.11
@@ -22163,8 +22154,8 @@ snapshots:
       '@sanity/message-protocol': 0.13.3
       '@sanity/migrate': 3.91.0(@types/react@18.3.23)
       '@sanity/mutator': 3.91.0(@types/react@18.3.23)
-      '@sanity/presentation-comlink': 1.0.21(@sanity/client@7.5.0(debug@4.4.1))(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
-      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.5.0(debug@4.4.1))
+      '@sanity/presentation-comlink': 1.0.21(@sanity/client@7.5.0)(@sanity/types@3.91.0(@types/react@18.3.23)(debug@4.4.1))
+      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.5.0)
       '@sanity/schema': 3.91.0(@types/react@18.3.23)(debug@4.4.1)
       '@sanity/sdk': 0.0.0-alpha.25(@types/react@18.3.23)(debug@4.4.1)(immer@10.1.1)(react@18.3.1)(use-sync-external-store@1.5.0(react@18.3.1))
       '@sanity/telemetry': 0.8.1(react@18.3.1)
@@ -23035,7 +23026,7 @@ snapshots:
   terser@5.42.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.15.0
+      acorn: 8.14.1
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -23959,12 +23950,12 @@ snapshots:
   webpack@5.99.9(esbuild@0.25.5):
     dependencies:
       '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
-      acorn: 8.15.0
+      acorn: 8.14.1
       browserslist: 4.25.0
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.18.1
