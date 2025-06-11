@@ -20,9 +20,6 @@ patchedDependencies:
   '@nuxtjs/sanity':
     hash: cdee2d630d64c71602ffb4f987198ee7fdae06d54141c2e06c46529e5362c3ae
     path: patches/@nuxtjs__sanity.patch
-  nitropack:
-    hash: c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b
-    path: patches/nitropack.patch
 
 importers:
 
@@ -13605,7 +13602,7 @@ snapshots:
       magic-string: 0.30.17
       mlly: 1.7.4
       mocked-exports: 0.1.1
-      nitropack: 2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0)
+      nitropack: 2.11.12(better-sqlite3@11.10.0)
       pathe: 2.0.3
       pkg-types: 2.1.0
       postcss: 8.5.4
@@ -20351,7 +20348,7 @@ snapshots:
       p-wait-for: 5.0.2
       qs: 6.14.0
 
-  nitropack@2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0):
+  nitropack@2.11.12(better-sqlite3@11.10.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@netlify/functions': 3.1.9(rollup@4.42.0)
@@ -20690,7 +20687,7 @@ snapshots:
       mlly: 1.7.4
       mocked-exports: 0.1.1
       nanotar: 0.2.0
-      nitropack: 2.11.12(patch_hash=c2f62c0a126aa2e1d24abbedfd7cb562d06be3d629e02898aeb3144b6244e79b)(better-sqlite3@11.10.0)
+      nitropack: 2.11.12(better-sqlite3@11.10.0)
       nypm: 0.6.0
       ofetch: 1.4.1
       ohash: 2.0.11
