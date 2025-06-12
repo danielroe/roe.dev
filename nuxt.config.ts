@@ -194,7 +194,7 @@ export default defineNuxtConfig({
       wrangler: {
         name: 'roe',
         kv_namespaces: [
-          { binding: 'KV', id: 'roe' },
+          { binding: 'KV', id: '99feadca7a2d4f0c95f55ef8fb674a41' },
         ],
         vars: {},
         observability: {
