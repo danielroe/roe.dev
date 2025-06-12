@@ -40,6 +40,7 @@ export default defineEventHandler(async event => {
   const locationMaps: Record<string, string | undefined> = {
     'United Kingdom of Great Britain and Northern Ireland (the)': location.region,
     'United States of America (the)': location.region,
+    'Netherlands (Kingdom of the)': 'The Netherlands',
   }
 
   return {

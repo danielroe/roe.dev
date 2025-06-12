@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import PartySocket from 'partysocket'
+import type { WebSocketConnection } from '~/utils/websocket'
 
 const colorSet = {
   live: {
@@ -76,31 +76,39 @@ const PresenceWrapper = defineComponent({
 })
 
 if (import.meta.client) {
-  let partySocket: PartySocket
+  let presenceWs: WebSocketConnection
+
   onNuxtReady(() => {
-    partySocket = new PartySocket({
-      host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
-      room: 'site',
+    presenceWs = createWebSocket({
+      endpoint: '_ws',
+      autoReconnect: true,
+      onParsedMessage: message => {
+        switch (message.type) {
+          case 'connections':
+            count.value = message.payload
+            break
+          case 'status':
+            if (message.payload in colorSet) status.value = message.payload as keyof typeof colorSet
+            break
+        }
+      },
+      onOpen: () => {
+        console.log('[ws] connected to presence')
+      },
+      onClose: () => {
+        console.log('[ws] disconnected from presence')
+      },
     })
 
-    partySocket.onmessage = evt => {
-      const data = evt.data as string
-      const [type, value] = data.split(':')
-      if (!value) return
-      switch (type) {
-        case 'connections':
-          count.value = parseInt(value)
-          break
-
-        case 'status':
-          if (value in colorSet) status.value = value as keyof typeof colorSet
-          break
-      }
-    }
+    presenceWs.connect()
   })
 
-  onBeforeUnmount(() => partySocket?.close())
-  onDeactivated(() => partySocket?.close())
-  onActivated(() => partySocket?.reconnect())
+  onBeforeUnmount(() => presenceWs?.disconnect())
+  onDeactivated(() => presenceWs?.disconnect())
+  onActivated(() => {
+    if (presenceWs && !presenceWs.isOpen) {
+      presenceWs.connect()
+    }
+  })
 }
 </script>

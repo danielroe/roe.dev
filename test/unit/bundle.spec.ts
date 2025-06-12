@@ -250,7 +250,6 @@ describe('project sizes', () => {
         "parse5",
         "parse5/node_modules/entities",
         "parse5/node_modules/entities/dist/esm",
-        "partysocket",
         "perfect-debounce",
         "property-information",
         "readable-stream",

@@ -51,6 +51,14 @@ export default defineNuxtConfig({
     experimental: {
       noVueServer: true,
     },
+    nitro: {
+      storage: {
+        ws: {
+          driver: 'cloudflare-kv-binding',
+          binding: 'KV',
+        },
+      },
+    },
     image: {
       provider: 'ipxStatic',
     },
@@ -123,7 +131,6 @@ export default defineNuxtConfig({
     bluesky: {
       accessToken: '',
     },
-    voteUrl: '',
     sessionPassword: '',
     // emailing ideas
     resendApiKey: '',
@@ -179,10 +186,17 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-09',
 
   nitro: {
+    experimental: {
+      websocket: true,
+    },
     cloudflare: {
       deployConfig: true,
       wrangler: {
         name: 'roe',
+        kv_namespaces: [
+          { binding: 'KV', id: 'roe' },
+        ],
+        vars: {},
         observability: {
           logs: {
             enabled: true,
