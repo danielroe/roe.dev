@@ -72,8 +72,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeUnmount } from 'vue'
-import PartySocket from 'partysocket'
+import { ref, onBeforeUnmount, watch } from 'vue'
+import { serialize, isReactionMessage } from '#shared/utils/websocket-messages'
 
 definePageMeta({ title: 'Live Reactions' })
 
@@ -87,29 +87,43 @@ const displayedReactions = ref<Array<{
 }>>([])
 const isConnected = ref(false)
 
-// Connect to PartyKit
-let partySocket: PartySocket
+let websocketConnection: ReturnType<typeof createWebSocket>
 if (import.meta.client) {
   onNuxtReady(() => {
-    partySocket = new PartySocket({
-      host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
-      room: 'reactions',
+    websocketConnection = createWebSocket({
+      endpoint: 'reactions/_ws',
+      autoReconnect: true,
+      onOpen: () => {
+        isConnected.value = true
+        console.log('[ws] connected to reactions')
+      },
+      onParsedMessage: message => {
+        if (isReactionMessage(message)) {
+          displayReaction(message.payload)
+        }
+      },
+      onClose: () => {
+        isConnected.value = false
+        console.log('[ws] disconnected from reactions')
+      },
     })
 
-    partySocket.onopen = () => {
-      isConnected.value = true
-    }
+    websocketConnection.connect()
   })
 
-  onBeforeUnmount(() => partySocket?.close())
-  onDeactivated(() => partySocket?.close())
-  onActivated(() => partySocket?.reconnect())
+  onBeforeUnmount(() => websocketConnection?.disconnect())
+  onDeactivated(() => websocketConnection?.disconnect())
+  onActivated(() => {
+    if (websocketConnection && !websocketConnection.isOpen) {
+      websocketConnection.connect()
+    }
+  })
 }
 
 async function sendEmoji (emoji: string, count = 1) {
   if (!isConnected.value) return
   for (let i = 0; i < count; i++) {
-    partySocket.send(`reaction:${emoji}`)
+    websocketConnection?.send(serialize.reaction(emoji))
     displayReaction(emoji)
     await new Promise(resolve => setTimeout(resolve, 100))
   }
