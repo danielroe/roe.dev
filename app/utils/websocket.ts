@@ -53,7 +53,7 @@ export class WebSocketConnection {
   }
 
   connect (): void {
-    if (this.websocket?.readyState === WebSocket.OPEN || this.isConnecting) {
+    if (this.websocket?.readyState === WebSocket.OPEN || this.isConnecting || import.meta.test) {
       return
     }
 
