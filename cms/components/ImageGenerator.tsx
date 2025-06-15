@@ -14,6 +14,14 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const [hasPreview, setHasPreview] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
 
+  const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' })
+  const dateOfDocument = useFormValue(['_createdAt']) as string
+  const date = new Date(dateOfDocument)
+  const relativeDate = formatter.format(
+    Math.ceil((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+    'day',
+  )
+
   const documentContent = useFormValue(['content']) as string
   const client = useClient({ apiVersion: '2025-02-10' })
 
@@ -33,8 +41,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
 
     try {
       const blob = await domToBlob(terminalRef.current, {
-        width: 1200,
-        height: 630,
+        width: terminalRef.current.clientWidth,
+        height: terminalRef.current.clientHeight,
         scale: 2,
         style: {
           transform: 'scale(1)',
@@ -119,15 +127,15 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                 ref={terminalRef}
                 style={{
                   width: '1200px',
-                  height: '630px',
-                  padding: '0px 96px',
+                  height: 'auto',
+                  padding: '96px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   boxSizing: 'border-box',
                   transform: 'scale(0.47)',
                   transformOrigin: 'top left',
-                  marginBottom: '-325px',
+                  marginBottom: 'calc(-53% + 6rem)',
                   position: 'relative',
                 }}
               >
@@ -192,7 +200,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                         left: '50%',
                         transform: 'translateX(-50%)',
                         color: '#64748b',
-                        fontSize: '22px',
+                        fontSize: '24px',
+                        whiteSpace: 'nowrap',
                         fontWeight: '500',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                       }}
@@ -250,15 +259,24 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                   style={{
                     color: '#ffffff',
                     height: 0,
-                    fontFamily: 'JetBrains Mono',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                     fontSize: '24px',
                     marginRight: '1rem',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    whiteSpace: 'nowrap',
                     textAlign: 'right',
                     fontWeight: '500',
                   }}
                 >
                   <div style={{ marginTop: '1.25rem' }}>
                     roe.dev/ama
+                  </div>
+                  <div style={{ marginTop: '1.25rem' }}>
+                    asked
+                    {' '}
+                    {relativeDate}
                   </div>
                 </div>
                 <div style={{
