@@ -253,7 +253,7 @@ async function publishToLinkedIn (event: H3Event, text: string, image: AMADocume
         },
         media: uploadedImageURN,
         title: {
-          text: 'AMA Post',
+          text: altText,
         },
       },
     ]

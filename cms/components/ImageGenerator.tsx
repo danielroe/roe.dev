@@ -206,7 +206,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                       }}
                     >
-                      ~/answer.md
+                      ~/question.md
                     </div>
                   </div>
 
