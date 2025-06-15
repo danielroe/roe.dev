@@ -34,7 +34,10 @@ export function resolveTextForPlatform (blocks: PortableTextBlock[], platform: '
                 const entity = markDef.entity as EntityMention
                 if (entity?.socialHandles) {
                   const handle = entity.socialHandles[platform]
-                  if (handle) {
+                  if (handle && platform === 'linkedin') {
+                    text = `https://www.linkedin.com/in/${handle}`
+                  }
+                  else if (handle) {
                     text = `@${handle}`
                   }
                 }
