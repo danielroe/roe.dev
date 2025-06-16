@@ -1,3 +1,5 @@
+import { sendPushoverNotification } from '../utils/pushover'
+
 export default defineEventHandler(async event => {
   if (event.method === 'OPTIONS') return null
   const sanity = useSanity(event)
@@ -17,6 +19,10 @@ export default defineEventHandler(async event => {
     },
   }).catch(console.error))
 
-  await sendEmail(event, 'Anonymous question', question)
+  await sendPushoverNotification(event, {
+    title: 'Anonymous question',
+    message: question,
+    priority: 0,
+  })
   return null
 })

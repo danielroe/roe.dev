@@ -127,6 +127,11 @@ export default defineNuxtConfig({
     sessionPassword: '',
     // emailing ideas
     resendApiKey: '',
+    // Pushover notifications
+    pushover: {
+      token: '',
+      userKey: '',
+    },
     // Location API key for secure updates
     locationApiKey: '',
     bigdataApiKey: '',
