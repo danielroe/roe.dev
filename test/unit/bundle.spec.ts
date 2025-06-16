@@ -69,7 +69,7 @@ describe('project sizes', () => {
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
           "_nuxt/sqlite3-opfs-async-proxy-MFda9Fch.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-DZqsmh1G.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-Coi2io3p.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"822k"`)
+      .toMatchInlineSnapshot(`"824k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11470k"`)
+      .toMatchInlineSnapshot(`"11489k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -238,6 +238,7 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
+        "minimark",
         "ms",
         "multiformats",
         "nanoid",
