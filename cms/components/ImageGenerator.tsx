@@ -12,7 +12,9 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const { onChange, renderDefault } = props
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasPreview, setHasPreview] = useState(false)
+  const [visualLineCount, setVisualLineCount] = useState(1)
   const terminalRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' })
   const dateOfDocument = useFormValue(['_createdAt']) as string
@@ -25,6 +27,13 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const documentContent = useFormValue(['content']) as string
   const client = useClient({ apiVersion: '2025-02-10' })
 
+  // Format text for display - now just clean whitespace
+  const formatText = useCallback((text: string) => {
+    return text.trim()
+  }, [])
+
+  const formattedText = documentContent ? formatText(documentContent) : ''
+
   useEffect(() => {
     if (documentContent?.trim()) {
       setHasPreview(true)
@@ -33,6 +42,48 @@ export function ImageGenerator (props: ImageGeneratorProps) {
       setHasPreview(false)
     }
   }, [documentContent])
+
+  // Calculate visual line count after text wrapping
+  useEffect(() => {
+    if (!formattedText) {
+      setVisualLineCount(1)
+      return
+    }
+
+    // Use setTimeout to ensure DOM is updated
+    const timer = setTimeout(() => {
+      if (contentRef.current) {
+        // Account for the content area's padding-right: 40px
+        const contentWidth = contentRef.current.clientWidth - 40 || 960
+
+        const tempDiv = document.createElement('div')
+        tempDiv.style.cssText = `
+          position: absolute;
+          visibility: hidden;
+          width: ${contentWidth}px;
+          font-family: JetBrains Mono;
+          font-size: 24px;
+          line-height: 32px;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          padding: 0;
+          margin: 0;
+        `
+        tempDiv.textContent = formattedText
+        document.body.appendChild(tempDiv)
+
+        const lineHeight = 32
+        const height = tempDiv.offsetHeight
+        const lines = Math.ceil(height / lineHeight)
+        setVisualLineCount(Math.max(1, lines))
+
+        document.body.removeChild(tempDiv)
+      }
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [formattedText])
 
   const generateImage = useCallback(async () => {
     if (!documentContent || !hasPreview || !terminalRef.current) return
@@ -76,32 +127,6 @@ export function ImageGenerator (props: ImageGeneratorProps) {
       setIsGenerating(false)
     }
   }, [documentContent, hasPreview, onChange, client])
-
-  // Split text into lines that fit the terminal width
-  const formatTextLines = useCallback((text: string) => {
-    const words = text.split(' ')
-    const lines: string[] = []
-    let currentLine = ''
-    const length = 58
-
-    for (const word of words) {
-      if (currentLine.length + word.length + 1 <= length) {
-        currentLine += (currentLine ? ' ' : '') + word
-      }
-      else {
-        if (currentLine) {
-          lines.push(currentLine)
-        }
-        currentLine = word
-      }
-    }
-    if (currentLine) {
-      lines.push(currentLine)
-    }
-    return lines
-  }, [])
-
-  const textLines = documentContent ? formatTextLines(documentContent) : []
 
   return (
     <Stack space={3}>
@@ -214,8 +239,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                   <div
                     style={{
                       padding: '40px',
+                      paddingLeft: '0px',
                       display: 'flex',
-                      flexDirection: 'column',
                       fontWeight: 600,
                       fontFamily: 'JetBrains Mono',
                       fontSize: '24px',
@@ -224,33 +249,43 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                       paddingBottom: '64px',
                       color: '#d0d0d0',
                       background: '#292d3e',
+                      counterReset: 'line-number',
                     }}
                   >
-                    {/* Content Lines */}
-                    <div style={{ flex: 1 }}>
-                      {textLines.map((line, index) => (
-                        <div key={index} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '4px' }}>
-                          {/* Line Number */}
-                          <div
-                            style={{
-                              width: '36px',
-                              textAlign: 'right',
-                              color: '#94a3b8',
-                              paddingRight: '32px',
-                              flexShrink: 0,
-                              userSelect: 'none',
-                              fontSize: '16px',
-                            }}
-                          >
-                            {(index + 1).toString().padStart(2, ' ')}
-                          </div>
-
-                          {/* Content */}
-                          <div>
-                            {line}
-                          </div>
+                    {/* Line Numbers Column */}
+                    <div
+                      style={{
+                        width: '68px',
+                        flexShrink: 0,
+                        paddingRight: '32px',
+                        color: '#94a3b8',
+                        fontSize: '16px',
+                        fontVariantNumeric: 'tabular-nums',
+                        userSelect: 'none',
+                        lineHeight: '32px',
+                      }}
+                    >
+                      {/* Generate line numbers based on visual line count */}
+                      {Array.from({ length: visualLineCount }, (_, index) => (
+                        <div key={index} style={{ height: '32px', display: 'flex', justifyContent: 'flex-end' }}>
+                          {(index + 1).toString().padStart(2, ' ')}
                         </div>
                       ))}
+                    </div>
+
+                    <div
+                      ref={contentRef}
+                      style={{
+                        flex: 1,
+                        whiteSpace: 'pre-wrap',
+                        wordWrap: 'break-word',
+                        lineHeight: '32px',
+                        paddingRight: '40px',
+                        maxWidth: 'calc(100% - 68px)',
+                        overflowWrap: 'break-word',
+                      }}
+                    >
+                      {formattedText}
                     </div>
                   </div>
                 </div>
