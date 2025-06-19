@@ -28,6 +28,7 @@ export default defineConfig({
                       .child(
                         S.documentList()
                           .title('Unanswered questions')
+                          .apiVersion('v2025-02-19')
                           .filter('_type == "ama" && (answered != true && publishStatus != "published")')
                           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                           .child(documentId =>
@@ -39,6 +40,7 @@ export default defineConfig({
                       .child(
                         S.documentList()
                           .title('All questions')
+                          .apiVersion('v2025-02-19')
                           .filter('_type == "ama"')
                           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                           .child(documentId =>
