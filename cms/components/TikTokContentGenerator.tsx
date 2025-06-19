@@ -33,7 +33,27 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
 
   const documentContent = useFormValue(['content']) as string
   const posts = useFormValue(['posts']) as Array<{ content: PortableTextTextBlock[] }>
+  const existingVideo = useFormValue(['tiktokVideo']) as { asset?: { _ref: string } } | undefined
   const client = useClient({ apiVersion: '2025-02-10' })
+
+  // Initialize video URL from existing asset
+  useEffect(() => {
+    const loadExistingVideo = async () => {
+      if (existingVideo?.asset?._ref && !videoUrl) {
+        try {
+          const asset = await client.getDocument(existingVideo.asset._ref)
+          if (asset?.url) {
+            setVideoUrl(asset.url)
+          }
+        }
+        catch (error) {
+          console.warn('Failed to load existing video:', error)
+        }
+      }
+    }
+
+    loadExistingVideo()
+  }, [existingVideo, client])
 
   useEffect(() => {
     if (documentContent?.trim() && posts?.length > 0) {
@@ -170,6 +190,81 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
 
   const videoDuration = calculateVideoDuration(1, answerLines.length, formattedQuestion)
 
+  // Generate TikTok metadata
+  const generateTikTokMetadata = useCallback((question: string, answer: string): { title: string, description: string, hashtags: string[] } => {
+    // Generate title - truncate question if too long
+    const title = question.length > 47
+      ? question.slice(0, 47) + '...'
+      : question
+
+    // Generate context-aware hashtags
+    const contentText = `${question} ${answer}`.toLowerCase()
+
+    const baseHashtags = ['AMA', 'QandA', 'Tech', 'Programming', 'Developer']
+    const contextHashtags: string[] = []
+
+    // Detect content-specific technologies and topics
+    const techKeywords = {
+      nuxt: ['Nuxt', 'NuxtJS'],
+      vue: ['Vue', 'VueJS'],
+      javascript: ['JavaScript', 'JS'],
+      typescript: ['TypeScript', 'TS'],
+      node: ['NodeJS', 'Node'],
+      react: ['React', 'ReactJS'],
+      css: ['CSS', 'Styling'],
+      performance: ['Performance', 'Optimization'],
+      security: ['Security', 'Auth'],
+      database: ['Database', 'DB'],
+      api: ['API', 'Backend'],
+      frontend: ['Frontend', 'UI'],
+      fullstack: ['FullStack', 'WebDev'],
+      opensource: ['OpenSource', 'OSS'],
+      git: ['Git', 'GitHub'],
+      deployment: ['Deployment', 'DevOps'],
+      testing: ['Testing', 'QA'],
+      ai: ['AI', 'MachineLearning'],
+      mobile: ['Mobile', 'App'],
+      web: ['WebDevelopment', 'Web'],
+    }
+
+    for (const [keyword, tags] of Object.entries(techKeywords)) {
+      if (contentText.includes(keyword)) {
+        contextHashtags.push(...tags.slice(0, 1)) // Add only the first tag to avoid clutter
+      }
+    }
+
+    // Combine and limit hashtags
+    const allHashtags = [...baseHashtags, ...contextHashtags].slice(0, 8)
+
+    // Generate description with Q&A format
+    const shortAnswer = answer.length > 100
+      ? answer.slice(0, 97) + '...'
+      : answer
+
+    const hashtagString = allHashtags.map(tag => `#${tag}`).join(' ')
+    const description = `Q: ${question}\n\nA: ${shortAnswer}\n\n${hashtagString}`
+
+    return { title, description, hashtags: allHashtags }
+  }, [])
+
+  // Copy to clipboard functionality
+  const copyToClipboard = useCallback(async (text: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      console.log(`${type} copied to clipboard`)
+    }
+    catch (error) {
+      console.error(`Failed to copy ${type}:`, error)
+    }
+  }, [])
+
+  const metadata = React.useMemo(() => {
+    if (!formattedQuestion || !formattedAnswer) {
+      return { title: '', description: '', hashtags: [] }
+    }
+    return generateTikTokMetadata(formattedQuestion, formattedAnswer)
+  }, [formattedQuestion, formattedAnswer, generateTikTokMetadata])
+
   // GSAP Animation Control for Preview
   useEffect(() => {
     if (!videoContainerRef.current) return
@@ -283,6 +378,71 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                     <source src={videoUrl} type="video/webm" />
                   </video>
                 </Box>
+              )}
+
+              {/* TikTok Metadata Copy Buttons */}
+              {metadata.title && (
+                <Card padding={3} tone="transparent" border marginBottom={3}>
+                  <Stack space={3}>
+                    <Text size={1} weight="semibold">TikTok Metadata</Text>
+
+                    <Flex direction="column" gap={3}>
+                      <Box>
+                        <Flex justify="space-between" align="center" marginBottom={2}>
+                          <Text size={1} weight="medium">Title</Text>
+                          <Button
+                            text="Copy Title"
+                            tone="primary"
+                            mode="ghost"
+                            fontSize={0}
+                            onClick={() => copyToClipboard(metadata.title, 'Title')}
+                          />
+                        </Flex>
+                        <Card padding={2} tone="transparent" border>
+                          <Text size={0} style={{ fontFamily: 'monospace' }}>
+                            {metadata.title}
+                          </Text>
+                        </Card>
+                      </Box>
+
+                      <Box>
+                        <Flex justify="space-between" align="center" marginBottom={2}>
+                          <Text size={1} weight="medium">Description</Text>
+                          <Button
+                            text="Copy Description"
+                            tone="primary"
+                            mode="ghost"
+                            fontSize={0}
+                            onClick={() => copyToClipboard(metadata.description, 'Description')}
+                          />
+                        </Flex>
+                        <Card padding={2} tone="transparent" border>
+                          <Text size={0} style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
+                            {metadata.description}
+                          </Text>
+                        </Card>
+                      </Box>
+
+                      <Box>
+                        <Flex justify="space-between" align="center" marginBottom={2}>
+                          <Text size={1} weight="medium">Hashtags</Text>
+                          <Button
+                            text="Copy Hashtags"
+                            tone="primary"
+                            mode="ghost"
+                            fontSize={0}
+                            onClick={() => copyToClipboard(metadata.hashtags.map(tag => `#${tag}`).join(' '), 'Hashtags')}
+                          />
+                        </Flex>
+                        <Card padding={2} tone="transparent" border>
+                          <Text size={0} style={{ fontFamily: 'monospace' }}>
+                            {metadata.hashtags.map(tag => `#${tag}`).join(' ')}
+                          </Text>
+                        </Card>
+                      </Box>
+                    </Flex>
+                  </Stack>
+                </Card>
               )}
 
               <div

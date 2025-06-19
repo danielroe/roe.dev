@@ -188,22 +188,15 @@ export default defineType({
     defineField({
       name: 'tiktokVideo',
       title: 'TikTok Content',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'videoGenerator',
-          title: 'Video Generator',
-          type: 'file',
-          options: {
-            accept: 'video/*',
-          },
-          components: {
-            input: TikTokContentGenerator,
-          },
-          description: 'Use this to generate the TikTok video',
-        }),
-      ],
-      readOnly: ({ document }) => document?.publishStatus === 'published',
+      type: 'file',
+      options: {
+        accept: 'video/*',
+      },
+      components: {
+        input: TikTokContentGenerator,
+      },
+      description: 'Use this to generate the TikTok video',
+      readOnly: true,
     }),
     defineField({
       name: 'publishedLinks',
