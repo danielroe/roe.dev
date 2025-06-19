@@ -758,7 +758,7 @@ async function publishToPlatforms (event: H3Event, document: AMADocument): Promi
   }
 
   // Publish to TikTok
-  if (document.platforms?.tiktok !== false) {
+  if (document.platforms?.tiktok === true) {
     try {
       const tiktokResult = await publishToTikTok(event, document)
       results.push({ platform: 'tiktok', success: true, url: tiktokResult.url })
@@ -769,7 +769,7 @@ async function publishToPlatforms (event: H3Event, document: AMADocument): Promi
   }
 
   // Publish to TikTok Stories
-  if (document.platforms?.tiktokStories !== false) {
+  if (document.platforms?.tiktokStories === true) {
     try {
       const tiktokStoriesResult = await publishToTikTokStories(event, document)
       results.push({ platform: 'tiktok-stories', success: true, url: tiktokStoriesResult.url })
