@@ -1,6 +1,8 @@
+import type { PortableTextTextBlock } from 'sanity'
 import { defineField, defineType } from 'sanity'
 import { CharacterCountInput } from '../components/CharacterCountInput'
 import { ImageGenerator } from '../components/ImageGenerator'
+import { TikTokContentGenerator } from '../components/TikTokContentGenerator'
 
 export default defineType({
   name: 'ama',
@@ -137,8 +139,8 @@ export default defineType({
               content: 'content',
             },
             prepare ({ content }) {
-              const firstBlock = content?.[0]
-              const text = firstBlock?.children?.map((child: any) => child.text || '').join('') || ''
+              const firstBlock = content?.[0] as PortableTextTextBlock
+              const text = firstBlock?.children?.map(child => child.text || '').join('') || ''
               return {
                 title: text.slice(0, 60) + (text.length > 60 ? '...' : ''),
                 subtitle: `${text.length} characters`,
@@ -184,6 +186,26 @@ export default defineType({
       readOnly: ({ document }) => document?.publishStatus === 'published',
     }),
     defineField({
+      name: 'tiktokVideo',
+      title: 'TikTok Content',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'videoGenerator',
+          title: 'Video Generator',
+          type: 'file',
+          options: {
+            accept: 'video/*',
+          },
+          components: {
+            input: TikTokContentGenerator,
+          },
+          description: 'Use this to generate the TikTok video',
+        }),
+      ],
+      readOnly: ({ document }) => document?.publishStatus === 'published',
+    }),
+    defineField({
       name: 'publishedLinks',
       title: 'Published links',
       type: 'object',
@@ -201,6 +223,16 @@ export default defineType({
         defineField({
           name: 'mastodon',
           title: 'Mastodon link',
+          type: 'url',
+        }),
+        defineField({
+          name: 'tiktok',
+          title: 'TikTok link',
+          type: 'url',
+        }),
+        defineField({
+          name: 'tiktokStories',
+          title: 'TikTok Stories link',
           type: 'url',
         }),
       ],
@@ -229,6 +261,18 @@ export default defineType({
           title: 'Mastodon',
           type: 'boolean',
           initialValue: true,
+        }),
+        defineField({
+          name: 'tiktok',
+          title: 'TikTok',
+          type: 'boolean',
+          initialValue: true,
+        }),
+        defineField({
+          name: 'tiktokStories',
+          title: 'TikTok Stories',
+          type: 'boolean',
+          initialValue: false,
         }),
       ],
       readOnly: ({ document }) => document?.publishStatus === 'draft',
