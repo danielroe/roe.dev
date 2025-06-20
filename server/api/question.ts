@@ -16,6 +16,8 @@ export default defineEventHandler(async event => {
       bluesky: true,
       linkedin: true,
       mastodon: true,
+      tiktok: false,
+      tiktokStories: false,
     },
   }).catch(console.error))
 

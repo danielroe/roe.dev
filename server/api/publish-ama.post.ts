@@ -20,12 +20,19 @@ interface AMADocument {
     bluesky?: boolean
     linkedin?: boolean
     mastodon?: boolean
+    tiktok?: boolean
+    tiktokStories?: boolean
   }
   image?: {
     url: string
     dimensions: {
       width: number
       height: number
+    }
+  }
+  tiktokVideo?: {
+    asset: {
+      _ref: string
     }
   }
   lastWebhookEvent?: {
@@ -142,6 +149,8 @@ export default defineEventHandler(async event => {
           url,
           "dimensions": metadata.dimensions
         },
+        tiktokContent,
+        tiktokVideo,
         lastWebhookEvent
       }`,
       { id: body._id },
@@ -476,6 +485,210 @@ async function publishToMastodon (event: H3Event, text: string, image: AMADocume
   return { url: statusUrls[0] }
 }
 
+/**
+ * Generate TikTok metadata (title, description, hashtags) from AMA content
+ */
+function generateTikTokMetadata (question: string, answer: string): { title: string, description: string, hashtags: string[] } {
+  // Generate title - truncate question if too long
+  const title = question.length > 47
+    ? question.slice(0, 47) + '...'
+    : question
+
+  // Generate context-aware hashtags
+  const contentText = `${question} ${answer}`.toLowerCase()
+
+  const baseHashtags = ['AMA', 'QandA', 'Tech', 'Programming', 'Developer']
+  const contextHashtags: string[] = []
+
+  // Detect content-specific technologies and topics
+  const techKeywords = {
+    nuxt: ['Nuxt', 'NuxtJS'],
+    vue: ['Vue', 'VueJS'],
+    javascript: ['JavaScript', 'JS'],
+    typescript: ['TypeScript', 'TS'],
+    node: ['NodeJS', 'Node'],
+    react: ['React', 'ReactJS'],
+    css: ['CSS', 'Styling'],
+    performance: ['Performance', 'Optimization'],
+    security: ['Security', 'Auth'],
+    database: ['Database', 'DB'],
+    api: ['API', 'Backend'],
+    frontend: ['Frontend', 'UI'],
+    fullstack: ['FullStack', 'WebDev'],
+    opensource: ['OpenSource', 'OSS'],
+    git: ['Git', 'GitHub'],
+    deployment: ['Deployment', 'DevOps'],
+    testing: ['Testing', 'QA'],
+    ai: ['AI', 'MachineLearning'],
+    mobile: ['Mobile', 'App'],
+    web: ['WebDevelopment', 'Web'],
+  }
+
+  for (const [keyword, tags] of Object.entries(techKeywords)) {
+    if (contentText.includes(keyword)) {
+      contextHashtags.push(...tags.slice(0, 1)) // Add only the first tag to avoid clutter
+    }
+  }
+
+  // Combine and limit hashtags
+  const allHashtags = [...baseHashtags, ...contextHashtags].slice(0, 8)
+
+  // Generate description with Q&A format
+  const shortAnswer = answer.length > 100
+    ? answer.slice(0, 97) + '...'
+    : answer
+
+  const hashtagString = allHashtags.map(tag => `#${tag}`).join(' ')
+  const description = `Q: ${question}\n\nA: ${shortAnswer}\n\n${hashtagString}`
+
+  return { title, description, hashtags: allHashtags }
+}
+
+/**
+ * Publish to TikTok using pre-generated video from CMS
+ */
+async function publishToTikTok (event: H3Event, document: AMADocument): Promise<{ url: string }> {
+  const config = useRuntimeConfig(event)
+  const { TikTokApiClient } = await import('../utils/tiktok/api-client')
+
+  const accessToken = config.tiktok.accessToken
+  if (!accessToken) {
+    throw new Error('TikTok access token not configured. Set NUXT_TIKTOK_ACCESS_TOKEN environment variable.')
+  }
+
+  const clientId = config.tiktok.clientId
+  const clientSecret = config.tiktok.clientSecret
+  if (!clientId || !clientSecret) {
+    throw new Error('TikTok client credentials not configured.')
+  }
+
+  // Check if pre-generated video exists
+  if (!document.tiktokVideo) {
+    throw new Error('No TikTok video found. Please generate a video in the CMS first.')
+  }
+
+  // Extract question and answer from document
+  const question = document.content
+  const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
+
+  const generatedMetadata = generateTikTokMetadata(question, answer)
+  const videoTitle = generatedMetadata.title
+  const videoDescription = generatedMetadata.description
+
+  // Get video buffer from Sanity asset
+  const sanity = useSanity(event)
+  const videoAsset = await sanity.client.fetch('*[_id == $id][0]', { id: document.tiktokVideo.asset._ref })
+
+  if (!videoAsset?.url) {
+    throw new Error('TikTok video asset not found or invalid.')
+  }
+
+  // Download the video file
+  const videoResponse = await fetch(videoAsset.url)
+  if (!videoResponse.ok) {
+    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
+  }
+
+  const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
+
+  // Create API client and upload video
+  const client = new TikTokApiClient({
+    accessToken,
+    clientId,
+    clientSecret,
+  })
+
+  const videoInfo = {
+    title: videoTitle,
+    description: videoDescription,
+    privacy_level: 'PUBLIC_TO_EVERYONE' as const,
+    disable_duet: false,
+    disable_comment: false,
+    disable_stitch: false,
+    video_cover_timestamp_ms: 1000,
+  }
+
+  const _result = await client.uploadAndPublish(videoBuffer, videoInfo)
+
+  // Generate URL (TikTok doesn't provide direct video URLs immediately)
+  const identifier = config.social?.networks?.tiktok?.identifier || 'danielroe'
+  const url = `https://www.tiktok.com/@${identifier}`
+
+  return { url }
+}
+
+/**
+ * Publish to TikTok Stories by creating a vertical video optimized for stories
+ */
+async function publishToTikTokStories (event: H3Event, document: AMADocument): Promise<{ url: string }> {
+  const config = useRuntimeConfig(event)
+  const { TikTokApiClient } = await import('../utils/tiktok/api-client')
+
+  const accessToken = config.tiktok.accessToken
+  if (!accessToken) {
+    throw new Error('TikTok access token not configured.')
+  }
+
+  const clientId = config.tiktok.clientId
+  const clientSecret = config.tiktok.clientSecret
+  if (!clientId || !clientSecret) {
+    throw new Error('TikTok client credentials not configured.')
+  }
+
+  // Check if pre-generated video exists
+  if (!document.tiktokVideo) {
+    throw new Error('No TikTok video found. Please generate a video in the CMS first.')
+  }
+
+  // Extract question and answer from document
+  const question = document.content
+  const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
+
+  // Use CMS-generated content or generate fallback
+  const videoTitle = `${question.slice(0, 40)}... - Stories`
+  const videoDescription = `Stories: ${question}\n\n${answer.slice(0, 100)}\n\n#AMA #Stories`
+
+  // Get video buffer from Sanity asset
+  const sanity = useSanity(event)
+  const videoAsset = await sanity.client.fetch('*[_id == $id][0]', { id: document.tiktokVideo.asset._ref })
+
+  if (!videoAsset?.url) {
+    throw new Error('TikTok video asset not found or invalid.')
+  }
+
+  // Download the video file
+  const videoResponse = await fetch(videoAsset.url)
+  if (!videoResponse.ok) {
+    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
+  }
+
+  const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
+
+  // Create API client and upload video
+  const client = new TikTokApiClient({
+    accessToken,
+    clientId,
+    clientSecret,
+  })
+
+  const videoInfo = {
+    title: videoTitle,
+    description: videoDescription,
+    privacy_level: 'PUBLIC_TO_EVERYONE' as const,
+    disable_duet: true,
+    disable_comment: false,
+    disable_stitch: true,
+    video_cover_timestamp_ms: 500,
+  }
+
+  const _result = await client.uploadAndPublish(videoBuffer, videoInfo)
+
+  const identifier = config.social?.networks?.tiktok?.identifier || 'danielroe'
+  const url = `https://www.tiktok.com/@${identifier}`
+
+  return { url }
+}
+
 async function processManualThreads (posts: Array<{ content: PortableTextBlock[] }>): Promise<Array<{ text: string, facets: AppBskyRichtextFacet.Main[] }>> {
   const threads: Array<{ text: string, facets: AppBskyRichtextFacet.Main[] }> = []
   const footerText = '\n\nroe.dev/ama\n\n#ama' // Define footer text once
@@ -541,6 +754,28 @@ async function publishToPlatforms (event: H3Event, document: AMADocument): Promi
     }
     catch (error) {
       results.push({ platform: 'linkedin', success: false, error: String(error) })
+    }
+  }
+
+  // Publish to TikTok
+  if (document.platforms?.tiktok === true) {
+    try {
+      const tiktokResult = await publishToTikTok(event, document)
+      results.push({ platform: 'tiktok', success: true, url: tiktokResult.url })
+    }
+    catch (error) {
+      results.push({ platform: 'tiktok', success: false, error: String(error) })
+    }
+  }
+
+  // Publish to TikTok Stories
+  if (document.platforms?.tiktokStories === true) {
+    try {
+      const tiktokStoriesResult = await publishToTikTokStories(event, document)
+      results.push({ platform: 'tiktok-stories', success: true, url: tiktokStoriesResult.url })
+    }
+    catch (error) {
+      results.push({ platform: 'tiktok-stories', success: false, error: String(error) })
     }
   }
 

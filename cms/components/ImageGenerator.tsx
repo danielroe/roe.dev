@@ -20,7 +20,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const dateOfDocument = useFormValue(['_createdAt']) as string
   const date = new Date(dateOfDocument)
   const relativeDate = formatter.format(
-    Math.ceil((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+    Math.ceil((date.getTime() - new Date().setHours(23)) / (1000 * 60 * 60 * 24)),
     'day',
   )
 

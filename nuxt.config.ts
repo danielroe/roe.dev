@@ -123,6 +123,11 @@ export default defineNuxtConfig({
     bluesky: {
       accessToken: '',
     },
+    tiktok: {
+      accessToken: '',
+      clientId: '',
+      clientSecret: '',
+    },
     voteUrl: '',
     sessionPassword: '',
     // emailing ideas
@@ -373,6 +378,9 @@ export default defineNuxtConfig({
       },
       linkedin: {
         identifier: 'daniel-roe',
+      },
+      tiktok: {
+        identifier: 'danielroe',
       },
     },
   },
