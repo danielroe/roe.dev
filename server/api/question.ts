@@ -18,6 +18,7 @@ export default defineEventHandler(async event => {
       mastodon: true,
       tiktok: false,
       tiktokStories: false,
+      youtubeShorts: true,
     },
   }).catch(console.error))
 

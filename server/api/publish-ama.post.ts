@@ -8,6 +8,7 @@ import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import type { PortableTextBlock } from '@portabletext/types'
 
 import { parseURL, withProtocol } from 'ufo'
+import { camelCase } from 'scule'
 import { resolveTextForPlatform, resolveTextWithFacets } from '../utils/sanity/blocks'
 
 interface AMADocument {
@@ -185,7 +186,7 @@ export default defineEventHandler(async event => {
     const publishedLinks: Record<string, string> = {}
     results.forEach(result => {
       if (result.success && result.url) {
-        publishedLinks[result.platform] = result.url
+        publishedLinks[camelCase(result.platform)] = result.url
       }
     })
 
