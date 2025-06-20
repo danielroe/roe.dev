@@ -61,7 +61,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
           position: absolute;
           visibility: hidden;
           width: ${contentWidth}px;
-          font-family: JetBrains Mono;
+          font-family: JetBrains Mono, Monaco, monospace;
           font-size: 24px;
           line-height: 32px;
           white-space: pre-wrap;
@@ -242,7 +242,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                       paddingLeft: '0px',
                       display: 'flex',
                       fontWeight: 600,
-                      fontFamily: 'JetBrains Mono',
+                      fontFamily: 'JetBrains Mono, Monaco, monospace',
                       fontSize: '24px',
                       lineHeight: '32px',
                       paddingTop: '48px',
