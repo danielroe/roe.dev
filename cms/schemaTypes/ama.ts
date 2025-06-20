@@ -186,8 +186,8 @@ export default defineType({
       readOnly: ({ document }) => document?.publishStatus === 'published',
     }),
     defineField({
-      name: 'tiktokVideo',
-      title: 'TikTok Content',
+      name: 'video',
+      title: 'Generated Video',
       type: 'file',
       options: {
         accept: 'video/*',
@@ -195,7 +195,7 @@ export default defineType({
       components: {
         input: TikTokContentGenerator,
       },
-      description: 'Use this to generate the TikTok video',
+      description: 'Use this to generate video content for TikTok and YouTube Shorts',
       readOnly: true,
     }),
     defineField({
@@ -226,6 +226,11 @@ export default defineType({
         defineField({
           name: 'tiktokStories',
           title: 'TikTok Stories link',
+          type: 'url',
+        }),
+        defineField({
+          name: 'youtubeShorts',
+          title: 'YouTube Shorts link',
           type: 'url',
         }),
       ],
@@ -267,8 +272,14 @@ export default defineType({
           type: 'boolean',
           initialValue: false,
         }),
+        defineField({
+          name: 'youtubeShorts',
+          title: 'YouTube Shorts',
+          type: 'boolean',
+          initialValue: true,
+        }),
       ],
-      readOnly: ({ document }) => document?.publishStatus === 'draft',
+      readOnly: ({ document }) => document?.publishStatus !== 'draft',
     }),
     defineField({
       name: 'publishLog',

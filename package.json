@@ -15,7 +15,8 @@
     "test:types": "nuxt prepare && vue-tsc --noEmit",
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.52.0-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
-    "postinstall": "nuxt prepare && pnpm simple-git-hooks install"
+    "postinstall": "nuxt prepare && pnpm simple-git-hooks install",
+    "auth:youtube": "node scripts/youtube-auth.mjs"
   },
   "lint-staged": {
     "*.{js,ts,mjs,vue}": [
