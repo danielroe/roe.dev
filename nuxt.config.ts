@@ -128,6 +128,10 @@ export default defineNuxtConfig({
       clientId: '',
       clientSecret: '',
     },
+    youtube: {
+      accessToken: '',
+      amaPlaylistId: 'PLQnM-cL9ttacD7fyv6yrtQxaICAUs-2KJ',
+    },
     voteUrl: '',
     sessionPassword: '',
     // emailing ideas

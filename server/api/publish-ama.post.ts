@@ -22,6 +22,7 @@ interface AMADocument {
     mastodon?: boolean
     tiktok?: boolean
     tiktokStories?: boolean
+    youtubeShorts?: boolean
   }
   image?: {
     url: string
@@ -30,7 +31,7 @@ interface AMADocument {
       height: number
     }
   }
-  tiktokVideo?: {
+  video?: {
     asset: {
       _ref: string
     }
@@ -150,7 +151,7 @@ export default defineEventHandler(async event => {
           "dimensions": metadata.dimensions
         },
         tiktokContent,
-        tiktokVideo,
+        video,
         lastWebhookEvent
       }`,
       { id: body._id },
@@ -563,7 +564,8 @@ async function publishToTikTok (event: H3Event, document: AMADocument): Promise<
   }
 
   // Check if pre-generated video exists
-  if (!document.tiktokVideo) {
+  const videoAsset = document.video
+  if (!videoAsset) {
     throw new Error('No TikTok video found. Please generate a video in the CMS first.')
   }
 
@@ -577,14 +579,14 @@ async function publishToTikTok (event: H3Event, document: AMADocument): Promise<
 
   // Get video buffer from Sanity asset
   const sanity = useSanity(event)
-  const videoAsset = await sanity.client.fetch('*[_id == $id][0]', { id: document.tiktokVideo.asset._ref })
+  const videoData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
 
-  if (!videoAsset?.url) {
+  if (!videoData?.url) {
     throw new Error('TikTok video asset not found or invalid.')
   }
 
   // Download the video file
-  const videoResponse = await fetch(videoAsset.url)
+  const videoResponse = await fetch(videoData.url)
   if (!videoResponse.ok) {
     throw new Error(`Failed to download video: ${videoResponse.statusText}`)
   }
@@ -636,7 +638,8 @@ async function publishToTikTokStories (event: H3Event, document: AMADocument): P
   }
 
   // Check if pre-generated video exists
-  if (!document.tiktokVideo) {
+  const videoAsset = document.video
+  if (!videoAsset) {
     throw new Error('No TikTok video found. Please generate a video in the CMS first.')
   }
 
@@ -650,14 +653,14 @@ async function publishToTikTokStories (event: H3Event, document: AMADocument): P
 
   // Get video buffer from Sanity asset
   const sanity = useSanity(event)
-  const videoAsset = await sanity.client.fetch('*[_id == $id][0]', { id: document.tiktokVideo.asset._ref })
+  const videoStoriesData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
 
-  if (!videoAsset?.url) {
+  if (!videoStoriesData?.url) {
     throw new Error('TikTok video asset not found or invalid.')
   }
 
   // Download the video file
-  const videoResponse = await fetch(videoAsset.url)
+  const videoResponse = await fetch(videoStoriesData.url)
   if (!videoResponse.ok) {
     throw new Error(`Failed to download video: ${videoResponse.statusText}`)
   }
@@ -687,6 +690,216 @@ async function publishToTikTokStories (event: H3Event, document: AMADocument): P
   const url = `https://www.tiktok.com/@${identifier}`
 
   return { url }
+}
+
+/**
+ * Publish to YouTube Shorts using pre-generated video from CMS
+ */
+async function publishToYouTubeShorts (event: H3Event, document: AMADocument): Promise<{ url: string }> {
+  const config = useRuntimeConfig(event)
+
+  const accessToken = config.youtube.accessToken
+  if (!accessToken) {
+    throw new Error('YouTube access token not configured. Set NUXT_YOUTUBE_ACCESS_TOKEN environment variable.')
+  }
+
+  // Check if pre-generated video exists (check both old and new field names for backwards compatibility)
+  const videoAsset = document.video
+  if (!videoAsset) {
+    throw new Error('No video found. Please generate a video in the CMS first.')
+  }
+
+  // Extract question and answer from document
+  const question = document.content
+  const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
+
+  const generatedMetadata = generateTikTokMetadata(question, answer)
+
+  // YouTube Shorts specific title and description
+  const videoTitle = generatedMetadata.title.length > 100
+    ? generatedMetadata.title.slice(0, 97) + '...'
+    : generatedMetadata.title
+
+  const shortDescription = `Q: ${question}\n\nA: ${answer.slice(0, 200)}${answer.length > 200 ? '...' : ''}\n\n🔗 roe.dev/ama\n\n${generatedMetadata.hashtags.map(tag => `#${tag}`).join(' ')}`
+
+  // Get video buffer from Sanity asset
+  const sanity = useSanity(event)
+  const videoData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
+
+  if (!videoData?.url) {
+    throw new Error('Video asset not found or invalid.')
+  }
+
+  // Download the video file
+  const videoResponse = await fetch(videoData.url)
+  if (!videoResponse.ok) {
+    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
+  }
+
+  const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
+
+  // Upload video to YouTube
+  const uploadResult = await uploadToYouTube({
+    accessToken,
+    videoBuffer: new Uint8Array(videoBuffer),
+    title: videoTitle,
+    description: shortDescription,
+    categoryId: '28', // Science & Technology category
+    tags: generatedMetadata.hashtags,
+    privacyStatus: 'public', // Default to private for testing
+    playlistId: config.youtube.amaPlaylistId,
+  })
+
+  // Generate URL
+  const url = `https://www.youtube.com/watch?v=${uploadResult.videoId}`
+
+  return { url }
+}
+
+/**
+ * Upload video to YouTube using the YouTube Data API v3
+ *
+ * Required YouTube API scopes for full functionality:
+ * - https://www.googleapis.com/auth/youtube (required for video upload)
+ * - https://www.googleapis.com/auth/youtube.force-ssl (required for playlist management)
+ *
+ * Note: If playlist functionality fails due to insufficient scopes, the video
+ * upload will still succeed and only a warning will be logged.
+ */
+async function uploadToYouTube (options: {
+  accessToken: string
+  videoBuffer: Uint8Array
+  title: string
+  description: string
+  categoryId: string
+  tags: string[]
+  privacyStatus: 'public' | 'private' | 'unlisted'
+  playlistId?: string
+}): Promise<{ videoId: string }> {
+  const { accessToken, videoBuffer, title, description, categoryId, tags, privacyStatus, playlistId } = options
+
+  // Create the metadata object
+  const metadata = {
+    snippet: {
+      title,
+      description,
+      tags,
+      categoryId,
+    },
+    status: {
+      privacyStatus,
+    },
+  }
+
+  // Create proper multipart form data with boundaries
+  const boundary = `----formdata-${Date.now()}`
+  const delimiter = '\r\n--' + boundary + '\r\n'
+  const closeDelimiter = '\r\n--' + boundary + '--'
+
+  // Construct the multipart body
+  let body = delimiter
+  body += 'Content-Type: application/json; charset=UTF-8\r\n\r\n'
+  body += JSON.stringify(metadata)
+  body += delimiter
+  body += 'Content-Type: video/mp4\r\n\r\n'
+
+  // Convert body to Uint8Array and combine with video buffer
+  const bodyStart = new TextEncoder().encode(body)
+  const bodyEnd = new TextEncoder().encode(closeDelimiter)
+
+  const totalLength = bodyStart.length + videoBuffer.length + bodyEnd.length
+  const fullBody = new Uint8Array(totalLength)
+  fullBody.set(bodyStart, 0)
+  fullBody.set(videoBuffer, bodyStart.length)
+  fullBody.set(bodyEnd, bodyStart.length + videoBuffer.length)
+
+  // Upload to YouTube
+  const response = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=multipart&part=snippet,status', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': `multipart/related; boundary=${boundary}`,
+    },
+    body: fullBody,
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`YouTube API error: ${response.status} ${response.statusText} - ${errorText}`)
+  }
+
+  const result = await response.json()
+
+  if (!result.id) {
+    throw new Error('YouTube upload failed: No video ID returned')
+  }
+
+  // Add to playlist if specified
+  if (playlistId) {
+    try {
+      await addVideoToPlaylist(accessToken, result.id, playlistId)
+    }
+    catch (error) {
+      console.warn('Failed to add video to playlist:', error)
+      // Don't throw error here, video was uploaded successfully
+    }
+  }
+
+  return { videoId: result.id }
+}
+
+/**
+ * Add a video to a YouTube playlist
+ *
+ * Required YouTube API scopes:
+ * - https://www.googleapis.com/auth/youtube (for video upload)
+ * - https://www.googleapis.com/auth/youtube.force-ssl (for playlist management)
+ *
+ * To update your OAuth token with the correct scopes:
+ * 1. Go to Google Cloud Console > APIs & Services > Credentials
+ * 2. Find your OAuth 2.0 client ID
+ * 3. Use the OAuth playground or regenerate your access token with both scopes
+ */
+async function addVideoToPlaylist (accessToken: string, videoId: string, playlistId: string): Promise<void> {
+  const playlistItem = {
+    snippet: {
+      playlistId,
+      resourceId: {
+        kind: 'youtube#video',
+        videoId,
+      },
+    },
+  }
+
+  const response = await fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(playlistItem),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    const errorData = JSON.parse(errorText)
+
+    // Provide more specific error messages
+    if (response.status === 403) {
+      if (errorData.error?.message?.includes('insufficient authentication scopes')) {
+        throw new Error(`YouTube playlist access denied: Your access token needs additional scopes. Please regenerate your YouTube access token with both 'https://www.googleapis.com/auth/youtube' and 'https://www.googleapis.com/auth/youtube.force-ssl' scopes. Error: ${errorText}`)
+      }
+      else {
+        throw new Error(`YouTube playlist access forbidden: Please check that the playlist ID '${playlistId}' exists and you have permission to modify it. Error: ${errorText}`)
+      }
+    }
+    else if (response.status === 404) {
+      throw new Error(`YouTube playlist not found: Playlist ID '${playlistId}' does not exist or is not accessible. Error: ${errorText}`)
+    }
+    else {
+      throw new Error(`YouTube playlist API error: ${response.status} ${response.statusText} - ${errorText}`)
+    }
+  }
 }
 
 async function processManualThreads (posts: Array<{ content: PortableTextBlock[] }>): Promise<Array<{ text: string, facets: AppBskyRichtextFacet.Main[] }>> {
@@ -776,6 +989,17 @@ async function publishToPlatforms (event: H3Event, document: AMADocument): Promi
     }
     catch (error) {
       results.push({ platform: 'tiktok-stories', success: false, error: String(error) })
+    }
+  }
+
+  // Publish to YouTube Shorts
+  if (document.platforms?.youtubeShorts === true) {
+    try {
+      const youtubeResult = await publishToYouTubeShorts(event, document)
+      results.push({ platform: 'youtube-shorts', success: true, url: youtubeResult.url })
+    }
+    catch (error) {
+      results.push({ platform: 'youtube-shorts', success: false, error: String(error) })
     }
   }
 
