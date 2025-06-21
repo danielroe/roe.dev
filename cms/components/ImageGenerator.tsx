@@ -3,6 +3,13 @@ import { Stack, Text, Card, Button, Box, Flex } from '@sanity/ui'
 import { set, useFormValue, useClient } from 'sanity'
 import { domToBlob } from 'modern-screenshot'
 
+// Detect iOS devices
+const isIOS = () => {
+  if (typeof window === 'undefined') return false
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
 interface ImageGeneratorProps {
   onChange: (event: any) => void
   renderDefault: (props: any) => React.ReactElement
@@ -13,6 +20,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasPreview, setHasPreview] = useState(false)
   const [visualLineCount, setVisualLineCount] = useState(1)
+  const [isCapturingForIOS, setIsCapturingForIOS] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -91,6 +99,15 @@ export function ImageGenerator (props: ImageGeneratorProps) {
     setIsGenerating(true)
 
     try {
+      const iosDevice = isIOS()
+
+      // Set iOS capture state to conditionally render iOS-compatible styles
+      if (iosDevice) {
+        setIsCapturingForIOS(true)
+        // Give React time to re-render with iOS-compatible styles
+        await new Promise(resolve => setTimeout(resolve, 100))
+      }
+
       const blob = await domToBlob(terminalRef.current, {
         width: terminalRef.current.clientWidth,
         height: terminalRef.current.clientHeight,
@@ -99,7 +116,16 @@ export function ImageGenerator (props: ImageGeneratorProps) {
           transform: 'scale(1)',
           transformOrigin: 'top left',
         },
+        ...(iosDevice && {
+          // iOS-specific options to improve compatibility
+          includeQueryParams: true,
+        }),
       })
+
+      // Reset iOS capture state
+      if (iosDevice) {
+        setIsCapturingForIOS(false)
+      }
 
       if (blob) {
         try {
@@ -170,7 +196,9 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                     width: '100%',
                     background: '#ffffff',
                     borderRadius: '16px',
-                    boxShadow: 'rgb(4, 4, 4) 0px 0px 0px 1px, rgba(255, 255, 255, 0.18) 0px 1px 0px inset, rgba(0, 0, 0, 0.6) 0px 0px 18px 1px',
+                    boxShadow: isCapturingForIOS
+                      ? 'rgba(0, 0, 0, 0.3) 0px 4px 12px'
+                      : 'rgb(4, 4, 4) 0px 0px 0px 1px, rgba(255, 255, 255, 0.18) 0px 1px 0px inset, rgba(0, 0, 0, 0.6) 0px 0px 18px 1px',
                     overflow: 'hidden',
                   }}
                 >
@@ -322,11 +350,12 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                 }}
                 >
                   <div
-                    ref={terminalRef}
                     style={{
                       position: 'absolute',
-                      background: 'linear-gradient(yellow 5%, fuchsia, royalblue 95%)',
-                      filter: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMCI+IDxmaWx0ZXIgaWQ9Im15RmlsdGVyIj4gPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii4wMDUgLjAwMSIgbnVtT2N0YXZlcz0iMiIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIHhDaGFubmVsU2VsZWN0b3I9IlIiIHNjYWxlPSI1MDAiIGluPSJTb3VyY2VHcmFwaGljIiByZXN1bHQ9ImJhbmRzIiAvPiA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMy43MSIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIGluPSJiYW5kcyIgc2NhbGU9IjMyIiB4Q2hhbm5lbFNlbGVjdG9yPSJSIiAvPiA8L2ZpbHRlcj4gPC9zdmc+#myFilter")',
+                      background: isCapturingForIOS
+                        ? 'linear-gradient(to bottom, #fbbf24, #8b5cf6, #1d4ed8)'
+                        : 'linear-gradient(yellow 5%, fuchsia, royalblue 95%)',
+                      filter: isCapturingForIOS ? 'none' : 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMCI+IDxmaWx0ZXIgaWQ9Im15RmlsdGVyIj4gPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii4wMDUgLjAwMSIgbnVtT2N0YXZlcz0iMiIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIHhDaGFubmVsU2VsZWN0b3I9IlIiIHNjYWxlPSI1MDAiIGluPSJTb3VyY2VHcmFwaGljIiByZXN1bHQ9ImJhbmRzIiAvPiA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMy43MSIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIGluPSJiYW5kcyIgc2NhbGU9IjMyIiB4Q2hhbm5lbFNlbGVjdG9yPSJSIiAvPiA8L2ZpbHRlcj4gPC9zdmc+#myFilter")',
                       inset: '-9em',
                     }}
                   />
