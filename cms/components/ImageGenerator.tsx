@@ -3,6 +3,13 @@ import { Stack, Text, Card, Button, Box, Flex } from '@sanity/ui'
 import { set, useFormValue, useClient } from 'sanity'
 import { domToBlob } from 'modern-screenshot'
 
+// Detect iOS devices
+const isIOS = () => {
+  if (typeof window === 'undefined') return false
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
 interface ImageGeneratorProps {
   onChange: (event: any) => void
   renderDefault: (props: any) => React.ReactElement
@@ -13,6 +20,7 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasPreview, setHasPreview] = useState(false)
   const [visualLineCount, setVisualLineCount] = useState(1)
+  const [isCapturingForIOS, setIsCapturingForIOS] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -91,6 +99,15 @@ export function ImageGenerator (props: ImageGeneratorProps) {
     setIsGenerating(true)
 
     try {
+      const iosDevice = isIOS()
+
+      // Set iOS capture state to conditionally render iOS-compatible styles
+      if (iosDevice) {
+        setIsCapturingForIOS(true)
+        // Give React time to re-render with iOS-compatible styles
+        await new Promise(resolve => setTimeout(resolve, 100))
+      }
+
       const blob = await domToBlob(terminalRef.current, {
         width: terminalRef.current.clientWidth,
         height: terminalRef.current.clientHeight,
@@ -99,7 +116,16 @@ export function ImageGenerator (props: ImageGeneratorProps) {
           transform: 'scale(1)',
           transformOrigin: 'top left',
         },
+        ...(iosDevice && {
+          // iOS-specific options to improve compatibility
+          includeQueryParams: true,
+        }),
       })
+
+      // Reset iOS capture state
+      if (iosDevice) {
+        setIsCapturingForIOS(false)
+      }
 
       if (blob) {
         try {
@@ -170,7 +196,9 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                     width: '100%',
                     background: '#ffffff',
                     borderRadius: '16px',
-                    boxShadow: 'rgb(4, 4, 4) 0px 0px 0px 1px, rgba(255, 255, 255, 0.18) 0px 1px 0px inset, rgba(0, 0, 0, 0.6) 0px 0px 18px 1px',
+                    boxShadow: isCapturingForIOS
+                      ? 'rgba(0, 0, 0, 0.3) 0px 4px 12px'
+                      : 'rgb(4, 4, 4) 0px 0px 0px 1px, rgba(255, 255, 255, 0.18) 0px 1px 0px inset, rgba(0, 0, 0, 0.6) 0px 0px 18px 1px',
                     overflow: 'hidden',
                   }}
                 >
