@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Stack, Text, Card, Button, Box, Flex } from '@sanity/ui'
 import { set, useFormValue, useClient } from 'sanity'
 import { domToBlob } from 'modern-screenshot'
+import { getHumanRelativeDate } from '../utils/date-formatting'
 
 // Detect iOS devices
 const isIOS = () => {
@@ -24,13 +25,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const terminalRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' })
   const dateOfDocument = useFormValue(['_createdAt']) as string
-  const date = new Date(dateOfDocument)
-  const relativeDate = formatter.format(
-    Math.ceil((date.getTime() - new Date().setHours(23)) / (1000 * 60 * 60 * 24)),
-    'day',
-  )
+  const relativeDate = getHumanRelativeDate(dateOfDocument)
 
   const documentContent = useFormValue(['content']) as string
   const client = useClient({ apiVersion: '2025-02-10' })

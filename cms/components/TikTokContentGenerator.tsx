@@ -6,6 +6,7 @@ import { createTikTokVideo } from '../utils/tiktok-video-recorder'
 import { calculateVideoDuration } from '../utils/tiktok-animation-config'
 import type { TikTokGSAPTimeline } from '../utils/tiktok-gsap-animations'
 import { createPreviewAnimation, stopAnimations } from '../utils/tiktok-gsap-animations'
+import { getHumanRelativeDate } from '../utils/date-formatting'
 
 interface TikTokContentGeneratorProps {
   onChange: (event: any) => void
@@ -23,13 +24,8 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
   const questionContentRef = useRef<HTMLDivElement>(null)
   const gsapAnimationRef = useRef<TikTokGSAPTimeline | null>(null)
 
-  const formatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' })
   const dateOfDocument = useFormValue(['_createdAt']) as string
-  const date = new Date(dateOfDocument)
-  const relativeDate = formatter.format(
-    Math.ceil((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
-    'day',
-  )
+  const relativeDate = getHumanRelativeDate(dateOfDocument)
 
   const documentContent = useFormValue(['content']) as string
   const posts = useFormValue(['posts']) as Array<{ content: PortableTextTextBlock[] }>
