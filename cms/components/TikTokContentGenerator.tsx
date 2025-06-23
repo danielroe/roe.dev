@@ -84,34 +84,61 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
   const formattedQuestion = documentContent ? documentContent.trim() : ''
   const formattedAnswer = getAnswerText() ? getAnswerText().trim() : ''
 
-  // Split answer into lines for animation
   const answerLines = React.useMemo(() => {
     if (!formattedAnswer) return []
 
-    // Split by sentences, then by length if needed
-    const sentences = formattedAnswer.split(/[.!?\n]+/).filter(s => s.trim())
-    const lines: string[] = []
+    const paragraphs = formattedAnswer.split('\n').map(p => p.trim()).filter(Boolean)
+    const lines: Array<{ text: string, isAfterLineBreak: boolean, isNewParagraph: boolean }> = []
 
-    for (const sentence of sentences) {
-      const trimmed = sentence.trim()
-      if (!trimmed) continue
+    for (let paragraphIndex = 0; paragraphIndex < paragraphs.length; paragraphIndex++) {
+      const paragraph = paragraphs[paragraphIndex]
+      const isAfterLineBreak = paragraphIndex > 0
+      let isFirstLineOfParagraph = true
 
-      if (trimmed.length > 30) {
-        const words = trimmed.split(' ')
-        let currentLine = ''
-        for (const word of words) {
-          if (currentLine.length + word.length + 1 <= 30) {
-            currentLine += (currentLine ? ' ' : '') + word
+      // Split by sentences but keep punctuation
+      const sentenceMatches = paragraph.match(/[^.!?]*[.!?]+|[^.!?]+$/g) || [paragraph]
+
+      for (const sentence of sentenceMatches) {
+        const trimmed = sentence.trim()
+        if (!trimmed) continue
+
+        if (trimmed.length > 30) {
+          const words = trimmed.split(' ')
+          let currentLine = ''
+          for (let i = 0; i < words.length; i++) {
+            const word = words[i]
+            if (currentLine.length + word.length + 1 <= 30) {
+              currentLine += (currentLine ? ' ' : '') + word
+            }
+            else {
+              if (currentLine) {
+                lines.push({
+                  text: currentLine,
+                  isAfterLineBreak: isAfterLineBreak && isFirstLineOfParagraph,
+                  isNewParagraph: paragraphIndex > 0 && isFirstLineOfParagraph,
+                })
+                isFirstLineOfParagraph = false
+              }
+              currentLine = word
+            }
           }
-          else {
-            if (currentLine) lines.push(currentLine)
-            currentLine = word
+          if (currentLine) {
+            lines.push({
+              text: currentLine,
+              isAfterLineBreak: isAfterLineBreak && isFirstLineOfParagraph,
+              isNewParagraph: paragraphIndex > 0 && isFirstLineOfParagraph,
+            })
+            isFirstLineOfParagraph = false
           }
         }
-        if (currentLine) lines.push(currentLine)
-      }
-      else {
-        lines.push(trimmed)
+        else {
+          lines.push({
+            text: trimmed,
+            isAfterLineBreak: isAfterLineBreak && isFirstLineOfParagraph,
+            isNewParagraph: paragraphIndex > 0 && isFirstLineOfParagraph,
+          })
+          isFirstLineOfParagraph = false
+        }
       }
     }
 
@@ -140,7 +167,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       const answer = getAnswerText()
 
       const questionLines = [formattedQuestion]
-      const videoAnswerLines = answerLines
+      const videoAnswerLines = answerLines.map(line => line.text)
 
       const videoBlob = await createTikTokVideo({
         element: videoContainerRef.current,
@@ -632,9 +659,10 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                         lineHeight: '1.2',
                         textShadow: '0 2px 4px rgba(255, 255, 255, 0.8)',
                         marginBottom: '12px',
+                        marginTop: line.isNewParagraph ? '48px' : (line.isAfterLineBreak ? '36px' : '0'),
                       }}
                     >
-                      {line}
+                      {line.text}
                     </div>
                   ))}
                 </div>
