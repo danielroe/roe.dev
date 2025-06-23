@@ -10,6 +10,7 @@ import type { PortableTextBlock } from '@portabletext/types'
 import { parseURL, withProtocol } from 'ufo'
 import { camelCase } from 'scule'
 import { resolveTextForPlatform, resolveTextWithFacets } from '../utils/sanity/blocks'
+import { getValidYouTubeAccessToken } from '../utils/youtube/auth'
 
 interface AMADocument {
   _id: string
@@ -699,10 +700,8 @@ async function publishToTikTokStories (event: H3Event, document: AMADocument): P
 async function publishToYouTubeShorts (event: H3Event, document: AMADocument): Promise<{ url: string }> {
   const config = useRuntimeConfig(event)
 
-  const accessToken = config.youtube.accessToken
-  if (!accessToken) {
-    throw new Error('YouTube access token not configured. Set NUXT_YOUTUBE_ACCESS_TOKEN environment variable.')
-  }
+  // Get a fresh access token (using refresh token if configured)
+  const accessToken = await getValidYouTubeAccessToken(event)
 
   // Check if pre-generated video exists (check both old and new field names for backwards compatibility)
   const videoAsset = document.video

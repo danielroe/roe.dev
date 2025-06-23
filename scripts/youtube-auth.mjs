@@ -3,8 +3,9 @@
 /**
  * YouTube OAuth Token Generator
  *
- * This script helps you generate a long-lived YouTube access token with the proper scopes
- * for uploading videos and managing playlists.
+ * This script helps you generate a long-lived YouTube refresh token with the proper scopes
+ * for uploading videos and managing playlists. The refresh token can be used to automatically
+ * generate fresh access tokens without manual intervention.
  *
  * Prerequisites:
  * 1. Create a project in Google Cloud Console
@@ -17,6 +18,9 @@
  *
  * Or with credentials file path:
  *   node scripts/youtube-auth.js ./path/to/credentials.json
+ *
+ * To refresh an existing token:
+ *   node scripts/youtube-auth.js --refresh "your_refresh_token"
  */
 
 import { createServer } from 'node:http'
@@ -243,6 +247,8 @@ class YouTubeAuthGenerator {
     console.log(`export NUXT_YOUTUBE_ACCESS_TOKEN="${tokens.access_token}"`)
     if (tokens.refresh_token) {
       console.log(`export NUXT_YOUTUBE_REFRESH_TOKEN="${tokens.refresh_token}"`)
+      console.log(`export NUXT_YOUTUBE_CLIENT_ID="${this.credentials.client_id}"`)
+      console.log(`export NUXT_YOUTUBE_CLIENT_SECRET="${this.credentials.client_secret}"`)
     }
     console.log('```\n')
 
@@ -251,6 +257,8 @@ class YouTubeAuthGenerator {
     console.log(`NUXT_YOUTUBE_ACCESS_TOKEN=${tokens.access_token}`)
     if (tokens.refresh_token) {
       console.log(`NUXT_YOUTUBE_REFRESH_TOKEN=${tokens.refresh_token}`)
+      console.log(`NUXT_YOUTUBE_CLIENT_ID=${this.credentials.client_id}`)
+      console.log(`NUXT_YOUTUBE_CLIENT_SECRET=${this.credentials.client_secret}`)
     }
     console.log('```\n')
 
@@ -267,6 +275,10 @@ class YouTubeAuthGenerator {
     if (tokens.refresh_token) {
       console.log('\n🔄 To refresh your access token later, you can use:')
       console.log(`node scripts/youtube-auth.js --refresh "${tokens.refresh_token}"`)
+      console.log('\n💡 For automatic token refresh in production, set these environment variables:')
+      console.log(`NUXT_YOUTUBE_REFRESH_TOKEN=${tokens.refresh_token}`)
+      console.log(`NUXT_YOUTUBE_CLIENT_ID=${this.credentials.client_id}`)
+      console.log(`NUXT_YOUTUBE_CLIENT_SECRET=${this.credentials.client_secret}`)
     }
   }
 

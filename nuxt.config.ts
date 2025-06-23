@@ -129,7 +129,9 @@ export default defineNuxtConfig({
       clientSecret: '',
     },
     youtube: {
-      accessToken: '',
+      refreshToken: '',
+      clientId: '',
+      clientSecret: '',
       amaPlaylistId: 'PLQnM-cL9ttacD7fyv6yrtQxaICAUs-2KJ',
     },
     voteUrl: '',
