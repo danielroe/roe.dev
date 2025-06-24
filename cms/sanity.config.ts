@@ -49,8 +49,49 @@ export default defineConfig({
                       ),
                   ]),
               ),
+            S.listItem()
+              .title('Projects')
+              .child(
+                S.list()
+                  .title('Projects')
+                  .items([
+                    S.listItem()
+                      .title('Featured')
+                      .child(
+                        S.documentList()
+                          .title('Featured projects')
+                          .filter('_type == "project" && isFeatured == true')
+                          .defaultOrdering([{ field: 'order', direction: 'asc' }, { field: 'name', direction: 'asc' }])
+                          .child(documentId =>
+                            S.document().documentId(documentId).schemaType('project'),
+                          ),
+                      ),
+                    S.listItem()
+                      .title('Public')
+                      .child(
+                        S.documentList()
+                          .title('Public projects')
+                          .filter('_type == "project" && isPrivate != true')
+                          .defaultOrdering([{ field: 'category', direction: 'asc' }, { field: 'order', direction: 'asc' }, { field: 'name', direction: 'asc' }])
+                          .child(documentId =>
+                            S.document().documentId(documentId).schemaType('project'),
+                          ),
+                      ),
+                    S.listItem()
+                      .title('All projects')
+                      .child(
+                        S.documentList()
+                          .title('All projects')
+                          .filter('_type == "project"')
+                          .defaultOrdering([{ field: 'isFeatured', direction: 'desc' }, { field: 'order', direction: 'asc' }, { field: 'name', direction: 'asc' }])
+                          .child(documentId =>
+                            S.document().documentId(documentId).schemaType('project'),
+                          ),
+                      ),
+                  ]),
+              ),
             // Add other document types
-            ...S.documentTypeListItems().filter(listItem => listItem.getId() !== 'ama'),
+            ...S.documentTypeListItems().filter(listItem => !['ama', 'project'].includes(listItem.getId() || '')),
           ]),
     }),
     visionTool(),

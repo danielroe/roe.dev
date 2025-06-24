@@ -161,6 +161,20 @@ export default defineNuxtConfig({
       clientSecret: '',
       inviteToken: '',
     },
+    advocu: {
+      apiUrl: '',
+      apiKey: '',
+      expertId: '',
+      webhookSecret: '',
+    },
+    githubStars: {
+      apiUrl: 'https://api-stars.github.com/',
+      token: '',
+      webhookSecret: '',
+    },
+    devTo: {
+      token: '',
+    },
     public: {
       githubClientId: '',
     },
@@ -205,6 +219,9 @@ export default defineNuxtConfig({
           },
         },
       },
+    },
+    experimental: {
+      tasks: true,
     },
     replace: {
       'import.meta.test': isTest,
@@ -332,6 +349,7 @@ export default defineNuxtConfig({
       'gdg.community.dev',
     ],
     sanity: {
+      useCdn: true,
       projectId: '9bj3w2vo',
       perspective: 'production',
       useCdn: true,

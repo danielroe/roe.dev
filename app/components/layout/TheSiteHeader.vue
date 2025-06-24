@@ -8,16 +8,22 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
 const showMenu = ref(false)
 
 const { data: currentLocation } = await useFetch('/api/current-location', {
-  transform: location => ({
-    area: location.area,
-    flagEmoji: location.flagEmoji,
-  }),
+  transform: location => location
+    ? ({
+        area: location.area,
+        flagEmoji: location.flagEmoji,
+      })
+    : null,
 })
 
 const menu = [
   {
     name: 'Home',
     path: '/',
+  },
+  {
+    name: 'Projects',
+    path: '/projects',
   },
   {
     name: 'Talks',
