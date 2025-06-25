@@ -1,102 +1,43 @@
-import fsp from 'node:fs/promises'
-import { defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { globby } from 'globby'
-import { $fetch } from 'ofetch'
-import { serializers } from './shared/serialisers'
-
-type RawArticle = {
-  title: string
-  body_markdown: string
-  canonical_url: string
-}
+import { defu } from 'defu'
+import { defineNuxtModule, addServerHandler, createResolver } from 'nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
     name: 'dev-to',
     configKey: 'devTo',
   },
-  defaults: {
-    enabled: false,
-    token: process.env.DEVTO_TOKEN,
-  },
-  async setup (options) {
-    const nuxt = useNuxt()
-    if (nuxt.options.dev || !options.enabled) {
+  setup (_options, nuxt) {
+    const resolver = createResolver(import.meta.url)
+    addServerHandler({
+      route: '/_tasks/dev-to',
+      handler: resolver.resolve('./dev-to/runtime/routes/_tasks/dev-to'),
+    })
+
+    if (nuxt.options.dev) {
+      // register task for local use
+      nuxt.options.nitro.tasks = defu(nuxt.options.nitro.tasks, {
+        'dev-to:sync': {
+          handler: resolver.resolve('./dev-to/runtime/tasks/sync'),
+        },
+      })
       return
     }
 
-    if (!options.token) {
-      throw new Error('No token provided.')
+    nuxt.options.nitro.prerender = nuxt.options.nitro.prerender || {}
+    nuxt.options.nitro.prerender.routes = nuxt.options.nitro.prerender.routes || []
+    if (!nuxt.options.nitro.prerender.routes.includes('/_tasks/dev-to')) {
+      nuxt.options.nitro.prerender.routes.push('/_tasks/dev-to')
     }
 
-    const $devto = $fetch.create({
-      baseURL: 'https://dev.to/api',
-      headers: {
-        'api-key': options.token,
-      },
-    })
-
-    const [publishedArticles, localArticles] = await Promise.all([
-      $devto<Array<RawArticle & { id: string }>>('articles/me'),
-      getMarkdownArticles(),
-    ])
-    for (const markdownArticle of localArticles) {
-      const article = publishedArticles.find(
-        article => article.canonical_url === markdownArticle.canonical_url,
-      )
-      if (article) {
-        await $devto(`articles/${article.id}`, {
-          method: 'PUT',
-          body: {
-            article: {
-              published: true,
-              title: markdownArticle.title,
-              body_markdown: markdownArticle.body_markdown,
-              canonical_url: markdownArticle.canonical_url,
-            },
-          },
-        })
-        continue
-      }
-
-      await await $devto('articles', {
-        method: 'POST',
-        body: {
-          article: {
-            published: true,
-            title: markdownArticle.title,
-            canonical_url: markdownArticle.canonical_url,
-            body_markdown: markdownArticle.body_markdown,
-          },
+    // Add to prerender routes
+    nuxt.hook('nitro:init', nitro => {
+      // prerender configuration only
+      const nitroConfig = nitro.options._config
+      nitroConfig.tasks = defu(nitroConfig.tasks, {
+        'dev-to:sync': {
+          handler: resolver.resolve('./dev-to/runtime/tasks/sync'),
         },
       })
-    }
+    })
   },
 })
-
-async function getMarkdownArticles () {
-  const nuxt = useNuxt()
-  const articles = []
-  const files = await globby('./content/blog/**/*.md', {
-    cwd: nuxt.options.rootDir,
-    absolute: true,
-  })
-  for (const file of files) {
-    let contents = await fsp.readFile(file, 'utf-8')
-
-    if (contents.includes('skip_dev')) continue
-    const title = contents.match(/title: (.*)/)![1]
-    for (const item of serializers) {
-      contents = contents.replace(item[0], item[1])
-    }
-
-    const slug = file.match(/\/[^/]*$/)![0].slice(1, -3)
-    articles.push({
-      body_markdown: contents,
-      title,
-      slug,
-      canonical_url: `https://roe.dev/blog/${slug}/`,
-    })
-  }
-  return articles
-}

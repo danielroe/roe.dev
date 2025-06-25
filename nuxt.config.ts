@@ -206,6 +206,9 @@ export default defineNuxtConfig({
         },
       },
     },
+    experimental: {
+      tasks: true,
+    },
     replace: {
       'import.meta.test': isTest,
     },
@@ -277,10 +280,6 @@ export default defineNuxtConfig({
         }
       }
     },
-  },
-
-  devTo: {
-    enabled: !!process.env.SYNC_DEV_TO,
   },
 
   eslint: {
