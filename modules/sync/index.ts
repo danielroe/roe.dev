@@ -1,23 +1,24 @@
 import { defu } from 'defu'
-import { defineNuxtModule, addServerHandler, createResolver } from 'nuxt/kit'
+import { defineNuxtModule, createResolver, addServerHandler } from 'nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
-    name: 'dev-to',
-    configKey: 'devTo',
+    name: 'sync',
+    configKey: 'sync',
   },
   setup (_options, nuxt) {
     const resolver = createResolver(import.meta.url)
+
     addServerHandler({
-      route: '/_tasks/dev-to',
-      handler: resolver.resolve('./dev-to/runtime/routes/_tasks/dev-to'),
+      route: '/_tasks/sync',
+      handler: resolver.resolve('./runtime/routes/_tasks/sync'),
     })
 
     if (nuxt.options.dev) {
       // register task for local use
       nuxt.options.nitro.tasks = defu(nuxt.options.nitro.tasks, {
-        'dev-to:sync': {
-          handler: resolver.resolve('./dev-to/runtime/tasks/sync'),
+        sync: {
+          handler: resolver.resolve('./runtime/tasks/sync'),
         },
       })
       return
@@ -25,8 +26,8 @@ export default defineNuxtModule({
 
     nuxt.options.nitro.prerender = nuxt.options.nitro.prerender || {}
     nuxt.options.nitro.prerender.routes = nuxt.options.nitro.prerender.routes || []
-    if (!nuxt.options.nitro.prerender.routes.includes('/_tasks/dev-to')) {
-      nuxt.options.nitro.prerender.routes.push('/_tasks/dev-to')
+    if (!nuxt.options.nitro.prerender.routes.includes('/_tasks/sync')) {
+      nuxt.options.nitro.prerender.routes.push('/_tasks/sync')
     }
 
     // Add to prerender routes
@@ -34,8 +35,8 @@ export default defineNuxtModule({
       // prerender configuration only
       const nitroConfig = nitro.options._config
       nitroConfig.tasks = defu(nitroConfig.tasks, {
-        'dev-to:sync': {
-          handler: resolver.resolve('./dev-to/runtime/tasks/sync'),
+        sync: {
+          handler: resolver.resolve('./runtime/tasks/sync'),
         },
       })
     })
