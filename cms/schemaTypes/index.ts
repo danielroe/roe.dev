@@ -4,5 +4,6 @@ import event from './event'
 import invite from './invite'
 import location from './location'
 import uses from './uses'
+import advocuSync from './advocuSync'
 
-export const schemaTypes = [ama, entity, event, location, invite, uses]
+export const schemaTypes = [ama, entity, event, location, invite, uses, advocuSync]

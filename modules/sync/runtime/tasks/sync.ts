@@ -1,4 +1,4 @@
-import { syncWithProvider } from '../providers/index'
+import { providerNames, syncWithProvider } from '../providers/index'
 import { getMarkdownArticles, getTalks } from '../utils/items'
 
 export default defineTask({
@@ -11,10 +11,7 @@ export default defineTask({
       ...await getMarkdownArticles(),
       ...await getTalks(),
     ]
-    const result = await Promise.all([
-      syncWithProvider('github-stars', items),
-      syncWithProvider('dev-to', items),
-    ])
+    const result = await Promise.all(providerNames.map(p => syncWithProvider(p, items)))
     return { result }
   },
 })
