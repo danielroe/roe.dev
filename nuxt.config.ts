@@ -23,12 +23,6 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
-    function (_options, nuxt) {
-      // todo: refactor into nuxt
-      nuxt.hook('prepare:types', ctx => {
-        ctx.tsConfig.include = ctx.tsConfig.include?.filter(i => i !== '..' && i !== '../**/*')
-      })
-    },
   ],
 
   // TODO: remove when Nuxt v3.14 is released
@@ -215,6 +209,13 @@ export default defineNuxtConfig({
     replace: {
       'import.meta.test': isTest,
     },
+    typescript: {
+      tsConfig: {
+        compilerOptions: {
+          noUncheckedIndexedAccess: true,
+        },
+      },
+    },
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
@@ -262,7 +263,10 @@ export default defineNuxtConfig({
 
   typescript: {
     // TODO: remove nitropack/types when nuxt v3.14 is released
-    hoist: ['vite', 'nitropack/types'],
+    hoist: ['vite'],
+    tsConfig: {
+      include: ['../app/shims.d.ts'],
+    },
   },
 
   postcss: {

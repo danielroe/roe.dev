@@ -1,4 +1,4 @@
-import { AppBskyEmbedImages, AppBskyFeedPost, AtpAgent } from '@atproto/api'
+import { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet, AtpAgent } from '@atproto/api'
 import type { FeedViewPost } from '@atproto/api/dist/client/types/app/bsky/feed/defs'
 import MagicString from 'magic-string'
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async event => {
     }
   } while (cursor && feed.length < 20)
 
-  return Promise.all(feed.map(p => {
+  return Promise.all(feed.map((p): FeedItem => {
     const post = p.post.record as AppBskyFeedPost.Record
     const embed = AppBskyEmbedImages.isMain(p.post.embed) ? p.post.embed : undefined
     const text = new MagicString(post.text)
@@ -34,7 +34,7 @@ export default defineEventHandler(async event => {
           >= facet.index.byteEnd,
       )
       for (const feature of facet.features) {
-        if (feature.$type === 'app.bsky.richtext.facet#link') {
+        if (AppBskyRichtextFacet.isLink(feature)) {
           text.appendRight(startIndex, `<a href="${feature.uri}">`)
           text.appendLeft(endIndex === -1 ? post.text.length : endIndex + 1, '</a>')
           continue
@@ -65,6 +65,7 @@ export default defineEventHandler(async event => {
               `https://bsky.app/profile/${p.post.author.handle}/post`
               + p.post.uri.match(/(\/[^/]+)$/)?.[1],
       html: text.toString().replace(/\n/g, '<br>'),
+      // @ts-expect-error TODO: fix typings
       media: embed?.images?.map(i => ({
         url: i.fullsize,
         alt: i.alt,
@@ -72,3 +73,14 @@ export default defineEventHandler(async event => {
     }
   }))
 })
+
+interface FeedItem {
+  network: 'bluesky'
+  accountLink: string
+  avatar?: string
+  handle?: string
+  createdAt: string
+  permalink: string
+  html: string
+  media?: { url: string, alt?: string }[]
+}

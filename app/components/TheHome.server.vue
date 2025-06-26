@@ -119,7 +119,7 @@ interface Talk {
         </NuxtLink>
       </p>
     </section>
-    <template v-if="streams.length">
+    <template v-if="streams?.length">
       <hr class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700">
       <section class="max-w-[37.50rem]">
         <h2 class="text-xl">
@@ -199,7 +199,7 @@ interface Talk {
         </div>
       </section>
     </template>
-    <template v-if="upcomingConferences.length">
+    <template v-if="upcomingConferences?.length">
       <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
       <section
 

@@ -9,8 +9,8 @@ const showMenu = ref(false)
 
 const { data: currentLocation } = await useFetch('/api/current-location', {
   transform: location => ({
-    area: location.area,
-    flagEmoji: location.flagEmoji,
+    area: location!.area,
+    flagEmoji: location!.flagEmoji,
   }),
 })
 

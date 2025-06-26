@@ -22,7 +22,7 @@ export default defineNuxtModule({
 
     for (const path of files) {
       let contents = await readFile(path, 'utf-8')
-      const slug = filename(path)
+      const slug = filename(path)!
       const { data } = grayMatter(contents)
       const date = new Date(data.date)
 

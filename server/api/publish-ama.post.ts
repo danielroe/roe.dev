@@ -412,7 +412,7 @@ async function publishToMastodon (event: H3Event, text: string, image: AMADocume
   const [username, domain] = identifier.split('@')
 
   const data = await $fetch<{ subject: string, aliases: string[] }>('.well-known/webfinger', {
-    baseURL: withProtocol(domain, 'https://'),
+    baseURL: withProtocol(domain!, 'https://'),
     query: {
       resource: `acct:${identifier}`,
     },
@@ -485,7 +485,7 @@ async function publishToMastodon (event: H3Event, text: string, image: AMADocume
   }
 
   // Return the first post URL as the main URL
-  return { url: statusUrls[0] }
+  return { url: statusUrls[0]! }
 }
 
 /**
@@ -907,7 +907,7 @@ async function processManualThreads (posts: Array<{ content: PortableTextBlock[]
   const footerText = '\n\nroe.dev/ama\n\n#ama' // Define footer text once
 
   for (let i = 0; i < posts.length; i++) {
-    const post = posts[i]
+    const post = posts[i]!
     let combinedFacets: AppBskyRichtextFacet.Main[] = []
     let finalText = ''
 
@@ -1018,7 +1018,7 @@ async function publishToBlueskyThreads (event: H3Event, threads: Array<{ text: s
   let replyTo: Required<AppBskyFeedPost.ReplyRef> | undefined
 
   for (let i = 0; i < threads.length; i++) {
-    const { text: threadText, facets } = threads[i]
+    const { text: threadText, facets } = threads[i]!
     let embed: Required<AppBskyEmbedImages.Main>
 
     // Only add image to the first post
@@ -1102,7 +1102,7 @@ async function publishToBlueskyThreads (event: H3Event, threads: Array<{ text: s
     }
   }
 
-  return { url: postUrls[0] }
+  return { url: postUrls[0]! }
 }
 
 function splitIntoThreads (text: string, maxLength: number): string[] {

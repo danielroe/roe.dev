@@ -229,6 +229,7 @@ export function resolveTextWithFacets (blocks: PortableTextBlock[], footer?: str
       f =>
         f.index.byteStart === startPos
         && f.index.byteEnd === endPos
+        && f.features[0]
         && f.features[0].$type === 'app.bsky.richtext.facet#tag'
         && ('tag' in f.features[0] && f.features[0].tag === tag.substring(1)),
     )

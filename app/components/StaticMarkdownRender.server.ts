@@ -13,6 +13,6 @@ export default defineComponent({
       return () => h(ContentRenderer, { value: data.value! })
     }
     const value = await queryCollection(props.collection).path(props.path!).first()
-    return () => h(ContentRenderer, { value })
+    return () => h(ContentRenderer, { value: value! })
   },
 })
