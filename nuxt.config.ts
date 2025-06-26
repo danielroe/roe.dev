@@ -163,6 +163,7 @@ export default defineNuxtConfig({
       starsToken: '',
     },
     devToToken: '',
+    advocuToken: '',
     public: {
       githubClientId: '',
     },

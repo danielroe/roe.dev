@@ -1,18 +1,24 @@
 import { GithubStarsProvider } from './github-stars'
 import { DevToProvider } from './dev-to'
+import { GdeAdvocuProvider } from './gde-advocu'
 
-const providers: Record<string, SyncProvider> = {
+const providers = {
   'github-stars': new GithubStarsProvider(),
   'dev-to': new DevToProvider(),
-}
+  'gde-advocu': new GdeAdvocuProvider(),
+} satisfies Record<string, SyncProvider>
 
-function getProvider (name: string): SyncProvider {
+type ProviderName = keyof typeof providers
+
+export const providerNames = Object.keys(providers) as ProviderName[]
+
+function getProvider (name: ProviderName): SyncProvider {
   const provider = providers[name]
   if (!provider) throw new Error(`Unknown sync provider: ${name}`)
   return provider
 }
 
-export async function syncWithProvider (providerName: string, items: SyncItem[]) {
+export async function syncWithProvider (providerName: ProviderName, items: SyncItem[]) {
   const provider = getProvider(providerName)
   return provider.sync(items)
 }
@@ -24,6 +30,7 @@ export interface SyncItem {
   canonical_url: string
   type: 'blog' | 'talk' | 'article' | 'event' | 'hackathon' | 'oss' | 'video' | 'forum' | 'other'
   date?: string
+  tags?: string[]
 }
 
 export interface SyncProvider {
