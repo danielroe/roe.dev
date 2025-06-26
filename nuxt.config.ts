@@ -73,7 +73,7 @@ export default defineNuxtConfig({
     polyfills: true,
   },
 
-  devtools: { enabled: false },
+  devtools: { enabled: true },
 
   app: {
     head: {
@@ -160,7 +160,9 @@ export default defineNuxtConfig({
       // oauth flow
       clientSecret: '',
       inviteToken: '',
+      starsToken: '',
     },
+    devToToken: '',
     public: {
       githubClientId: '',
     },
