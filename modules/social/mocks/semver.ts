@@ -1,4 +1,3 @@
-// @ts-expect-error missing types
 import proxy from 'mocked-exports/proxy'
 
 export const lt = proxy

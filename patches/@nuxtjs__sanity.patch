@@ -36,3 +36,23 @@ index 5b578b702df35303ee68de0347ef195da6530421..d4913ebed249ab0688b8b17220df1117
        addPlugin({
          mode: "server",
          src: join(runtimeDir, "plugins", "visual-editing.server")
+diff --git a/dist/runtime/composables/index.d.ts b/dist/runtime/composables/index.d.ts
+index 5df4c55aa4cebfc1dbbfd0aa81c4f231526c9720..31b028df039c98d41a5bf2aea30b8a3f6d4a9e77 100644
+--- a/dist/runtime/composables/index.d.ts
++++ b/dist/runtime/composables/index.d.ts
+@@ -1,4 +1,5 @@
+ import type { AsyncData, AsyncDataOptions } from 'nuxt/app';
++import type { H3Event } from 'h3';
+ import type { SanityClient, ClientConfig } from '../client.js';
+ export interface SanityHelper {
+     client: SanityClient;
+@@ -6,7 +7,8 @@ export interface SanityHelper {
+     fetch: SanityClient['fetch'];
+     setToken: (token: string) => void;
+ }
+-export declare const useSanity: (client?: string) => SanityHelper;
++export declare function useSanity (event?: H3Event, client?: string): SanityHelper;
++export declare function useSanity (client?: string): SanityHelper;
+ interface UseSanityQueryOptions<T> extends AsyncDataOptions<T> {
+     client?: string;
+ }

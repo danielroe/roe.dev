@@ -12,7 +12,7 @@ export default defineNuxtModule({
     })
 
     if (nuxt.options._prepare) {
-      nuxt.options.runtimeConfig.invites = { map: { example: 'example/repo' } }
+      nuxt.options.runtimeConfig.invites = { map: {} }
       return
     }
 
