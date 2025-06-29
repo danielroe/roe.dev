@@ -1,4 +1,4 @@
-import { sendEmail } from '../utils/email'
+import { sendPushoverNotification } from '../utils/pushover'
 
 export default defineEventHandler(async event => {
   const { data: payload } = await getUserSession(event)
@@ -15,11 +15,9 @@ export default defineEventHandler(async event => {
     })
   }
   const { idea } = await readBody(event)
-  await sendEmail(
-    event,
-    'Idea from website',
-    [`Idea from ${payload.name}:`, '', idea].join('\n'),
-  )
-  event.res.statusCode = 204
-  event.res.end()
+  await sendPushoverNotification(event, {
+    title: 'Idea from website',
+    message: [`Idea from ${payload.name}:`, '', idea].join('\n'),
+  })
+  return null
 })

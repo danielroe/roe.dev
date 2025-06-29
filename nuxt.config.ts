@@ -130,8 +130,6 @@ export default defineNuxtConfig({
     },
     voteUrl: '',
     sessionPassword: '',
-    // emailing ideas
-    resendApiKey: '',
     // Pushover notifications
     pushover: {
       token: '',
