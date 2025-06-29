@@ -14,10 +14,18 @@
             ask me anything
           </label>
         </h1>
+        <p>
+          I'll try to <a
+            class="underlined-link"
+            href="https://bsky.app/hashtag/ama?author=danielroe.dev"
+          >
+            answer it on social media
+          </a>.
+        </p>
         <textarea
           id="question"
           name="question"
-          class="rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1"
+          class="mt-2 rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1"
         />
         <button
           type="submit"
