@@ -1,48 +1,55 @@
 <script setup lang="ts">
-interface Talk {
-  slug: string
-  group?: string
-  description?: string
+interface TalkGroup {
+  _id: string
   title: string
-  source: string
-  tags: string
-  link: string
-  date: string
-  type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
-  video?: string
-  release?: string
-  repo?: string
-  demo?: string
+  description: string
 }
 
-// if (import.meta.prerender && import.meta.server) {
-//   for (const conference of upcomingConferences) {
-//     await useStorage().setItem(conference.image, conference.link)
-//     appendHeader(
-//       useRequestEvent(),
-//       'x-nitro-prerender',
-//       '/thumbnail/' + conference.image
-//     )
-//   }
-// }
+interface Talk {
+  _id: string
+  title: string
+  description?: string
+  source: string
+  tags: string[]
+  link?: string
+  video?: string
+  date: string
+  type: 'conference' | 'podcast' | 'meetup' | 'workshop' | 'stream'
+  slides?: string // GitHub release tag
+  repo?: string
+  demo?: string
+  group?: TalkGroup
+}
 
 const { data: groups } = await useAsyncData(
-  () =>
-    ((import.meta.server || import.meta.dev) as true)
-    && import('../data/talks.json').then(r => r.default as any as Talk[]),
-  {
-    transform: talks => {
+  'past-talks',
+  async () => {
+    try {
+      const talks = await $fetch<Talk[]>('/api/talks')
+
       const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
+
       for (const talk of talks) {
-        const slug = talk.group || talk.slug
-        if (groupedTalks[slug]) {
-          groupedTalks[slug]!.push(talk)
+        // Use group _id if available, otherwise use individual talk _id
+        const groupKey = talk.group?._id || talk._id
+        const groupTitle = talk.group?.title || talk.title
+        const groupDescription = talk.group?.description || talk.description
+
+        if (groupedTalks[groupKey]) {
+          groupedTalks[groupKey]!.push(talk)
         }
         else {
-          groupedTalks[slug] = [talk]
+          // Create a talk-like object with group information
+          const talkWithGroupInfo = {
+            ...talk,
+            title: groupTitle,
+            description: groupDescription,
+          }
+          groupedTalks[groupKey] = [talkWithGroupInfo]
         }
       }
 
+      // Sort talks within each group by date (newest first)
       for (const group in groupedTalks) {
         groupedTalks[group]!.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -56,7 +63,11 @@ const { data: groups } = await useAsyncData(
       )
 
       return groups
-    },
+    }
+    catch (error) {
+      console.error('Failed to fetch talks:', error)
+      return []
+    }
   },
 )
 </script>
@@ -64,8 +75,8 @@ const { data: groups } = await useAsyncData(
 <template>
   <section class="flex flex-row flex-wrap gap-4 max-w-[37.50rem]">
     <section
-      v-for="[slug, talks] of groups"
-      :key="slug"
+      v-for="[groupKey, talks] of groups"
+      :key="groupKey"
       class="mb-2 w-full relative flex flex-col justify-end min-h-12 transition-all border-1 border-solid border-transparent after:text-transparent flex-[100%]"
     >
       <div class="flex flex-row items-center gap-2 text-xl">
@@ -80,7 +91,7 @@ const { data: groups } = await useAsyncData(
       <article
         v-for="talk of talks"
         :key="talk.link"
-        :class="{ 'opacity-60': !talk.video && !talk.link && !talk.release && !talk.demo && !talk.repo }"
+        :class="{ 'opacity-60': !talk.video && !talk.link && !talk.slides && !talk.demo && !talk.repo }"
         :alt="talk.title"
       >
         <header class="flex flex-row mt-1">
@@ -113,7 +124,7 @@ const { data: groups } = await useAsyncData(
             </dd>
           </dl>
           <ExpandableTray
-            v-if="talk.video || talk.link || talk.release || talk.demo || talk.repo"
+            v-if="talk.video || talk.link || talk.slides || talk.demo || talk.repo"
             class="ml-auto flex items-start"
           >
             <NuxtLink
@@ -129,9 +140,9 @@ const { data: groups } = await useAsyncData(
               {{ talk.video ? `watch` : `listen` }}
             </NuxtLink>
             <NuxtLink
-              v-if="talk.release"
+              v-if="talk.slides"
               class="text-xs items-center"
-              :to="`/slides/${talk.release}.pdf`"
+              :to="`/slides/${talk.slides}.pdf`"
               data-external
             >
               <span class="i-ri:presentation-fill" /> slides

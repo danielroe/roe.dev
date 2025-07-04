@@ -1,8 +1,9 @@
 import { imageMeta } from 'image-meta'
 
-const eventQuery = groq`
-*[_type == 'event' && date > now()] {
-  name,
+const talkQuery = groq`
+*[_type == 'talk' && date >= now()] {
+  title,
+  "name": coalesce(title, source),
   "dates": date,
   endDate,
   link,
@@ -17,6 +18,7 @@ const eventQuery = groq`
 
 interface Event {
   name: string
+  title?: string
   dates: string
   endDate?: string
   link: string
@@ -33,7 +35,7 @@ export default defineEventHandler(async event => {
 
   const sanity = useSanity(event)
 
-  const upcomingConferences = sanity.config.token ? await sanity.client.fetch<Event[]>(eventQuery) : []
+  const upcomingConferences = sanity.config.token ? await sanity.client.fetch<Event[]>(talkQuery) : []
 
   const formatter = new Intl.DateTimeFormat('en', {
     month: 'long',

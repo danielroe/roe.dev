@@ -337,8 +337,6 @@ export default defineNuxtConfig({
     ],
     sanity: {
       projectId: '9bj3w2vo',
-      perspective: 'production',
-      useCdn: true,
     },
     screens: {
       logo: 40,
@@ -359,6 +357,11 @@ export default defineNuxtConfig({
   plausible: {
     domain: 'roe.dev',
     apiHost: 'https://v.roe.dev',
+  },
+
+  sanity: {
+    apiVersion: '2025-02-19',
+    perspective: 'published',
   },
 
   scripts: {
