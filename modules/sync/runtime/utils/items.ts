@@ -2,7 +2,6 @@ import fsp from 'node:fs/promises'
 import { globby } from 'globby'
 import matter from 'gray-matter'
 import { serializers } from '../../../shared/serialisers'
-import talks from '../../../../app/data/talks.json'
 import type { SyncItem } from '../providers'
 
 export async function getMarkdownArticles (): Promise<SyncItem[]> {
@@ -52,23 +51,35 @@ const talkMap: Record<string, SyncItem['type']> = {
   meetup: 'talk',
   conference: 'talk',
   stream: 'video',
+  workshop: 'talk',
 }
 
 export async function getTalks () {
   const items: SyncItem[] = []
-  for (const talk of talks) {
-    const link = talk.link || talk.video
-    if (!link) {
-      continue
+
+  try {
+    const talks = await $fetch('/api/talks')
+
+    for (const talk of talks) {
+      const link = talk.link || talk.video
+      // Only sync talks that have a link/video
+      if (!link) {
+        continue
+      }
+
+      items.push({
+        type: talkMap[talk.type] || 'talk',
+        title: talk.title,
+        date: talk.date,
+        body_markdown: talk.description || '',
+        canonical_url: link,
+        tags: Array.isArray(talk.tags) ? talk.tags : [],
+      })
     }
-    items.push({
-      type: talkMap[talk.type] || 'talk',
-      title: talk.title,
-      date: talk.date,
-      body_markdown: talk.description || '',
-      canonical_url: link,
-      tags: Array.isArray(talk.tags) ? talk.tags : [],
-    })
   }
+  catch (error) {
+    console.warn('Failed to fetch talks from CMS for sync, skipping:', error)
+  }
+
   return items
 }

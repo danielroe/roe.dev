@@ -45,52 +45,46 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 4)
   }),
-  useAsyncData(
-    () =>
-      ((import.meta.server || import.meta.dev) as true)
-      && import('../data/talks.json').then(r => r.default as any as Talk[]),
-    {
-      transform: talks => {
-        const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
-        for (const talk of talks) {
-          const slug = talk.group || talk.slug
-          if (groupedTalks[slug]) {
-            groupedTalks[slug]!.push(talk)
-          }
-          else {
-            groupedTalks[slug] = [talk]
-          }
-        }
+  useFetch('/api/talks', {
+    transform: talks => {
+      // Group talks by group or individual ID
+      const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
 
-        for (const group in groupedTalks) {
-          groupedTalks[group]!.sort(
+      for (const talk of talks) {
+        const groupKey = talk.group?._id || talk._id
+        if (groupedTalks[groupKey]) {
+          groupedTalks[groupKey]!.push(talk)
+        }
+        else {
+          groupedTalks[groupKey] = [talk]
+        }
+      }
+
+      // Sort and get the most recent talk from each group
+      const groups = Object.entries(groupedTalks)
+        .map(([_groupKey, talksInGroup]) => {
+          const sortedTalks = talksInGroup.sort(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
           )
-        }
+          return sortedTalks[0] // Get most recent talk from each group
+        })
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-        const groups = Object.entries(groupedTalks).sort(
-          ([_s1, [a]], [_s2, [b]]) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime()
-          },
-        )
-
-        return groups.slice(0, 4).map(([_slug, [firstTalk]]) => firstTalk)
-      },
+      return groups.slice(0, 4)
     },
-  ),
+  }),
 ])
 
 interface Talk {
-  slug: string
-  group?: string
+  _id: string
   title: string
   source: string
-  tags: string
-  link: string
-  date: string
-  type: 'talk' | 'podcast' | 'meetup' | 'talk' | 'conference' | 'mini-workshop'
+  tags: string[]
+  link?: string
   video?: string
-  release?: string
+  date: string
+  type: 'conference' | 'podcast' | 'meetup' | 'workshop' | 'mini-workshop' | 'stream'
+  slides?: string
   repo?: string
   demo?: string
 }
@@ -267,7 +261,7 @@ interface Talk {
       <ul class="flex flex-col mt-4">
         <li
           v-for="talk in talks"
-          :key="talk.slug"
+          :key="talk._id"
           class="mt-2 first:mt-0"
         >
           <div
@@ -295,9 +289,9 @@ interface Talk {
                   </span>
                 </NuxtLink>
                 <NuxtLink
-                  v-if="talk.release"
+                  v-if="talk.slides"
                   class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
-                  :to="`/slides/${talk.release}.pdf`"
+                  :to="`/slides/${talk.slides}.pdf`"
                   data-external
                 >
                   <span class="h-4 w-4 i-ri:presentation-fill" />
