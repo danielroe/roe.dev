@@ -14,11 +14,12 @@ interface TikTokVideoOptions {
   answer: string
   answerLines: string[]
   relativeDate: string
+  typingIntervals?: number[]
   onProgress?: (progress: number) => void
 }
 
 export async function createTikTokVideo (options: TikTokVideoOptions): Promise<Blob> {
-  const { questionLines, answerLines, question, onProgress } = options
+  const { questionLines, answerLines, question, typingIntervals, onProgress } = options
 
   const targetFPS = ANIMATION_CONFIG.recordingFrameRate || 24
   const duration = calculateVideoDuration(questionLines.length, answerLines.length, question)
@@ -33,6 +34,7 @@ export async function createTikTokVideo (options: TikTokVideoOptions): Promise<B
     duration,
     width: 1080,
     height: 1920,
+    typingIntervals,
     onProgress,
   })
 }
@@ -52,6 +54,7 @@ export interface PureWebCodecsRecorderOptions {
   duration: number
   width: number
   height: number
+  typingIntervals?: number[]
   onProgress?: (progress: number) => void
 }
 
@@ -92,7 +95,7 @@ async function blobToImageBitmap (blob: Blob): Promise<ImageBitmap> {
  * Record TikTok video using pure WebCodecs with proper WebM muxing
  */
 export async function recordTikTokWithPureWebCodecs (options: PureWebCodecsRecorderOptions): Promise<Blob> {
-  const { element, targetFPS, duration, width, height, onProgress } = options
+  const { element, targetFPS, duration, width, height, typingIntervals, onProgress } = options
 
   let container = element.querySelector('.tiktok-container') as HTMLElement
   if (!container && element.classList.contains('tiktok-container')) {
@@ -105,7 +108,7 @@ export async function recordTikTokWithPureWebCodecs (options: PureWebCodecsRecor
   // Reset all character states before starting animation
   resetCharacterStates(container)
 
-  const { timeline, destroy } = createTikTokGSAPTimeline(container)
+  const { timeline, destroy } = createTikTokGSAPTimeline(container, typingIntervals)
   const totalFrames = Math.ceil(duration * targetFPS)
   const frameDurationMicros = Math.floor(1000000 / targetFPS)
 

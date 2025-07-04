@@ -80,6 +80,38 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
   const formattedQuestion = documentContent ? documentContent.trim() : ''
   const formattedAnswer = getAnswerText() ? getAnswerText().trim() : ''
 
+  const typingIntervals = React.useMemo(() => {
+    if (!formattedQuestion) return []
+
+    const seed = formattedQuestion.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 1000
+    const intervals: number[] = []
+    const words = formattedQuestion.split(' ')
+
+    let randomSeed = seed
+    const seededRandom = () => {
+      randomSeed = (randomSeed * 9301 + 49297) % 233280
+      return randomSeed / 233280
+    }
+
+    for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
+      const word = words[wordIndex]!
+
+      if (wordIndex > 0) {
+        intervals.push(Math.floor(seededRandom() * 100) + 50)
+      }
+
+      for (let charIndex = 0; charIndex < word.length; charIndex++) {
+        intervals.push(Math.floor(seededRandom() * 50) + 30)
+      }
+
+      if (wordIndex < words.length - 1) {
+        intervals.push(Math.floor(seededRandom() * 300) + 100)
+      }
+    }
+
+    return intervals
+  }, [formattedQuestion])
+
   const answerLines = React.useMemo(() => {
     if (!formattedAnswer) return []
 
@@ -172,6 +204,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
         answer,
         answerLines: videoAnswerLines,
         relativeDate,
+        typingIntervals,
         onProgress: progress => {
           setGenerationProgress(Math.round(progress * 100))
         },
@@ -201,7 +234,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       setIsGenerating(false)
       setGenerationProgress(0)
     }
-  }, [documentContent, hasPreview, getAnswerText, formattedQuestion, answerLines, relativeDate, onChange, client])
+  }, [documentContent, hasPreview, getAnswerText, formattedQuestion, answerLines, relativeDate, typingIntervals, onChange, client])
 
   useEffect(() => {
     return () => {
@@ -305,12 +338,12 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
 
     // Start GSAP preview animation
     try {
-      gsapAnimationRef.current = createPreviewAnimation(videoContainerRef.current)
+      gsapAnimationRef.current = createPreviewAnimation(videoContainerRef.current, typingIntervals)
     }
     catch (error) {
       console.warn('Failed to start GSAP preview:', error)
     }
-  }, [hasPreview, isGenerating])
+  }, [hasPreview, isGenerating, formattedAnswer, typingIntervals])
 
   // Cleanup GSAP animation on unmount
   useEffect(() => {
@@ -593,37 +626,42 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                       data-question-text={formattedQuestion}
                     >
                       {(() => {
-                        const parts = formattedQuestion.split(/(\s+)/)
+                        const words = formattedQuestion.split(/\s+/).filter(Boolean)
                         let globalCharIndex = 0
+                        const maxLineLength = 41
 
-                        return parts.map((part, partIndex) => {
-                          const isWhitespace = /^\s+$/.test(part)
+                        const lines: string[] = []
+                        let currentLine = ''
 
-                          const chars = part.split('').map((char, _charInPartIndex) => {
-                            const charIndex = globalCharIndex++
-                            return (
-                              <span
-                                key={charIndex}
-                                className={`question-char char-${charIndex}`}
-                                style={{ opacity: 0, visibility: 'hidden' }}
-                              >
-                                {char === ' ' ? '\u00A0' : char}
-                              </span>
-                            )
-                          })
+                        for (const word of words) {
+                          if (currentLine.length + word.length + 1 > maxLineLength && currentLine.length > 0) {
+                            lines.push(currentLine.trim())
+                            currentLine = word
+                          }
+                          else {
+                            currentLine += (currentLine ? ' ' : '') + word
+                          }
+                        }
+                        if (currentLine) {
+                          lines.push(currentLine.trim())
+                        }
 
-                          return (
-                            <span
-                              key={partIndex}
-                              style={{
-                                display: 'inline-block',
-                                whiteSpace: isWhitespace ? 'pre' : 'nowrap',
-                              }}
-                            >
-                              {chars}
-                            </span>
-                          )
-                        })
+                        return lines.map((line, lineIndex) => (
+                          <div key={lineIndex} style={{ display: 'block' }}>
+                            {line.split('').map((char, _charIndex) => {
+                              const globalIndex = globalCharIndex++
+                              return (
+                                <span
+                                  key={globalIndex}
+                                  className={`question-char char-${globalIndex}`}
+                                  style={{ opacity: 0, visibility: 'hidden' }}
+                                >
+                                  {char === ' ' ? '\u00A0' : char}
+                                </span>
+                              )
+                            })}
+                          </div>
+                        ))
                       })()}
                     </div>
                   </div>

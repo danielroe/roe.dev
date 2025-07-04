@@ -7,7 +7,7 @@ export interface TikTokGSAPTimeline {
   destroy: () => void
 }
 
-export function createTikTokGSAPTimeline (container: HTMLElement): TikTokGSAPTimeline {
+export function createTikTokGSAPTimeline (container: HTMLElement, typingIntervals?: number[]): TikTokGSAPTimeline {
   const questionWindow = container.querySelector('.question-window') as HTMLElement
   const questionContent = container.querySelector('.question-content') as HTMLElement
   const answerContainer = container.querySelector('.answer-container') as HTMLElement
@@ -19,7 +19,15 @@ export function createTikTokGSAPTimeline (container: HTMLElement): TikTokGSAPTim
   }
 
   const questionText = questionContent.getAttribute('data-question-text') || questionContent.textContent || ''
-  const typewriterDuration = questionText.length * ANIMATION_CONFIG.typewriter.characterDelay
+
+  let typewriterDuration: number
+  if (typingIntervals && typingIntervals.length > 0) {
+    typewriterDuration = typingIntervals.reduce((sum, interval) => sum + interval, 0) / 1000
+  }
+  else {
+    typewriterDuration = questionText.length * ANIMATION_CONFIG.typewriter.characterDelay
+  }
+
   const questionDuration = Math.max(1.5, typewriterDuration + 1)
   const transitionDuration = ANIMATION_CONFIG.transitionDuration
   const answerDuration = Math.max(3, answerLines.length * ANIMATION_CONFIG.answerRevealDuration)
@@ -59,14 +67,28 @@ export function createTikTokGSAPTimeline (container: HTMLElement): TikTokGSAPTim
   })
 
   // Phase 1: Typewriter effect for question
-  for (let i = 0; i < characters.length; i++) {
-    const charTime = i * ANIMATION_CONFIG.typewriter.characterDelay
-    tl.to(characters[i], {
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.1,
-      ease: 'none',
-    }, charTime)
+  if (typingIntervals && typingIntervals.length > 0) {
+    let cumulativeTime = 0
+    for (let i = 0; i < characters.length && i < typingIntervals.length; i++) {
+      tl.to(characters[i], {
+        opacity: 1,
+        visibility: 'visible',
+        duration: 0.05,
+        ease: 'none',
+      }, cumulativeTime)
+      cumulativeTime += typingIntervals[i] / 1000
+    }
+  }
+  else {
+    for (let i = 0; i < characters.length; i++) {
+      const charTime = i * ANIMATION_CONFIG.typewriter.characterDelay
+      tl.to(characters[i], {
+        opacity: 1,
+        visibility: 'visible',
+        duration: 0.1,
+        ease: 'none',
+      }, charTime)
+    }
   }
 
   // Wait for remaining question duration
@@ -126,8 +148,8 @@ export function createTikTokGSAPTimeline (container: HTMLElement): TikTokGSAPTim
   }
 }
 
-export function createPreviewAnimation (container: HTMLElement): TikTokGSAPTimeline {
-  const animation = createTikTokGSAPTimeline(container)
+export function createPreviewAnimation (container: HTMLElement, typingIntervals?: number[]): TikTokGSAPTimeline {
+  const animation = createTikTokGSAPTimeline(container, typingIntervals)
   animation.timeline.repeat(-1)
   animation.timeline.play()
   return animation
