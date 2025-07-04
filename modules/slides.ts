@@ -2,6 +2,7 @@ import crypto from 'node:crypto'
 import { defineNuxtModule, updateRuntimeConfig, useNuxt, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
 import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
+import { createClient } from '@sanity/client'
 
 export default defineNuxtModule({
   meta: {
@@ -37,7 +38,21 @@ export default defineNuxtModule({
       },
     })
 
-    const talks = await import('../app/data/talks.json').then(r => r.default)
+    const sanityClient = createClient({
+      projectId: '9bj3w2vo',
+      dataset: 'production',
+      apiVersion: '2025-01-01',
+      useCdn: false,
+      token: process.env.NUXT_SANITY_TOKEN,
+    })
+
+    const talks = await sanityClient.fetch(`
+      *[_type == "talk" && defined(slides)] {
+        _id,
+        slides,
+        "release": slides
+      }
+    `)
 
     const Bucket = 'slides'
     for (const talk of talks) {
