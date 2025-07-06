@@ -4,8 +4,8 @@ import { Muxer, ArrayBufferTarget } from 'webm-muxer'
 import {
   ANIMATION_CONFIG,
   calculateVideoDuration,
-} from './tiktok-animation-config'
-import { createTikTokGSAPTimeline, resetCharacterStates } from './tiktok-gsap-animations'
+} from './video-animation-config'
+import { createGSAPTimeline, resetCharacterStates } from './video-gsap-animations'
 
 interface AudioTrack {
   id: string
@@ -16,7 +16,7 @@ interface AudioTrack {
   tags: string[]
 }
 
-interface TikTokVideoOptions {
+interface VideoOptions {
   element: HTMLElement
   question: string
   questionLines: string[]
@@ -30,7 +30,7 @@ interface TikTokVideoOptions {
   onProgress?: (progress: number) => void
 }
 
-export async function createTikTokVideo (options: TikTokVideoOptions): Promise<Blob> {
+export async function createVideo (options: VideoOptions): Promise<Blob> {
   const { questionLines, answerLines, question, typingIntervals, audioTrack, audioStartTime = 0, audioVolume = 0.7, onProgress } = options
 
   const targetFPS = ANIMATION_CONFIG.recordingFrameRate || 24
@@ -40,7 +40,7 @@ export async function createTikTokVideo (options: TikTokVideoOptions): Promise<B
     throw new Error('WebCodecs not supported. Please use Firefox 130+, Chrome 94+, or Safari 16.4+')
   }
 
-  return await recordTikTokWithPureWebCodecs({
+  return await recordVideo({
     element: options.element,
     targetFPS,
     duration,
@@ -204,24 +204,21 @@ async function processAudioTrack (audioTrack: AudioTrack, duration: number, star
   }
 }
 
-/**
- * Record TikTok video using pure WebCodecs with proper WebM muxing
- */
-export async function recordTikTokWithPureWebCodecs (options: PureWebCodecsRecorderOptions): Promise<Blob> {
+export async function recordVideo (options: PureWebCodecsRecorderOptions): Promise<Blob> {
   const { element, targetFPS, duration, width, height, typingIntervals, audioTrack, audioStartTime = 0, audioVolume = 0.7, onProgress } = options
 
-  let container = element.querySelector('.tiktok-container') as HTMLElement
-  if (!container && element.classList.contains('tiktok-container')) {
+  let container = element.querySelector('.video-container') as HTMLElement
+  if (!container && element.classList.contains('video-container')) {
     container = element
   }
   if (!container) {
-    throw new Error('TikTok container not found')
+    throw new Error('Video container not found')
   }
 
   // Reset all character states before starting animation
   resetCharacterStates(container)
 
-  const { timeline, destroy } = createTikTokGSAPTimeline(container, typingIntervals)
+  const { timeline, destroy } = createGSAPTimeline(container, typingIntervals)
   const totalFrames = Math.ceil(duration * targetFPS)
   const frameDurationMicros = Math.floor(1000000 / targetFPS)
 

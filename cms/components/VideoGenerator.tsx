@@ -2,10 +2,10 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Stack, Text, Card, Button, Box, Badge, Flex, Switch } from '@sanity/ui'
 import type { PortableTextTextBlock } from 'sanity'
 import { set, useFormValue, useClient } from 'sanity'
-import { createTikTokVideo } from '../utils/tiktok-video-recorder'
-import { calculateVideoDuration } from '../utils/tiktok-animation-config'
-import type { TikTokGSAPTimeline } from '../utils/tiktok-gsap-animations'
-import { createPreviewAnimation, stopAnimations } from '../utils/tiktok-gsap-animations'
+import { createVideo } from '../utils/video-recorder'
+import { calculateVideoDuration } from '../utils/video-animation-config'
+import type { GSAPTimeline } from '../utils/video-gsap-animations'
+import { createPreviewAnimation, stopAnimations } from '../utils/video-gsap-animations'
 import { getHumanRelativeDate } from '../utils/date-formatting'
 import {
   fetchAudioTracks,
@@ -15,12 +15,12 @@ import {
   type AudioTrack,
 } from '../utils/audio-track-selector'
 
-interface TikTokContentGeneratorProps {
+interface VideoGeneratorProps {
   onChange: (event: any) => void
   renderDefault: (props: any) => React.ReactElement
 }
 
-export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
+export function VideoContentGenerator (props: VideoGeneratorProps) {
   const { onChange, renderDefault } = props
   const [isGenerating, setIsGenerating] = useState(false)
   const [generationProgress, setGenerationProgress] = useState(0)
@@ -33,7 +33,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const questionContentRef = useRef<HTMLDivElement>(null)
-  const gsapAnimationRef = useRef<TikTokGSAPTimeline | null>(null)
+  const gsapAnimationRef = useRef<GSAPTimeline | null>(null)
 
   const dateOfDocument = useFormValue(['_createdAt']) as string
   const relativeDate = getHumanRelativeDate(dateOfDocument)
@@ -247,7 +247,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       const questionLines = [formattedQuestion]
       const videoAnswerLines = answerLines.map(line => line.text)
 
-      const videoBlob = await createTikTokVideo({
+      const videoBlob = await createVideo({
         element: videoContainerRef.current,
         question,
         questionLines,
@@ -274,7 +274,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
         setVideoUrl(url)
 
         const asset = await client.assets.upload('file', videoBlob, {
-          filename: `tiktok-video-${Date.now()}.webm`,
+          filename: `video-${Date.now()}.webm`,
         })
 
         onChange(set({
@@ -287,7 +287,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       }
     }
     catch (error) {
-      console.error('Error generating TikTok video:', error)
+      console.error('Error generating video:', error)
     }
     finally {
       setIsGenerating(false)
@@ -303,8 +303,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
     }
   }, [videoUrl])
 
-  // Generate TikTok metadata
-  const generateTikTokMetadata = useCallback((question: string, answer: string): { title: string, description: string, hashtags: string[] } => {
+  const generateVideoMetadata = useCallback((question: string, answer: string): { title: string, description: string, hashtags: string[] } => {
     // Generate title - truncate question if too long
     const title = question.length > 47
       ? question.slice(0, 47) + '...'
@@ -375,8 +374,8 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
     if (!formattedQuestion || !formattedAnswer) {
       return { title: '', description: '', hashtags: [] }
     }
-    return generateTikTokMetadata(formattedQuestion, formattedAnswer)
-  }, [formattedQuestion, formattedAnswer, generateTikTokMetadata])
+    return generateVideoMetadata(formattedQuestion, formattedAnswer)
+  }, [formattedQuestion, formattedAnswer, generateVideoMetadata])
 
   // GSAP Animation Control for Preview
   useEffect(() => {
@@ -420,7 +419,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
         <Stack space={3}>
           <Flex justify="space-between" align="center">
             <Text size={1} weight="semibold">
-              TikTok Video Generator
+              Video Generator
             </Text>
             <Flex gap={2} align="center">
               <Badge tone="primary">
@@ -469,7 +468,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
 
           {!hasPreview && (
             <Text size={0}>
-              Add a question and response first to generate the TikTok video.
+              Add a question and response first to generate the video.
             </Text>
           )}
 
@@ -551,11 +550,10 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                 </Box>
               )}
 
-              {/* TikTok Metadata Copy Buttons */}
               {metadata.title && (
                 <Card padding={3} tone="transparent" border marginBottom={3}>
                   <Stack space={3}>
-                    <Text size={1} weight="semibold">TikTok Metadata</Text>
+                    <Text size={1} weight="semibold">Video Metadata</Text>
 
                     <Flex direction="column" gap={3}>
                       <Box>
@@ -618,7 +616,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
 
               <div
                 ref={videoContainerRef}
-                className="tiktok-container"
+                className="video-container"
                 style={{
                   width: '1080px',
                   height: '1920px',
@@ -743,7 +741,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                       {(() => {
                         const words = formattedQuestion.split(/\s+/).filter(Boolean)
                         let globalCharIndex = 0
-                        const maxLineLength = 40
+                        const maxLineLength = 39
 
                         const lines: string[] = []
                         let currentLine = ''

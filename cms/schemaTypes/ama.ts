@@ -2,7 +2,7 @@ import type { PortableTextTextBlock } from 'sanity'
 import { defineField, defineType } from 'sanity'
 import { CharacterCountInput } from '../components/CharacterCountInput'
 import { ImageGenerator } from '../components/ImageGenerator'
-import { TikTokContentGenerator } from '../components/TikTokContentGenerator'
+import { VideoContentGenerator } from '../components/VideoGenerator'
 
 export default defineType({
   name: 'ama',
@@ -193,7 +193,7 @@ export default defineType({
         accept: 'video/*',
       },
       components: {
-        input: TikTokContentGenerator,
+        input: VideoContentGenerator,
       },
       description: 'Use this to generate video content for TikTok and YouTube Shorts',
       readOnly: true,

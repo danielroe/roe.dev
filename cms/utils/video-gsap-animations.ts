@@ -1,13 +1,13 @@
 import { gsap } from 'gsap'
-import { ANIMATION_CONFIG } from './tiktok-animation-config'
+import { ANIMATION_CONFIG } from './video-animation-config'
 
-export interface TikTokGSAPTimeline {
+export interface GSAPTimeline {
   timeline: gsap.core.Timeline
   duration: number
   destroy: () => void
 }
 
-export function createTikTokGSAPTimeline (container: HTMLElement, typingIntervals?: number[]): TikTokGSAPTimeline {
+export function createGSAPTimeline (container: HTMLElement, typingIntervals?: number[]): GSAPTimeline {
   const questionWindow = container.querySelector('.question-window') as HTMLElement
   const questionContent = container.querySelector('.question-content') as HTMLElement
   const answerContainer = container.querySelector('.answer-container') as HTMLElement
@@ -151,8 +151,8 @@ export function createTikTokGSAPTimeline (container: HTMLElement, typingInterval
   }
 }
 
-export function createPreviewAnimation (container: HTMLElement, typingIntervals?: number[]): TikTokGSAPTimeline {
-  const animation = createTikTokGSAPTimeline(container, typingIntervals)
+export function createPreviewAnimation (container: HTMLElement, typingIntervals?: number[]): GSAPTimeline {
+  const animation = createGSAPTimeline(container, typingIntervals)
   animation.timeline.repeat(-1)
   animation.timeline.play()
   return animation
