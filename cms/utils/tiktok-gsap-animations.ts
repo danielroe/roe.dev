@@ -28,7 +28,10 @@ export function createTikTokGSAPTimeline (container: HTMLElement, typingInterval
     typewriterDuration = questionText.length * ANIMATION_CONFIG.typewriter.characterDelay
   }
 
-  const questionDuration = Math.max(1.5, typewriterDuration + 1)
+  const questionDuration = Math.max(2, Math.max(
+    1 * ANIMATION_CONFIG.questionDisplayTime,
+    typewriterDuration + 1,
+  ))
   const transitionDuration = ANIMATION_CONFIG.transitionDuration
   const answerDuration = Math.max(3, answerLines.length * ANIMATION_CONFIG.answerRevealDuration)
   const holdDuration = ANIMATION_CONFIG.holdDuration

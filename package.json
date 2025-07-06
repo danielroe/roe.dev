@@ -16,7 +16,9 @@
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.52.0-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install",
-    "auth:youtube": "node scripts/youtube-auth.mjs"
+    "auth:youtube": "node --env-file=.env scripts/youtube-auth.mjs",
+    "import-streambeats": "node --env-file=.env scripts/import-streambeats.mjs",
+    "import-streambeats:dry-run": "node --env-file=.env scripts/import-streambeats.mjs --dry-run"
   },
   "lint-staged": {
     "*.{js,ts,mjs,vue}": [
@@ -85,6 +87,7 @@
     "@playwright/test": "1.53.2",
     "@vue/test-utils": "2.4.6",
     "eslint": "9.30.0",
+    "googleapis": "^146.0.0",
     "happy-dom": "18.0.1",
     "lint-staged": "16.1.2",
     "ofetch": "1.4.1",

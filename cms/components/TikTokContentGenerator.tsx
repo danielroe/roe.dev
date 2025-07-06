@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { Stack, Text, Card, Button, Box, Badge, Flex } from '@sanity/ui'
+import { Stack, Text, Card, Button, Box, Badge, Flex, Switch } from '@sanity/ui'
 import type { PortableTextTextBlock } from 'sanity'
 import { set, useFormValue, useClient } from 'sanity'
 import { createTikTokVideo } from '../utils/tiktok-video-recorder'
@@ -7,6 +7,13 @@ import { calculateVideoDuration } from '../utils/tiktok-animation-config'
 import type { TikTokGSAPTimeline } from '../utils/tiktok-gsap-animations'
 import { createPreviewAnimation, stopAnimations } from '../utils/tiktok-gsap-animations'
 import { getHumanRelativeDate } from '../utils/date-formatting'
+import {
+  fetchAudioTracks,
+  selectAudioTrack,
+  generateContentHash,
+  calculateAudioStartTime,
+  type AudioTrack,
+} from '../utils/audio-track-selector'
 
 interface TikTokContentGeneratorProps {
   onChange: (event: any) => void
@@ -19,6 +26,10 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
   const [generationProgress, setGenerationProgress] = useState(0)
   const [hasPreview, setHasPreview] = useState(false)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
+  const [audioEnabled, setAudioEnabled] = useState(true)
+  const [availableAudioTracks, setAvailableAudioTracks] = useState<AudioTrack[]>([])
+  const [selectedAudioTrack, setSelectedAudioTrack] = useState<AudioTrack | null>(null)
+  const [isLoadingAudioTracks, setIsLoadingAudioTracks] = useState(false)
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const questionContentRef = useRef<HTMLDivElement>(null)
@@ -173,6 +184,45 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
     return lines
   }, [formattedAnswer])
 
+  const videoDuration = calculateVideoDuration(1, answerLines.length, formattedQuestion, typingIntervals)
+
+  // Load available audio tracks
+  useEffect(() => {
+    const loadAudioTracks = async () => {
+      if (!audioEnabled) return
+
+      setIsLoadingAudioTracks(true)
+      try {
+        const tracks = await fetchAudioTracks(client)
+        setAvailableAudioTracks(tracks)
+
+        // Auto-select a track based on content
+        if (tracks.length > 0 && formattedQuestion && formattedAnswer) {
+          const contentHash = generateContentHash(formattedQuestion, formattedAnswer)
+          const track = selectAudioTrack(tracks, videoDuration, contentHash)
+          setSelectedAudioTrack(track)
+        }
+      }
+      catch (error) {
+        console.warn('Failed to load audio tracks:', error)
+      }
+      finally {
+        setIsLoadingAudioTracks(false)
+      }
+    }
+
+    loadAudioTracks()
+  }, [audioEnabled, formattedQuestion, formattedAnswer, videoDuration, client])
+
+  // Update selected track when content changes
+  useEffect(() => {
+    if (availableAudioTracks.length > 0 && formattedQuestion && formattedAnswer && audioEnabled) {
+      const contentHash = generateContentHash(formattedQuestion, formattedAnswer)
+      const track = selectAudioTrack(availableAudioTracks, videoDuration, contentHash)
+      setSelectedAudioTrack(track)
+    }
+  }, [availableAudioTracks, formattedQuestion, formattedAnswer, videoDuration, audioEnabled])
+
   const generateVideo = useCallback(async () => {
     if (!documentContent || !hasPreview || !videoContainerRef.current) return
 
@@ -205,6 +255,15 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
         answerLines: videoAnswerLines,
         relativeDate,
         typingIntervals,
+        audioTrack: audioEnabled && selectedAudioTrack ? selectedAudioTrack : undefined,
+        audioStartTime: selectedAudioTrack
+          ? calculateAudioStartTime(
+              selectedAudioTrack,
+              videoDuration,
+              generateContentHash(formattedQuestion, formattedAnswer),
+            )
+          : 0,
+        audioVolume: selectedAudioTrack?.volume || 0.7,
         onProgress: progress => {
           setGenerationProgress(Math.round(progress * 100))
         },
@@ -234,7 +293,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       setIsGenerating(false)
       setGenerationProgress(0)
     }
-  }, [documentContent, hasPreview, getAnswerText, formattedQuestion, answerLines, relativeDate, typingIntervals, onChange, client])
+  }, [documentContent, hasPreview, getAnswerText, formattedQuestion, formattedAnswer, answerLines, relativeDate, typingIntervals, audioEnabled, selectedAudioTrack, videoDuration, onChange, client])
 
   useEffect(() => {
     return () => {
@@ -243,8 +302,6 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
       }
     }
   }, [videoUrl])
-
-  const videoDuration = calculateVideoDuration(1, answerLines.length, formattedQuestion)
 
   // Generate TikTok metadata
   const generateTikTokMetadata = useCallback((question: string, answer: string): { title: string, description: string, hashtags: string[] } => {
@@ -415,6 +472,64 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
               Add a question and response first to generate the TikTok video.
             </Text>
           )}
+
+          {/* Audio Controls */}
+          <Card padding={3} tone="transparent" border>
+            <Stack space={3}>
+              <Flex justify="space-between" align="center">
+                <Text size={1} weight="semibold">Background Music</Text>
+                <Switch
+                  checked={audioEnabled}
+                  onChange={event => setAudioEnabled(event.currentTarget.checked)}
+                />
+              </Flex>
+
+              {audioEnabled && (
+                <Stack space={2}>
+                  {isLoadingAudioTracks && (
+                    <Text size={0} style={{ color: '#666' }}>
+                      Loading audio tracks...
+                    </Text>
+                  )}
+
+                  {selectedAudioTrack && (
+                    <Box>
+                      <Text size={0} weight="medium" style={{ marginBottom: '4px' }}>
+                        Selected Track:
+                      </Text>
+                      <Text size={0} style={{ color: '#666' }}>
+                        "
+                        {selectedAudioTrack.name}
+                        " by
+                        {' '}
+                        {selectedAudioTrack.artist}
+                        {selectedAudioTrack.tags.length > 0 && (
+                          <span>
+                            {' '}
+                            •
+                            {' '}
+                            {selectedAudioTrack.tags.slice(0, 3).join(', ')}
+                          </span>
+                        )}
+                      </Text>
+                    </Box>
+                  )}
+
+                  {!selectedAudioTrack && !isLoadingAudioTracks && availableAudioTracks.length === 0 && (
+                    <Text size={0} style={{ color: '#666' }}>
+                      No audio tracks available. Add audio tracks in the CMS to enable background music.
+                    </Text>
+                  )}
+
+                  {!selectedAudioTrack && !isLoadingAudioTracks && availableAudioTracks.length > 0 && (
+                    <Text size={0} style={{ color: '#666' }}>
+                      No suitable track found for this video duration.
+                    </Text>
+                  )}
+                </Stack>
+              )}
+            </Stack>
+          </Card>
 
           {documentContent && posts && (
             <Box>
@@ -628,7 +743,7 @@ export function TikTokContentGenerator (props: TikTokContentGeneratorProps) {
                       {(() => {
                         const words = formattedQuestion.split(/\s+/).filter(Boolean)
                         let globalCharIndex = 0
-                        const maxLineLength = 41
+                        const maxLineLength = 40
 
                         const lines: string[] = []
                         let currentLine = ''

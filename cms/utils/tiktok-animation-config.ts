@@ -27,10 +27,14 @@ export const ANIMATION_CONFIG = {
   },
 } as const
 
-export function calculateVideoDuration (questionLines: number, answerLines: number, questionText?: string): number {
-  // Calculate typewriter duration based on actual question text length if provided
+export function calculateVideoDuration (questionLines: number, answerLines: number, questionText?: string, typingIntervals?: number[]): number {
+  // Calculate typewriter duration based on actual typing intervals if provided
   let typewriterDuration = 0
-  if (questionText) {
+  if (typingIntervals && typingIntervals.length > 0) {
+    // Use actual typing intervals for precise duration
+    typewriterDuration = typingIntervals.reduce((sum, interval) => sum + interval, 0) / 1000
+  }
+  else if (questionText) {
     typewriterDuration = questionText.length * ANIMATION_CONFIG.typewriter.characterDelay
   }
   else {
