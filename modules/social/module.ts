@@ -68,7 +68,6 @@ export default defineNuxtModule({
 
     for (const network in options.networks) {
       if (!isSupportedNetwork(network)) {
-        console.warn('Ignoring unsupported network:', network)
         continue
       }
       addServerHandler({
