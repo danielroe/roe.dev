@@ -257,14 +257,16 @@ export default defineNuxtConfig({
         optionsAPI: false,
       },
     },
+    optimizeDeps: {
+      include: [
+        'magic-regexp',
+        'partysocket',
+      ],
+    },
   },
 
   typescript: {
-    // TODO: remove nitropack/types when nuxt v3.14 is released
     hoist: ['vite'],
-    tsConfig: {
-      include: ['../app/shims.d.ts'],
-    },
   },
 
   postcss: {
