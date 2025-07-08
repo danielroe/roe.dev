@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11511k"`)
+      .toMatchInlineSnapshot(`"11541k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -308,7 +308,6 @@ describe('project sizes', () => {
         "xml-js",
         "yaml",
         "zod",
-        "zod/dist/cjs",
         "zwitch",
       ]
     `)
