@@ -12,8 +12,9 @@ import {
   selectAudioTrack,
   generateContentHash,
   calculateAudioStartTime,
-  type AudioTrack,
+
 } from '../utils/audio-track-selector'
+import type { AudioTrack } from '../utils/audio-track-selector'
 
 interface VideoGeneratorProps {
   onChange: (event: any) => void
