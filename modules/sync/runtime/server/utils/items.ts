@@ -1,7 +1,7 @@
 import fsp from 'node:fs/promises'
 import { globby } from 'globby'
 import matter from 'gray-matter'
-import { serializers } from '../../../shared/serialisers'
+import { serializers } from '../../../../shared/serialisers'
 import type { SyncItem } from '../providers'
 
 export async function getMarkdownArticles (): Promise<SyncItem[]> {

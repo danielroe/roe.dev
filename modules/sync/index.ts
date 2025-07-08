@@ -11,14 +11,14 @@ export default defineNuxtModule({
 
     addServerHandler({
       route: '/_tasks/sync',
-      handler: resolver.resolve('./runtime/routes/_tasks/sync'),
+      handler: resolver.resolve('./runtime/server/routes/_tasks/sync'),
     })
 
     if (nuxt.options.dev) {
       // register task for local use
       nuxt.options.nitro.tasks = defu(nuxt.options.nitro.tasks, {
         sync: {
-          handler: resolver.resolve('./runtime/tasks/sync'),
+          handler: resolver.resolve('./runtime/server/tasks/sync'),
         },
       })
       return
@@ -36,7 +36,7 @@ export default defineNuxtModule({
       const nitroConfig = nitro.options._config
       nitroConfig.tasks = defu(nitroConfig.tasks, {
         sync: {
-          handler: resolver.resolve('./runtime/tasks/sync'),
+          handler: resolver.resolve('./runtime/server/tasks/sync'),
         },
       })
     })
