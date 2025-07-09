@@ -80,7 +80,7 @@ export default defineEventHandler(async event => {
       //   }
       // }
 
-      const res = await $fetch(ogImage!, { responseType: 'arrayBuffer' }) as ArrayBuffer
+      const res = await $fetch<ArrayBuffer>(ogImage!, { responseType: 'arrayBuffer' })
       const metadata = imageMeta(new Uint8Array(res))
 
       return {
