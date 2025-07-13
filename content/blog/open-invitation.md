@@ -34,9 +34,3 @@ So here's the deal. If you want to have a 10-minute chat about anything, then I 
 Particularly, if you want to be involved in open source and you feel you lack _experience_ or _background_, please let me know. I will make time for you and I know others will too.
 
 :CalSchedule{meeting=intro message="Book a call"}
-
-## Consultancy
-
-I also want to make it easy for people to engage me a professional basis. I am fairly limited in terms of the time I have, but I'm happy to make it easy to book an hour's call.
-
-:CalSchedule{meeting=consult message="Schedule a consultation"}
