@@ -4,10 +4,14 @@ date: '2024-01-28T09:00:00.000Z'
 tags:
   - open source
   - funding
-description: "Being a full-time open-source maintainer is a rare privilege. In the interests of transparency, let me explain a little more about how I am funded."
+description: "Being a full-time open source maintainer is a rare privilege. In the interests of transparency, let me explain a little more about how I am funded."
 ---
 
-Being a full-time open-source maintainer is a rare privilege. In the interests of transparency, let me explain a little more about how I am funded.
+<!-- TODO: rewrite article to reflect current status -->
+
+> ⚠️ **Update**: this article was originally written in January 2024 and needs to be updated. Since then, I have joined [Vercel](https://vercel.com) and am now employed there to work full-time on Nuxt.
+
+Being a full-time open source maintainer is a rare privilege. In the interests of transparency, let me explain a little more about how I am funded.
 
 ## My story
 
@@ -19,7 +23,7 @@ But when I decided (with my co-founder) to shut down the startup, [Sébastien Ch
 
 The majority of my funding comes from a retainer with [NuxtLabs](https://nuxtlabs.com).
 
-Sébastien Chopin, who created Nuxt and founded NuxtLabs, receives donations via the Nuxt GitHub Sponsors account (and other income streams) and in turn funnels that back into the community, sponsoring [a number of open-source developers](https://github.com/orgs/nuxtlabs/sponsoring) and enabling open-source work.
+Sébastien Chopin, who created Nuxt and founded NuxtLabs, receives donations via the Nuxt GitHub Sponsors account (and other income streams) and in turn funnels that back into the community, sponsoring [a number of open source developers](https://github.com/orgs/nuxtlabs/sponsoring) and enabling open source work.
 
 I prize my independence highly and deeply appreciate Sébastien's trust.
 
@@ -27,7 +31,7 @@ I prize my independence highly and deeply appreciate Sébastien's trust.
 
 While I don't receive any direct funding from Nuxt via GitHub Sponsors, I do have [a number of individual and corporate sponsors](https://github.com/sponsors/danielroe) that I value very highly.
 
-I see [open source as about 'mutual giving'](/blog/contributing-to-nuxt#what-open-source-is-to-me) and I appreciate these givers.
+I see [open source as about 'mutual giving'](/blog/contributing-to-nuxt#what-open source-is-to-me) and I appreciate these givers.
 
 <!-- TODO: sponsor carousel -->
 

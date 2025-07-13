@@ -4,7 +4,9 @@ Daniel leads the [Nuxt core team](https://nuxt.com). Previously, he was CTO of a
 
 </div>
 
-His open-source work has a focus in the Vue.js and Nuxt ecosystems. He's a keynote speaker at conferences and involved in consultancy with companies around the world, particularly around JAMstack, serverless and software architecture.
+He is part of the team at [Vercel](https://vercel.com) where he is employed to work full-time on Nuxt.
+
+His open source work has a focus in the Vue.js and Nuxt ecosystems. He's a keynote speaker at conferences around the world, particularly around frontend, web performance, serverless and software architecture.
 
 <p class="my-4"><img class="w-full" src="/talk.jpg" alt="Daniel giving a talk at Vuefes Japan" width="600" height="400"></p>
 
@@ -17,6 +19,7 @@ He's based in Scotland where he lives with his family and a very affectionate ra
 Daniel holds an MA in Jurisprudence from Oxford University and an MTh in Theological and Pastoral Studies from Oak Hill College.
 
 <div class="flex flex-row gap-4 items-center mt-4 light:invert dark:mix-blend-lighten light:mix-blend-darken">
+<img width="80" src="/img/work/vercel.svg" alt="Vercel Logo">
 <img width="100" src="/img/work/nuxtlabs.svg" alt="NuxtLabs Logo">
 <img width="100" src="/img/work/iel.svg" alt="Imperial Enterprise Lab Logo">
 <img class="grayscale" width="100" src="/img/work/gde.png" alt="Google GDE Logo">

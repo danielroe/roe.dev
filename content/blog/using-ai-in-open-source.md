@@ -31,7 +31,7 @@ Go ahead - drop the codebase in an LLM or get it to write the function or test y
 
 Use computer aids to point you in the right direction, but always take personal responsibility. Saying, 'I'm not sure if this is helpful, but ChatGPT says ...' is always a cop out. I don't want to see quotes from an LLM in a PR or issue - I want to know what _you_ think.
 
-While I'm only speaking about open-source contribution, I would commend these principles more generally.
+While I'm only speaking about open source contribution, I would commend these principles more generally.
 
 If this seems difficult, or feels like it might put you off contribution, please do let me know.
 

@@ -30,7 +30,7 @@ Here are some thoughts about why I think that is particularly important in open 
 
 ## A community of choice
 
-First, an open-source community is made up of people who **choose** to be part of it. I _love_ that. I think this freedom of choice unlocks some wonderful things that we should rightly aspire to:
+First, an open source community is made up of people who **choose** to be part of it. I _love_ that. I think this freedom of choice unlocks some wonderful things that we should rightly aspire to:
 
 * **No barrier to entry**. No interview to start. No necessary privileged background. No special career path. You are welcome here.
 * **No power games**. Do what inspires you, not what you _have_ to do. Contribution to open source should not be a millstone around your neck.

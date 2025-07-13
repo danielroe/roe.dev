@@ -30,7 +30,7 @@ Hold your politics lightly but your values tightly.
 
 In fact, I would be remiss _not_ to speak about values.
 
-Values shape the direction of projects and people. They also shape the culture of open-source communities. They make the difference both in where we end up and what the journey there is like.
+Values shape the direction of projects and people. They also shape the culture of open source communities. They make the difference both in where we end up and what the journey there is like.
 
 As a leader, whatever you say matters.
 

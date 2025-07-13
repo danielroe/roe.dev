@@ -26,7 +26,7 @@ I know exactly what it's like to look into a community from the outside. Because
 
 My own story was very much one of coming into open source from the outside.
 
-Here are some things I believe about giving into an open-source project:
+Here are some things I believe about giving into an open source project:
 
 * If you are new to a project (as to a company), you have a priceless gift. You can **see more clearly** than people who are already there. You might be in a perfect position to challenge 'received wisdom.' 💡
 

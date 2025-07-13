@@ -4,12 +4,12 @@ date: '2025-01-26T21:15:00.000Z'
 tags:
   - profit
   - open source
-description: "Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product on top of an open-source project?"
+description: "Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product on top of an open source project?"
 ---
 
-Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product _on top_ of an open-source project?
+Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product _on top_ of an open source project?
 
-There are plenty of examples of projects that (at some point) push back against third-party commercialisation, whether that's [MongoDB](https://investors.mongodb.com/news-releases/news-release-details/mongodb-issues-new-server-side-public-license-mongodb-community) or [Elasticsearch](https://www.elastic.co/blog/license-change-clarification). And it's also not uncommon to see open-source developers become jaded, disillusioned and bitter that the money being made using their software isn't flowing back to them.
+There are plenty of examples of projects that (at some point) push back against third-party commercialisation, whether that's [MongoDB](https://investors.mongodb.com/news-releases/news-release-details/mongodb-issues-new-server-side-public-license-mongodb-community) or [Elasticsearch](https://www.elastic.co/blog/license-change-clarification). And it's also not uncommon to see open source developers become jaded, disillusioned and bitter that the money being made using their software isn't flowing back to them.
 
 In recent days, the most obvious example of that is Matt Mullenweg of WordPress, whose [lawsuit against WP Engine](https://www.theverge.com/2024/10/4/24262232/matt-mullenweg-wordpress-org-wp-engine) seems to stem from a frustration that they are profiting from something he has built.
 
@@ -28,7 +28,7 @@ Here's why I feel that way:
 
 1. **Open source is a community project**. I can't possibly feel bitter about not getting 'what I deserve' when it's not me, but a whole group of talented and lovely people who have made it possible. In many cases - including my own - we have done so _because_ there were no strings attached.
 1. **Compensation doesn't follow value**. If I start trying to find my value in how many donations or sponsorships I get, I'll destroy my own mental health. Better to let go of that _expectation_. And, where I need compensation, find it by seeking it out in consultancy, entrepreneurship, retainer or employment.
-1. **Success is contagious**. The more commercial projects succeed, building on top of open-source work, the more the whole ecosystem benefits. Jobs are created. Conferences flourish. Educators produce articles and videos. More people contribute. More companies are created.
+1. **Success is contagious**. The more commercial projects succeed, building on top of open source work, the more the whole ecosystem benefits. Jobs are created. Conferences flourish. Educators produce articles and videos. More people contribute. More companies are created.
 
 Someone recently wrote to me via an [#ama](https://bsky.app/hashtag/ama?author=danielroe.dev):
 

@@ -94,7 +94,7 @@ interface Talk {
   <div>
     <section class="max-w-[37.50rem] text-lg md:text-xl">
       <p>
-        I am an open-source maintainer and founder, leading the
+        I am an open source maintainer and founder, leading the
         <a
           class="underlined-link"
           href="https://nuxt.com"
