@@ -13,7 +13,7 @@ const talkQuery = groq`
     "width": metadata.dimensions.width,
     url
   }
-} | order(date)
+} | order(dates)
 `
 
 interface Event {
