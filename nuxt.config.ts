@@ -178,29 +178,12 @@ export default defineNuxtConfig({
   sourcemap: { client: true, server: false },
 
   experimental: {
-    buildCache: false,
-    defaults: {
-      nuxtLink: {
-        trailingSlash: 'append',
-      },
-    },
     viewTransition: true,
   },
 
   compatibilityDate: '2025-06-09',
 
   nitro: {
-    cloudflare: {
-      deployConfig: true,
-      wrangler: {
-        name: 'roe',
-        observability: {
-          logs: {
-            enabled: true,
-          },
-        },
-      },
-    },
     experimental: {
       tasks: true,
     },
@@ -217,7 +200,7 @@ export default defineNuxtConfig({
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/live', '/rss.xml', '/voted/', '/work/', '/feedback/', '/ama/', '/ai/'],
+      routes: ['/', '/live', '/rss.xml', '/voted', '/work', '/feedback', '/ama', '/ai'],
       ignore: ['/__nuxt_content'],
     },
     hooks: {
