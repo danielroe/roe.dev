@@ -27,6 +27,11 @@ export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
 
     // NuxtLabs
     entry.value.unshift({
+      name: 'Vercel',
+      id: 'MDEyOk9yZ2FuaXphdGlvbjE0OTg1MDIw',
+      avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?v=4',
+    },
+    {
       name: 'NuxtLabs',
       id: 'MDEyOk9yZ2FuaXphdGlvbjYyMDE3NDAw',
       avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
