@@ -178,12 +178,6 @@ export default defineNuxtConfig({
   sourcemap: { client: true, server: false },
 
   experimental: {
-    buildCache: false,
-    defaults: {
-      nuxtLink: {
-        trailingSlash: 'remove',
-      },
-    },
     viewTransition: true,
   },
 
