@@ -72,7 +72,7 @@ If people are treated badly, or unfairly, then we need to make it right. Please 
 
 I'm an outsider to the tech world, even if I'm privileged in many other ways. I know what it was to be welcomed in. I'd like that to be true for many more people too. 'Freely you have received, freely give,' are words that mean a lot to me. Plus, half of the fun of open source is in working collaboratively.
 
-So from my point of view, open source is and should be _open_. Come on in! We'd love to have you. And [have a chat with me](/blog/open-invitation/) if that would be helpful!
+So from my point of view, open source is and should be _open_. Come on in! We'd love to have you. And [have a chat with me](/blog/open-invitation) if that would be helpful!
 
 ## Why write this?
 
