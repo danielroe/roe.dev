@@ -181,7 +181,7 @@ export default defineNuxtConfig({
     buildCache: false,
     defaults: {
       nuxtLink: {
-        trailingSlash: 'append',
+        trailingSlash: 'remove',
       },
     },
     viewTransition: true,
@@ -206,7 +206,7 @@ export default defineNuxtConfig({
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/live', '/rss.xml', '/voted/', '/work/', '/feedback/', '/ama/', '/ai/'],
+      routes: ['/', '/live', '/rss.xml', '/voted', '/work', '/feedback', '/ama', '/ai'],
       ignore: ['/__nuxt_content'],
     },
     hooks: {
