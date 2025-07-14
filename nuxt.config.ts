@@ -190,17 +190,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-09',
 
   nitro: {
-    cloudflare: {
-      deployConfig: true,
-      wrangler: {
-        name: 'roe',
-        observability: {
-          logs: {
-            enabled: true,
-          },
-        },
-      },
-    },
     experimental: {
       tasks: true,
     },
