@@ -7,7 +7,7 @@ settings:
 overrides:
   '@nuxt/kit': 4.0.0
   '@nuxt/schema': 4.0.0
-  '@nuxtjs/mdc': 0.17.1
+  '@nuxtjs/mdc': 0.17.2
   vue: 3.5.17
 
 patchedDependencies:
@@ -2381,8 +2381,8 @@ packages:
   '@nuxtjs/html-validator@2.1.0':
     resolution: {integrity: sha512-ldo8ioSsH3OEumtgwDMokTxlhjgO9FxjJWViAxisq5l/wjvaVX8SYTQ02wjtQcQQPSvS6BwgypAp400RlyFHng==}
 
-  '@nuxtjs/mdc@0.17.1':
-    resolution: {integrity: sha512-ge8sfDEDc+FS7RyXO2xQhaNhnEeRvkusUYJh09QYYgQqEx6o20jbPQKhcxrWQMR+gzVlPMSc/6HdIA07Ongyew==}
+  '@nuxtjs/mdc@0.17.2':
+    resolution: {integrity: sha512-O0mhPrB3uAuoxIfJaSwvxIMKCQoLGLE9x7oOSa09FEQjDbFVMkaeSBxx8n0EaLQi+JMi9xoYxfQhwBFyAB5Mzw==}
 
   '@nuxtjs/plausible@1.2.0':
     resolution: {integrity: sha512-pjfps32fFN77BhjqHmq2Jx4XCNso9TcYnB+S4IR2qH/c26WDfYB5mQxN5pOEiWRlMkiKq+Y45mBBFtSOVKClCA==}
@@ -8632,6 +8632,9 @@ packages:
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
 
+  parse5@8.0.0:
+    resolution: {integrity: sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA==}
+
   parseurl@1.3.3:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
     engines: {node: '>= 0.8'}
@@ -13906,7 +13909,7 @@ snapshots:
   '@nuxt/content@3.6.3(patch_hash=093a000a83f2e8d36e283f95f1bf85f24beb4f8e2827be2c3a4846901b4a5740)(better-sqlite3@11.10.0)(magicast@0.3.5)(vue-component-type-helpers@2.2.10)':
     dependencies:
       '@nuxt/kit': 4.0.0(magicast@0.3.5)
-      '@nuxtjs/mdc': 0.17.1(magicast@0.3.5)
+      '@nuxtjs/mdc': 0.17.2(magicast@0.3.5)
       '@shikijs/langs': 3.7.0
       '@sqlite.org/sqlite-wasm': 3.50.1-build1
       '@webcontainer/env': 1.1.1
@@ -14409,7 +14412,7 @@ snapshots:
       - magicast
       - vitest
 
-  '@nuxtjs/mdc@0.17.1(magicast@0.3.5)':
+  '@nuxtjs/mdc@0.17.2(magicast@0.3.5)':
     dependencies:
       '@nuxt/kit': 4.0.0(magicast@0.3.5)
       '@shikijs/langs': 3.8.0
@@ -14429,7 +14432,7 @@ snapshots:
       hast-util-to-string: 3.0.1
       mdast-util-to-hast: 13.2.0
       micromark-util-sanitize-uri: 2.0.1
-      parse5: 7.3.0
+      parse5: 8.0.0
       pathe: 2.0.3
       property-information: 7.1.0
       rehype-external-links: 3.0.0
@@ -22247,6 +22250,10 @@ snapshots:
       parse-path: 7.1.0
 
   parse5@7.3.0:
+    dependencies:
+      entities: 6.0.0
+
+  parse5@8.0.0:
     dependencies:
       entities: 6.0.0
 
