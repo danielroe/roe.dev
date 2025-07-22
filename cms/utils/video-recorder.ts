@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { domToBlob } from 'modern-screenshot'
-import { Muxer, ArrayBufferTarget } from 'webm-muxer'
+import { Output, WebMOutputFormat, BufferTarget, VideoSampleSource, AudioBufferSource, VideoSample } from 'mediabunny'
 import {
   ANIMATION_CONFIG,
   calculateVideoDuration,
@@ -231,80 +231,81 @@ export async function recordVideo (options: PureWebCodecsRecorderOptions): Promi
     keyFrameEvery: 24,
   }
 
-  // Process audio if provided and encode it properly
+  // Process audio if provided
   let audioChannels: Float32Array[] | null = null
-  let audioEncoder: AudioEncoder | null = null
-  const audioSampleRate = 48000
-  const audioFrameSize = 960 // Standard Opus frame size for 48kHz (20ms)
 
   if (audioTrack) {
     try {
       console.log('🎵 Processing audio track:', audioTrack.name)
       audioChannels = await processAudioTrack(audioTrack, duration, audioStartTime, audioVolume)
-
-      if (audioChannels && audioChannels.length > 0) {
-        console.log('🎵 Setting up audio encoder for WebM muxing')
-
-        // Create audio encoder for Opus
-        audioEncoder = new AudioEncoder({
-          output: (chunk, metadata) => {
-            muxer.addAudioChunk(chunk, metadata)
-          },
-          error: (error: Error) => {
-            console.warn('Audio encoding error:', error)
-          },
-        })
-
-        // Configure audio encoder for Opus
-        audioEncoder.configure({
-          codec: 'opus',
-          sampleRate: audioSampleRate,
-          numberOfChannels: 2,
-          bitrate: 128000, // 128 kbps
-        })
-
-        console.log('✅ Audio encoder configured')
-      }
+      console.log('✅ Audio processed successfully')
     }
     catch (error) {
       console.warn('Failed to process audio, continuing without audio:', error)
       audioChannels = null
-      audioEncoder = null
     }
   }
 
-  const target = new ArrayBufferTarget()
-  const muxer = new Muxer({
-    target,
-    video: {
-      codec: 'V_VP9',
-      width,
-      height,
-      frameRate: targetFPS,
-    },
-    audio: audioChannels
-      ? {
-          codec: 'A_OPUS',
-          sampleRate: 48000,
-          numberOfChannels: 2,
-        }
-      : undefined,
-    firstTimestampBehavior: 'offset',
+  const output = new Output({
+    format: new WebMOutputFormat(),
+    target: new BufferTarget(),
   })
 
-  let _encodedFrameCount = 0
-
-  const encoder = new window.VideoEncoder({
-    output: chunk => {
-      muxer.addVideoChunk(chunk)
-      _encodedFrameCount++
-    },
-    error: (error: Error) => {
-      throw error
-    },
+  const videoSource = new VideoSampleSource({
+    codec: 'vp9',
+    bitrate: 3000000, // 3 Mbps
   })
 
-  encoder.configure(config)
+  output.addVideoTrack(videoSource, {
+    frameRate: targetFPS,
+  })
+
+  // Create audio source if we have audio
+  let audioSource: AudioBufferSource | null = null
+  if (audioChannels && audioChannels.length > 0) {
+    audioSource = new AudioBufferSource({
+      codec: 'opus',
+      bitrate: 128000, // 128 kbps
+    })
+    output.addAudioTrack(audioSource)
+  }
+
+  // Start the output
+  await output.start()
+
+  // Process audio data if available
+  if (audioSource && audioChannels) {
+    try {
+      console.log('🎵 Adding audio data')
+
+      // Convert our processed audio channels into an AudioBuffer
+      const audioSampleRate = 48000
+      const audioContext = new AudioContext()
+      const audioBuffer = audioContext.createBuffer(
+        2, // stereo
+        audioChannels[0].length,
+        audioSampleRate,
+      )
+
+      // Copy channel data (create new Float32Array with ArrayBuffer)
+      const leftChannel = new Float32Array(audioChannels[0])
+      const rightChannel = new Float32Array(audioChannels[1])
+      audioBuffer.copyToChannel(leftChannel, 0)
+      audioBuffer.copyToChannel(rightChannel, 1)
+
+      // Close the context as we only needed it for buffer creation
+      await audioContext.close()
+
+      // Add the audio buffer to the source
+      await audioSource.add(audioBuffer)
+      audioSource.close()
+
+      console.log('✅ Audio data added')
+    }
+    catch (error) {
+      console.warn('Failed to add audio:', error)
+    }
+  }
 
   try {
     for (let frameIndex = 0; frameIndex < totalFrames; frameIndex++) {
@@ -314,61 +315,6 @@ export async function recordVideo (options: PureWebCodecsRecorderOptions): Promi
       // Report progress
       if (onProgress) {
         onProgress(progress)
-      }
-
-      // Add audio frames if audio encoder is available
-      if (audioEncoder && audioChannels && frameIndex === 0) {
-        try {
-          console.log('🎵 Encoding audio frames')
-
-          // Process audio in chunks that match the Opus frame size
-          const samplesPerFrame = audioFrameSize
-          const totalSamples = audioChannels[0].length
-          const totalAudioFrames = Math.ceil(totalSamples / samplesPerFrame)
-
-          for (let audioFrameIndex = 0; audioFrameIndex < totalAudioFrames; audioFrameIndex++) {
-            const startSample = audioFrameIndex * samplesPerFrame
-            const endSample = Math.min(startSample + samplesPerFrame, totalSamples)
-            const frameSamples = endSample - startSample
-
-            // Prepare planar audio data (separate channels, not interleaved)
-            const leftChannelData = new Float32Array(frameSamples)
-            const rightChannelData = new Float32Array(frameSamples)
-
-            for (let i = 0; i < frameSamples; i++) {
-              // Clamp samples to prevent distortion
-              leftChannelData[i] = Math.max(-1, Math.min(1, audioChannels[0][startSample + i] || 0))
-              rightChannelData[i] = Math.max(-1, Math.min(1, audioChannels[1] ? audioChannels[1][startSample + i] || 0 : leftChannelData[i]))
-            }
-
-            // Create planar data buffer (left channel followed by right channel)
-            const planarData = new Float32Array(frameSamples * 2)
-            planarData.set(leftChannelData, 0)
-            planarData.set(rightChannelData, frameSamples)
-
-            // Calculate timestamp for this audio frame
-            const audioTimestamp = (audioFrameIndex * samplesPerFrame / audioSampleRate) * 1000000 // microseconds
-
-            // Create AudioData object with correct planar format
-            const audioData = new AudioData({
-              format: 'f32-planar',
-              sampleRate: audioSampleRate,
-              numberOfChannels: 2,
-              numberOfFrames: frameSamples,
-              timestamp: audioTimestamp,
-              data: planarData,
-            })
-
-            // Encode audio frame
-            audioEncoder.encode(audioData)
-            audioData.close()
-          }
-
-          console.log(`✅ Encoded ${totalAudioFrames} audio frames`)
-        }
-        catch (error) {
-          console.warn('Failed to encode audio:', error)
-        }
       }
 
       // Update GSAP timeline to exact time position (not progress)
@@ -395,28 +341,27 @@ export async function recordVideo (options: PureWebCodecsRecorderOptions): Promi
         duration: frameDurationMicros,
       })
 
+      const videoSample = new VideoSample(videoFrame)
+
       const keyFrame = frameIndex % (config.keyFrameEvery || 24) === 0
-      encoder.encode(videoFrame, { keyFrame })
+      await videoSource.add(videoSample, { keyFrame })
 
       videoFrame.close()
       imageBitmap.close()
     }
 
-    await encoder.flush()
+    videoSource.close()
 
-    if (audioEncoder) {
-      await audioEncoder.flush()
-      audioEncoder.close()
+    await output.finalize()
+
+    const webmBuffer = output.target.buffer
+    if (!webmBuffer) {
+      throw new Error('Failed to generate video buffer')
     }
-
-    muxer.finalize()
-
-    const webmBuffer = target.buffer
     const videoBlob = new Blob([webmBuffer], { type: 'video/webm' })
     return videoBlob
   }
   finally {
-    encoder.close()
     destroy()
   }
 }
