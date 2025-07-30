@@ -38,7 +38,7 @@ export default defineEventHandler(async event => {
     const [viewer, ids] = await Promise.all([
       query(access_token, organisationQuery)
         .then(r => {
-          const viewer = r.data?.viewer || {}
+          const viewer = r?.viewer || {}
           viewer.orgs
             = viewer.organizations.edges.map((e: any) => e.node.id) || []
           return viewer
