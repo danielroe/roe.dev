@@ -150,7 +150,7 @@ export function GitHubReleaseInput (props: GitHubReleaseInputProps) {
           ? (
               <Box padding={3} style={{ backgroundColor: '#fef3cd', borderRadius: '4px' }}>
                 <Text size={1} style={{ color: '#92400e' }}>
-                  GitHub token not configured. Click "Settings" to add your token.
+                  GitHub token not configured. Click &quot;Settings&quot; to add your token.
                 </Text>
               </Box>
             )

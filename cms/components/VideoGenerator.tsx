@@ -498,9 +498,9 @@ export function VideoContentGenerator (props: VideoGeneratorProps) {
                         Selected Track:
                       </Text>
                       <Text size={0} style={{ color: '#666' }}>
-                        "
+                        &quot;
                         {selectedAudioTrack.name}
-                        " by
+                        &quot; by
                         {' '}
                         {selectedAudioTrack.artist}
                         {selectedAudioTrack.tags.length > 0 && (
