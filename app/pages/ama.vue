@@ -26,13 +26,26 @@
           id="question"
           name="question"
           class="mt-2 rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1"
+          :class="{
+            'ring ring-yellow-500': denialDetected,
+          }"
         />
+        <div class="mt-2 text-sm text-yellow-500">
+          <p v-if="denialDetected">
+            Did you mean "Daniel"?
+          </p>
+        </div>
         <button
           type="submit"
           :disabled="status === 'pending'"
           class="underlined-link"
         >
-          ask anonymously
+          <template v-if="!denialDetected">
+            ask anonymously
+          </template>
+          <template v-else>
+            no, submit question anyway
+          </template>
         </button>
       </form>
       <template v-if="status === 'success'">
@@ -60,16 +73,29 @@ definePageMeta({ title: 'Ask me anything' })
 
 const status = ref<'idle' | 'pending' | 'error' | 'success'>('idle')
 
+const denialDetected = ref(false)
+
 async function askQuestion (event: Event) {
   if (status.value === 'pending') return
   try {
     status.value = 'pending'
 
     const formData = new FormData(event.target as HTMLFormElement)
+    const question = formData.get('question')?.toString()
+
+    if (!denialDetected.value && question?.match(/[Dd]enial/g)) {
+      denialDetected.value = true
+      status.value = 'idle'
+      return
+    }
+    else {
+      denialDetected.value = false
+    }
+
     await $fetch('/api/question', {
       method: 'POST',
       body: {
-        question: formData.get('question'),
+        question,
       },
     })
     status.value = 'success'
