@@ -24,7 +24,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.54.2-noble
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -48,7 +48,7 @@ jobs:
     if: github.event.deployment_status.state == 'success' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: curl ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.environment_url }}
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
