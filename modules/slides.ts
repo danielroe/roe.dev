@@ -1,7 +1,6 @@
-import crypto from 'node:crypto'
-import { defineNuxtModule, updateRuntimeConfig, useNuxt, useRuntimeConfig } from 'nuxt/kit'
+import { defineNuxtModule, useNuxt, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
-import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
+import { put, head } from '@vercel/blob'
 import { createClient } from '@sanity/client'
 
 export default defineNuxtModule({
@@ -21,22 +20,7 @@ export default defineNuxtModule({
       },
     })
 
-    config.cloudflare.r2TokenKey = crypto.createHash('sha256').update(config.cloudflare.r2TokenKey).digest('hex')
-
-    updateRuntimeConfig({
-      cloudflare: config.cloudflare,
-    })
-
-    // Configure the S3 client for Cloudflare R2
-    const s3Client = new S3Client({
-      endpoint: config.cloudflare.s3Url,
-      region: 'auto',
-      credentials: {
-        accessKeyId: config.cloudflare.r2TokenId,
-        // Hash the secret access key
-        secretAccessKey: config.cloudflare.r2TokenKey,
-      },
-    })
+    const token = config.blobReadWriteToken
 
     const sanityClient = createClient({
       projectId: '9bj3w2vo',
@@ -54,14 +38,13 @@ export default defineNuxtModule({
       }
     `)
 
-    const Bucket = 'slides'
     for (const talk of talks) {
       if (!talk.release) continue
 
-      const Key = `${talk.release}.pdf`
+      const pathname = `slides/${talk.release}.pdf`
 
-      const headResponse = await s3Client.send(new HeadObjectCommand({ Bucket, Key })).catch(() => null)
-      if (!headResponse) {
+      const existingBlob = await head(pathname, { token }).catch(() => null)
+      if (!existingBlob) {
         const release = await $gh<GitHubRelease>(`/tags/${talk.release}`)
         const id = release?.assets.find(a => a.name.endsWith('.pdf'))?.id
 
@@ -72,13 +55,24 @@ export default defineNuxtModule({
           headers: { Accept: 'application/octet-stream' },
         })
 
-        // Upload file to Cloudflare R2
-        await s3Client.send(new PutObjectCommand({ Bucket, Key, Body: Buffer.from(file) }))
-      }
+        // Upload file to Vercel Blob
+        const blob = await put(pathname, Buffer.from(file), {
+          access: 'public',
+          token,
+          contentType: 'application/pdf',
+        })
 
-      nuxt.options.routeRules ||= {}
-      nuxt.options.routeRules[`/slides/${Key}`] = {
-        redirect: `https://slides.roe.dev/${Bucket}/${Key}`,
+        nuxt.options.routeRules ||= {}
+        nuxt.options.routeRules[`/slides/${talk.release}.pdf`] = {
+          redirect: blob.url,
+        }
+      }
+      else {
+        // File already exists, set up route rule with existing blob URL
+        nuxt.options.routeRules ||= {}
+        nuxt.options.routeRules[`/slides/${talk.release}.pdf`] = {
+          redirect: existingBlob.url,
+        }
       }
     }
   },
@@ -87,33 +81,3 @@ export default defineNuxtModule({
 interface GitHubRelease {
   assets: Array<{ id: number, name: string }>
 }
-
-/**
-
-// How to obtain a Cloudflare R2 token with the necessary permissions
-
-await $fetch(`https://api.cloudflare.com/client/v4/user/tokens`, {
-  method: 'post',
-  headers: {
-    authorization: `Bearer ${'<token with permission to create tokens>'}`,
-  },
-  body: {
-    name: 'r2 upload token',
-    policies: [
-      {
-        effect: 'allow',
-        resources: {
-          [`com.cloudflare.edge.r2.bucket.${config.accountId}_default_slides`]: '*',
-        },
-        permission_groups: [
-          {
-            id: '2efd5506f9c8494dacb1fa10a3e7d5b6',
-            name: 'Workers R2 Storage Bucket Item Write',
-          },
-        ],
-      },
-    ],
-  },
-})
-
-*/
