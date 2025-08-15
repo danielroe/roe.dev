@@ -103,11 +103,7 @@ export default defineNuxtConfig({
       token: '',
       webhookToken: '',
     },
-    cloudflare: {
-      s3Url: '',
-      r2TokenId: '',
-      r2TokenKey: '',
-    },
+    blobReadWriteToken: '',
     mastodon: {
       accessToken: '',
     },
