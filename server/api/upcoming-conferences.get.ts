@@ -3,7 +3,7 @@ import { imageMeta } from 'image-meta'
 const talkQuery = groq`
 *[_type == 'talk' && date >= now()] {
   title,
-  "name": coalesce(title, source),
+  "name": coalesce(source, title),
   "dates": date,
   endDate,
   link,
