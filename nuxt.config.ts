@@ -319,6 +319,7 @@ export default defineNuxtConfig({
       'perfnow.nl',
       'www.vuetoronto.com',
       'gdg.community.dev',
+      'www.lambdatest.com',
     ],
     sanity: {
       projectId: '9bj3w2vo',
