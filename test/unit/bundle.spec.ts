@@ -69,7 +69,7 @@ describe('project sizes', () => {
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
           "_nuxt/sqlite3-opfs-async-proxy-CG6Mx9uA.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-DZVwC1Ay.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-DDyInNgL.js",
           "_scripts/script.js",
         ]
       `)
