@@ -191,6 +191,16 @@ export default defineEventHandler(async event => {
       }
     })
 
+    if (document.video) {
+      try {
+        await sanity.client.patch(document._id).unset(['video']).commit()
+        await sanity.client.delete(document.video.asset._ref)
+      }
+      catch (error) {
+        console.warn('Video cleanup failed (non-critical):', error)
+      }
+    }
+
     const publishLog = results.map(result => ({
       _type: 'object',
       _key: randomUUID(),

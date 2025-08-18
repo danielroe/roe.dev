@@ -366,9 +366,6 @@ export default defineNuxtConfig({
       linkedin: {
         identifier: 'daniel-roe',
       },
-      tiktok: {
-        identifier: 'danielroe',
-      },
     },
   },
 })
