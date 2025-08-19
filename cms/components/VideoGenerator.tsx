@@ -41,7 +41,7 @@ export function VideoContentGenerator (props: VideoGeneratorProps) {
 
   const documentContent = useFormValue(['content']) as string
   const posts = useFormValue(['posts']) as Array<{ content: PortableTextTextBlock[] }>
-  const existingVideo = useFormValue(['tiktokVideo']) as { asset?: { _ref: string } } | undefined
+  const existingVideo = useFormValue(['video']) as { asset?: { _ref: string } } | undefined
   const client = useClient({ apiVersion: '2025-02-10' })
 
   // Initialize video URL from existing asset
