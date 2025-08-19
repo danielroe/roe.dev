@@ -195,7 +195,7 @@ export default defineType({
       components: {
         input: VideoContentGenerator,
       },
-      description: 'Use this to generate video content for TikTok and YouTube Shorts',
+      description: 'Use this to generate video content for YouTube Shorts',
       readOnly: true,
     }),
     defineField({
@@ -216,16 +216,6 @@ export default defineType({
         defineField({
           name: 'mastodon',
           title: 'Mastodon link',
-          type: 'url',
-        }),
-        defineField({
-          name: 'tiktok',
-          title: 'TikTok link',
-          type: 'url',
-        }),
-        defineField({
-          name: 'tiktokStories',
-          title: 'TikTok Stories link',
           type: 'url',
         }),
         defineField({
@@ -259,18 +249,6 @@ export default defineType({
           title: 'Mastodon',
           type: 'boolean',
           initialValue: true,
-        }),
-        defineField({
-          name: 'tiktok',
-          title: 'TikTok',
-          type: 'boolean',
-          initialValue: true,
-        }),
-        defineField({
-          name: 'tiktokStories',
-          title: 'TikTok Stories',
-          type: 'boolean',
-          initialValue: false,
         }),
         defineField({
           name: 'youtubeShorts',

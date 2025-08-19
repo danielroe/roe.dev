@@ -110,11 +110,6 @@ export default defineNuxtConfig({
     bluesky: {
       accessToken: '',
     },
-    tiktok: {
-      accessToken: '',
-      clientId: '',
-      clientSecret: '',
-    },
     youtube: {
       refreshToken: '',
       clientId: '',

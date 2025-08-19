@@ -22,8 +22,6 @@ interface AMADocument {
     bluesky?: boolean
     linkedin?: boolean
     mastodon?: boolean
-    tiktok?: boolean
-    tiktokStories?: boolean
     youtubeShorts?: boolean
   }
   image?: {
@@ -152,7 +150,6 @@ export default defineEventHandler(async event => {
           url,
           "dimensions": metadata.dimensions
         },
-        tiktokContent,
         video,
         lastWebhookEvent
       }`,
@@ -499,9 +496,9 @@ async function publishToMastodon (event: H3Event, text: string, image: AMADocume
 }
 
 /**
- * Generate TikTok metadata (title, description, hashtags) from AMA content
+ * Generate metadata (title, description, hashtags) from AMA content
  */
-function generateTikTokMetadata (question: string, answer: string): { title: string, description: string, hashtags: string[] } {
+function generateVideoMetadata (question: string, answer: string): { title: string, description: string, hashtags: string[] } {
   // Generate title - truncate question if too long
   const title = question.length > 47
     ? question.slice(0, 47) + '...'
@@ -558,153 +555,6 @@ function generateTikTokMetadata (question: string, answer: string): { title: str
 }
 
 /**
- * Publish to TikTok using pre-generated video from CMS
- */
-async function publishToTikTok (event: H3Event, document: AMADocument): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
-  const { TikTokApiClient } = await import('../utils/tiktok/api-client')
-
-  const accessToken = config.tiktok.accessToken
-  if (!accessToken) {
-    throw new Error('TikTok access token not configured. Set NUXT_TIKTOK_ACCESS_TOKEN environment variable.')
-  }
-
-  const clientId = config.tiktok.clientId
-  const clientSecret = config.tiktok.clientSecret
-  if (!clientId || !clientSecret) {
-    throw new Error('TikTok client credentials not configured.')
-  }
-
-  // Check if pre-generated video exists
-  const videoAsset = document.video
-  if (!videoAsset) {
-    throw new Error('No TikTok video found. Please generate a video in the CMS first.')
-  }
-
-  // Extract question and answer from document
-  const question = document.content
-  const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
-
-  const generatedMetadata = generateTikTokMetadata(question, answer)
-  const videoTitle = generatedMetadata.title
-  const videoDescription = generatedMetadata.description
-
-  // Get video buffer from Sanity asset
-  const sanity = useSanity(event)
-  const videoData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
-
-  if (!videoData?.url) {
-    throw new Error('TikTok video asset not found or invalid.')
-  }
-
-  // Download the video file
-  const videoResponse = await fetch(videoData.url)
-  if (!videoResponse.ok) {
-    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
-  }
-
-  const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
-
-  // Create API client and upload video
-  const client = new TikTokApiClient({
-    accessToken,
-    clientId,
-    clientSecret,
-  })
-
-  const videoInfo = {
-    title: videoTitle,
-    description: videoDescription,
-    privacy_level: 'PUBLIC_TO_EVERYONE' as const,
-    disable_duet: false,
-    disable_comment: false,
-    disable_stitch: false,
-    video_cover_timestamp_ms: 1000,
-  }
-
-  const _result = await client.uploadAndPublish(videoBuffer, videoInfo)
-
-  // Generate URL (TikTok doesn't provide direct video URLs immediately)
-  const identifier = config.social?.networks?.tiktok?.identifier || 'danielroe'
-  const url = `https://www.tiktok.com/@${identifier}`
-
-  return { url }
-}
-
-/**
- * Publish to TikTok Stories by creating a vertical video optimized for stories
- */
-async function publishToTikTokStories (event: H3Event, document: AMADocument): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
-  const { TikTokApiClient } = await import('../utils/tiktok/api-client')
-
-  const accessToken = config.tiktok.accessToken
-  if (!accessToken) {
-    throw new Error('TikTok access token not configured.')
-  }
-
-  const clientId = config.tiktok.clientId
-  const clientSecret = config.tiktok.clientSecret
-  if (!clientId || !clientSecret) {
-    throw new Error('TikTok client credentials not configured.')
-  }
-
-  // Check if pre-generated video exists
-  const videoAsset = document.video
-  if (!videoAsset) {
-    throw new Error('No TikTok video found. Please generate a video in the CMS first.')
-  }
-
-  // Extract question and answer from document
-  const question = document.content
-  const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
-
-  // Use CMS-generated content or generate fallback
-  const videoTitle = `${question.slice(0, 40)}... - Stories`
-  const videoDescription = `Stories: ${question}\n\n${answer.slice(0, 100)}\n\n#AMA #Stories`
-
-  // Get video buffer from Sanity asset
-  const sanity = useSanity(event)
-  const videoStoriesData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
-
-  if (!videoStoriesData?.url) {
-    throw new Error('TikTok video asset not found or invalid.')
-  }
-
-  // Download the video file
-  const videoResponse = await fetch(videoStoriesData.url)
-  if (!videoResponse.ok) {
-    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
-  }
-
-  const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
-
-  // Create API client and upload video
-  const client = new TikTokApiClient({
-    accessToken,
-    clientId,
-    clientSecret,
-  })
-
-  const videoInfo = {
-    title: videoTitle,
-    description: videoDescription,
-    privacy_level: 'PUBLIC_TO_EVERYONE' as const,
-    disable_duet: true,
-    disable_comment: false,
-    disable_stitch: true,
-    video_cover_timestamp_ms: 500,
-  }
-
-  const _result = await client.uploadAndPublish(videoBuffer, videoInfo)
-
-  const identifier = config.social?.networks?.tiktok?.identifier || 'danielroe'
-  const url = `https://www.tiktok.com/@${identifier}`
-
-  return { url }
-}
-
-/**
  * Publish to YouTube Shorts using pre-generated video from CMS
  */
 async function publishToYouTubeShorts (event: H3Event, document: AMADocument): Promise<{ url: string }> {
@@ -723,7 +573,7 @@ async function publishToYouTubeShorts (event: H3Event, document: AMADocument): P
   const question = document.content
   const answer = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
 
-  const generatedMetadata = generateTikTokMetadata(question, answer)
+  const generatedMetadata = generateVideoMetadata(question, answer)
 
   // YouTube Shorts specific title and description
   const videoTitle = generatedMetadata.title.length > 100
@@ -977,28 +827,6 @@ async function publishToPlatforms (event: H3Event, document: AMADocument): Promi
     }
     catch (error) {
       results.push({ platform: 'linkedin', success: false, error: String(error) })
-    }
-  }
-
-  // Publish to TikTok
-  if (document.platforms?.tiktok === true) {
-    try {
-      const tiktokResult = await publishToTikTok(event, document)
-      results.push({ platform: 'tiktok', success: true, url: tiktokResult.url })
-    }
-    catch (error) {
-      results.push({ platform: 'tiktok', success: false, error: String(error) })
-    }
-  }
-
-  // Publish to TikTok Stories
-  if (document.platforms?.tiktokStories === true) {
-    try {
-      const tiktokStoriesResult = await publishToTikTokStories(event, document)
-      results.push({ platform: 'tiktok-stories', success: true, url: tiktokStoriesResult.url })
-    }
-    catch (error) {
-      results.push({ platform: 'tiktok-stories', success: false, error: String(error) })
     }
   }
 
