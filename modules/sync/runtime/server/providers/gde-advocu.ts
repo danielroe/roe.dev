@@ -46,6 +46,7 @@ export class GdeAdvocuProvider implements SyncProvider {
       const safeTags = validateTags(item.tags)
       if (item.tags && safeTags.length === 0) {
         console.warn(`No valid Advocu tags for item: ${item.title} (${item.canonical_url}). Provided: ${JSON.stringify(item.tags)}`)
+        continue
       }
 
       try {
