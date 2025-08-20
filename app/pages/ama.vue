@@ -84,9 +84,7 @@ const denialDetected = ref(false)
 const questionText = ref('')
 
 watchEffect(() => {
-  console.log('Current question:', questionText.value)
   denialDetected.value = /[Dd]enial/.test(questionText.value)
-  console.log('Denial detected:', denialDetected.value)
 })
 
 function fixDenial () {
