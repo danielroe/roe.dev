@@ -15,24 +15,35 @@
           </label>
         </h1>
         <p>
-          I'll try to <a
+          I'll try to
+          <a
             class="underlined-link"
             href="https://bsky.app/hashtag/ama?author=danielroe.dev"
           >
-            answer it on social media
-          </a>.
+            answer it on social media </a>.
         </p>
         <textarea
           id="question"
+          v-model="questionText"
           name="question"
           class="mt-2 rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1"
           :class="{
             'ring ring-yellow-500': denialDetected,
           }"
         />
-        <div class="mt-2 text-sm text-yellow-500">
-          <p v-if="denialDetected">
-            Did you mean "Daniel"?
+        <div
+          v-if="denialDetected"
+          class="mt-2 text-sm text-yellow-500"
+        >
+          <p>
+            Did you mean
+            <button
+              type="button"
+              class="underline font-medium hover:opacity-80"
+              @click="fixDenial"
+            >
+              "Daniel"
+            </button>?
           </p>
         </div>
         <button
@@ -49,16 +60,12 @@
         </button>
       </form>
       <template v-if="status === 'success'">
-        <p>
-          <i class="i-ri-checkbox-fill" /> question submitted successfully!
-        </p>
+        <p><i class="i-ri-checkbox-fill" /> question submitted successfully!</p>
         <p>
           <NuxtLink
             to="/"
             class="underlined-link"
-          >
-            go home
-          </NuxtLink>
+          > go home </NuxtLink>
         </p>
       </template>
       <p v-else-if="status === 'error'">
@@ -74,31 +81,37 @@ definePageMeta({ title: 'Ask me anything' })
 const status = ref<'idle' | 'pending' | 'error' | 'success'>('idle')
 
 const denialDetected = ref(false)
+const questionText = ref('')
 
-async function askQuestion (event: Event) {
+watchEffect(() => {
+  denialDetected.value = /[Dd]enial/.test(questionText.value)
+})
+
+function fixDenial () {
+  questionText.value = questionText.value.replace(/[Dd]enial/g, 'Daniel')
+  denialDetected.value = false
+}
+
+async function askQuestion () {
   if (status.value === 'pending') return
+
+  if (denialDetected.value) {
+    status.value = 'idle'
+    return
+  }
+
   try {
     status.value = 'pending'
-
-    const formData = new FormData(event.target as HTMLFormElement)
-    const question = formData.get('question')?.toString()
-
-    if (!denialDetected.value && question?.match(/[Dd]enial/g)) {
-      denialDetected.value = true
-      status.value = 'idle'
-      return
-    }
-    else {
-      denialDetected.value = false
-    }
 
     await $fetch('/api/question', {
       method: 'POST',
       body: {
-        question,
+        question: questionText.value,
       },
     })
+
     status.value = 'success'
+    questionText.value = ''
   }
   catch (error) {
     console.error(error)
