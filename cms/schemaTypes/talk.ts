@@ -90,6 +90,7 @@ export default defineType({
     }),
     defineField({
       name: 'link',
+      validation: Rule => Rule.required(),
       title: 'Event Link',
       type: 'url',
       description: 'Link to event page, podcast episode, etc.',
