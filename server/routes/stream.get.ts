@@ -33,7 +33,7 @@ export default defineEventHandler(async event => {
   <meta name="twitter:url" content="https://roe.dev/stream">
   <meta name="twitter:title" content="Daniel Roe live stream">
   <meta name="twitter:description" content="Join me live on Twitch.">
-  <meta name="twitter:image" content="https://roe.dev/img/stream-og.jpg">
+  <meta name="twitter:image" content="https://roe.dev/stream.jpg">
 </head>
 <body>
   <script>window.location.href = 'https://twitch.tv/danielroe'</script>
