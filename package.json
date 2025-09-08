@@ -16,7 +16,9 @@
     "test:e2e": "playwright test test/e2e",
     "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.52.0-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install",
-    "auth:youtube": "node --env-file=.env scripts/youtube-auth.mjs",
+    "auth:linkedin": "node --env-file=.env scripts/linkedin-auth.ts",
+    "auth:youtube": "node --env-file=.env scripts/youtube-auth.ts",
+    "auth:youtube:refresh": "node --env-file=.env scripts/youtube-auth.ts refresh",
     "import-streambeats": "node --env-file=.env scripts/import-streambeats.mjs",
     "import-streambeats:dry-run": "node --env-file=.env scripts/import-streambeats.mjs --dry-run"
   },
@@ -48,6 +50,7 @@
     "@unocss/postcss": "^66.1.3",
     "@unocss/reset": "^66.1.3",
     "@vercel/blob": "^1.1.1",
+    "citty": "^0.1.6",
     "defu": "^6.1.4",
     "exsolve": "^1.0.5",
     "feed": "^5.1.0",

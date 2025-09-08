@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * YouTube OAuth Token Generator
  *
@@ -14,36 +12,57 @@
  * 4. Download the credentials JSON file
  *
  * Usage:
- *   node scripts/youtube-auth.js
- *
- * Or with credentials file path:
- *   node scripts/youtube-auth.js ./path/to/credentials.json
- *
- * To refresh an existing token:
- *   node scripts/youtube-auth.js --refresh "your_refresh_token"
+ *   node scripts/youtube-auth.ts
+ *   node scripts/youtube-auth.ts --credentials ./path/to/credentials.json
+ *   node scripts/youtube-auth.ts refresh "your_refresh_token"
  */
 
 import { createServer } from 'node:http'
 import { parse } from 'node:url'
+import process from 'node:process'
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
+import { defineCommand, runMain } from 'citty'
 
 // Required YouTube API scopes
 const SCOPES = [
   'https://www.googleapis.com/auth/youtube', // Video upload
   'https://www.googleapis.com/auth/youtube.force-ssl', // Playlist management
-]
+] as const
 
 const REDIRECT_URI = 'http://localhost:8080/callback'
 const PORT = 8080
 
+interface YouTubeCredentials {
+  client_id: string
+  client_secret: string
+  redirect_uris?: string[]
+}
+
+interface YouTubeTokenResponse {
+  access_token: string
+  token_type: string
+  expires_in: number
+  refresh_token?: string
+}
+
+interface CredentialsFile {
+  installed?: YouTubeCredentials
+  web?: YouTubeCredentials
+  client_id?: string
+  client_secret?: string
+}
+
 class YouTubeAuthGenerator {
-  constructor (credentialsPath) {
+  private credentialsPath: string
+  private credentials: YouTubeCredentials
+
+  constructor (credentialsPath?: string) {
     this.credentialsPath = credentialsPath || this.findCredentialsFile()
     this.credentials = this.loadCredentials()
   }
 
-  findCredentialsFile () {
+  findCredentialsFile (): string {
     const possiblePaths = [
       './credentials.json',
       './google-credentials.json',
@@ -65,27 +84,31 @@ class YouTubeAuthGenerator {
     process.exit(1)
   }
 
-  loadCredentials () {
+  loadCredentials (): YouTubeCredentials {
     try {
       const content = readFileSync(this.credentialsPath, 'utf8')
-      const data = JSON.parse(content)
+      const data: CredentialsFile = JSON.parse(content)
 
       // Handle both direct credentials and wrapped format
-      const creds = data.installed || data.web || data
+      const creds = data.installed || data.web || data as YouTubeCredentials
 
       if (!creds.client_id || !creds.client_secret) {
         throw new Error('Missing client_id or client_secret in credentials file')
       }
 
-      return creds
+      return {
+        client_id: creds.client_id,
+        client_secret: creds.client_secret,
+        redirect_uris: creds.redirect_uris,
+      }
     }
     catch (error) {
-      console.error('❌ Error loading credentials:', error.message)
+      console.error('❌ Error loading credentials:', error instanceof Error ? error.message : error)
       process.exit(1)
     }
   }
 
-  generateAuthUrl () {
+  generateAuthUrl (): string {
     const params = new URLSearchParams({
       client_id: this.credentials.client_id,
       redirect_uri: REDIRECT_URI,
@@ -98,7 +121,7 @@ class YouTubeAuthGenerator {
     return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
   }
 
-  async exchangeCodeForTokens (code) {
+  async exchangeCodeForTokens (code: string): Promise<YouTubeTokenResponse> {
     const tokenUrl = 'https://oauth2.googleapis.com/token'
     const body = new URLSearchParams({
       client_id: this.credentials.client_id,
@@ -125,12 +148,12 @@ class YouTubeAuthGenerator {
       return await response.json()
     }
     catch (error) {
-      console.error('❌ Error exchanging code for tokens:', error.message)
+      console.error('❌ Error exchanging code for tokens:', error instanceof Error ? error.message : error)
       throw error
     }
   }
 
-  async refreshAccessToken (refreshToken) {
+  async refreshAccessToken (refreshToken: string): Promise<YouTubeTokenResponse> {
     const tokenUrl = 'https://oauth2.googleapis.com/token'
     const body = new URLSearchParams({
       client_id: this.credentials.client_id,
@@ -153,18 +176,18 @@ class YouTubeAuthGenerator {
         throw new Error(`Token refresh failed: ${response.status} ${error}`)
       }
 
-      return await response.json()
+      return await response.json() as YouTubeTokenResponse
     }
     catch (error) {
-      console.error('❌ Error refreshing token:', error.message)
+      console.error('❌ Error refreshing token:', error instanceof Error ? error.message : error)
       throw error
     }
   }
 
-  startServer () {
+  startServer (): Promise<YouTubeTokenResponse> {
     return new Promise((resolve, reject) => {
       const server = createServer(async (req, res) => {
-        const parsedUrl = parse(req.url, true)
+        const parsedUrl = parse(req.url || '', true)
 
         if (parsedUrl.pathname === '/callback') {
           const { code, error } = parsedUrl.query
@@ -176,7 +199,7 @@ class YouTubeAuthGenerator {
             return
           }
 
-          if (code) {
+          if (code && typeof code === 'string') {
             try {
               const tokens = await this.exchangeCodeForTokens(code)
 
@@ -192,7 +215,7 @@ class YouTubeAuthGenerator {
             }
             catch (error) {
               res.writeHead(500, { 'Content-Type': 'text/html' })
-              res.end(`<h1>❌ Token Exchange Error</h1><p>${error.message}</p>`)
+              res.end(`<h1>❌ Token Exchange Error</h1><p>${error instanceof Error ? error.message : error}</p>`)
               reject(error)
             }
           }
@@ -203,13 +226,13 @@ class YouTubeAuthGenerator {
         }
       })
 
-      server.listen(PORT, err => {
+      server.listen(PORT, (err?: Error) => {
         if (err) reject(err)
       })
     })
   }
 
-  async generateTokens () {
+  async generateTokens (): Promise<YouTubeTokenResponse> {
     console.log('🔐 YouTube Access Token Generator')
     console.log('================================\n')
 
@@ -233,12 +256,12 @@ class YouTubeAuthGenerator {
       return tokens
     }
     catch (error) {
-      console.error('❌ Authorization failed:', error.message)
+      console.error('❌ Authorization failed:', error instanceof Error ? error.message : error)
       throw error
     }
   }
 
-  displayResults (tokens) {
+  displayResults (tokens: YouTubeTokenResponse): void {
     console.log('\n🎉 Success! Here are your tokens:')
     console.log('=====================================\n')
 
@@ -274,7 +297,7 @@ class YouTubeAuthGenerator {
 
     if (tokens.refresh_token) {
       console.log('\n🔄 To refresh your access token later, you can use:')
-      console.log(`node scripts/youtube-auth.js --refresh "${tokens.refresh_token}"`)
+      console.log(`node scripts/youtube-auth.ts --refresh "${tokens.refresh_token}"`)
       console.log('\n💡 For automatic token refresh in production, set these environment variables:')
       console.log(`NUXT_YOUTUBE_REFRESH_TOKEN=${tokens.refresh_token}`)
       console.log(`NUXT_YOUTUBE_CLIENT_ID=${this.credentials.client_id}`)
@@ -282,7 +305,7 @@ class YouTubeAuthGenerator {
     }
   }
 
-  async handleRefreshToken (refreshToken) {
+  async handleRefreshToken (refreshToken: string): Promise<void> {
     console.log('🔄 Refreshing access token...')
 
     try {
@@ -302,47 +325,82 @@ class YouTubeAuthGenerator {
       }
     }
     catch (error) {
-      console.error('❌ Failed to refresh token:', error.message)
+      console.error('❌ Failed to refresh token:', error instanceof Error ? error.message : error)
       console.log('\n💡 You may need to re-authorize the application:')
-      console.log('   node scripts/youtube-auth.js')
+      console.log('   node scripts/youtube-auth.ts')
       process.exit(1)
     }
   }
 }
 
-// Main execution
-async function main () {
-  const args = process.argv.slice(2)
+const main = defineCommand({
+  meta: {
+    name: 'youtube-auth',
+    version: '1.0.0',
+    description: 'YouTube OAuth Token Generator',
+  },
+  args: {
+    credentials: {
+      type: 'positional',
+      description: 'Path to credentials JSON file',
+      required: false,
+    },
+  },
+  subCommands: {
+    generate: defineCommand({
+      meta: {
+        name: 'generate',
+        description: 'Generate new YouTube access and refresh tokens',
+      },
+      args: {
+        credentials: {
+          type: 'positional',
+          description: 'Path to credentials JSON file',
+          required: false,
+        },
+      },
+      async run ({ args }) {
+        const credentialsPath = typeof args.credentials === 'string' ? args.credentials : undefined
+        const generator = new YouTubeAuthGenerator(credentialsPath)
 
-  // Handle refresh token mode
-  if (args[0] === '--refresh') {
-    if (!args[1]) {
-      console.error('❌ Please provide a refresh token: --refresh "your_refresh_token"')
-      process.exit(1)
-    }
+        try {
+          const tokens = await generator.generateTokens()
+          if (!tokens) {
+            console.error('❌ Failed to generate tokens')
+            process.exit(1)
+          }
+          generator.displayResults(tokens)
+        }
+        catch (error) {
+          console.error('❌ Failed to generate tokens:', error instanceof Error ? error.message : error)
+          process.exit(1)
+        }
+      },
+    }),
+    refresh: defineCommand({
+      meta: {
+        name: 'refresh',
+        description: 'Refresh an existing access token',
+      },
+      args: {
+        token: {
+          type: 'positional',
+          description: 'Refresh token to use',
+          required: true,
+        },
+      },
+      async run ({ args }) {
+        if (typeof args.token !== 'string') {
+          console.error('❌ Please provide a refresh token: youtube-auth refresh "your_refresh_token"')
+          process.exit(1)
+        }
 
-    const generator = new YouTubeAuthGenerator()
-    await generator.handleRefreshToken(args[1])
-    return
-  }
-
-  // Normal authorization flow
-  const credentialsPath = args[0]
-  const generator = new YouTubeAuthGenerator(credentialsPath)
-
-  try {
-    const tokens = await generator.generateTokens()
-    if (!tokens) {
-      console.error('❌ Failed to generate tokens')
-      process.exit(1)
-    }
-    generator.displayResults(tokens)
-  }
-  catch (error) {
-    console.error('❌ Failed to generate tokens:', error.message)
-    process.exit(1)
-  }
-}
+        const generator = new YouTubeAuthGenerator()
+        await generator.handleRefreshToken(args.token)
+      },
+    }),
+  },
+})
 
 // Handle graceful shutdown
 process.on('SIGINT', () => {
@@ -350,4 +408,4 @@ process.on('SIGINT', () => {
   process.exit(0)
 })
 
-main().catch(console.error)
+runMain(main)
