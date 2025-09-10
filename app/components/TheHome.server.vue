@@ -392,14 +392,10 @@ interface Talk {
             />
             <span class="hidden md:inline-block">{{ link.name }}</span>
           </a>
-        </ExpandableTray>
-        or you can view an
-        <NuxtLink
-          class="underlined-link"
-          to="/feed"
-        >
-          aggregated feed on this site
-        </NuxtLink>. You can also get in touch
+        </ExpandableTray>.
+      </p>
+      <p>
+        You can also get in touch
         <a
           class="underlined-link"
           href="mailto:daniel@roe.dev"
