@@ -69,7 +69,7 @@ describe('project sizes', () => {
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
           "_nuxt/sqlite3-opfs-async-proxy-CG6Mx9uA.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-DDyInNgL.js",
+          "_nuxt/sqlite3-worker1-bundler-friendly-l8S_23m9.js",
           "_scripts/script.js",
         ]
       `)
@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11620k"`)
+      .toMatchInlineSnapshot(`"11649k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
