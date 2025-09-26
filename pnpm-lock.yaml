@@ -11,15 +11,9 @@ overrides:
   vue: 3.5.22
 
 patchedDependencies:
-  '@nuxt/content':
-    hash: 093a000a83f2e8d36e283f95f1bf85f24beb4f8e2827be2c3a4846901b4a5740
-    path: patches/@nuxt__content.patch
   '@nuxt/image':
     hash: f38eb80d2a8ccf16df1dfc43348e681f41fa290145a5abff807e6502b2ebfaec
     path: patches/@nuxt__image.patch
-  '@nuxtjs/sanity':
-    hash: fd024451882e9e584d2cdabc0bf51b78af37f8ae1fe9e6488ee54beb1418eef5
-    path: patches/@nuxtjs__sanity.patch
 
 importers:
 
@@ -39,7 +33,7 @@ importers:
         version: 1.2.23
       '@nuxt/content':
         specifier: 3.7.1
-        version: 3.7.1(patch_hash=093a000a83f2e8d36e283f95f1bf85f24beb4f8e2827be2c3a4846901b4a5740)(better-sqlite3@11.10.0)(magicast@0.3.5)(valibot@1.1.0(typescript@5.9.2))
+        version: 3.7.1(better-sqlite3@11.10.0)(magicast@0.3.5)(valibot@1.1.0(typescript@5.9.2))
       '@nuxt/eslint':
         specifier: 1.9.0
         version: 1.9.0(@typescript-eslint/utils@8.39.1(eslint@9.35.0(jiti@2.6.0))(typescript@5.9.2))(@vue/compiler-sfc@3.5.22)(eslint-import-resolver-node@0.3.9)(eslint@9.35.0(jiti@2.6.0))(magicast@0.3.5)(typescript@5.9.2)(vite@7.1.6(@types/node@24.5.2)(jiti@2.6.0)(terser@5.44.0)(yaml@2.8.1))
@@ -63,7 +57,7 @@ importers:
         version: 2.0.1(magicast@0.3.5)
       '@nuxtjs/sanity':
         specifier: ^2.0.0
-        version: 2.0.0(patch_hash=fd024451882e9e584d2cdabc0bf51b78af37f8ae1fe9e6488ee54beb1418eef5)(@emotion/is-prop-valid@1.2.2)(@sanity/icons@3.7.4(react@18.3.1))(@sanity/types@4.9.0(@types/react@18.3.24))(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react-is@19.1.1)(react@18.3.1)(sanity@4.9.0(@emotion/is-prop-valid@1.2.2)(@portabletext/sanity-bridge@1.1.10(@sanity/schema@4.9.0(@types/react@18.3.24))(@sanity/types@4.9.0(@types/react@18.3.24)))(@types/node@24.5.2)(@types/react@18.3.24)(immer@10.1.3)(jiti@2.6.0)(postcss@8.5.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.44.0)(typescript@5.9.2)(yaml@2.8.1))(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2))
+        version: 2.0.0(@emotion/is-prop-valid@1.2.2)(@sanity/icons@3.7.4(react@18.3.1))(@sanity/types@4.9.0(@types/react@18.3.24))(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react-is@19.1.1)(react@18.3.1)(sanity@4.9.0(@emotion/is-prop-valid@1.2.2)(@portabletext/sanity-bridge@1.1.10(@sanity/schema@4.9.0(@types/react@18.3.24))(@sanity/types@4.9.0(@types/react@18.3.24)))(@types/node@24.5.2)(@types/react@18.3.24)(immer@10.1.3)(jiti@2.6.0)(postcss@8.5.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.44.0)(typescript@5.9.2)(yaml@2.8.1))(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2))
       '@portabletext/types':
         specifier: ^2.0.13
         version: 2.0.15
@@ -12308,7 +12302,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/content@3.7.1(patch_hash=093a000a83f2e8d36e283f95f1bf85f24beb4f8e2827be2c3a4846901b4a5740)(better-sqlite3@11.10.0)(magicast@0.3.5)(valibot@1.1.0(typescript@5.9.2))':
+  '@nuxt/content@3.7.1(better-sqlite3@11.10.0)(magicast@0.3.5)(valibot@1.1.0(typescript@5.9.2))':
     dependencies:
       '@nuxt/kit': 4.1.2(magicast@0.3.5)
       '@nuxtjs/mdc': 0.17.4(magicast@0.3.5)
@@ -12856,7 +12850,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxtjs/sanity@2.0.0(patch_hash=fd024451882e9e584d2cdabc0bf51b78af37f8ae1fe9e6488ee54beb1418eef5)(@emotion/is-prop-valid@1.2.2)(@sanity/icons@3.7.4(react@18.3.1))(@sanity/types@4.9.0(@types/react@18.3.24))(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react-is@19.1.1)(react@18.3.1)(sanity@4.9.0(@emotion/is-prop-valid@1.2.2)(@portabletext/sanity-bridge@1.1.10(@sanity/schema@4.9.0(@types/react@18.3.24))(@sanity/types@4.9.0(@types/react@18.3.24)))(@types/node@24.5.2)(@types/react@18.3.24)(immer@10.1.3)(jiti@2.6.0)(postcss@8.5.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.44.0)(typescript@5.9.2)(yaml@2.8.1))(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2))':
+  '@nuxtjs/sanity@2.0.0(@emotion/is-prop-valid@1.2.2)(@sanity/icons@3.7.4(react@18.3.1))(@sanity/types@4.9.0(@types/react@18.3.24))(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react-is@19.1.1)(react@18.3.1)(sanity@4.9.0(@emotion/is-prop-valid@1.2.2)(@portabletext/sanity-bridge@1.1.10(@sanity/schema@4.9.0(@types/react@18.3.24))(@sanity/types@4.9.0(@types/react@18.3.24)))(@types/node@24.5.2)(@types/react@18.3.24)(immer@10.1.3)(jiti@2.6.0)(postcss@8.5.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.44.0)(typescript@5.9.2)(yaml@2.8.1))(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2))':
     dependencies:
       '@nuxt/kit': 4.1.2(magicast@0.3.5)
       '@portabletext/types': 2.0.15
