@@ -24,7 +24,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Deploy Sanity Studio
-        run: pnpm deploy
+        run: pnpm sanity deploy
         working-directory: cms
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
