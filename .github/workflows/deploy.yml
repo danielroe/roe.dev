@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Update blogs on dev.to
+      - name: Deploy Sanity Studio
         run: pnpm deploy
         working-directory: cms
         env:
