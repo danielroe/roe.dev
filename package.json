@@ -14,7 +14,7 @@
     "test": "vitest run test/unit/behaviour && vitest run test/unit/bundle && vitest run test/nuxt --config vitest.nuxt.config.mts",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit",
     "test:e2e": "playwright test test/e2e",
-    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.55.0-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
+    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.55.1-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install",
     "auth:linkedin": "node --env-file=.env scripts/linkedin-auth.ts",
     "auth:youtube": "node --env-file=.env scripts/youtube-auth.ts",
@@ -118,9 +118,7 @@
       "vue": "3.5.22"
     },
     "patchedDependencies": {
-      "@nuxt/image": "patches/@nuxt__image.patch",
-      "@nuxtjs/sanity": "patches/@nuxtjs__sanity.patch",
-      "@nuxt/content": "patches/@nuxt__content.patch"
+      "@nuxt/image": "patches/@nuxt__image.patch"
     }
   }
 }
