@@ -1,0 +1,30 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "cms/**"
+      - "pnpm-lock.yaml"
+
+jobs:
+  studio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - run: corepack enable
+      - uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Update blogs on dev.to
+        run: pnpm deploy
+        working-directory: cms
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
