@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11698k"`)
+      .toMatchInlineSnapshot(`"11701k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -265,7 +265,7 @@ describe('project sizes', () => {
         "rehype-sort-attributes",
         "remark-emoji",
         "remark-gfm",
-        "remark-mdc",
+        "remark-mdc-edge",
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
