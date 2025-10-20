@@ -84,7 +84,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11701k"`)
+      .toMatchInlineSnapshot(`"11833k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -164,12 +164,15 @@ describe('project sizes', () => {
         "has-flag",
         "hast-util-embedded",
         "hast-util-format",
+        "hast-util-format/node_modules/unist-util-visit-parents",
+        "hast-util-format/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "hast-util-from-parse5",
         "hast-util-from-parse5/node_modules/property-information",
         "hast-util-has-property",
         "hast-util-is-body-ok-link",
         "hast-util-is-element",
         "hast-util-minify-whitespace",
+        "hast-util-minify-whitespace/node_modules/unist-util-is",
         "hast-util-parse-selector",
         "hast-util-phrasing",
         "hast-util-raw",
@@ -200,6 +203,9 @@ describe('project sizes', () => {
         "magic-string",
         "markdown-table",
         "mdast-util-find-and-replace",
+        "mdast-util-find-and-replace/node_modules/unist-util-is",
+        "mdast-util-find-and-replace/node_modules/unist-util-visit-parents",
+        "mdast-util-find-and-replace/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "mdast-util-from-markdown",
         "mdast-util-gfm",
         "mdast-util-gfm-autolink-literal",
@@ -208,6 +214,7 @@ describe('project sizes', () => {
         "mdast-util-gfm-table",
         "mdast-util-gfm-task-list-item",
         "mdast-util-phrasing",
+        "mdast-util-phrasing/node_modules/unist-util-is",
         "mdast-util-to-hast",
         "mdast-util-to-markdown",
         "mdast-util-to-string",
@@ -293,11 +300,15 @@ describe('project sizes', () => {
         "unicode-emoji-modifier-base",
         "unified",
         "unist-util-find-after",
+        "unist-util-find-after/node_modules/unist-util-is",
         "unist-util-is",
         "unist-util-position",
         "unist-util-stringify-position",
         "unist-util-visit",
         "unist-util-visit-parents",
+        "unist-util-visit-parents/node_modules/unist-util-is",
+        "unist-util-visit/node_modules/unist-util-visit-parents",
+        "unist-util-visit/node_modules/unist-util-visit-parents/node_modules/unist-util-is",
         "util-deprecate",
         "vfile",
         "vfile-location",
