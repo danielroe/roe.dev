@@ -10,11 +10,6 @@ overrides:
   '@nuxtjs/mdc': 0.18.2
   vue: 3.5.24
 
-patchedDependencies:
-  '@nuxt/image':
-    hash: f38eb80d2a8ccf16df1dfc43348e681f41fa290145a5abff807e6502b2ebfaec
-    path: patches/@nuxt__image.patch
-
 importers:
 
   .:
@@ -42,7 +37,7 @@ importers:
         version: 0.12.1(@netlify/blobs@9.1.2)(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.2(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(yaml@2.8.1))
       '@nuxt/image':
         specifier: 2.0.0
-        version: 2.0.0(patch_hash=f38eb80d2a8ccf16df1dfc43348e681f41fa290145a5abff807e6502b2ebfaec)(@netlify/blobs@9.1.2)(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)
+        version: 2.0.0(@netlify/blobs@9.1.2)(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)
       '@nuxt/scripts':
         specifier: ^0.13.0
         version: 0.13.0(@googlemaps/markerclusterer@2.6.2)(@netlify/blobs@9.1.2)(@unhead/vue@2.0.19(vue@3.5.24(typescript@5.9.3)))(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))
@@ -13528,7 +13523,7 @@ snapshots:
       - uploadthing
       - vite
 
-  '@nuxt/image@2.0.0(patch_hash=f38eb80d2a8ccf16df1dfc43348e681f41fa290145a5abff807e6502b2ebfaec)(@netlify/blobs@9.1.2)(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)':
+  '@nuxt/image@2.0.0(@netlify/blobs@9.1.2)(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@11.10.0))(ioredis@5.8.2)(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.1(magicast@0.5.1)
       consola: 3.4.2
@@ -16207,9 +16202,9 @@ snapshots:
   '@vue/language-core@3.0.7(typescript@5.9.3)':
     dependencies:
       '@volar/language-core': 2.4.23
-      '@vue/compiler-dom': 3.5.22
+      '@vue/compiler-dom': 3.5.24
       '@vue/compiler-vue2': 2.7.16
-      '@vue/shared': 3.5.22
+      '@vue/shared': 3.5.24
       alien-signals: 2.0.7
       muggle-string: 0.4.1
       path-browserify: 1.0.1
@@ -24209,7 +24204,7 @@ snapshots:
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
       acorn: 8.15.0
-      browserslist: 4.26.3
+      browserslist: 4.27.0
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.18.3
       es-module-lexer: 1.7.0
