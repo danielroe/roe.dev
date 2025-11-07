@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    modules: ['nuxt-security'],
+    // modules: ['nuxt-security'],
     experimental: {
       noVueServer: true,
     },
