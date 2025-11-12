@@ -1,4 +1,4 @@
-import { defineConfig, presetUno, presetIcons } from 'unocss'
+import { defineConfig, presetIcons, presetWind3 } from 'unocss'
 import { createResolver } from 'nuxt/kit'
 
 const resolver = createResolver(import.meta.url)
@@ -63,11 +63,6 @@ export default defineConfig({
         },
       },
     }),
-    presetUno({
-      dark: {
-        dark: '.dark-mode',
-        light: '.light-mode',
-      },
-    }),
+    presetWind3(),
   ],
 })
