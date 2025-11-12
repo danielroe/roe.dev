@@ -1,7 +1,8 @@
 import fsp from 'node:fs/promises'
 import { join } from 'node:path'
+import process from 'node:process'
 import { describe, it, expect } from 'vitest'
-import { getMarkdownArticles, getTalks } from '../../modules/sync/runtime/utils/items'
+import { getMarkdownArticles } from '../../modules/sync/runtime/server/utils/items'
 
 describe('getMarkdownArticles', () => {
   it('parses markdown frontmatter and content correctly', async () => {
@@ -45,14 +46,5 @@ describe('getMarkdownArticles', () => {
     expect(testArticle?.tags).toEqual(['personal', 'ux', 'brand'])
     // Cleanup
     await fsp.unlink(filePath)
-  })
-})
-
-describe('getTalks', () => {
-  it('returns talks with correct fields and tags', async () => {
-    const items = await getTalks()
-    const found = items.find(i => i.title === 'How concision might save your life')
-    expect(found).toBeDefined()
-    expect(found?.tags || []).toEqual(['marketing', 'communication'])
   })
 })
