@@ -7,6 +7,7 @@ export default defineNuxtModule({
     configKey: 'sync',
   },
   setup (_options, nuxt) {
+    if (nuxt.options.test) return
     const resolver = createResolver(import.meta.url)
 
     addServerHandler({

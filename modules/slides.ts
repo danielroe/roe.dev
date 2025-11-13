@@ -11,7 +11,7 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const config = useRuntimeConfig()
 
-    if (!config.github.token || nuxt.options._prepare) return
+    if (!config.github.token || nuxt.options._prepare || nuxt.options.test) return
 
     const $gh = $fetch.create({
       baseURL: 'https://api.github.com/repos/danielroe/slides/releases',

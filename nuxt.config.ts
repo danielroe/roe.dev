@@ -1,7 +1,7 @@
 import process from 'node:process'
 
 import { defineNuxtConfig } from 'nuxt/config'
-import { useNuxt } from 'nuxt/kit'
+import { extendViteConfig, useNuxt } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
 
@@ -49,8 +49,8 @@ export default defineNuxtConfig({
 
   $test: {
     modules: [
-      function (_options, nuxt) {
-        nuxt.hook('vite:extendConfig', config => {
+      function () {
+        extendViteConfig(config => {
           config.plugins = config.plugins?.filter(p => !p || !('name' in p) || p.name !== 'nuxt:scripts:bundler-transformer')
         })
       },
