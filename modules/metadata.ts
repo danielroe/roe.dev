@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
-import { globby } from 'globby'
+import { glob as globby } from 'tinyglobby'
 import grayMatter from 'gray-matter'
 import { filename } from 'pathe/utils'
 import { remark } from 'remark'

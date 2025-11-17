@@ -5,7 +5,7 @@ import fsp from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { globby } from 'globby'
+import { glob as globby } from 'tinyglobby'
 import { join } from 'pathe'
 
 describe('project sizes', () => {
