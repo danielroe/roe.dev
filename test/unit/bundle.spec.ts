@@ -36,35 +36,60 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"497k"`)
+      .toMatchInlineSnapshot(`"502k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/CalSchedule.js",
           "_nuxt/ProseA.js",
+          "_nuxt/ProseA.js",
+          "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseBlockquote.js",
           "_nuxt/ProseCode.js",
+          "_nuxt/ProseCode.js",
+          "_nuxt/ProseEm.js",
           "_nuxt/ProseEm.js",
           "_nuxt/ProseH1.js",
+          "_nuxt/ProseH1.js",
+          "_nuxt/ProseH2.js",
           "_nuxt/ProseH2.js",
           "_nuxt/ProseH3.js",
+          "_nuxt/ProseH3.js",
+          "_nuxt/ProseH4.js",
           "_nuxt/ProseH4.js",
           "_nuxt/ProseH5.js",
+          "_nuxt/ProseH5.js",
+          "_nuxt/ProseH6.js",
           "_nuxt/ProseH6.js",
           "_nuxt/ProseHr.js",
+          "_nuxt/ProseHr.js",
+          "_nuxt/ProseImg.js",
           "_nuxt/ProseImg.js",
           "_nuxt/ProseLi.js",
+          "_nuxt/ProseLi.js",
+          "_nuxt/ProseOl.js",
           "_nuxt/ProseOl.js",
           "_nuxt/ProseP.js",
+          "_nuxt/ProseP.js",
+          "_nuxt/ProsePre.js",
           "_nuxt/ProsePre.js",
           "_nuxt/ProseScript.js",
+          "_nuxt/ProseScript.js",
+          "_nuxt/ProseStrong.js",
           "_nuxt/ProseStrong.js",
           "_nuxt/ProseTable.js",
+          "_nuxt/ProseTable.js",
+          "_nuxt/ProseTbody.js",
           "_nuxt/ProseTbody.js",
           "_nuxt/ProseTd.js",
+          "_nuxt/ProseTd.js",
+          "_nuxt/ProseTh.js",
           "_nuxt/ProseTh.js",
           "_nuxt/ProseThead.js",
+          "_nuxt/ProseThead.js",
           "_nuxt/ProseTr.js",
+          "_nuxt/ProseTr.js",
+          "_nuxt/ProseUl.js",
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
@@ -79,7 +104,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"902k"`)
+      .toMatchInlineSnapshot(`"932k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
@@ -265,7 +290,7 @@ describe('project sizes', () => {
         "rehype-sort-attributes",
         "remark-emoji",
         "remark-gfm",
-        "remark-mdc-edge",
+        "remark-mdc",
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
