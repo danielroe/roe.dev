@@ -11,6 +11,16 @@ export default defineType({
       title: 'Title',
       type: 'string',
       description: 'Leave empty for upcoming events if title is not yet decided',
+      validation: Rule => Rule.custom((title, context) => {
+        const doc = context.document
+        const hasPastDate = doc?.date && new Date(doc.date as string) < new Date()
+        const hasGroup = doc?.group
+
+        if (hasPastDate && !hasGroup && (!title || title.trim() === '')) {
+          return 'Past talks must have a title (or be part of a group) to display properly.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'group',
@@ -36,8 +46,8 @@ export default defineType({
       title: 'End date (for multi-day events)',
       type: 'date',
       validation: Rule => Rule.custom((endDate, context) => {
-        const startDate = (context.document as any)?.date
-        if (endDate && startDate && new Date(endDate) <= new Date(startDate)) {
+        const startDate = context.document?.date
+        if (endDate && startDate && new Date(endDate) <= new Date(startDate as string)) {
           return 'End date must be after start date'
         }
         return true
@@ -100,6 +110,19 @@ export default defineType({
       title: 'Video Link',
       type: 'url',
       description: 'YouTube, Vimeo, or other video link',
+      validation: Rule => Rule.custom((video, context) => {
+        const doc = context.document
+        const link = doc?.link
+        const slides = doc?.slides
+        const demo = doc?.demo
+        const repo = doc?.repo
+        const hasPastDate = doc?.date && new Date(doc.date as string) < new Date()
+
+        if (hasPastDate && !video && !link && !slides && !demo && !repo) {
+          return 'Past talks must have at least one link (video, event link, slides, demo, or repo) to display properly.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'slides',
@@ -109,18 +132,57 @@ export default defineType({
       components: {
         input: GitHubReleaseInput,
       },
+      validation: Rule => Rule.custom((slides, context) => {
+        const doc = context.document
+        const link = doc?.link
+        const video = doc?.video
+        const demo = doc?.demo
+        const repo = doc?.repo
+        const hasPastDate = doc?.date && new Date(doc.date as string) < new Date()
+
+        if (hasPastDate && !slides && !video && !link && !demo && !repo) {
+          return 'Past talks must have at least one link (video, event link, slides, demo, or repo) to display properly.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'demo',
       title: 'Demo Link',
       type: 'url',
       description: 'Link to live demo',
+      validation: Rule => Rule.custom((demo, context) => {
+        const doc = context.document
+        const link = doc?.link
+        const video = doc?.video
+        const slides = doc?.slides
+        const repo = doc?.repo
+        const hasPastDate = doc?.date && new Date(doc.date as string) < new Date()
+
+        if (hasPastDate && !demo && !video && !link && !slides && !repo) {
+          return 'Past talks must have at least one link (video, event link, slides, demo, or repo) to display properly.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'repo',
       title: 'Repository Link',
       type: 'url',
       description: 'Link to code repository',
+      validation: Rule => Rule.custom((repo, context) => {
+        const doc = context.document
+        const link = doc?.link
+        const video = doc?.video
+        const slides = doc?.slides
+        const demo = doc?.demo
+        const hasPastDate = doc?.date && new Date(doc.date as string) < new Date()
+
+        if (hasPastDate && !repo && !video && !link && !slides && !demo) {
+          return 'Past talks must have at least one link (video, event link, slides, demo, or repo) to display properly.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'image',
