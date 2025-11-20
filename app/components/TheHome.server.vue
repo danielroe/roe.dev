@@ -273,7 +273,10 @@ interface Talk {
               <span class="mr-2 leading-snug">
                 {{ talk.title }}
               </span>
-              <ExpandableTray class="-mb-4 md:mb-0">
+              <ExpandableTray
+                v-if="talk.video || talk.link || talk.slides || talk.demo || talk.repo"
+                class="-mb-4 md:mb-0"
+              >
                 <NuxtLink
                   v-if="talk.video || talk.link"
                   :href="talk.video || talk.link"
