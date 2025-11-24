@@ -126,7 +126,7 @@ importers:
         version: 0.1.1
       nuxt:
         specifier: 4.1.3
-        version: 4.1.3(@parcel/watcher@2.5.1)(@types/node@24.10.1)(@vercel/blob@2.0.0)(@vue/compiler-sfc@3.5.24)(better-sqlite3@12.4.1)(db0@0.3.4(better-sqlite3@12.4.1))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.25.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))(yaml@2.8.1)
+        version: 4.1.3(@parcel/watcher@2.5.1)(@types/node@24.10.1)(@vercel/blob@2.0.0)(@vue/compiler-sfc@3.5.24)(better-sqlite3@12.4.1)(db0@0.3.4(better-sqlite3@12.4.1))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.26.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))(yaml@2.8.1)
       nuxt-og-image:
         specifier: 5.1.11
         version: 5.1.11(@unhead/vue@2.0.19(vue@3.5.24(typescript@5.9.3)))(h3@1.15.4)(magicast@0.5.1)(unstorage@1.17.2(@vercel/blob@2.0.0)(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2))(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue@3.5.24(typescript@5.9.3))
@@ -225,14 +225,14 @@ importers:
         specifier: 2.13.1
         version: 2.13.1
       stylelint:
-        specifier: 16.25.0
-        version: 16.25.0(typescript@5.9.3)
+        specifier: 16.26.0
+        version: 16.26.0(typescript@5.9.3)
       stylelint-config-recommended-vue:
         specifier: 1.6.1
-        version: 1.6.1(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.3))
+        version: 1.6.1(postcss-html@1.8.0)(stylelint@16.26.0(typescript@5.9.3))
       stylelint-config-standard:
         specifier: 39.0.1
-        version: 39.0.1(stylelint@16.25.0(typescript@5.9.3))
+        version: 39.0.1(stylelint@16.26.0(typescript@5.9.3))
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -961,14 +961,11 @@ packages:
   '@barbapapazes/plausible-tracker@0.5.6':
     resolution: {integrity: sha512-GRZxn3ZngYQ1+QbdP8d66D/lQg+T2oEevG8kBGfNwVbt9VZB67sgMx/gkRo/Ww2lH7QelgjUNzvOeG+DsJX2HQ==}
 
-  '@cacheable/memoize@2.0.3':
-    resolution: {integrity: sha512-hl9wfQgpiydhQEIv7fkjEzTGE+tcosCXLKFDO707wYJ/78FVOlowb36djex5GdbSyeHnG62pomYLMuV/OT8Pbw==}
+  '@cacheable/memory@2.0.5':
+    resolution: {integrity: sha512-fkiAxCvssEyJZ5fxX4tcdZFRmW9JehSTGvvqmXn6rTzG5cH6V/3C4ad8yb01vOjp2xBydHkHrgpW0qeGtzt6VQ==}
 
-  '@cacheable/memory@2.0.4':
-    resolution: {integrity: sha512-cCmJKCKlT1t7hNBI1+gFCwmKFd9I4pS3zqBeNGXTSODnpa0EeDmORHY8oEMTuozfdg3cgsVh8ojLaPYb6eC7Cg==}
-
-  '@cacheable/utils@2.2.0':
-    resolution: {integrity: sha512-7xaQayO3msdVcxXLYcLU5wDqJBNdQcPPPHr6mdTEIQI7N7TbtSVVTpWOTfjyhg0L6AQwQdq7miKdWtTDBoBldQ==}
+  '@cacheable/utils@2.3.1':
+    resolution: {integrity: sha512-38NJXjIr4W1Sghun8ju+uYWD8h2c61B4dKwfnQHVDFpAJ9oS28RpfqZQJ6Dgd3RceGkILDY9YT+72HJR3LoeSQ==}
 
   '@capsizecss/metrics@3.6.2':
     resolution: {integrity: sha512-5uL1EIhAlfg0dvWsR1DGfqIsyiPBUsD/qlra15B82Ik28BcH7ScYEHLA4F34fZA0KamlpYcappvt2n1pTuDUfw==}
@@ -4424,8 +4421,8 @@ packages:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
 
-  cacheable@2.1.1:
-    resolution: {integrity: sha512-LmF4AXiSNdiRbI2UjH8pAp9NIXxeQsTotpEaegPiDcnN0YPygDJDV3l/Urc0mL72JWdATEorKqIHEx55nDlONg==}
+  cacheable@2.2.0:
+    resolution: {integrity: sha512-LEJxRqfeomiiRd2t0uON6hxAtgOoWDfY3fugebbz+J3vDLO+SkdfFChQcOHTZhj9SYa9iwE9MGYNX72dKiOE4w==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -5638,8 +5635,8 @@ packages:
     resolution: {integrity: sha512-d+l3qxjSesT4V7v2fh+QnmFnUWv9lSpjarhShNTgBOfA0ttejbQUAlHLitbjkoRiDulW0OPoQPYIGhIC8ohejg==}
     engines: {node: '>=18'}
 
-  file-entry-cache@10.1.4:
-    resolution: {integrity: sha512-5XRUFc0WTtUbjfGzEwXc42tiGxQHBmtbUG1h9L2apu4SulCGN3Hqm//9D6FAolf8MYNL7f/YlJl9vy08pj5JuA==}
+  file-entry-cache@11.1.1:
+    resolution: {integrity: sha512-TPVFSDE7q91Dlk1xpFLvFllf8r0HyOMOlnWy7Z2HBku5H3KhIeOGInexrIeg2D64DosVB/JXkrrk6N/7Wriq4A==}
 
   file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
@@ -5694,8 +5691,8 @@ packages:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
 
-  flat-cache@6.1.18:
-    resolution: {integrity: sha512-JUPnFgHMuAVmLmoH9/zoZ6RHOt5n9NlUw/sDXsTbROJ2SFoS2DS4s+swAV6UTeTbGH/CAsZIE6M8TaG/3jVxgQ==}
+  flat-cache@6.1.19:
+    resolution: {integrity: sha512-l/K33newPTZMTGAnnzaiqSl6NnH7Namh8jBNjrgjprWxGmZUuxx/sJNIRaijOh3n7q7ESbhNZC+pvVZMFdeU4A==}
 
   flat@6.0.1:
     resolution: {integrity: sha512-/3FfIa8mbrg3xE7+wAhWeV+bd7L2Mof+xtZb5dRDKZ+wDvYJK4WDYeIOuOhre5Yv5aQObZrlbRmk3RTSiuQBtw==}
@@ -6072,6 +6069,10 @@ packages:
   has-tostringtag@1.0.2:
     resolution: {integrity: sha512-NqADB8VjPFLM2V0VvHUewwwsw0ZWBaIdgo+ieHtK3hasLz4qeCRjYcqfB6AQrBggRKppKF8L52/VqdVsO47Dlw==}
     engines: {node: '>= 0.4'}
+
+  hashery@1.2.0:
+    resolution: {integrity: sha512-43XJKpwle72Ik5Zpam7MuzRWyNdwwdf6XHlh8wCj2PggvWf+v/Dm5B0dxGZOmddidgeO6Ofu9As/o231Ti/9PA==}
+    engines: {node: '>=20'}
 
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
@@ -9148,8 +9149,8 @@ packages:
     peerDependencies:
       stylelint: ^16.23.0
 
-  stylelint@16.25.0:
-    resolution: {integrity: sha512-Li0avYWV4nfv1zPbdnxLYBGq4z8DVZxbRgx4Kn6V+Uftz1rMoF1qiEI3oL4kgWqyYgCgs7gT5maHNZ82Gk03vQ==}
+  stylelint@16.26.0:
+    resolution: {integrity: sha512-Y/3AVBefrkqqapVYH3LBF5TSDZ1kw+0XpdKN2KchfuhMK6lQ85S4XOG4lIZLcrcS4PWBmvcY6eS2kCQFz0jukQ==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -11274,19 +11275,16 @@ snapshots:
 
   '@barbapapazes/plausible-tracker@0.5.6': {}
 
-  '@cacheable/memoize@2.0.3':
+  '@cacheable/memory@2.0.5':
     dependencies:
-      '@cacheable/utils': 2.2.0
-
-  '@cacheable/memory@2.0.4':
-    dependencies:
-      '@cacheable/utils': 2.2.0
+      '@cacheable/utils': 2.3.1
       '@keyv/bigmap': 1.1.0(keyv@5.5.4)
       hookified: 1.13.0
       keyv: 5.5.4
 
-  '@cacheable/utils@2.2.0':
+  '@cacheable/utils@2.3.1':
     dependencies:
+      hashery: 1.2.0
       keyv: 5.5.4
 
   '@capsizecss/metrics@3.6.2': {}
@@ -12682,7 +12680,7 @@ snapshots:
       - magicast
       - typescript
 
-  '@nuxt/vite-builder@4.1.3(@types/node@24.10.1)(eslint@9.39.1(jiti@2.6.1))(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.25.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vue-tsc@3.1.3(typescript@5.9.3))(vue@3.5.24(typescript@5.9.3))(yaml@2.8.1)':
+  '@nuxt/vite-builder@4.1.3(@types/node@24.10.1)(eslint@9.39.1(jiti@2.6.1))(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.26.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vue-tsc@3.1.3(typescript@5.9.3))(vue@3.5.24(typescript@5.9.3))(yaml@2.8.1)':
     dependencies:
       '@nuxt/kit': 4.1.3(magicast@0.5.1)
       '@rollup/plugin-replace': 6.0.3(rollup@4.53.2)
@@ -12711,7 +12709,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       vite: 7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1)
       vite-node: 3.2.4(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1)
-      vite-plugin-checker: 0.11.0(eslint@9.39.1(jiti@2.6.1))(meow@13.2.0)(optionator@0.9.4)(stylelint@16.25.0(typescript@5.9.3))(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))
+      vite-plugin-checker: 0.11.0(eslint@9.39.1(jiti@2.6.1))(meow@13.2.0)(optionator@0.9.4)(stylelint@16.26.0(typescript@5.9.3))(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))
       vue: 3.5.24(typescript@5.9.3)
       vue-bundle-renderer: 2.2.0
     transitivePeerDependencies:
@@ -15569,11 +15567,10 @@ snapshots:
 
   cac@6.7.14: {}
 
-  cacheable@2.1.1:
+  cacheable@2.2.0:
     dependencies:
-      '@cacheable/memoize': 2.0.3
-      '@cacheable/memory': 2.0.4
-      '@cacheable/utils': 2.2.0
+      '@cacheable/memory': 2.0.5
+      '@cacheable/utils': 2.3.1
       hookified: 1.13.0
       keyv: 5.5.4
       qified: 0.5.2
@@ -16925,9 +16922,9 @@ snapshots:
     dependencies:
       is-unicode-supported: 2.1.0
 
-  file-entry-cache@10.1.4:
+  file-entry-cache@11.1.1:
     dependencies:
-      flat-cache: 6.1.18
+      flat-cache: 6.1.19
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -16988,9 +16985,9 @@ snapshots:
       flatted: 3.3.3
       keyv: 4.5.4
 
-  flat-cache@6.1.18:
+  flat-cache@6.1.19:
     dependencies:
-      cacheable: 2.1.1
+      cacheable: 2.2.0
       flatted: 3.3.3
       hookified: 1.13.0
 
@@ -17446,6 +17443,10 @@ snapshots:
   has-tostringtag@1.0.2:
     dependencies:
       has-symbols: 1.1.0
+
+  hashery@1.2.0:
+    dependencies:
+      hookified: 1.13.0
 
   hasown@2.0.2:
     dependencies:
@@ -19395,7 +19396,7 @@ snapshots:
       - magicast
       - vue
 
-  nuxt@4.1.3(@parcel/watcher@2.5.1)(@types/node@24.10.1)(@vercel/blob@2.0.0)(@vue/compiler-sfc@3.5.24)(better-sqlite3@12.4.1)(db0@0.3.4(better-sqlite3@12.4.1))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.25.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))(yaml@2.8.1):
+  nuxt@4.1.3(@parcel/watcher@2.5.1)(@types/node@24.10.1)(@vercel/blob@2.0.0)(@vue/compiler-sfc@3.5.24)(better-sqlite3@12.4.1)(db0@0.3.4(better-sqlite3@12.4.1))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.26.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3))(yaml@2.8.1):
     dependencies:
       '@nuxt/cli': 3.30.0(magicast@0.5.1)
       '@nuxt/devalue': 2.0.2
@@ -19403,7 +19404,7 @@ snapshots:
       '@nuxt/kit': 4.1.3(magicast@0.5.1)
       '@nuxt/schema': 4.1.3
       '@nuxt/telemetry': 2.6.6(magicast@0.5.1)
-      '@nuxt/vite-builder': 4.1.3(@types/node@24.10.1)(eslint@9.39.1(jiti@2.6.1))(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.25.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vue-tsc@3.1.3(typescript@5.9.3))(vue@3.5.24(typescript@5.9.3))(yaml@2.8.1)
+      '@nuxt/vite-builder': 4.1.3(@types/node@24.10.1)(eslint@9.39.1(jiti@2.6.1))(magicast@0.5.1)(meow@13.2.0)(optionator@0.9.4)(rollup@4.53.2)(stylelint@16.26.0(typescript@5.9.3))(terser@5.44.1)(typescript@5.9.3)(vue-tsc@3.1.3(typescript@5.9.3))(vue@3.5.24(typescript@5.9.3))(yaml@2.8.1)
       '@unhead/vue': 2.0.19(vue@3.5.24(typescript@5.9.3))
       '@vue/shared': 3.5.24
       c12: 3.3.2(magicast@0.5.1)
@@ -21546,29 +21547,29 @@ snapshots:
       postcss: 8.5.6
       postcss-selector-parser: 7.1.0
 
-  stylelint-config-html@1.1.0(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.3)):
+  stylelint-config-html@1.1.0(postcss-html@1.8.0)(stylelint@16.26.0(typescript@5.9.3)):
     dependencies:
       postcss-html: 1.8.0
-      stylelint: 16.25.0(typescript@5.9.3)
+      stylelint: 16.26.0(typescript@5.9.3)
 
-  stylelint-config-recommended-vue@1.6.1(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.3)):
+  stylelint-config-recommended-vue@1.6.1(postcss-html@1.8.0)(stylelint@16.26.0(typescript@5.9.3)):
     dependencies:
       postcss-html: 1.8.0
       semver: 7.7.3
-      stylelint: 16.25.0(typescript@5.9.3)
-      stylelint-config-html: 1.1.0(postcss-html@1.8.0)(stylelint@16.25.0(typescript@5.9.3))
-      stylelint-config-recommended: 17.0.0(stylelint@16.25.0(typescript@5.9.3))
+      stylelint: 16.26.0(typescript@5.9.3)
+      stylelint-config-html: 1.1.0(postcss-html@1.8.0)(stylelint@16.26.0(typescript@5.9.3))
+      stylelint-config-recommended: 17.0.0(stylelint@16.26.0(typescript@5.9.3))
 
-  stylelint-config-recommended@17.0.0(stylelint@16.25.0(typescript@5.9.3)):
+  stylelint-config-recommended@17.0.0(stylelint@16.26.0(typescript@5.9.3)):
     dependencies:
-      stylelint: 16.25.0(typescript@5.9.3)
+      stylelint: 16.26.0(typescript@5.9.3)
 
-  stylelint-config-standard@39.0.1(stylelint@16.25.0(typescript@5.9.3)):
+  stylelint-config-standard@39.0.1(stylelint@16.26.0(typescript@5.9.3)):
     dependencies:
-      stylelint: 16.25.0(typescript@5.9.3)
-      stylelint-config-recommended: 17.0.0(stylelint@16.25.0(typescript@5.9.3))
+      stylelint: 16.26.0(typescript@5.9.3)
+      stylelint-config-recommended: 17.0.0(stylelint@16.26.0(typescript@5.9.3))
 
-  stylelint@16.25.0(typescript@5.9.3):
+  stylelint@16.26.0(typescript@5.9.3):
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
@@ -21583,7 +21584,7 @@ snapshots:
       debug: 4.4.3(supports-color@8.1.1)
       fast-glob: 3.3.3
       fastest-levenshtein: 1.0.16
-      file-entry-cache: 10.1.4
+      file-entry-cache: 11.1.1
       global-modules: 2.0.0
       globby: 11.1.0
       globjoin: 0.1.4
@@ -22387,7 +22388,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-checker@0.11.0(eslint@9.39.1(jiti@2.6.1))(meow@13.2.0)(optionator@0.9.4)(stylelint@16.25.0(typescript@5.9.3))(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3)):
+  vite-plugin-checker@0.11.0(eslint@9.39.1(jiti@2.6.1))(meow@13.2.0)(optionator@0.9.4)(stylelint@16.26.0(typescript@5.9.3))(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.1))(vue-tsc@3.1.3(typescript@5.9.3)):
     dependencies:
       '@babel/code-frame': 7.27.1
       chokidar: 4.0.3
@@ -22402,7 +22403,7 @@ snapshots:
       eslint: 9.39.1(jiti@2.6.1)
       meow: 13.2.0
       optionator: 0.9.4
-      stylelint: 16.25.0(typescript@5.9.3)
+      stylelint: 16.26.0(typescript@5.9.3)
       typescript: 5.9.3
       vue-tsc: 3.1.3(typescript@5.9.3)
 
