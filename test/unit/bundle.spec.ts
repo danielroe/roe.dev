@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"902k"`)
+      .toMatchInlineSnapshot(`"904k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11728k"`)
+      .toMatchInlineSnapshot(`"11105k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -94,6 +94,8 @@ describe('project sizes', () => {
       [
         "@atproto/api",
         "@atproto/common-web",
+        "@atproto/lex-data",
+        "@atproto/lex-json",
         "@atproto/lexicon",
         "@atproto/syntax",
         "@atproto/xrpc",
@@ -160,7 +162,6 @@ describe('project sizes', () => {
         "follow-redirects",
         "get-it",
         "github-slugger",
-        "graphemer",
         "has-flag",
         "hast-util-embedded",
         "hast-util-format",
@@ -265,7 +266,7 @@ describe('project sizes', () => {
         "rehype-sort-attributes",
         "remark-emoji",
         "remark-gfm",
-        "remark-mdc-edge",
+        "remark-mdc",
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
@@ -286,11 +287,13 @@ describe('project sizes', () => {
         "trim-trailing-lines",
         "trough",
         "ts-custom-error",
+        "tslib",
         "tunnel-agent",
         "ufo",
         "uint8arrays",
         "unhead",
         "unicode-emoji-modifier-base",
+        "unicode-segmenter",
         "unified",
         "unist-util-find-after",
         "unist-util-is",
