@@ -1,4 +1,6 @@
-media: public
+media:
+  input: public
+  output: /
 content:
   - name: blog
     label: Blog Posts
@@ -39,9 +41,13 @@ content:
     type: collection
     path: 'content'
     extension: md
+    filename: '{primary}'
     view:
       fields: [title]
     fields:
+      - name: title
+        label: Title
+        type: string
       - name: body
         label: Body
         type: rich-text
