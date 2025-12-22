@@ -28,7 +28,14 @@ test.describe(`pages`, () => {
       const title = page.locator('title')
       expect(await title.textContent()).toContain('Daniel Roe')
 
-      await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.05 })
+      // Mask dynamic content
+      const mask = []
+      if (path === '/') {
+        // Mask recent streams list on home page
+        mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
+      }
+
+      await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.05, mask })
     })
 
     test(`image for ${path}`, async ({ page }) => {

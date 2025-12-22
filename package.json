@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit",
     "test:e2e": "playwright test test/e2e",
-    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.56.1-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
+    "test:e2e:update": "docker run --rm --network host -v $(pwd):/work/ -v /tmp/playwright-nm:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.57.0-noble bash -c 'corepack enable && pnpm i && pnpm playwright test test/e2e --update-snapshots'",
     "postinstall": "nuxt prepare && pnpm simple-git-hooks install",
     "auth:linkedin": "node --env-file=.env scripts/linkedin-auth.ts",
     "auth:youtube": "node --env-file=.env scripts/youtube-auth.ts",
