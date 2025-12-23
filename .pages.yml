@@ -1,0 +1,49 @@
+media:
+  input: public
+  output: /
+content:
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: 'content/blog'
+    view:
+      fields: [title, date, tags]
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          time: true
+          format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+      - name: tags
+        label: Tags
+        type: list
+        field:
+          type: string
+      - name: description
+        label: Description
+        type: text
+        required: true
+      - name: skip_dev
+        label: Skip publishing to dev.to
+        type: boolean
+        default: false
+      - name: body
+        label: Body
+        type: rich-text
+  - name: pages
+    label: Pages
+    type: collection
+    path: 'content'
+    extension: md
+    view:
+      fields: [name]
+    fields:
+      - name: body
+        label: Body
+        type: rich-text

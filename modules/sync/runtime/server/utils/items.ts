@@ -1,5 +1,5 @@
 import fsp from 'node:fs/promises'
-import { globby } from 'globby'
+import { glob as globby } from 'tinyglobby'
 import matter from 'gray-matter'
 import { serializers } from '../../../../shared/serialisers'
 import type { SyncItem } from '../providers'
