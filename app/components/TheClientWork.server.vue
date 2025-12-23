@@ -26,7 +26,7 @@ const clients = {
     <NuxtPicture
       v-for="([image, dimensions], name) in clients"
       :key="name"
-      :alt="name"
+      :img-attrs="{ alt: name }"
       class="light:*:invert-100 light:*:opacity-80"
       :src="`/img/work/${image}`"
       v-bind="dimensions"
