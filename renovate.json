@@ -3,5 +3,13 @@
   "extends": [
     ":pinAllExceptPeerDependencies",
     "github>danielroe/renovate"
+  ],
+  "packageRules": [
+    {
+      "groupName": "unocss",
+      "matchPackageNames": [
+        "/unocss/"
+      ]
+    }
   ]
 }
