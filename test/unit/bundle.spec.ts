@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"507k"`)
+      .toMatchInlineSnapshot(`"308k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -68,8 +68,6 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
-          "_nuxt/sqlite3-opfs-async-proxy-CG6Mx9uA.js",
-          "_nuxt/sqlite3-worker1-bundler-friendly-l8S_23m9.js",
           "_scripts/script.js",
         ]
       `)
@@ -79,12 +77,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"904k"`)
+      .toMatchInlineSnapshot(`"918k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11107k"`)
+      .toMatchInlineSnapshot(`"11089k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -121,6 +119,7 @@ describe('project sizes', () => {
         "@unocss/rule-utils",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
+        "@vue/compiler-core/node_modules/entities/dist/commonjs",
         "@vue/compiler-dom",
         "@vue/compiler-ssr",
         "@vue/reactivity",
@@ -149,7 +148,7 @@ describe('project sizes', () => {
         "emojilib",
         "emoticon",
         "entities",
-        "entities/dist/esm",
+        "entities/dist/commonjs",
         "escape-string-regexp",
         "estree-walker",
         "events-to-async",
