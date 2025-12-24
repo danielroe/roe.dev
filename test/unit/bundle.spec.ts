@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"506k"`)
+      .toMatchInlineSnapshot(`"507k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -79,12 +79,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"903k"`)
+      .toMatchInlineSnapshot(`"908k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"11107k"`)
+      .toMatchInlineSnapshot(`"10960k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -166,7 +166,6 @@ describe('project sizes', () => {
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
-        "hast-util-from-parse5/node_modules/property-information",
         "hast-util-has-property",
         "hast-util-is-body-ok-link",
         "hast-util-is-element",
@@ -175,15 +174,12 @@ describe('project sizes', () => {
         "hast-util-phrasing",
         "hast-util-raw",
         "hast-util-to-html",
-        "hast-util-to-html/node_modules/property-information",
         "hast-util-to-mdast",
         "hast-util-to-parse5",
-        "hast-util-to-parse5/node_modules/property-information",
         "hast-util-to-string",
         "hast-util-to-text",
         "hast-util-whitespace",
         "hastscript",
-        "hastscript/node_modules/property-information",
         "hookable",
         "html-void-elements",
         "html-whitespace-sensitive-tag-names",
