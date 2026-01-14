@@ -25,7 +25,7 @@ We would be diminished if we always skipped directly to success.
 
 I certainly have spent a lot of my life looking to skip directly to success. As, probably, have we all.
 
-It surprised me recently to discover that 'former gifted kids' report a set of similar experiences. Many had effortless success in early life. Validation from teachers, parents and others. Later on,they start to feel demotivated or aimless as life gets more complicated and 'success' feels harder to achieve.
+It surprised me recently to discover that 'former gifted kids' report a set of similar experiences. Many had effortless success in early life. Validation from teachers, parents and others. Later on, they start to feel demotivated or aimless as life gets more complicated and 'success' feels harder to achieve.
 
 We become failure-averse &ndash; reluctant to try new or difficult things for fear that we won't immediately achieve the success we want.
 
