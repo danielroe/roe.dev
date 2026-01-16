@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { AppBskyFeedDefs } from '@atproto/api'
-import type { AppBskyFeedPost } from '@atproto/api'
+import type { AppBskyFeedDefs } from '@atproto/api'
 
 const props = defineProps<{
   uri: string
 }>()
 
 type ThreadViewPost = AppBskyFeedDefs.ThreadViewPost
+
+function isThreadViewPost (v: unknown): v is ThreadViewPost {
+  return (
+    typeof v === 'object'
+    && v !== null
+    && '$type' in v
+    && v.$type === 'app.bsky.feed.defs#threadViewPost'
+  )
+}
 
 interface Comment {
   uri: string
@@ -26,15 +34,15 @@ interface Comment {
 }
 
 function parseThread (thread: ThreadViewPost): Comment | null {
-  if (!AppBskyFeedDefs.isThreadViewPost(thread)) return null
+  if (!isThreadViewPost(thread)) return null
 
   const post = thread.post
-  const record = post.record as AppBskyFeedPost.Record
+  const record = post.record
 
   const replies: Comment[] = []
   if (thread.replies) {
     for (const reply of thread.replies) {
-      if (AppBskyFeedDefs.isThreadViewPost(reply)) {
+      if (isThreadViewPost(reply)) {
         const parsed = parseThread(reply)
         if (parsed) replies.push(parsed)
       }
@@ -52,8 +60,8 @@ function parseThread (thread: ThreadViewPost): Comment | null {
       displayName: post.author.displayName,
       avatar: post.author.avatar,
     },
-    text: record.text,
-    createdAt: record.createdAt,
+    text: record.text as string,
+    createdAt: record.createdAt as string,
     likeCount: post.likeCount ?? 0,
     replyCount: post.replyCount ?? 0,
     repostCount: post.repostCount ?? 0,
