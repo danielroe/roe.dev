@@ -48,7 +48,10 @@
         :path="path"
       />
     </section>
-    <WebMentions />
+    <BlueskyComments
+      v-if="page?.bluesky"
+      :uri="page.bluesky"
+    />
   </main>
 </template>
 
@@ -66,7 +69,7 @@ const { data: page } = await useAsyncData(
   () =>
     ((import.meta.server || import.meta.dev) as true)
     && queryCollection('blog').path(path.value)
-      .select('title', 'date', 'tags', 'description')
+      .select('title', 'date', 'tags', 'description', 'bluesky')
       .first(),
 )
 
