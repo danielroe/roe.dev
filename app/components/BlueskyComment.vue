@@ -45,7 +45,7 @@ const maxDepth = 4
       rel="noopener"
       class="flex-shrink-0"
     >
-      <NuxtImg
+      <img
         v-if="comment.author.avatar"
         :src="comment.author.avatar"
         :alt="comment.author.displayName || comment.author.handle"
@@ -53,7 +53,7 @@ const maxDepth = 4
         width="40"
         height="40"
         loading="lazy"
-      />
+      >
       <div
         v-else
         class="rounded-full h-10 w-10 bg-gray-700 flex items-center justify-center text-sm"
@@ -132,7 +132,7 @@ const maxDepth = 4
         rel="noopener"
         class="flex-shrink-0"
       >
-        <NuxtImg
+        <img
           v-if="comment.author.avatar"
           :src="comment.author.avatar"
           :alt="comment.author.displayName || comment.author.handle"
@@ -140,7 +140,7 @@ const maxDepth = 4
           width="20"
           height="20"
           loading="lazy"
-        />
+        >
         <div
           v-else
           class="rounded-full h-5 w-5 bg-gray-700 flex items-center justify-center text-xs"
