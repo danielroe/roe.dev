@@ -5,7 +5,10 @@ const resolver = createResolver(import.meta.url)
 
 export default defineConfig({
   content: {
-    filesystem: [resolver.resolve('./content/**/*.md')],
+    filesystem: [
+      resolver.resolve('./content/**/*.md'),
+      resolver.resolve('./app/**/*.vue'),
+    ],
     pipeline: {
       exclude: ['**/@nuxt/content/**'],
     },
