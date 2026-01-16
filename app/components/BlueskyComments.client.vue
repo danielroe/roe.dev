@@ -8,13 +8,14 @@ const props = defineProps<{
 type Facet = AppBskyRichtextFacet.Main
 type ThreadViewPost = AppBskyFeedDefs.ThreadViewPost
 
-export interface CommentEmbed {
+interface CommentEmbed {
   type: 'images' | 'external'
   images?: AppBskyEmbedImages.ViewImage[]
   external?: AppBskyEmbedExternal.ViewExternal
 }
 
-export interface Comment {
+interface Comment {
+  uri: string
   cid: string
   author: {
     did: string
