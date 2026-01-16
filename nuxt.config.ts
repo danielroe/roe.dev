@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     polyfills: true,
   },
 
-  devtools: { enabled: !true },
+  devtools: { enabled: true },
 
   app: {
     head: {
