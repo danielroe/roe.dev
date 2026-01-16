@@ -1,11 +1,36 @@
 <script setup lang="ts">
-import type { AppBskyFeedDefs } from '@atproto/api'
+import type { AppBskyFeedDefs, AppBskyRichtextFacet, AppBskyEmbedImages, AppBskyEmbedExternal } from '@atproto/api'
 
 const props = defineProps<{
   uri: string
 }>()
 
+type Facet = AppBskyRichtextFacet.Main
 type ThreadViewPost = AppBskyFeedDefs.ThreadViewPost
+
+export interface CommentEmbed {
+  type: 'images' | 'external'
+  images?: AppBskyEmbedImages.ViewImage[]
+  external?: AppBskyEmbedExternal.ViewExternal
+}
+
+export interface Comment {
+  cid: string
+  author: {
+    did: string
+    handle: string
+    displayName?: string
+    avatar?: string
+  }
+  text: string
+  facets?: Facet[]
+  embed?: CommentEmbed
+  createdAt: string
+  likeCount: number
+  replyCount: number
+  repostCount: number
+  replies: Comment[]
+}
 
 function isThreadViewPost (v: unknown): v is ThreadViewPost {
   return (
@@ -16,28 +41,33 @@ function isThreadViewPost (v: unknown): v is ThreadViewPost {
   )
 }
 
-interface Comment {
-  uri: string
-  cid: string
-  author: {
-    did: string
-    handle: string
-    displayName?: string
-    avatar?: string
+function parseEmbed (embed: unknown): CommentEmbed | undefined {
+  if (!embed || typeof embed !== 'object') return undefined
+
+  const e = embed as Record<string, unknown>
+
+  if (e.$type === 'app.bsky.embed.images#view' && Array.isArray(e.images)) {
+    return {
+      type: 'images',
+      images: e.images as AppBskyEmbedImages.ViewImage[],
+    }
   }
-  text: string
-  createdAt: string
-  likeCount: number
-  replyCount: number
-  repostCount: number
-  replies: Comment[]
+
+  if (e.$type === 'app.bsky.embed.external#view' && e.external) {
+    return {
+      type: 'external',
+      external: e.external as AppBskyEmbedExternal.ViewExternal,
+    }
+  }
+
+  return undefined
 }
 
 function parseThread (thread: ThreadViewPost): Comment | null {
   if (!isThreadViewPost(thread)) return null
 
   const post = thread.post
-  const record = post.record
+  const record = post.record as { text: string, createdAt: string, facets?: Facet[] }
 
   const replies: Comment[] = []
   if (thread.replies) {
@@ -62,6 +92,8 @@ function parseThread (thread: ThreadViewPost): Comment | null {
     },
     text: record.text as string,
     createdAt: record.createdAt as string,
+    facets: record.facets,
+    embed: parseEmbed(post.embed),
     likeCount: post.likeCount ?? 0,
     replyCount: post.replyCount ?? 0,
     repostCount: post.repostCount ?? 0,
