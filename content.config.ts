@@ -15,6 +15,7 @@ export default defineContentConfig({
         tags: z.array(z.string()),
         description: z.string(),
         skip_dev: z.boolean().optional(),
+        bluesky: z.string().optional(),
       }),
     }),
   },
