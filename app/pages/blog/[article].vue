@@ -49,13 +49,15 @@
       />
     </section>
     <BlueskyComments
-      v-if="page?.bluesky"
-      :uri="page.bluesky"
+      v-if="blueskyUri"
+      :uri="blueskyUri"
     />
   </main>
 </template>
 
 <script lang="ts" setup>
+import { needsRuntimeDiscovery, newestPostPath } from '#build/bsky-runtime-discovery.mjs'
+
 const route = useRoute('blog-article')
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
@@ -96,6 +98,17 @@ defineOgImageComponent('DefaultImage', {
 
 if (import.meta.server) {
   useRoute().meta.description = page.value.description
+}
+
+const blueskyUri = shallowRef(page.value.bluesky)
+
+if (import.meta.client && needsRuntimeDiscovery && !blueskyUri.value && newestPostPath === path.value) {
+  onMounted(async () => {
+    const { uri } = await $fetch<{ uri: string | null }>('/api/discover-bluesky-post').catch(() => ({ uri: null }))
+    if (uri) {
+      blueskyUri.value = uri
+    }
+  })
 }
 </script>
 
