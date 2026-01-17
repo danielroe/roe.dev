@@ -3,8 +3,8 @@ import type {
   AppBskyEmbedImages,
   AppBskyEmbedExternal,
 } from '@atproto/api'
-import { parseRichText, atUriToWebUrl } from '#shared/utils/bluesky'
-import type { BlueskyFacet } from '#shared/utils/bluesky'
+import type { Facet, BlueskyFacetFeature } from '#shared/utils/bluesky'
+import { segmentize, atUriToWebUrl } from '#shared/utils/bluesky'
 
 interface CommentEmbed {
   type: 'images' | 'external'
@@ -22,7 +22,7 @@ interface Comment {
     avatar?: string
   }
   text: string
-  facets?: BlueskyFacet[]
+  facets?: Facet<BlueskyFacetFeature>[]
   embed?: CommentEmbed
   createdAt: string
   likeCount: number
@@ -35,13 +35,20 @@ function getCommentUrl (comment: Comment): string {
   return atUriToWebUrl(comment.uri) ?? '#'
 }
 
+function getFeatureUrl (feature: BlueskyFacetFeature): string | undefined {
+  if (feature.$type === 'app.bsky.richtext.facet#link') return feature.uri
+  if (feature.$type === 'app.bsky.richtext.facet#mention') return `https://bsky.app/profile/${feature.did}`
+  if (feature.$type === 'app.bsky.richtext.facet#tag') return `https://bsky.app/hashtag/${feature.tag}`
+  return undefined
+}
+
 const props = defineProps<{
   comment: Comment
   depth: number
 }>()
 
 const commentUrl = computed(() => getCommentUrl(props.comment))
-const richText = computed(() => parseRichText(props.comment.text, props.comment.facets))
+const segments = computed(() => segmentize(props.comment.text, props.comment.facets))
 const maxDepth = 4
 </script>
 
@@ -104,12 +111,12 @@ const maxDepth = 4
 
       <p class="mt-1 whitespace-pre-wrap break-words">
         <template
-          v-for="(segment, i) in richText"
+          v-for="(segment, i) in segments"
           :key="i"
         >
           <a
-            v-if="segment.type === 'link' || segment.type === 'mention' || segment.type === 'tag'"
-            :href="segment.url"
+            v-if="segment.features?.[0] && getFeatureUrl(segment.features[0])"
+            :href="getFeatureUrl(segment.features[0])"
             target="_blank"
             rel="noopener"
             class="text-blue-400 hover:underline"
@@ -249,12 +256,12 @@ const maxDepth = 4
 
     <p class="mt-1 whitespace-pre-wrap break-words">
       <template
-        v-for="(segment, i) in richText"
+        v-for="(segment, i) in segments"
         :key="i"
       >
         <a
-          v-if="segment.type === 'link' || segment.type === 'mention' || segment.type === 'tag'"
-          :href="segment.url"
+          v-if="segment.features?.[0] && getFeatureUrl(segment.features[0])"
+          :href="getFeatureUrl(segment.features[0])"
           target="_blank"
           rel="noopener"
           class="text-blue-400 hover:underline"

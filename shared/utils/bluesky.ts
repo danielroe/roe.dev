@@ -2,14 +2,16 @@ import { withoutTrailingSlash } from 'ufo'
 
 export const BLUESKY_API = 'https://public.api.bsky.app'
 
+export interface BlueskyFacetFeature {
+  $type?: string
+  uri?: string
+  did?: string
+  tag?: string
+}
+
 export interface BlueskyFacet {
   index: { byteStart: number, byteEnd: number }
-  features: Array<{
-    $type?: string
-    uri?: string
-    did?: string
-    tag?: string
-  }>
+  features: BlueskyFacetFeature[]
 }
 
 export interface BlueskyPostRecord {
@@ -41,7 +43,6 @@ export interface BlueskyFeedResponse {
 export function extractLinksFromPost (post: BlueskyFeedPost): string[] {
   const links: string[] = []
 
-  // Extract links from facets
   if (post.record.facets) {
     for (const facet of post.record.facets) {
       for (const feature of facet.features) {
@@ -52,7 +53,6 @@ export function extractLinksFromPost (post: BlueskyFeedPost): string[] {
     }
   }
 
-  // Extract links from embed
   if (post.embed?.external?.uri) {
     links.push(post.embed.external.uri)
   }
@@ -65,71 +65,12 @@ export function postLinksToUrl (post: BlueskyFeedPost, targetUrl: string): boole
   return extractLinksFromPost(post).some(link => withoutTrailingSlash(link) === normalizedTarget)
 }
 
-// Rich text parsing types
-export interface TextSegment {
-  text: string
-  type: 'text' | 'link' | 'mention' | 'tag'
-  url?: string
-}
-
-export function parseRichText (text: string, facets?: BlueskyFacet[]): TextSegment[] {
-  if (!facets || facets.length === 0) {
-    return [{ text, type: 'text' }]
-  }
-
-  const encoder = new TextEncoder()
-  const decoder = new TextDecoder()
-  const bytes = encoder.encode(text)
-
-  const sortedFacets = [...facets].sort((a, b) => a.index.byteStart - b.index.byteStart)
-
-  const segments: TextSegment[] = []
-  let lastEnd = 0
-
-  for (const facet of sortedFacets) {
-    const { byteStart, byteEnd } = facet.index
-
-    // Add plain text before this facet
-    if (byteStart > lastEnd) {
-      segments.push({
-        text: decoder.decode(bytes.slice(lastEnd, byteStart)),
-        type: 'text',
-      })
-    }
-
-    const facetText = decoder.decode(bytes.slice(byteStart, byteEnd))
-    const feature = facet.features[0]
-
-    if (feature?.$type === 'app.bsky.richtext.facet#link' && feature.uri) {
-      segments.push({ text: facetText, type: 'link', url: feature.uri })
-    }
-    else if (feature?.$type === 'app.bsky.richtext.facet#mention' && feature.did) {
-      segments.push({ text: facetText, type: 'mention', url: `https://bsky.app/profile/${feature.did}` })
-    }
-    else if (feature?.$type === 'app.bsky.richtext.facet#tag' && feature.tag) {
-      segments.push({ text: facetText, type: 'tag', url: `https://bsky.app/hashtag/${feature.tag}` })
-    }
-    else {
-      segments.push({ text: facetText, type: 'text' })
-    }
-
-    lastEnd = byteEnd
-  }
-
-  // Add remaining text after last facet
-  if (lastEnd < bytes.length) {
-    segments.push({
-      text: decoder.decode(bytes.slice(lastEnd)),
-      type: 'text',
-    })
-  }
-
-  return segments
-}
-
 export function atUriToWebUrl (atUri: string): string | null {
   const match = atUri.match(/at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)/)
   if (!match) return null
   const [, did, rkey] = match
   return `https://bsky.app/profile/${did}/post/${rkey}`
 }
+
+export type { RichtextSegment, Facet } from '@atcute/bluesky-richtext-segmenter'
+export { segmentize } from '@atcute/bluesky-richtext-segmenter'
