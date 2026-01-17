@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@atcute/bluesky-richtext-segmenter':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@atproto/api':
         specifier: ^0.18.0
         version: 0.18.16
@@ -331,6 +334,9 @@ packages:
 
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
+
+  '@atcute/bluesky-richtext-segmenter@3.0.0':
+    resolution: {integrity: sha512-NhZTUKtFpeBBbILwAcxj5u4RobIoHOmGw3CAaaEFNebKYSvmTecrXJ7XufHw5DFOUdr8SiKXQVRQxGAxulMNWg==}
 
   '@atproto/api@0.18.16':
     resolution: {integrity: sha512-tRGKSWr83pP5CQpSboePU21pE+GqLDYy1XHae4HH4hjaT0pr5V8wNgu70kbKB0B02GVUumeDRpJnlHKD+eMzLg==}
@@ -11132,6 +11138,8 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
+
+  '@atcute/bluesky-richtext-segmenter@3.0.0': {}
 
   '@atproto/api@0.18.16':
     dependencies:

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type {
-  AppBskyRichtextFacet,
   AppBskyEmbedImages,
   AppBskyEmbedExternal,
 } from '@atproto/api'
-
-type Facet = AppBskyRichtextFacet.Main
+import type { Facet, BlueskyFacetFeature } from '#shared/utils/bluesky'
+import { segmentize, atUriToWebUrl } from '#shared/utils/bluesky'
 
 interface CommentEmbed {
   type: 'images' | 'external'
@@ -23,7 +22,7 @@ interface Comment {
     avatar?: string
   }
   text: string
-  facets?: Facet[]
+  facets?: Facet<BlueskyFacetFeature>[]
   embed?: CommentEmbed
   createdAt: string
   likeCount: number
@@ -32,93 +31,15 @@ interface Comment {
   replies: Comment[]
 }
 
-// Rich text segment for rendering
-interface TextSegment {
-  text: string
-  type: 'text' | 'link' | 'mention' | 'tag'
-  url?: string
-}
-
-function parseRichText (text: string, facets?: Facet[]): TextSegment[] {
-  if (!facets || facets.length === 0) {
-    return [{ text, type: 'text' }]
-  }
-
-  // Convert string to bytes for proper indexing (Bluesky uses byte offsets)
-  const encoder = new TextEncoder()
-  const decoder = new TextDecoder()
-  const bytes = encoder.encode(text)
-
-  // Sort facets by start index
-  const sortedFacets = [...facets].sort((a, b) => a.index.byteStart - b.index.byteStart)
-
-  const segments: TextSegment[] = []
-  let lastEnd = 0
-
-  for (const facet of sortedFacets) {
-    const { byteStart, byteEnd } = facet.index
-
-    // Add plain text before this facet
-    if (byteStart > lastEnd) {
-      segments.push({
-        text: decoder.decode(bytes.slice(lastEnd, byteStart)),
-        type: 'text',
-      })
-    }
-
-    const facetText = decoder.decode(bytes.slice(byteStart, byteEnd))
-    const feature = facet.features[0] as
-      | { $type: 'app.bsky.richtext.facet#link', uri: string }
-      | { $type: 'app.bsky.richtext.facet#mention', did: string }
-      | { $type: 'app.bsky.richtext.facet#tag', tag: string }
-      | undefined
-
-    if (feature?.$type === 'app.bsky.richtext.facet#link') {
-      segments.push({
-        text: facetText,
-        type: 'link',
-        url: feature.uri,
-      })
-    }
-    else if (feature?.$type === 'app.bsky.richtext.facet#mention') {
-      segments.push({
-        text: facetText,
-        type: 'mention',
-        url: `https://bsky.app/profile/${feature.did}`,
-      })
-    }
-    else if (feature?.$type === 'app.bsky.richtext.facet#tag') {
-      segments.push({
-        text: facetText,
-        type: 'tag',
-        url: `https://bsky.app/hashtag/${feature.tag}`,
-      })
-    }
-    else {
-      segments.push({ text: facetText, type: 'text' })
-    }
-
-    lastEnd = byteEnd
-  }
-
-  // Add remaining text after last facet
-  if (lastEnd < bytes.length) {
-    segments.push({
-      text: decoder.decode(bytes.slice(lastEnd)),
-      type: 'text',
-    })
-  }
-
-  return segments
-}
-
 function getCommentUrl (comment: Comment): string {
-  const match = comment.uri.match(/at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)/)
-  if (match) {
-    const [, did, rkey] = match
-    return `https://bsky.app/profile/${did}/post/${rkey}`
-  }
-  return '#'
+  return atUriToWebUrl(comment.uri) ?? '#'
+}
+
+function getFeatureUrl (feature: BlueskyFacetFeature): string | undefined {
+  if (feature.$type === 'app.bsky.richtext.facet#link') return feature.uri
+  if (feature.$type === 'app.bsky.richtext.facet#mention') return `https://bsky.app/profile/${feature.did}`
+  if (feature.$type === 'app.bsky.richtext.facet#tag') return `https://bsky.app/hashtag/${feature.tag}`
+  return undefined
 }
 
 const props = defineProps<{
@@ -127,7 +48,7 @@ const props = defineProps<{
 }>()
 
 const commentUrl = computed(() => getCommentUrl(props.comment))
-const richText = computed(() => parseRichText(props.comment.text, props.comment.facets))
+const segments = computed(() => segmentize(props.comment.text, props.comment.facets))
 const maxDepth = 4
 </script>
 
@@ -190,12 +111,12 @@ const maxDepth = 4
 
       <p class="mt-1 whitespace-pre-wrap break-words">
         <template
-          v-for="(segment, i) in richText"
+          v-for="(segment, i) in segments"
           :key="i"
         >
           <a
-            v-if="segment.type === 'link' || segment.type === 'mention' || segment.type === 'tag'"
-            :href="segment.url"
+            v-if="segment.features?.[0] && getFeatureUrl(segment.features[0])"
+            :href="getFeatureUrl(segment.features[0])"
             target="_blank"
             rel="noopener"
             class="text-blue-400 hover:underline"
@@ -335,12 +256,12 @@ const maxDepth = 4
 
     <p class="mt-1 whitespace-pre-wrap break-words">
       <template
-        v-for="(segment, i) in richText"
+        v-for="(segment, i) in segments"
         :key="i"
       >
         <a
-          v-if="segment.type === 'link' || segment.type === 'mention' || segment.type === 'tag'"
-          :href="segment.url"
+          v-if="segment.features?.[0] && getFeatureUrl(segment.features[0])"
+          :href="getFeatureUrl(segment.features[0])"
           target="_blank"
           rel="noopener"
           class="text-blue-400 hover:underline"
