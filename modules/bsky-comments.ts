@@ -154,10 +154,12 @@ export const newestPostPath = ${newestPost ? JSON.stringify(newestPost.path) : '
       write: true,
     })
 
-    // Add server template with the blog URL
+    // Add server template with the blog URL and date
     addServerTemplate({
       filename: 'bsky-runtime-discovery-server.mjs',
-      getContents: () => `export const newestPostUrl = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.url) : 'null'}`,
+      getContents: () => `
+export const newestPostUrl = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.url) : 'null'}
+export const newestPostDate = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.date.toISOString()) : 'null'}`,
     })
 
     // Conditionally add the server endpoint only when needed

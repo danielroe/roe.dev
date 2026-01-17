@@ -48,7 +48,7 @@
         :path="path"
       />
     </section>
-    <BlueskyComments
+    <LazyBlueskyComments
       v-if="blueskyUri"
       :uri="blueskyUri"
     />
