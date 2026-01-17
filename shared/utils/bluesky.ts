@@ -38,9 +38,6 @@ export interface BlueskyFeedResponse {
   cursor?: string
 }
 
-/**
- * Extract all links from a BlueSky post (from facets and embeds)
- */
 export function extractLinksFromPost (post: BlueskyFeedPost): string[] {
   const links: string[] = []
 
@@ -63,9 +60,6 @@ export function extractLinksFromPost (post: BlueskyFeedPost): string[] {
   return links
 }
 
-/**
- * Check if a post links to a specific URL
- */
 export function postLinksToUrl (post: BlueskyFeedPost, targetUrl: string): boolean {
   const normalizedTarget = withoutTrailingSlash(targetUrl)
   return extractLinksFromPost(post).some(link => withoutTrailingSlash(link) === normalizedTarget)
@@ -78,10 +72,6 @@ export interface TextSegment {
   url?: string
 }
 
-/**
- * Parse BlueSky rich text with facets into segments
- * Uses byte offsets as BlueSky indexes by bytes, not characters
- */
 export function parseRichText (text: string, facets?: BlueskyFacet[]): TextSegment[] {
   if (!facets || facets.length === 0) {
     return [{ text, type: 'text' }]
@@ -137,9 +127,6 @@ export function parseRichText (text: string, facets?: BlueskyFacet[]): TextSegme
   return segments
 }
 
-/**
- * Convert an AT URI to a bsky.app URL
- */
 export function atUriToWebUrl (atUri: string): string | null {
   const match = atUri.match(/at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)/)
   if (!match) return null
