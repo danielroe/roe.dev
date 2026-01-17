@@ -33,7 +33,7 @@
     "@iconify-json/ri": "^1.2.6",
     "@iconify-json/svg-spinners": "^1.2.4",
     "@iconify-json/tabler": "^1.2.23",
-    "@nuxt/content": "3.10.0",
+    "@nuxt/content": "3.11.0",
     "@nuxt/eslint": "1.12.1",
     "@nuxt/fonts": "0.12.1",
     "@nuxt/image": "2.0.0",
@@ -66,7 +66,7 @@
     "mocked-exports": "^0.1.1",
     "nuxt": "4.2.2",
     "nuxt-og-image": "5.1.13",
-    "nuxt-security": "2.5.0",
+    "nuxt-security": "2.5.1",
     "partykit": "0.0.115",
     "partysocket": "^1.1.6",
     "pathe": "^2.0.3",
@@ -85,14 +85,14 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.3.0",
-    "@commitlint/config-conventional": "20.3.0",
+    "@commitlint/cli": "20.3.1",
+    "@commitlint/config-conventional": "20.3.1",
     "@nuxt/test-utils": "3.23.0",
     "@playwright/test": "1.57.0",
     "@sanity/eslint-config-studio": "6.0.0",
     "@vue/test-utils": "2.4.6",
     "eslint": "9.39.2",
-    "googleapis": "170.0.0",
+    "googleapis": "170.1.0",
     "happy-dom": "20.1.0",
     "lint-staged": "16.2.7",
     "ofetch": "1.5.1",
@@ -106,9 +106,12 @@
     "vitest": "4.0.17",
     "vue-tsc": "3.2.2"
   },
+  "resolutions": {
+    "@unhead/vue": "2.1.1"
+  },
   "simple-git-hooks": {
     "commit-msg": "npx commitlint --edit $1",
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@10.27.0"
+  "packageManager": "pnpm@10.28.0"
 }
