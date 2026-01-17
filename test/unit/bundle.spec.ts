@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"929k"`)
+      .toMatchInlineSnapshot(`"930k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"10985k"`)
+      .toMatchInlineSnapshot(`"10989k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -91,6 +91,7 @@ describe('project sizes', () => {
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
+        "@atcute/bluesky-richtext-segmenter",
         "@atproto/api",
         "@atproto/common-web",
         "@atproto/lex-data",
