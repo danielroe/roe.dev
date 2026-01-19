@@ -38,8 +38,4 @@ My answer is pretty simple: Don't feel bad. Build your product - and flourish!
 
 <hr class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700">
 
-<small>
-
-∗ I'm speaking about *my* feelings, but if anyone should be 'paid back' for Nuxt it would probably be Sebastien & Alex Chopin, who created it in the first place.
-
-</small>
+<small>∗ I'm speaking about <em>my</em> feelings, but if anyone should be 'paid back' for Nuxt it would probably be Sebastien & Alex Chopin, who created it in the first place.</small>
