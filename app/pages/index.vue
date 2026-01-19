@@ -34,6 +34,7 @@ onNuxtReady(() =>
       </h1>
     </header>
     <main
+      id="main-content"
       class="text-muted"
       @click="handleNavigationClicks"
     >

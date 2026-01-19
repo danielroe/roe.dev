@@ -5,7 +5,10 @@
         Thank you!
       </h1>
     </header>
-    <main class="text-muted text-lg">
+    <main
+      id="main-content"
+      class="text-muted text-lg"
+    >
       <p>Your response has been recorded. 😊</p>
       <p>
         <NuxtLink

@@ -5,7 +5,10 @@
         latest talks
       </h1>
     </header>
-    <main class="text-muted text-lg">
+    <main
+      id="main-content"
+      class="text-muted text-lg"
+    >
       <TheTalks />
     </main>
   </div>

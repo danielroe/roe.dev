@@ -1,6 +1,9 @@
 <template>
   <div class="flex-grow px-4 py-2 md:px-12 md:py-4 w-full">
-    <main class="text-muted text-lg">
+    <main
+      id="main-content"
+      class="text-muted text-lg"
+    >
       <form
         class="flex flex-col items-start py-8 gap-2"
         @submit.prevent="submitFeedback"

@@ -6,6 +6,7 @@
       </h1>
     </header>
     <main
+      id="main-content"
       class="text-muted text-lg"
       @click="handleNavigationClicks"
     >

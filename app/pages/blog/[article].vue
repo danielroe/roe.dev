@@ -1,5 +1,8 @@
 <template>
-  <main class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]">
+  <main
+    id="main-content"
+    class="text-muted flex-grow px-4 py-2 md:px-12 md:py-4 w-full max-w-[37.50rem]"
+  >
     <header
       v-if="page"
       class="leading-none mt-[5vw] mb-[1vw]"

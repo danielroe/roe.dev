@@ -5,6 +5,7 @@ const redirect = import.meta.dev
   : ''
 const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.public.githubClientId}${redirect}&scope=read:org`
 
+const mobileMenuRef = ref<HTMLElement | null>(null)
 const showMenu = ref(false)
 
 const { data: currentLocation } = await useFetch('/api/current-location', {
@@ -34,25 +35,13 @@ const menu = [
 ]
 
 useRouter().afterEach(() => {
-  toggleMenu(false)
+  mobileMenuRef.value?.hidePopover()
 })
 
-watch(showMenu, value => {
-  document.body.classList.toggle('overflow-hidden', value)
-})
-
-function toggleMenu (input?: Event | boolean) {
-  const newValue = typeof input === 'boolean' ? input : !showMenu.value
-  if (import.meta.server || input === showMenu.value) return
-  if (document.startViewTransition) {
-    document.startViewTransition(async () => {
-      showMenu.value = newValue
-      await nextTick()
-    })
-  }
-  else {
-    showMenu.value = newValue
-  }
+function onPopoverToggle (event: ToggleEvent) {
+  const isOpen = event.newState === 'open'
+  showMenu.value = isOpen
+  document.body.classList.toggle('overflow-hidden', isOpen)
 }
 </script>
 
@@ -152,7 +141,7 @@ function toggleMenu (input?: Event | boolean) {
         <button
           type="button"
           class="ml-4 rounded f-ring"
-          @click="toggleMenu"
+          popovertarget="mobile-menu"
         >
           <span
             class="menu-icon h-8 w-8 md:h-6 md:w-6 i-ri:add-line"
@@ -161,25 +150,27 @@ function toggleMenu (input?: Event | boolean) {
           />
           <span class="sr-only"> Open mobile navigation menu </span>
         </button>
-        <Teleport
-          v-if="showMenu"
-          to="body"
+        <div
+          id="mobile-menu"
+          ref="mobileMenuRef"
+          popover
+          class="m-0 inset-0 h-full w-full max-h-full max-w-full border-none bg-accent text-muted flex flex-col justify-center items-center"
+          @toggle="onPopoverToggle"
         >
-          <nav
-            class="inset-0 fixed bg-accent text-muted z-10 flex flex-col justify-center items-center"
+          <button
+            type="button"
+            class="top-0 right-0 fixed p-8 rounded f-ring-accent"
+            popovertarget="mobile-menu"
+            popovertargetaction="hide"
           >
-            <button
-              type="button"
-              class="top-0 right-0 fixed p-8 rounded f-ring-accent"
-              @click="toggleMenu"
-            >
-              <span
-                class="menu-icon h-8 w-8 i-ri:close-fill"
-                :style="{ viewTransitionName: 'menu' }"
-                aria-hidden="true"
-              />
-              <span class="sr-only"> Close mobile navigation menu </span>
-            </button>
+            <span
+              class="menu-icon h-8 w-8 i-ri:close-fill"
+              :style="{ viewTransitionName: showMenu ? 'menu' : undefined }"
+              aria-hidden="true"
+            />
+            <span class="sr-only"> Close mobile navigation menu </span>
+          </button>
+          <nav aria-label="Mobile navigation">
             <ul
               class="uppercase tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
             >
@@ -201,7 +192,7 @@ function toggleMenu (input?: Event | boolean) {
               <li><ToggleColorMode class="flex" /></li>
             </ul>
           </nav>
-        </Teleport>
+        </div>
       </div>
       <ToggleColorMode class="hidden md:flex" />
     </div>

@@ -6,7 +6,10 @@
       </h1>
     </header>
 
-    <main class="text-muted text-lg max-w-[37.50rem]">
+    <main
+      id="main-content"
+      class="text-muted text-lg max-w-[37.50rem]"
+    >
       <TheGithubRepos />
       <form
         v-if="$auth.user.sponsor"
