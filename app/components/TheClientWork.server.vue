@@ -20,16 +20,24 @@ const clients = {
 </script>
 
 <template>
-  <section
-    class="flex flex-row flex-wrap justify-center items-center my-12 gap-8 *:h-full *:w-auto *:flex-grow-0 *:flex-shrink *:max-h-8 *:max-w-[5rem]"
-  >
-    <NuxtPicture
-      v-for="([image, dimensions], name) in clients"
-      :key="name"
-      :img-attrs="{ alt: name }"
-      class="light:*:invert-100 light:*:opacity-80"
-      :src="`/img/work/${image}`"
-      v-bind="dimensions"
-    />
+  <section aria-labelledby="client-work-heading">
+    <h2
+      id="client-work-heading"
+      class="sr-only"
+    >
+      Previous clients
+    </h2>
+    <div
+      class="flex flex-row flex-wrap justify-center items-center my-12 gap-8 *:h-full *:w-auto *:flex-grow-0 *:flex-shrink *:max-h-8 *:max-w-[5rem]"
+    >
+      <NuxtPicture
+        v-for="([image, dimensions], name) in clients"
+        :key="name"
+        :img-attrs="{ alt: name, loading: 'lazy' }"
+        class="light:*:invert-100 light:*:opacity-80"
+        :src="`/img/work/${image}`"
+        v-bind="dimensions"
+      />
+    </div>
   </section>
 </template>

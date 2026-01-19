@@ -75,7 +75,7 @@ defineProps({
         loop
         playsinline
         controls
-        :alt="media[0].alt || undefined"
+        :aria-label="media[0].alt || 'Video'"
         :width="media[0].width"
         :height="media[0].height"
       >

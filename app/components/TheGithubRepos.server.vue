@@ -10,14 +10,16 @@
       <article>
         <span
           class="absolute flex top-0 right-0 pr-1 text-primary before:content-empty before:relative before:block before:w-full before:-mt-4 before:mb-2 before:bg-background before:rotate-30 before:scale-x-1000"
+          aria-hidden="true"
         >
           <span
             class="z-10 h-8 w-8 i-ri:github-fill"
-            alt=""
           />
         </span>
         <header>
-          {{ repo }}
+          <h3 class="font-normal">
+            {{ repo }}
+          </h3>
           <dl
             class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
           >

@@ -66,17 +66,16 @@ const year = new Date().getFullYear()
         >
           <a
             :href="link"
-            rel="me"
-            class="rounded-full f-ring p-1 inline-flex items-center"
+            rel="me noopener noreferrer"
+            target="_blank"
+            class="rounded-full f-ring p-1 inline-flex items-center touch-action-manipulation"
+            :aria-label="`${name} (opens in new tab)`"
           >
             <span
               class="h-4 w-4 fill-current"
               :class="icon"
               aria-hidden="true"
             />
-            <span class="sr-only">
-              {{ name }}
-            </span>
           </a>
         </li>
       </ul>

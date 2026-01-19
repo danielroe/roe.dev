@@ -146,7 +146,6 @@ function onPopoverToggle (event: ToggleEvent) {
         >
           <span
             class="menu-icon h-8 w-8 md:h-6 md:w-6 i-ri:add-line"
-            :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
             aria-hidden="true"
           />
           <span class="sr-only"> Open mobile navigation menu </span>
@@ -155,44 +154,45 @@ function onPopoverToggle (event: ToggleEvent) {
           id="mobile-menu"
           ref="mobileMenuRef"
           popover
-          class="m-0 inset-0 h-full w-full max-h-full max-w-full border-none bg-accent text-muted flex flex-col justify-center items-center"
+          class="m-0 inset-0 h-full w-full max-h-full max-w-full border-none bg-accent text-muted"
           @toggle="onPopoverToggle"
         >
-          <button
-            type="button"
-            class="top-0 right-0 fixed p-8 rounded f-ring-accent"
-            popovertarget="mobile-menu"
-            popovertargetaction="hide"
-          >
-            <span
-              class="menu-icon h-8 w-8 i-ri:close-fill"
-              :style="{ viewTransitionName: showMenu ? 'menu' : undefined }"
-              aria-hidden="true"
-            />
-            <span class="sr-only"> Close mobile navigation menu </span>
-          </button>
-          <nav aria-label="Mobile navigation">
-            <ul
-              class="uppercase tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
+          <div class="h-full flex flex-col justify-center items-center">
+            <button
+              type="button"
+              class="top-0 right-0 fixed p-8 rounded f-ring-accent"
+              popovertarget="mobile-menu"
+              popovertargetaction="hide"
             >
-              <li
-                v-for="link in menu"
-                :key="link.name"
+              <span
+                class="menu-icon h-8 w-8 i-ri:close-fill"
+                aria-hidden="true"
+              />
+              <span class="sr-only"> Close mobile navigation menu </span>
+            </button>
+            <nav aria-label="Mobile navigation">
+              <ul
+                class="uppercase tracking-[0.15rem] max-w-xl text-2xl flex flex-col items-center gap-6"
               >
-                <NuxtLink
-                  class="underlined-link px-2 py-2"
-                  :class="{
-                    'not-[:hover,:focus,:active]:after:border-transparent':
-                      $route.path !== link.path,
-                  }"
-                  :to="link.path"
+                <li
+                  v-for="link in menu"
+                  :key="link.name"
                 >
-                  {{ link.name }}
-                </NuxtLink>
-              </li>
-              <li><ToggleColorMode class="flex" /></li>
-            </ul>
-          </nav>
+                  <NuxtLink
+                    class="underlined-link px-2 py-2"
+                    :class="{
+                      'not-[:hover,:focus,:active]:after:border-transparent':
+                        $route.path !== link.path,
+                    }"
+                    :to="link.path"
+                  >
+                    {{ link.name }}
+                  </NuxtLink>
+                </li>
+                <li><ToggleColorMode class="flex" /></li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
       <ToggleColorMode class="hidden md:flex" />
@@ -201,32 +201,38 @@ function onPopoverToggle (event: ToggleEvent) {
 </template>
 
 <style>
-@keyframes rotate-out {
-  from {
+@media (prefers-reduced-motion: no-preference) {
+  #mobile-menu {
+    transition:
+      opacity 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+    opacity: 0;
+  }
+
+  #mobile-menu:popover-open {
+    opacity: 1;
+  }
+
+  @starting-style {
+    #mobile-menu:popover-open {
+      opacity: 0;
+    }
+  }
+
+  #mobile-menu .menu-icon {
+    transition: transform 0.2s ease;
+    transform: rotate(-45deg);
+  }
+
+  #mobile-menu:popover-open .menu-icon {
     transform: rotate(0deg);
   }
 
-  to {
-    transform: rotate(-22.5deg);
+  @starting-style {
+    #mobile-menu:popover-open .menu-icon {
+      transform: rotate(-45deg);
+    }
   }
-}
-
-@keyframes rotate-in {
-  from {
-    transform: rotate(-22.5deg);
-  }
-
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-::view-transition-old(menu) {
-  opacity: 0;
-  animation: rotate-out 0.2s;
-}
-
-::view-transition-new(menu) {
-  animation: rotate-in 0.2s;
 }
 </style>

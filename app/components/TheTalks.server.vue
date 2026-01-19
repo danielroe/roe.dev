@@ -79,9 +79,9 @@ const { data: groups } = await useAsyncData(
       :key="groupKey"
       class="mb-2 w-full relative flex flex-col justify-end min-h-12 transition-all border-1 border-solid border-transparent after:text-transparent flex-[100%]"
     >
-      <div class="flex flex-row items-center gap-2 text-xl">
+      <h2 class="flex flex-row items-center gap-2 text-xl font-normal">
         {{ talks[0].title }}
-      </div>
+      </h2>
       <div
         v-if="talks[0].description"
         class="text-base mb-1"
@@ -92,7 +92,7 @@ const { data: groups } = await useAsyncData(
         v-for="talk of talks"
         :key="talk.link"
         :class="{ 'opacity-60': !talk.video && !talk.link && !talk.slides && !talk.demo && !talk.repo }"
-        :alt="talk.title"
+        :aria-label="talk.title"
       >
         <header class="flex flex-row mt-1">
           <dl
@@ -129,8 +129,9 @@ const { data: groups } = await useAsyncData(
           >
             <NuxtLink
               v-if="talk.video || (talk.type === 'podcast' && talk.link)"
-              :href="talk.video || (talk.type === 'podcast' && talk.link)"
-              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
+              :href="talk.video || (talk.type === 'podcast' ? talk.link : '')"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors touch-action-manipulation"
+              :aria-label="`${talk.video ? 'Watch' : 'Listen to'} ${talks[0]?.title}`"
             >
               <span
                 v-if="talk.type === 'podcast' || talk.video"
@@ -142,8 +143,9 @@ const { data: groups } = await useAsyncData(
             </NuxtLink>
             <NuxtLink
               v-if="talk.slides"
-              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors touch-action-manipulation"
               :to="`/slides/${talk.slides}.pdf`"
+              :aria-label="`Slides for ${talks[0]?.title}`"
               data-external
             >
               <span
@@ -153,8 +155,9 @@ const { data: groups } = await useAsyncData(
             </NuxtLink>
             <NuxtLink
               v-if="talk.demo"
-              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors touch-action-manipulation"
               :to="talk.demo"
+              :aria-label="`Demo for ${talks[0]?.title}`"
               data-external
             >
               <span
@@ -164,8 +167,9 @@ const { data: groups } = await useAsyncData(
             </NuxtLink>
             <NuxtLink
               v-if="talk.repo"
-              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors touch-action-manipulation"
               :to="talk.repo"
+              :aria-label="`Repository for ${talks[0]?.title}`"
               data-external
             >
               <span

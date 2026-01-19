@@ -17,25 +17,34 @@
         @submit.prevent="handleSubmission"
       >
         <label
+          for="idea-input"
           class="flex md:flex-row flex-col gap-4 flex-grow md:items-center"
         >
           What should I build next?
           <input
+            id="idea-input"
+            v-model="ideaText"
             name="idea"
-            autofocus
-            :disabled="ideaStatus === 'submitting'"
             type="text"
+            autocomplete="off"
+            :disabled="ideaStatus === 'submitting'"
             class="bg-gray-300 dark:bg-gray-600 text-primary text-sm px-2 py-1 flex-grow disabled:opacity-60 disabled:pointer-events-none rounded f-ring-inset"
           >
         </label>
         <button
           type="submit"
-          class="px-2 py-1 tracking-[0.15rem] text-sm uppercase rounded f-ring-accent"
+          :disabled="ideaStatus === 'submitting' || !ideaText.trim()"
+          class="px-2 py-1 tracking-[0.15rem] text-sm uppercase rounded f-ring-accent disabled:opacity-50"
           :class="{
             'bg-green-200 dark:bg-green-900': ideaStatus === 'submitted',
             'bg-red-200 dark:bg-red-900': ideaStatus === 'error',
           }"
         >
+          <span
+            v-if="ideaStatus === 'submitting'"
+            class="i-svg-spinners:90-ring-with-bg h-4 w-4 mr-1"
+            aria-hidden="true"
+          />
           {{
             ideaStatus === 'submitted'
               ? 'Done'
@@ -44,6 +53,13 @@
                 : 'Submit'
           }}
         </button>
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          class="sr-only"
+        >
+          {{ statusMessage }}
+        </div>
       </form>
       <TheClientWork />
     </main>
@@ -53,16 +69,27 @@
 <script lang="ts" setup>
 definePageMeta({ title: 'Work' })
 
+const ideaText = ref('')
 const ideaStatus = ref<'ready' | 'submitting' | 'submitted' | 'error'>('ready')
-async function handleSubmission (e: Event) {
-  const data = new FormData(e.target as HTMLFormElement)
+
+const statusMessage = computed(() => {
+  if (ideaStatus.value === 'submitting') return 'Submitting idea...'
+  if (ideaStatus.value === 'submitted') return 'Idea submitted successfully!'
+  if (ideaStatus.value === 'error') return 'Error submitting idea. Please try again.'
+  return ''
+})
+
+async function handleSubmission () {
+  if (!ideaText.value.trim()) return
+
   ideaStatus.value = 'submitting'
   try {
     await $fetch('/api/idea', {
       method: 'POST',
-      body: Object.fromEntries([...data.entries()]),
+      body: { idea: ideaText.value },
     })
     ideaStatus.value = 'submitted'
+    ideaText.value = ''
   }
   catch {
     ideaStatus.value = 'error'

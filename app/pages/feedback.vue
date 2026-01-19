@@ -16,15 +16,41 @@
         </label>
         <textarea
           id="feedback"
+          v-model="feedback"
           name="feedback"
-          class="rounded w-full max-w-400px text-black px-3 py-1 f-ring-inset"
+          rows="3"
+          autocomplete="off"
+          class="rounded w-full max-w-400px bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-3 py-2 text-base f-ring-inset"
+          :disabled="status === 'pending'"
         />
-        <button
-          type="submit"
-          class="underlined-link outline-none focus-visible:after:opacity-35"
+        <div class="flex items-center gap-3">
+          <button
+            type="submit"
+            class="underlined-link outline-none focus-visible:after:opacity-35 py-2 disabled:opacity-50"
+            :disabled="status === 'pending' || !feedback.trim()"
+          >
+            <span
+              v-if="status === 'pending'"
+              class="i-svg-spinners:90-ring-with-bg h-4 w-4 mr-2"
+              aria-hidden="true"
+            />
+            Submit
+          </button>
+        </div>
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          class="sr-only"
         >
-          Submit
-        </button>
+          {{ statusMessage }}
+        </div>
+        <p
+          v-if="status === 'error'"
+          role="alert"
+          class="text-red-600 dark:text-red-400 text-sm"
+        >
+          Something went wrong. Please try again.
+        </p>
       </form>
     </main>
   </div>
@@ -33,12 +59,28 @@
 <script lang="ts" setup>
 definePageMeta({ title: 'Feedback' })
 
-async function submitFeedback (event: Event) {
-  const formData = new FormData(event.target as HTMLFormElement)
-  await $fetch('/api/feedback', {
-    method: 'POST',
-    body: { feedback: formData.get('feedback') },
-  })
-  await navigateTo('/voted')
+const feedback = ref('')
+const status = ref<'idle' | 'pending' | 'error'>('idle')
+
+const statusMessage = computed(() => {
+  if (status.value === 'pending') return 'Submitting feedback...'
+  if (status.value === 'error') return 'Error submitting feedback. Please try again.'
+  return ''
+})
+
+async function submitFeedback () {
+  if (!feedback.value.trim()) return
+
+  status.value = 'pending'
+  try {
+    await $fetch('/api/feedback', {
+      method: 'POST',
+      body: { feedback: feedback.value },
+    })
+    await navigateTo('/voted')
+  }
+  catch {
+    status.value = 'error'
+  }
 }
 </script>

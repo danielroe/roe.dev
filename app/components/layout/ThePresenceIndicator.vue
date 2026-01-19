@@ -8,7 +8,7 @@
       :class="colorSet[status].badge"
     >
       <span
-        class="rounded-full inline-block h-2 w-2 animate-pulse shadow"
+        class="rounded-full inline-block h-2 w-2 motion-safe:animate-pulse shadow"
         :class="colorSet[status].block"
       />
       <span
@@ -53,9 +53,11 @@ const LiveWrapper = defineComponent({
       h(
         'a',
         {
-          href: 'https://twitch.tv/danielroe',
-          target: '_blank',
-          title: 'Live now on Twitch',
+          'href': 'https://twitch.tv/danielroe',
+          'target': '_blank',
+          'rel': 'noopener noreferrer',
+          'aria-label': 'Live now on Twitch (opens in new tab)',
+          'class': 'rounded-full f-ring',
         },
         slots,
       )

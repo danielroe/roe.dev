@@ -12,8 +12,8 @@ defineProps({
     :href="`https://cal.com/danielroe/${meeting}`"
   >
     <span
-      class="i-ri:calendar-check-fill h-4 w-4"
-      alt=""
+      class="i-ri:calendar-check-fill h-4 w-4 mr-1"
+      aria-hidden="true"
     />
     {{ message }}
   </a>

@@ -23,12 +23,15 @@ const icon = props.social === 'twitter' ? 'i-ri:twitter-fill' : ''
         <span
           class="h-4 w-4"
           :class="icon"
-          alt=""
+          aria-hidden="true"
         />
       </div>
       <component
         :is="link ? 'a' : 'div'"
         :href="link"
+        :target="link ? '_blank' : undefined"
+        :rel="link ? 'noopener noreferrer' : undefined"
+        :class="link ? 'rounded f-ring' : undefined"
       >
         <NuxtTime
           v-if="datetime"

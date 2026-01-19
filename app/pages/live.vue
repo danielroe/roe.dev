@@ -187,25 +187,33 @@ function preventZoom () {
 }
 
 .emoji-reaction {
-  animation: float-up 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   line-height: 1;
   text-shadow: 0 0 5px rgb(0 0 0 / 20%);
-  will-change: transform, opacity;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease-in-out;
+@media (prefers-reduced-motion: no-preference) {
+  .emoji-reaction {
+    animation: float-up 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+  .emoji-reaction {
+    display: none;
+  }
 }
 
-/* Focus styles are now handled via Tailwind classes */
-
-/* Remove spinner buttons from number inputs */
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
   appearance: none;

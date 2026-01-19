@@ -60,13 +60,14 @@ const maxDepth = 4
     <a
       :href="`https://bsky.app/profile/${comment.author.handle}`"
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       class="flex-shrink-0 rounded-full f-ring"
+      :aria-label="`View ${comment.author.displayName || comment.author.handle}'s profile on Bluesky`"
     >
       <img
         v-if="comment.author.avatar"
         :src="comment.author.avatar"
-        :alt="comment.author.displayName || comment.author.handle"
+        alt=""
         class="rounded-full h-10 w-10"
         width="40"
         height="40"
@@ -75,6 +76,7 @@ const maxDepth = 4
       <div
         v-else
         class="rounded-full h-10 w-10 bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-sm"
+        aria-hidden="true"
       >
         {{ (comment.author.displayName || comment.author.handle).charAt(0).toUpperCase() }}
       </div>
@@ -208,21 +210,23 @@ const maxDepth = 4
       <a
         :href="`https://bsky.app/profile/${comment.author.handle}`"
         target="_blank"
-        rel="noopener"
-        class="flex-shrink-0 rounded-full f-ring"
+        rel="noopener noreferrer"
+        class="flex-shrink-0 rounded-full f-ring p-1"
+        :aria-label="`View ${comment.author.displayName || comment.author.handle}'s profile on Bluesky`"
       >
         <img
           v-if="comment.author.avatar"
           :src="comment.author.avatar"
-          :alt="comment.author.displayName || comment.author.handle"
-          class="rounded-full h-5 w-5"
-          width="20"
-          height="20"
+          alt=""
+          class="rounded-full h-6 w-6"
+          width="24"
+          height="24"
           loading="lazy"
         >
         <div
           v-else
-          class="rounded-full h-5 w-5 bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-xs"
+          class="rounded-full h-6 w-6 bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-xs"
+          aria-hidden="true"
         >
           {{ (comment.author.displayName || comment.author.handle).charAt(0).toUpperCase() }}
         </div>
