@@ -47,6 +47,7 @@ function onPopoverToggle (event: ToggleEvent) {
 
 <template>
   <nav
+    aria-label="Main navigation"
     class="py-4 px-4 md:px-12 md:py-8 uppercase flex flex-row justify-between items-center text-primary md:p-4 tracking-[0.15rem]"
   >
     <ul
