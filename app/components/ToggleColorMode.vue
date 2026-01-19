@@ -13,7 +13,7 @@ const ariaLabel = computed(() => {
     v-if="colorMode"
     :aria-label="ariaLabel"
     type="button"
-    class="h-7 w-12 relative rounded-full bg-accent ml-2 items-center justify-start px-1 border-2 border-solid border-accent hover:border-primary active:border-primary f-ring touch-action-manipulation"
+    class="h-7 w-12 relative rounded-full bg-accent ml-2 items-center justify-start px-1 border-2 border-solid f-ring touch-action-manipulation border-muted/50 hover:border-muted active:border-muted motion-safe:transition-colors"
     @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
   >
     <span
