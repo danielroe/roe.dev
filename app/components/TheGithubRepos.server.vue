@@ -17,9 +17,9 @@
           />
         </span>
         <header>
-          <h3 class="font-normal">
+          <h2 class="font-normal">
             {{ repo }}
-          </h3>
+          </h2>
           <dl
             class="block md:flex flex-row flex-wrap mt-1 leading-normal uppercase text-xs"
           >
