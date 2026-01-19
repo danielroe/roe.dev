@@ -74,7 +74,7 @@ const maxDepth = 4
       >
       <div
         v-else
-        class="rounded-full h-10 w-10 bg-gray-700 flex items-center justify-center text-sm"
+        class="rounded-full h-10 w-10 bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-sm"
       >
         {{ (comment.author.displayName || comment.author.handle).charAt(0).toUpperCase() }}
       </div>
@@ -92,7 +92,7 @@ const maxDepth = 4
         </a>
         <span
           v-if="comment.author.displayName"
-          class="text-gray-500 text-sm truncate"
+          class="text-muted text-sm truncate"
         >
           @{{ comment.author.handle }}
         </span>
@@ -100,7 +100,7 @@ const maxDepth = 4
           :href="commentUrl"
           target="_blank"
           rel="noopener"
-          class="text-gray-500 text-sm hover:underline"
+          class="text-muted text-sm hover:underline"
         >
           <NuxtTime
             relative
@@ -119,7 +119,7 @@ const maxDepth = 4
             :href="getFeatureUrl(segment.features[0])"
             target="_blank"
             rel="noopener"
-            class="text-blue-400 hover:underline"
+            class="text-blue-600 dark:text-blue-400 hover:underline"
           >{{ segment.text }}</a>
           <template v-else>
             {{ segment.text }}
@@ -153,7 +153,7 @@ const maxDepth = 4
         :href="comment.embed.external.uri"
         target="_blank"
         rel="noopener"
-        class="mt-2 block border border-gray-700 rounded-lg overflow-hidden hover:border-gray-600 transition-colors"
+        class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
       >
         <div class="flex">
           <img
@@ -167,7 +167,7 @@ const maxDepth = 4
             <p class="text-sm font-medium truncate">
               {{ comment.embed.external.title }}
             </p>
-            <p class="text-xs text-gray-500 line-clamp-2 mt-1">
+            <p class="text-xs text-muted line-clamp-2 mt-1">
               {{ comment.embed.external.description }}
             </p>
           </div>
@@ -176,7 +176,7 @@ const maxDepth = 4
 
       <div
         v-if="comment.likeCount > 0 || comment.repostCount > 0"
-        class="flex items-center gap-4 mt-2 text-sm text-gray-500"
+        class="flex items-center gap-4 mt-2 text-sm text-muted"
       >
         <span v-if="comment.likeCount > 0">
           {{ comment.likeCount }} {{ comment.likeCount === 1 ? 'like' : 'likes' }}
@@ -188,7 +188,7 @@ const maxDepth = 4
 
       <div
         v-if="comment.replies.length > 0"
-        class="mt-4 flex flex-col gap-4 border-l border-gray-800"
+        class="mt-4 flex flex-col gap-4 border-l border-gray-300 dark:border-gray-800"
       >
         <BlueskyComment
           v-for="reply in comment.replies"
@@ -222,7 +222,7 @@ const maxDepth = 4
         >
         <div
           v-else
-          class="rounded-full h-5 w-5 bg-gray-700 flex items-center justify-center text-xs"
+          class="rounded-full h-5 w-5 bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-xs"
         >
           {{ (comment.author.displayName || comment.author.handle).charAt(0).toUpperCase() }}
         </div>
@@ -237,7 +237,7 @@ const maxDepth = 4
       </a>
       <span
         v-if="comment.author.displayName"
-        class="text-gray-500 text-sm truncate"
+        class="text-muted text-sm truncate"
       >
         @{{ comment.author.handle }}
       </span>
@@ -245,7 +245,7 @@ const maxDepth = 4
         :href="commentUrl"
         target="_blank"
         rel="noopener"
-        class="text-gray-500 text-sm hover:underline"
+        class="text-muted text-sm hover:underline"
       >
         <NuxtTime
           relative
@@ -264,7 +264,7 @@ const maxDepth = 4
           :href="getFeatureUrl(segment.features[0])"
           target="_blank"
           rel="noopener"
-          class="text-blue-400 hover:underline"
+          class="text-blue-600 dark:text-blue-400 hover:underline"
         >{{ segment.text }}</a>
         <template v-else>
           {{ segment.text }}
@@ -298,7 +298,7 @@ const maxDepth = 4
       :href="comment.embed.external.uri"
       target="_blank"
       rel="noopener"
-      class="mt-2 block border border-gray-700 rounded-lg overflow-hidden hover:border-gray-600 transition-colors"
+      class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
     >
       <div class="flex">
         <img
@@ -312,7 +312,7 @@ const maxDepth = 4
           <p class="text-sm font-medium truncate">
             {{ comment.embed.external.title }}
           </p>
-          <p class="text-xs text-gray-500 line-clamp-2 mt-1">
+          <p class="text-xs text-muted line-clamp-2 mt-1">
             {{ comment.embed.external.description }}
           </p>
         </div>
@@ -322,7 +322,7 @@ const maxDepth = 4
     <template v-if="comment.replies.length > 0">
       <div
         v-if="depth < maxDepth"
-        class="flex flex-col border-l border-gray-800"
+        class="flex flex-col border-l border-gray-300 dark:border-gray-800"
       >
         <BlueskyComment
           v-for="reply in comment.replies"
@@ -336,7 +336,7 @@ const maxDepth = 4
         :href="getCommentUrl(comment.replies[0]!)"
         target="_blank"
         rel="noopener"
-        class="text-sm text-gray-500 hover:underline mt-2 block"
+        class="text-sm text-muted hover:underline mt-2 block"
       >
         {{ comment.replies.length }} more {{ comment.replies.length === 1 ? 'reply' : 'replies' }}...
       </a>

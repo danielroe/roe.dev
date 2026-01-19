@@ -114,7 +114,7 @@ interface Talk {
       </p>
     </section>
     <template v-if="streams?.length">
-      <hr class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-700">
+      <hr class="block mt-[5vw] my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
       <section class="max-w-[37.50rem]">
         <h2 class="text-xl">
           some recent streams
@@ -133,7 +133,7 @@ interface Talk {
                 :to="video.link"
               >
                 <div
-                  class="relative flex flex-col justify-end bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+                  class="relative flex flex-col justify-end bg-gray-100 dark:bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
                 >
                   <NuxtImg
                     class="aspect-[1.9] object-cover"
@@ -194,7 +194,7 @@ interface Talk {
       </section>
     </template>
     <template v-if="upcomingConferences?.length">
-      <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+      <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
       <section
 
         class="max-w-[37.50rem]"
@@ -216,7 +216,7 @@ interface Talk {
                 class="bg-accent w-[20rem] justify-between flex flex-col"
               >
                 <div
-                  class="relative flex flex-col justify-center bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
+                  class="relative flex flex-col justify-center bg-gray-100 dark:bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
                 >
                   <NuxtImg
                     v-if="conference.image.url"
@@ -253,7 +253,7 @@ interface Talk {
         <!-- TODO: add link for conference organisers -->
       </section>
     </template>
-    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
     <section class="max-w-[37.50rem] overflow-visible">
       <h2 class="text-xl">
         recent talks
@@ -338,7 +338,7 @@ interface Talk {
         more talks &raquo;
       </NuxtLink>
     </section>
-    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
     <section class="max-w-[37.50rem] overflow-visible">
       <h2 class="text-xl">
         latest from the blog
@@ -374,7 +374,7 @@ interface Talk {
         more articles &raquo;
       </NuxtLink>
     </section>
-    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
     <section class="text-lg max-w-[50rem]">
       <h2 class="text-xl">
         contact me
@@ -430,7 +430,7 @@ interface Talk {
         </span>
       </p>
     </section>
-    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-700">
+    <hr class="block my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
     <section class="max-w-[75rem]">
       <header class="text-xl mb-4">
         special thanks to

@@ -90,11 +90,10 @@ function toggleMenu (input?: Event | boolean) {
       >
         <li>
           <NuxtLink
-            class="underlined-link hidden md:inline-block px-2 py-2 hover:opacity-100 active:opacity-100 focus:opacity-100 transition-opacity"
+            class="underlined-link hidden md:inline-block px-2 py-2 hover:text-primary active:text-primary focus:text-primary transition-colors"
             :class="{
-              'not-[:hover,:focus,:active]:after:border-transparent opacity-25':
+              'not-[:hover,:focus,:active]:after:border-transparent text-muted':
                 $route.path !== link.path,
-              'opacity-75': $route.path === link.path,
             }"
             :to="link.path"
           >
@@ -112,7 +111,7 @@ function toggleMenu (input?: Event | boolean) {
       >
         <span
           class="h-6 w-6 i-svg-spinners:90-ring-with-bg"
-          alt=""
+          aria-hidden="true"
         />
         <span class="sr-only"> Loading </span>
       </div>
@@ -124,7 +123,7 @@ function toggleMenu (input?: Event | boolean) {
       >
         <span
           class="h-5 w-5 i-ri:login-circle-line"
-          alt=""
+          aria-hidden="true"
         />
         <span class="sr-only"> Login </span>
       </NuxtLink>
@@ -136,15 +135,16 @@ function toggleMenu (input?: Event | boolean) {
       >
         <img
           class="h-8 w-8 md:h-6 md:w-6 rounded-full"
-          :class="{ 'border-[1px] border-yellow-400': $auth.user.sponsor }"
+          :class="{ 'border-[1px] border-amber-500 dark:border-yellow-400': $auth.user.sponsor }"
           :src="$auth.user.avatar"
+          :alt="`${$auth.user.name}'s avatar`"
         >
         <span
           v-if="$auth.user.sponsor"
-          class="absolute top-[-0.65rem] md:top-[-0.45rem] right-[-0.4rem] md:right-[-0.2rem] h-5 w-5 text-yellow-400"
-          alt=""
+          class="absolute top-[-0.65rem] md:top-[-0.45rem] right-[-0.4rem] md:right-[-0.2rem] h-5 w-5 text-amber-500 dark:text-yellow-400"
+          aria-hidden="true"
         >
-          <span class="i-ri:star-fill border border-solid border-gray-800" />
+          <span class="i-ri:star-fill border border-solid border-gray-200 dark:border-gray-800" />
         </span>
         <span class="sr-only"> Log out {{ $auth.user.name }} </span>
       </button>
@@ -157,7 +157,7 @@ function toggleMenu (input?: Event | boolean) {
           <span
             class="menu-icon h-8 w-8 md:h-6 md:w-6 i-ri:add-line"
             :style="{ viewTransitionName: showMenu ? undefined : 'menu' }"
-            alt=""
+            aria-hidden="true"
           />
           <span class="sr-only"> Open mobile navigation menu </span>
         </button>
@@ -176,7 +176,7 @@ function toggleMenu (input?: Event | boolean) {
               <span
                 class="menu-icon h-8 w-8 i-ri:close-fill"
                 :style="{ viewTransitionName: 'menu' }"
-                alt=""
+                aria-hidden="true"
               />
               <span class="sr-only"> Close mobile navigation menu </span>
             </button>

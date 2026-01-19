@@ -48,7 +48,7 @@ const year = new Date().getFullYear()
 <template>
   <div>
     <footer
-      class="before:content-empty before:block before:mx-auto before:my-4 before:content before:w-4 before:border-t-2 before:border-solid before:border-gray-700 relative text-center mx-auto px-4 py-2 max-w-[50rem]"
+      class="before:content-empty before:block before:mx-auto before:my-4 before:content before:w-4 before:border-t-2 before:border-solid before:border-gray-300 dark:before:border-gray-700 relative text-center mx-auto px-4 py-2 max-w-[50rem]"
     >
       <small>
         &copy; 2019-{{ year }} Daniel Roe.
@@ -72,7 +72,7 @@ const year = new Date().getFullYear()
             <span
               class="h-4 w-4 fill-current"
               :class="icon"
-              alt=""
+              aria-hidden="true"
             />
             <span class="sr-only">
               {{ name }}

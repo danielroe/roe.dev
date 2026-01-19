@@ -125,7 +125,7 @@ const postUrl = computed(() => {
 
 <template>
   <div class="mt-12">
-    <hr class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-700">
+    <hr class="block mx-auto my-8 content w-4 border-t-2 border-solid border-gray-300 dark:border-gray-700">
     <h2 class="text-xl mb-4">
       Comments
     </h2>
@@ -142,7 +142,7 @@ const postUrl = computed(() => {
     </div>
 
     <div v-else-if="error">
-      <p class="text-gray-500">
+      <p class="text-muted">
         Could not load comments.
         <a
           v-if="postUrl"
@@ -157,7 +157,7 @@ const postUrl = computed(() => {
     </div>
 
     <div v-else-if="!thread || thread.replies.length === 0">
-      <p class="text-gray-500 mb-4">
+      <p class="text-muted mb-4">
         No comments yet.
       </p>
       <a
@@ -175,7 +175,7 @@ const postUrl = computed(() => {
       v-else
       class="flex flex-col gap-6"
     >
-      <div class="flex items-center gap-4 text-sm text-gray-500">
+      <div class="flex items-center gap-4 text-sm text-muted">
         <span>{{ thread.replyCount }} {{ thread.replyCount === 1 ? 'reply' : 'replies' }}</span>
         <span>{{ thread.likeCount }} {{ thread.likeCount === 1 ? 'like' : 'likes' }}</span>
         <a
