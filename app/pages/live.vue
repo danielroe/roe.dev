@@ -35,8 +35,9 @@
           v-for="emoji in predefinedEmojis"
           :key="emoji"
           type="button"
-          class="aspect-square text-[1.75rem] rounded-lg flex items-center justify-center bg-muted bg-opacity-10 transition-all duration-200 hover:bg-opacity-20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed select-none"
+          class="aspect-square text-[1.75rem] rounded-lg flex items-center justify-center bg-muted bg-opacity-10 transition-all duration-200 hover:bg-opacity-20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed select-none f-ring"
           :disabled="!isConnected"
+          :aria-label="`Send ${emoji} reaction`"
           @click="sendEmoji(emoji)"
           @dblclick="sendEmoji(emoji, 3)"
           @touchstart.passive="preventZoom"
@@ -53,8 +54,9 @@
             <input
               v-model="customEmoji"
               type="text"
-              class="w-14 h-14 text-center text-[1.75rem] bg-transparent border-none outline-none"
+              class="w-14 h-14 text-center text-[1.75rem] bg-transparent border-none rounded-lg f-ring-inset"
               :disabled="!isConnected"
+              aria-label="Custom emoji input"
               @touchstart.passive="preventZoom"
             >
             <span class="text-xs text-muted mt-1">custom</span>
@@ -198,10 +200,7 @@ function preventZoom () {
   opacity: 0;
 }
 
-/* Focus styles for the custom emoji input */
-input:focus {
-  outline: none;
-}
+/* Focus styles are now handled via Tailwind classes */
 
 /* Remove spinner buttons from number inputs */
 input::-webkit-inner-spin-button,

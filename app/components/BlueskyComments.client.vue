@@ -149,7 +149,7 @@ const postUrl = computed(() => {
           :href="postUrl"
           target="_blank"
           rel="noopener"
-          class="underline"
+          class="underline rounded f-ring"
         >
           View on Bluesky
         </a>
@@ -165,7 +165,7 @@ const postUrl = computed(() => {
         :href="postUrl"
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-2 text-sm underline"
+        class="inline-flex items-center gap-2 text-sm underline rounded f-ring"
       >
         Reply on Bluesky
       </a>
@@ -183,7 +183,7 @@ const postUrl = computed(() => {
           :href="postUrl"
           target="_blank"
           rel="noopener"
-          class="underline ml-auto"
+          class="underline ml-auto rounded f-ring"
         >
           Reply on Bluesky
         </a>

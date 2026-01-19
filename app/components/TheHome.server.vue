@@ -121,7 +121,8 @@ interface Talk {
         </h2>
         <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
           <ul
-            class="flex flex-row gap-2 mt-4 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
+            class="flex flex-row gap-2 mt-4 py-1 overflow-x-scroll overflow-y-visible snap-mandatory snap-x scroll-smooth px-4 md:px-12"
+            tabindex="-1"
           >
             <li
               v-for="(video, index) of streams"
@@ -129,7 +130,7 @@ interface Talk {
               class="snap-start px-4 md:px-12 -mx-4 md:-mx-12"
             >
               <NuxtLink
-                class="bg-accent w-[20rem] justify-between flex flex-col"
+                class="bg-accent w-[20rem] justify-between flex flex-col rounded f-ring-inset"
                 :to="video.link"
               >
                 <div
@@ -168,18 +169,24 @@ interface Talk {
           <ExpandableTray>
             <a
               href="https://twitch.tv/danielroe"
-              class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+              class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors text-sm items-center flex gap-1"
               aria-label="Watch more streams on Twitch"
             >
-              <span class="i-ri-twitch-fill h-5 w-5 md:h-4 md:w-4" />
+              <span
+                class="i-ri-twitch-fill h-5 w-5 md:h-4 md:w-4"
+                aria-hidden="true"
+              />
               <span class="hidden md:inline-block">twitch</span>
             </a>
             <a
               href="https://youtube.com/@danielroe"
-              class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm items-center flex gap-1"
+              class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors text-sm items-center flex gap-1"
               aria-label="Watch more videos on YouTube"
             >
-              <span class="i-ri-youtube-fill h-5 w-5 md:h-4 md:w-4" />
+              <span
+                class="i-ri-youtube-fill h-5 w-5 md:h-4 md:w-4"
+                aria-hidden="true"
+              />
               <span class="hidden md:inline-block">youtube</span>
             </a>
           </ExpandableTray>
@@ -204,7 +211,8 @@ interface Talk {
         </h2>
         <div class="w-screen -mx-4 md:-mx-12 overflow-visible">
           <ul
-            class="flex flex-row gap-2 mt-4 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
+            class="flex flex-row gap-2 mt-4 py-1 overflow-x-scroll snap-mandatory snap-x scroll-smooth px-4 md:px-12"
+            tabindex="-1"
           >
             <li
               v-for="(conference, index) in upcomingConferences"
@@ -213,7 +221,7 @@ interface Talk {
             >
               <NuxtLink
                 :to="conference.link"
-                class="bg-accent w-[20rem] justify-between flex flex-col"
+                class="bg-accent w-[20rem] justify-between flex flex-col rounded f-ring-inset"
               >
                 <div
                   class="relative flex flex-col justify-center bg-gray-100 dark:bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
@@ -280,12 +288,13 @@ interface Talk {
                 <NuxtLink
                   v-if="talk.video || (talk.type === 'podcast' && talk.link)"
                   :href="talk.video || talk.link"
-                  class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none text-sm lowercase items-center flex gap-1"
+                  class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors leading-none text-sm lowercase items-center flex gap-1"
                 >
                   <span
                     v-if="talk.type === 'podcast' || talk.video"
                     :class="talk.video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
                     class="h-5 w-5 md:h-4 md:w-4"
+                    aria-hidden="true"
                   />
                   <span class="sr-only">
                     {{ talk.video ? `Watch` : `Listen` }} to {{ talk.title }}
@@ -293,29 +302,38 @@ interface Talk {
                 </NuxtLink>
                 <NuxtLink
                   v-if="talk.slides"
-                  class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
+                  class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
                   :to="`/slides/${talk.slides}.pdf`"
                   data-external
                 >
-                  <span class="h-4 w-4 i-ri:presentation-fill" />
+                  <span
+                    class="h-4 w-4 i-ri:presentation-fill"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only"> Slides for {{ talk.title }} </span>
                 </NuxtLink>
                 <NuxtLink
                   v-if="talk.demo"
-                  class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
+                  class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
                   :to="talk.demo"
                   data-external
                 >
-                  <span class="i-tabler:sparkles" />
+                  <span
+                    class="i-tabler:sparkles"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only">A demo for {{ talk.title }} </span>
                 </NuxtLink>
                 <NuxtLink
                   v-if="talk.repo"
-                  class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
+                  class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors leading-none uppercase text-sm lowercase items-center flex gap-1"
                   :to="talk.repo"
                   data-external
                 >
-                  <span class="i-ri:github-fill" />
+                  <span
+                    class="i-ri:github-fill"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only">A repo for {{ talk.title }}</span>
                 </NuxtLink>
               </ExpandableTray>
@@ -351,7 +369,7 @@ interface Talk {
         >
           <NuxtLink
             :to="article.path"
-            class="flex flex-col items-start gap-3 justify-between md:flex-row md:items-center"
+            class="flex flex-col items-start gap-3 justify-between md:flex-row md:items-center rounded f-ring pb-1"
           >
             <div class="underlined-link">
               {{ article.title }}
@@ -387,11 +405,12 @@ interface Talk {
             :key="link.name"
             :href="link.link"
             :aria-label="`Follow me on ${link.name}`"
-            class="outline-none active:text-primary hover:text-primary focus:text-primary transition-colors text-sm lowercase items-center flex gap-1"
+            class="active:text-primary hover:text-primary focus:text-primary f-tray-item transition-colors text-sm lowercase items-center flex gap-1"
           >
             <span
               :class="link.icon"
               class="h-4 w-4"
+              aria-hidden="true"
             />
             <span class="hidden md:inline-block">{{ link.name }}</span>
           </a>

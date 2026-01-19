@@ -59,15 +59,15 @@ const year = new Date().getFullYear()
           CC BY-SA 4.0
         </a>
       </small>
-      <ul class="flex flex-row justify-center gap-4 my-4 items-center">
+      <ul class="flex flex-row justify-center gap-2 my-4 items-center">
         <li
           v-for="{ link, name, icon } in links"
           :key="name"
-          class="inline-flex items-center"
         >
           <a
             :href="link"
             rel="me"
+            class="rounded-full f-ring p-1 inline-flex items-center"
           >
             <span
               class="h-4 w-4 fill-current"

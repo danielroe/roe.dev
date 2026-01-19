@@ -61,7 +61,7 @@ const maxDepth = 4
       :href="`https://bsky.app/profile/${comment.author.handle}`"
       target="_blank"
       rel="noopener"
-      class="flex-shrink-0"
+      class="flex-shrink-0 rounded-full f-ring"
     >
       <img
         v-if="comment.author.avatar"
@@ -86,7 +86,7 @@ const maxDepth = 4
           :href="`https://bsky.app/profile/${comment.author.handle}`"
           target="_blank"
           rel="noopener"
-          class="font-medium hover:underline truncate"
+          class="font-medium hover:underline truncate rounded f-ring"
         >
           {{ comment.author.displayName || `@${comment.author.handle}` }}
         </a>
@@ -100,7 +100,7 @@ const maxDepth = 4
           :href="commentUrl"
           target="_blank"
           rel="noopener"
-          class="text-muted text-sm hover:underline"
+          class="text-muted text-sm hover:underline rounded f-ring"
         >
           <NuxtTime
             relative
@@ -119,7 +119,7 @@ const maxDepth = 4
             :href="getFeatureUrl(segment.features[0])"
             target="_blank"
             rel="noopener"
-            class="text-blue-600 dark:text-blue-400 hover:underline"
+            class="text-blue-600 dark:text-blue-400 hover:underline rounded f-ring"
           >{{ segment.text }}</a>
           <template v-else>
             {{ segment.text }}
@@ -137,7 +137,7 @@ const maxDepth = 4
           :href="img.fullsize"
           target="_blank"
           rel="noopener"
-          class="block"
+          class="block rounded-lg f-ring"
         >
           <img
             :src="img.thumb"
@@ -153,7 +153,7 @@ const maxDepth = 4
         :href="comment.embed.external.uri"
         target="_blank"
         rel="noopener"
-        class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
+        class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors f-ring-inset"
       >
         <div class="flex">
           <img
@@ -209,7 +209,7 @@ const maxDepth = 4
         :href="`https://bsky.app/profile/${comment.author.handle}`"
         target="_blank"
         rel="noopener"
-        class="flex-shrink-0"
+        class="flex-shrink-0 rounded-full f-ring"
       >
         <img
           v-if="comment.author.avatar"
@@ -231,7 +231,7 @@ const maxDepth = 4
         :href="`https://bsky.app/profile/${comment.author.handle}`"
         target="_blank"
         rel="noopener"
-        class="font-medium hover:underline truncate"
+        class="font-medium hover:underline truncate rounded f-ring"
       >
         {{ comment.author.displayName || `@${comment.author.handle}` }}
       </a>
@@ -245,7 +245,7 @@ const maxDepth = 4
         :href="commentUrl"
         target="_blank"
         rel="noopener"
-        class="text-muted text-sm hover:underline"
+        class="text-muted text-sm hover:underline rounded f-ring"
       >
         <NuxtTime
           relative
@@ -264,7 +264,7 @@ const maxDepth = 4
           :href="getFeatureUrl(segment.features[0])"
           target="_blank"
           rel="noopener"
-          class="text-blue-600 dark:text-blue-400 hover:underline"
+          class="text-blue-600 dark:text-blue-400 hover:underline rounded f-ring"
         >{{ segment.text }}</a>
         <template v-else>
           {{ segment.text }}
@@ -282,7 +282,7 @@ const maxDepth = 4
         :href="img.fullsize"
         target="_blank"
         rel="noopener"
-        class="block"
+        class="block rounded-lg f-ring"
       >
         <img
           :src="img.thumb"
@@ -298,7 +298,7 @@ const maxDepth = 4
       :href="comment.embed.external.uri"
       target="_blank"
       rel="noopener"
-      class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
+      class="mt-2 block border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden hover:border-gray-400 dark:hover:border-gray-600 transition-colors f-ring-inset"
     >
       <div class="flex">
         <img
@@ -336,7 +336,7 @@ const maxDepth = 4
         :href="getCommentUrl(comment.replies[0]!)"
         target="_blank"
         rel="noopener"
-        class="text-sm text-muted hover:underline mt-2 block"
+        class="text-sm text-muted hover:underline mt-2 block rounded f-ring"
       >
         {{ comment.replies.length }} more {{ comment.replies.length === 1 ? 'reply' : 'replies' }}...
       </a>

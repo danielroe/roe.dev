@@ -26,20 +26,20 @@
           id="question"
           v-model="questionText"
           name="question"
-          class="mt-2 rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1"
+          class="mt-2 rounded w-full max-w-400px min-h-[10ch] text-black px-3 py-1 f-ring-inset"
           :class="{
-            'ring ring-yellow-500': denialDetected,
+            'ring ring-yellow-600 dark:ring-yellow-500': denialDetected,
           }"
         />
         <div
           v-if="denialDetected"
-          class="mt-2 text-sm text-yellow-500"
+          class="mt-2 text-sm text-yellow-600 dark:text-yellow-500"
         >
           <p>
             Did you mean
             <button
               type="button"
-              class="underline font-medium hover:opacity-80"
+              class="underline font-medium hover:opacity-80 rounded f-ring"
               @click="fixDenial"
             >
               "Daniel"
@@ -49,7 +49,7 @@
         <button
           type="submit"
           :disabled="status === 'pending'"
-          class="underlined-link"
+          class="underlined-link outline-none focus-visible:after:opacity-35"
         >
           <template v-if="!denialDetected">
             ask anonymously

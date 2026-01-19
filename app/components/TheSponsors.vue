@@ -20,7 +20,7 @@ const sponsors = await $fetch<string[]>('/api/sponsors')
     />
     <NuxtLink
       to="https://github.com/sponsors/danielroe"
-      class="pure rounded-full border-primary outline-none border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:border-solid focus:border-solid active:border-solid hover:bg-accent focus:bg-accent active:bg-accent"
+      class="pure rounded-full border-primary border-dashed border h-[35px] w-[35px] flex flex-col justify-center items-center hover:border-solid active:border-solid hover:bg-accent active:bg-accent f-ring"
       target="_blank"
     >
       <div class="block i-ri:add-fill h-6 w-6" />

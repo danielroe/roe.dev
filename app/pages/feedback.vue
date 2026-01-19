@@ -14,11 +14,11 @@
         <textarea
           id="feedback"
           name="feedback"
-          class="rounded w-full max-w-400px text-black px-3 py-1"
+          class="rounded w-full max-w-400px text-black px-3 py-1 f-ring-inset"
         />
         <button
           type="submit"
-          class="underlined-link"
+          class="underlined-link outline-none focus-visible:after:opacity-35"
         >
           Submit
         </button>

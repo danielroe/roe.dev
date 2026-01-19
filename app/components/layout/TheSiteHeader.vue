@@ -118,7 +118,7 @@ function toggleMenu (input?: Event | boolean) {
       <NuxtLink
         v-else-if="$auth.status === 'logged-out'"
         :to="loginURL"
-        class="p-1 w-[2rem] flex-shrink-0 outline-none border-transparent border-2 border-solid hover:border-primary active:border-primary focus:border-primary rounded-full leading-none"
+        class="p-1 w-[2rem] flex-shrink-0 border-transparent border-2 border-solid hover:border-primary active:border-primary rounded-full leading-none f-ring"
         @click="$auth.status = 'pending'"
       >
         <span
@@ -130,7 +130,7 @@ function toggleMenu (input?: Event | boolean) {
       <button
         v-else-if="$auth.status === 'logged-in'"
         type="button"
-        class="relative flex-shrink-0 w-[2rem]"
+        class="relative flex-shrink-0 w-[2rem] rounded-full f-ring"
         @click="$auth.logout"
       >
         <img
@@ -151,7 +151,7 @@ function toggleMenu (input?: Event | boolean) {
       <div class="md:hidden">
         <button
           type="button"
-          class="ml-4"
+          class="ml-4 rounded f-ring"
           @click="toggleMenu"
         >
           <span
@@ -170,7 +170,7 @@ function toggleMenu (input?: Event | boolean) {
           >
             <button
               type="button"
-              class="top-0 right-0 fixed p-8"
+              class="top-0 right-0 fixed p-8 rounded f-ring-accent"
               @click="toggleMenu"
             >
               <span

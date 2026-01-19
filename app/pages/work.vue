@@ -10,7 +10,7 @@
       <TheGithubRepos />
       <form
         v-if="$auth.user.sponsor"
-        class="mt-4 mb-4 p-4 bg-gray-900 text-white flex md:flex-row flex-col gap-2"
+        class="mt-4 mb-4 p-4 bg-gray-100 dark:bg-gray-900 text-primary flex md:flex-row flex-col gap-2"
         @submit.prevent="handleSubmission"
       >
         <label
@@ -22,15 +22,15 @@
             autofocus
             :disabled="ideaStatus === 'submitting'"
             type="text"
-            class="bg-gray-600 text-white text-sm px-2 py-1 flex-grow disabled:opacity-60 disabled:pointer-events-none"
+            class="bg-gray-300 dark:bg-gray-600 text-primary text-sm px-2 py-1 flex-grow disabled:opacity-60 disabled:pointer-events-none rounded f-ring-inset"
           >
         </label>
         <button
           type="submit"
-          class="px-2 py-1 tracking-[0.15rem] text-sm uppercase"
+          class="px-2 py-1 tracking-[0.15rem] text-sm uppercase rounded f-ring-accent"
           :class="{
-            'bg-green-900': ideaStatus === 'submitted',
-            'bg-red-900': ideaStatus === 'error',
+            'bg-green-200 dark:bg-green-900': ideaStatus === 'submitted',
+            'bg-red-200 dark:bg-red-900': ideaStatus === 'error',
           }"
         >
           {{

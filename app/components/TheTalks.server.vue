@@ -136,32 +136,42 @@ const { data: groups } = await useAsyncData(
                 v-if="talk.type === 'podcast' || talk.video"
                 :class="talk.video ? 'i-ri:play-line' : 'i-ri:broadcast-line'"
                 class="h-4 w-4 flex-shrink-0"
+                aria-hidden="true"
               />
               {{ talk.video ? `watch` : `listen` }}
             </NuxtLink>
             <NuxtLink
               v-if="talk.slides"
-              class="text-xs items-center"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
               :to="`/slides/${talk.slides}.pdf`"
               data-external
             >
-              <span class="i-ri:presentation-fill" /> slides
+              <span
+                class="i-ri:presentation-fill"
+                aria-hidden="true"
+              /> slides
             </NuxtLink>
             <NuxtLink
               v-if="talk.demo"
-              class="text-xs items-center"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
               :to="talk.demo"
               data-external
             >
-              <span class="i-tabler:sparkles" /> demo
+              <span
+                class="i-tabler:sparkles"
+                aria-hidden="true"
+              /> demo
             </NuxtLink>
             <NuxtLink
               v-if="talk.repo"
-              class="text-xs items-center"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
               :to="talk.repo"
               data-external
             >
-              <span class="i-ri:github-fill" /> repo
+              <span
+                class="i-ri:github-fill"
+                aria-hidden="true"
+              /> repo
             </NuxtLink>
           </ExpandableTray>
         </header>

@@ -23,7 +23,7 @@
             <div class="bg-accent flex flex-col">
               <div
                 v-if="item.image"
-                class="relative flex flex-col justify-end bg-gray-900 aspect-video overflow-hidden"
+                class="relative flex flex-col justify-end bg-gray-100 dark:bg-gray-900 aspect-video overflow-hidden"
               >
                 <NuxtImg
                   provider="sanity"
@@ -58,7 +58,7 @@
                       :href="link.url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center gap-2"
+                      class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center gap-2 f-ring hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                     >
                       <img
                         :src="`https://www.google.com/s2/favicons?domain=${getHost(link.url)}&sz=256`"
@@ -93,6 +93,7 @@
                 :href="item.links?.[0]?.url"
                 target="_blank"
                 rel="noopener noreferrer"
+                class="underlined-link"
               >{{ item.name }}</a>
             </span>
             <span v-else>{{ item.name }}</span>
@@ -115,7 +116,7 @@
               :href="link.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded"
+              class="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded f-ring hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
             >
               {{ link.label || 'Link' }}
             </a>

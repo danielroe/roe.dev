@@ -15,6 +15,7 @@ const entries = await queryCollection('blog')
       :key="path"
       :to="path"
       :title="title"
+      class="rounded f-ring pb-1"
     >
       <article>
         <header class="flex flex-col md:flex-row justify-between items-start">
