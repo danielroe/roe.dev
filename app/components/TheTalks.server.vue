@@ -124,13 +124,13 @@ const { data: groups } = await useAsyncData(
             </dd>
           </dl>
           <ExpandableTray
-            v-if="talk.video || talk.link || talk.slides || talk.demo || talk.repo"
+            v-if="talk.video || (talk.type === 'podcast' && talk.link) || talk.slides || talk.demo || talk.repo"
             class="ml-auto flex items-start"
           >
             <NuxtLink
-              v-if="talk.video || talk.link"
-              :href="talk.video || talk.link"
-              class="text-xs items-center"
+              v-if="talk.video || (talk.type === 'podcast' && talk.link)"
+              :href="talk.video || (talk.type === 'podcast' && talk.link)"
+              class="text-xs items-center f-tray-item active:text-primary hover:text-primary focus:text-primary transition-colors"
             >
               <span
                 v-if="talk.type === 'podcast' || talk.video"

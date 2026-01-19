@@ -274,11 +274,11 @@ interface Talk {
                 {{ talk.title }}
               </span>
               <ExpandableTray
-                v-if="talk.video || talk.link || talk.slides || talk.demo || talk.repo"
+                v-if="talk.video || (talk.type === 'podcast' && talk.link) || talk.slides || talk.demo || talk.repo"
                 class="-mb-4 md:mb-0"
               >
                 <NuxtLink
-                  v-if="talk.video || talk.link"
+                  v-if="talk.video || (talk.type === 'podcast' && talk.link)"
                   :href="talk.video || talk.link"
                   class="active:text-primary hover:text-primary focus:text-primary transition-colors leading-none text-sm lowercase items-center flex gap-1"
                 >
