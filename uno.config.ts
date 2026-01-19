@@ -16,7 +16,15 @@ export default defineConfig({
   shortcuts: [
     {
       'underlined-link':
-        'relative inline-block after:block after:my-[-0.5em] after:mx-[-0.25em] after:opacity-10 after:border-current after:content-empty after:duration-300 after:transition-border-color after:transition-opacity after:border-b-[0.5em] outline-none hover:after:opacity-35 active:after:opacity-35 focus:after:opacity-35',
+        'relative inline-block after:block after:my-[-0.5em] after:mx-[-0.25em] after:opacity-10 after:border-current after:content-empty after:duration-300 after:transition-border-color after:transition-opacity after:border-b-[0.5em] outline-none hover:after:opacity-35 active:after:opacity-35 focus-visible:after:opacity-35',
+      'f-ring':
+        'outline-none focus-visible:ring-2 focus-visible:ring-primary/80 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+      'f-ring-accent':
+        'outline-none focus-visible:ring-2 focus-visible:ring-primary/80 focus-visible:ring-offset-2 focus-visible:ring-offset-accent',
+      'f-ring-inset':
+        'outline-none focus-visible:ring-2 focus-visible:ring-primary/80 focus-visible:ring-inset',
+      'f-tray-item':
+        'outline-none rounded-full focus-visible:ring-2 focus-visible:ring-primary/80 focus-visible:ring-offset-1 focus-visible:ring-offset-accent',
     },
   ],
   variants: [
