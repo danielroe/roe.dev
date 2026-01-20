@@ -101,6 +101,38 @@ defineOgImageComponent('DefaultImage', {
 
 if (import.meta.server) {
   useRoute().meta.description = page.value.description
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': page.value.title,
+    'description': page.value.description,
+    'datePublished': page.value.date,
+    'author': {
+      '@type': 'Person',
+      'name': 'Daniel Roe',
+      'url': 'https://roe.dev',
+    },
+    'publisher': {
+      '@type': 'Person',
+      'name': 'Daniel Roe',
+      'url': 'https://roe.dev',
+    },
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': `https://roe.dev${path.value}`,
+    },
+    'keywords': page.value.tags?.join(', '),
+  }
+
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(articleSchema),
+      },
+    ],
+  })
 }
 
 const blueskyUri = shallowRef(page.value.bluesky)

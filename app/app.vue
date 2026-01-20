@@ -20,6 +20,7 @@
 
 <script lang="ts" setup>
 import { joinURL, withoutTrailingSlash } from 'ufo'
+import { links } from '~/utils/data'
 
 const route = useRoute()
 
@@ -50,6 +51,53 @@ useHead({
 })
 
 if (import.meta.server) {
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    'name': 'Daniel Roe',
+    'url': 'https://roe.dev',
+    'image': 'https://roe.dev/me.jpg',
+    'jobTitle': 'Nuxt Core Team Lead',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': 'Vercel',
+      'url': 'https://vercel.com',
+    },
+    'alumniOf': [
+      {
+        '@type': 'CollegeOrUniversity',
+        'name': 'University of Oxford',
+      },
+      {
+        '@type': 'CollegeOrUniversity',
+        'name': 'Oak Hill College',
+      },
+    ],
+    'knowsAbout': ['Vue.js', 'Nuxt', 'JavaScript', 'TypeScript', 'Web Performance', 'Serverless', 'Open Source'],
+    'sameAs': [
+      ...links.filter(link => link.link.startsWith('https://')).map(link => link.link),
+      'https://x.com/danielcroe',
+    ],
+    'email': 'mailto:daniel@roe.dev',
+    'homeLocation': {
+      '@type': 'Place',
+      'name': 'Scotland',
+    },
+  }
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'Daniel Roe',
+    'url': 'https://roe.dev',
+    'description': 'The personal website of Daniel Roe, Nuxt core team lead',
+    'author': {
+      '@type': 'Person',
+      'name': 'Daniel Roe',
+      'url': 'https://roe.dev',
+    },
+  }
+
   const PATH_RE = createRegExp(
     exactly(char.times.any().and(charNotIn('/')))
       .as('path')
@@ -60,7 +108,7 @@ if (import.meta.server) {
   const { path = '/' } = route.fullPath.match(PATH_RE)?.groups ?? {}
   const url = withoutTrailingSlash(`https://roe.dev${path}`)
 
-  useServerHead({
+  useHead({
     meta: () => [
       { name: 'theme-color', content: '#1a202c' },
       { name: 'msapplication-TileColor', content: '#1a202c' },
@@ -116,6 +164,16 @@ if (import.meta.server) {
       },
       { rel: 'manifest', href: '/site.webmanifest' },
       { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#1a202c' },
+    ],
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(personSchema),
+      },
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(websiteSchema),
+      },
     ],
   })
 }
