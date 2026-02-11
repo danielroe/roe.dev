@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - run: corepack enable
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
         with:
           node-version: 24.13.0
           cache: "pnpm"
@@ -28,6 +28,6 @@ jobs:
       - name: Update bundle size
         run: pnpm vitest run bundle -u
 
-      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27
         with:
           commit-message: 'chore: apply automated fixes'
