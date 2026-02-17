@@ -80,6 +80,7 @@ export default defineNuxtModule({
 
     addTemplate({
       filename: 'routes.mjs',
+      write: true,
       async getContents () {
         const files = await readRecursive(resolver.resolve('../../app/pages'))
         const componentNames = Object.fromEntries(
