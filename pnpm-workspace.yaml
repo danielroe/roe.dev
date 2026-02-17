@@ -1,11 +1,13 @@
 packages:
   - cms
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - unrs-resolver
+  - workerd
+
 onlyBuiltDependencies:
   - better-sqlite3
   - sharp
   - simple-git-hooks
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-  - workerd
-
