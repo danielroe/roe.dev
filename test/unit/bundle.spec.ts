@@ -83,7 +83,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8548k"`)
+      .toMatchInlineSnapshot(`"8604k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -160,6 +160,7 @@ describe('project sizes', () => {
         "follow-redirects",
         "get-it",
         "github-slugger",
+        "groq",
         "has-flag",
         "hast-util-embedded",
         "hast-util-format",
@@ -247,6 +248,7 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "perfect-debounce",
+        "picomatch",
         "property-information",
         "readable-stream",
         "regex",
