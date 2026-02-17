@@ -22,7 +22,7 @@
     "import-streambeats": "node --env-file=.env scripts/import-streambeats.mjs",
     "import-streambeats:dry-run": "node --env-file=.env scripts/import-streambeats.mjs --dry-run"
   },
-  "lint-staged": {
+  "nano-staged": {
     "*.{js,ts,mjs,vue}": [
       "eslint"
     ],
@@ -95,7 +95,7 @@
     "eslint": "9.39.2",
     "googleapis": "170.1.0",
     "happy-dom": "20.3.3",
-    "lint-staged": "16.2.7",
+    "nano-staged": "0.9.0",
     "ofetch": "1.5.1",
     "playwright-core": "1.57.0",
     "rollup": "4.55.2",
@@ -109,7 +109,7 @@
   },
   "simple-git-hooks": {
     "commit-msg": "npx commitlint --edit $1",
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "npx nano-staged"
   },
   "packageManager": "pnpm@10.28.1"
 }
