@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"942k"`)
+      .toMatchInlineSnapshot(`"2231k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"10990k"`)
+      .toMatchInlineSnapshot(`"8548k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -131,8 +131,6 @@ describe('project sizes', () => {
         "@vue/shared",
         "await-lock",
         "bail",
-        "better-sqlite3",
-        "bindings",
         "ccount",
         "char-regex",
         "character-entities",
@@ -158,7 +156,6 @@ describe('project sizes', () => {
         "eventsource",
         "extend",
         "feed",
-        "file-uri-to-path",
         "flat",
         "follow-redirects",
         "get-it",
@@ -236,7 +233,6 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
-        "minimark",
         "ms",
         "multiformats",
         "nanoid",
