@@ -1,5 +1,7 @@
+// @ts-expect-error virtual file
+import { syncArticles } from '#sync-articles.json'
 import { providerNames, syncWithProvider } from '../providers/index'
-import { getMarkdownArticles, getTalks } from '../utils/items'
+import { getTalks } from '../utils/items'
 
 export default defineTask({
   meta: {
@@ -8,7 +10,7 @@ export default defineTask({
   },
   async run () {
     const items = [
-      ...await getMarkdownArticles(),
+      ...syncArticles,
       ...await getTalks(),
     ]
     const result = await Promise.all(providerNames.map(p => syncWithProvider(p, items)))

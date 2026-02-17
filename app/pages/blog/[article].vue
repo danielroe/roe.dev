@@ -71,11 +71,22 @@ const path = computed(() =>
 
 const { data: page } = await useAsyncData(
   path.value,
-  () =>
-    ((import.meta.server || import.meta.dev) as true)
-    && queryCollection('blog').path(path.value)
-      .select('title', 'date', 'tags', 'description', 'bluesky')
-      .first(),
+  async () => {
+    if (!import.meta.server && !import.meta.dev) return null
+    const { blogEntries } = await import('#build/markdown/blog-entries.mjs')
+    const slug = path.value.replace(/^\/blog\//, '').replace(/\/$/, '')
+    const entry = blogEntries.find(e => e.path === `/blog/${slug}`)
+    if (!entry) {
+      return null
+    }
+    return {
+      title: entry.title,
+      date: entry.date,
+      description: entry.description,
+      tags: entry.tags,
+      bluesky: entry.bluesky,
+    }
+  },
 )
 
 if (!page.value) {

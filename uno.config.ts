@@ -9,9 +9,6 @@ export default defineConfig({
       resolver.resolve('./content/**/*.md'),
       resolver.resolve('./app/**/*.vue'),
     ],
-    pipeline: {
-      exclude: ['**/@nuxt/content/**'],
-    },
   },
   shortcuts: [
     {

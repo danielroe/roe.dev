@@ -1,5 +1,5 @@
 import { withoutTrailingSlash } from 'ufo'
-import _routes from '#build/routes'
+import _routes from '#build/routes.mjs'
 
 interface NuxtRoute {
   path: string | RegExp
