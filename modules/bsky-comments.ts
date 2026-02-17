@@ -4,9 +4,6 @@ import { existsSync } from 'node:fs'
 import { addServerHandler, addServerTemplate, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { joinURL, withoutTrailingSlash } from 'ufo'
 import { join } from 'pathe'
-import { filename } from 'pathe/utils'
-import { glob } from 'tinyglobby'
-import grayMatter from 'gray-matter'
 import { AtpAgent, AppBskyFeedPost } from '@atproto/api'
 
 // when I created my Bluesky account - don't judge me for hard coding it!
@@ -56,128 +53,120 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     }
     const blueskyHandle = nuxt.options.social.networks.bluesky!.identifier
 
-    // Read all blog posts from markdown files
-    const files = await glob('./content/blog/**/*.md', { cwd: nuxt.options.rootDir, absolute: true })
+    // Receive blog data from the markdown module hook and discover Bluesky URIs
     const blogPosts: BlogPost[] = []
-    const feedIterator = createFeedIterator(agent, blueskyHandle)
 
-    for (const filePath of files) {
-      const contents = await readFile(filePath, 'utf-8')
-      const { data } = grayMatter(contents)
+    nuxt.hook('markdown:blog-entries', async entries => {
+      const feedIterator = createFeedIterator(agent, blueskyHandle)
 
-      if (!data.date) continue
+      for (const entry of entries) {
+        if (!entry.date) continue
 
-      const slug = filename(filePath)!
-      const blogPath = `/blog/${slug}`
-      const blogUrl = withoutTrailingSlash(joinURL(nuxt.options.site.url, blogPath))
-      const blogDate = new Date(data.date)
-      const cacheFile = join(cacheDir, `${slug}.json`)
+        const blogPath = entry.path
+        const blogUrl = withoutTrailingSlash(joinURL(nuxt.options.site.url, blogPath))
+        const blogDate = new Date(entry.date)
+        const cacheFile = join(cacheDir, `${entry.slug}.json`)
 
-      const blueskyUri = await discoverBlueskyUri()
-      blogPosts.push({ slug, path: blogPath, url: blogUrl, date: blogDate, blueskyUri })
+        const blueskyUri = await discoverBlueskyUri()
+        blogPosts.push({ slug: entry.slug, path: blogPath, url: blogUrl, date: blogDate, blueskyUri })
 
-      async function discoverBlueskyUri (): Promise<string | null> {
-        // Check cache first
-        if (existsSync(cacheFile)) {
-          try {
-            const cacheData = JSON.parse(await readFile(cacheFile, 'utf-8')) as { uri: string | null }
-            return cacheData.uri
-          }
-          catch {
-            // Continue to discover
-          }
+        // Inject the discovered URI back into the entry
+        if (blueskyUri) {
+          entry.bluesky = blueskyUri
         }
 
-        // 1. explicit bluesky URL in frontmatter
-        if (data.bluesky?.startsWith('https://bsky.app/')) {
-          const match = data.bluesky.match(/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)/)
-          if (match) {
-            const [, handle, rkey] = match
+        async function discoverBlueskyUri (): Promise<string | null> {
+          // Check cache first
+          if (existsSync(cacheFile)) {
             try {
-              const { data: resolved } = await agent.resolveHandle({ handle: handle! })
-              const uri = `at://${resolved.did}/app.bsky.feed.post/${rkey}`
-              await saveCache(cacheFile, uri)
-              return uri
+              const cacheData = JSON.parse(await readFile(cacheFile, 'utf-8')) as { uri: string | null }
+              return cacheData.uri
             }
-            catch (error) {
-              console.warn(`Failed to resolve Bluesky handle for ${blogPath}:`, error)
+            catch {
+              // Continue to discover
             }
           }
-          await saveCache(cacheFile, null)
-          return null
-        }
 
-        // 2. blog post date is before Bluesky account creation
-        if (blogDate < BLUESKY_ACCOUNT_CREATED) {
-          await saveCache(cacheFile, null)
-          return null
-        }
-
-        // 3. auto-discover posts linking to this blog URL
-        const searchCutoff = new Date(blogDate.getTime() - 24 * 60 * 60 * 1000)
-
-        while (!feedIterator.isExhausted()) {
-          const oldestFetchedDate = feedIterator.getOldestPostDate()
-          if (oldestFetchedDate && oldestFetchedDate < searchCutoff) {
-            break
+          // 1. explicit bluesky URL in frontmatter
+          if (entry.bluesky?.startsWith('https://bsky.app/')) {
+            const match = entry.bluesky.match(/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)/)
+            if (match) {
+              const [, handle, rkey] = match
+              try {
+                const { data: resolved } = await agent.resolveHandle({ handle: handle! })
+                const uri = `at://${resolved.did}/app.bsky.feed.post/${rkey}`
+                await saveCache(cacheFile, uri)
+                return uri
+              }
+              catch (error) {
+                console.warn(`Failed to resolve Bluesky handle for ${blogPath}:`, error)
+              }
+            }
+            await saveCache(cacheFile, null)
+            return null
           }
-          await feedIterator.fetchMore()
-        }
 
-        const matchingPosts = feedIterator.posts
-          .filter(post => {
-            const postDate = new Date(post.createdAt)
-            if (postDate < searchCutoff) return false
-            return post.links.some(link => withoutTrailingSlash(link) === blogUrl)
-          })
-          .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+          // 2. blog post date is before Bluesky account creation
+          if (blogDate < BLUESKY_ACCOUNT_CREATED) {
+            await saveCache(cacheFile, null)
+            return null
+          }
 
-        const uri = matchingPosts[0]?.uri ?? null
-        if (uri) {
-          console.log(`Auto-discovered Bluesky post for ${blogPath}`)
+          // 3. auto-discover posts linking to this blog URL
+          const searchCutoff = new Date(blogDate.getTime() - 24 * 60 * 60 * 1000)
+
+          while (!feedIterator.isExhausted()) {
+            const oldestFetchedDate = feedIterator.getOldestPostDate()
+            if (oldestFetchedDate && oldestFetchedDate < searchCutoff) {
+              break
+            }
+            await feedIterator.fetchMore()
+          }
+
+          const matchingPosts = feedIterator.posts
+            .filter(post => {
+              const postDate = new Date(post.createdAt)
+              if (postDate < searchCutoff) return false
+              return post.links.some(link => withoutTrailingSlash(link) === blogUrl)
+            })
+            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+
+          const uri = matchingPosts[0]?.uri ?? null
+          if (uri) {
+            console.log(`Auto-discovered Bluesky post for ${blogPath}`)
+          }
+          await saveCache(cacheFile, uri)
+          return uri
         }
-        await saveCache(cacheFile, uri)
-        return uri
       }
-    }
 
-    // Sort by date descending to find newest
-    blogPosts.sort((a, b) => b.date.getTime() - a.date.getTime())
-    const newestPost = blogPosts[0]
-    const needsRuntimeDiscovery = newestPost && !newestPost.blueskyUri
+      // Sort by date descending to find newest
+      blogPosts.sort((a, b) => b.date.getTime() - a.date.getTime())
+      const newestPost = blogPosts[0]
+      const needsRuntimeDiscovery = newestPost && !newestPost.blueskyUri
 
-    // Add virtual file for runtime discovery flag (client-side)
-    addTemplate({
-      filename: 'bsky-runtime-discovery.mjs',
-      getContents: () => `export const needsRuntimeDiscovery = ${!!needsRuntimeDiscovery}
+      // Add virtual file for runtime discovery flag (client-side)
+      addTemplate({
+        filename: 'bsky-runtime-discovery.mjs',
+        getContents: () => `export const needsRuntimeDiscovery = ${!!needsRuntimeDiscovery}
 export const newestPostPath = ${newestPost ? JSON.stringify(newestPost.path) : 'null'}`,
-      write: true,
-    })
+        write: true,
+      })
 
-    // Add server template with the blog URL and date
-    addServerTemplate({
-      filename: 'bsky-runtime-discovery-server.mjs',
-      getContents: () => `
+      // Add server template with the blog URL and date
+      addServerTemplate({
+        filename: 'bsky-runtime-discovery-server.mjs',
+        getContents: () => `
 export const newestPostUrl = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.url) : 'null'}
 export const newestPostDate = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.date.toISOString()) : 'null'}`,
-    })
-
-    // Conditionally add the server endpoint only when needed
-    if (needsRuntimeDiscovery) {
-      addServerHandler({
-        route: '/api/discover-bluesky-post',
-        handler: resolver.resolve('./runtime/server/discover-bluesky-post.get'),
       })
-    }
 
-    // Still use the content hook to inject the bluesky URI into content
-    nuxt.hook('content:file:afterParse', ctx => {
-      const content = ctx.content as { path?: string, bluesky?: string }
-      if (!content.path?.startsWith('/blog/')) return
-
-      const post = blogPosts.find(p => p.path === content.path)
-      if (post?.blueskyUri) {
-        content.bluesky = post.blueskyUri
+      // Conditionally add the server endpoint only when needed
+      if (needsRuntimeDiscovery) {
+        addServerHandler({
+          route: '/api/discover-bluesky-post',
+          handler: resolver.resolve('./runtime/server/discover-bluesky-post.get'),
+        })
       }
     })
   },

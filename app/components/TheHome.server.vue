@@ -40,10 +40,8 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
       })),
   }),
   useAsyncData(async () => {
-    const result = await queryCollection('blog').select('title', 'date', 'path').all()
-    return result
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 4)
+    const { blogEntries } = await import('#build/markdown/blog-entries.mjs')
+    return blogEntries.slice(0, 4).map(({ title, path, date }) => ({ title, path, date }))
   }),
   useFetch('/api/talks', {
     transform: talks => {

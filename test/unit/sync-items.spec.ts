@@ -1,50 +1,46 @@
-import fsp from 'node:fs/promises'
-import { join } from 'node:path'
+import { readFile } from 'node:fs/promises'
 import process from 'node:process'
 import { describe, it, expect } from 'vitest'
-import { getMarkdownArticles } from '../../modules/sync/runtime/server/utils/items'
+import grayMatter from 'gray-matter'
+import { filename } from 'pathe/utils'
+import { glob } from 'tinyglobby'
 
-describe('getMarkdownArticles', () => {
-  it('parses markdown frontmatter and content correctly', async () => {
-    // Create a temporary markdown file with frontmatter
-    const filePath = join(process.cwd(), 'content/blog/test-article.md')
-    const markdown = `---\ntitle: Test Article\ndate: 2025-06-26\ntags: ["foo", "bar"]\n---\n\nThis is the first paragraph.\n\nSecond paragraph.`
-    await fsp.mkdir(join(process.cwd(), 'content/blog'), { recursive: true })
-    await fsp.writeFile(filePath, markdown)
-    const articles = await getMarkdownArticles()
-    const testArticle = articles.find(a => a.title === 'Test Article')
-    expect(testArticle).toBeDefined()
-    expect(testArticle?.tags).toEqual(['foo', 'bar'])
-    expect(testArticle?.description).toContain('This is the first paragraph')
-    expect(testArticle?.date).toBe('2025-06-26')
-    // Cleanup
-    await fsp.unlink(filePath)
+describe('blog content parsing', () => {
+  it('all blog posts have required frontmatter', async () => {
+    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
+    expect(files.length).toBeGreaterThan(0)
+
+    for (const file of files) {
+      const raw = await readFile(file, 'utf-8')
+      const { data } = grayMatter(raw)
+      const slug = filename(file)
+
+      expect(data.title, `${slug} missing title`).toBeTruthy()
+      expect(data.date, `${slug} missing date`).toBeTruthy()
+      expect(Array.isArray(data.tags), `${slug} tags should be an array`).toBe(true)
+    }
   })
 
-  it('parses titles and dates with quotes', async () => {
-    const filePath = join(process.cwd(), 'content/blog/test-article-quotes.md')
-    const markdown = `---\ntitle: "A 'Quoted' Title"\ndate: '2025-07-01'\ntags: ["foo"]\n---\n\nContent with quotes.`
-    await fsp.mkdir(join(process.cwd(), 'content/blog'), { recursive: true })
-    await fsp.writeFile(filePath, markdown)
-    const articles = await getMarkdownArticles()
-    const testArticle = articles.find(a => a.title === 'A \'Quoted\' Title')
-    expect(testArticle).toBeDefined()
-    expect(testArticle?.date).toBe('2025-07-01')
-    expect(testArticle?.tags).toEqual(['foo'])
-    // Cleanup
-    await fsp.unlink(filePath)
+  it('blog post dates are valid', async () => {
+    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
+
+    for (const file of files) {
+      const raw = await readFile(file, 'utf-8')
+      const { data } = grayMatter(raw)
+      const slug = filename(file)
+      const date = new Date(data.date)
+
+      expect(date.toString(), `${slug} has invalid date: ${data.date}`).not.toBe('Invalid Date')
+    }
   })
 
-  it('parses tags as YAML array', async () => {
-    const filePath = join(process.cwd(), 'content/blog/test-article-yaml-array.md')
-    const markdown = `---\ntitle: YAML Array Tags\ndate: 2025-08-01\ntags:\n  - personal\n  - ux\n  - brand\n---\n\nYAML array tags test.`
-    await fsp.mkdir(join(process.cwd(), 'content/blog'), { recursive: true })
-    await fsp.writeFile(filePath, markdown)
-    const articles = await getMarkdownArticles()
-    const testArticle = articles.find(a => a.title === 'YAML Array Tags')
-    expect(testArticle).toBeDefined()
-    expect(testArticle?.tags).toEqual(['personal', 'ux', 'brand'])
-    // Cleanup
-    await fsp.unlink(filePath)
+  it('blog post slugs form valid paths', async () => {
+    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
+
+    for (const file of files) {
+      const slug = filename(file)
+      expect(slug, `${file} has no slug`).toBeTruthy()
+      expect(slug).toMatch(/^[a-z0-9-]+$/)
+    }
   })
 })

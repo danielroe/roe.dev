@@ -1,4 +1,6 @@
-import { ContentRenderer } from '#components'
+import { MDCRenderer } from '#components'
+import { blogBodyLoaders } from '#build/markdown/blog/index.mjs'
+import { pageBodyLoaders } from '#build/markdown/page/index.mjs'
 
 export default defineComponent({
   props: {
@@ -6,13 +8,15 @@ export default defineComponent({
     path: { type: String, required: true },
   },
   async setup (props) {
-    if (import.meta.dev) {
-      const { data } = await useAsyncData(() =>
-        queryCollection(props.collection).path(props.path!).first(),
-      )
-      return () => h(ContentRenderer, { value: data.value! })
+    const slug = props.path.replace(/^\/(?:blog\/)?/, '').replace(/\/$/, '')
+    const loaders = props.collection === 'blog' ? blogBodyLoaders : pageBodyLoaders
+    const loader = loaders[slug]
+
+    if (!loader) {
+      return () => null
     }
-    const value = await queryCollection(props.collection).path(props.path!).first()
-    return () => h(ContentRenderer, { value: value! })
+
+    const parsed = await loader()
+    return () => h(MDCRenderer, { body: parsed.body, tag: 'div' })
   },
 })

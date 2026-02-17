@@ -1,7 +1,7 @@
 import process from 'node:process'
 
 import { defineNuxtConfig } from 'nuxt/config'
-import { extendViteConfig, useNuxt } from 'nuxt/kit'
+import { extendViteConfig } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
 
@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxt/content',
+    '@nuxtjs/mdc',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
@@ -81,17 +81,11 @@ export default defineNuxtConfig({
     url: 'https://roe.dev',
   },
 
-  content: {
-    watch: {
-      enabled: false,
-    },
-    build: {
-      markdown: {
-        highlight: {
-          preload: ['js', 'ts', 'json', 'vue'],
-          theme: 'material-theme-palenight',
-        },
-      },
+  mdc: {
+    highlight: {
+      theme: 'material-theme-palenight',
+      langs: ['js', 'ts', 'json', 'vue', 'css', 'html', 'bash', 'md', 'mdc', 'yaml'],
+      noApiRoute: true,
     },
   },
 
@@ -189,7 +183,6 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       routes: ['/', '/live', '/rss.xml', '/voted', '/work', '/feedback', '/ama', '/ai'],
-      ignore: ['/__nuxt_content'],
     },
     hooks: {
       'prerender:generate' (route) {
@@ -247,19 +240,6 @@ export default defineNuxtConfig({
     plugins: {
       'postcss-nesting': {},
       '@unocss/postcss': {},
-    },
-  },
-
-  hooks: {
-    'components:extend' (components) {
-      // This code ensures that we can run our markdown renderer on the
-      // client side in development mode (for HMR).
-      const nuxt = useNuxt()
-      for (const comp of components) {
-        if (comp.pascalName === 'StaticMarkdownRender' && nuxt.options.dev) {
-          comp.mode = 'all'
-        }
-      }
     },
   },
 

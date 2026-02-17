@@ -1,17 +1,11 @@
 <script setup lang="ts">
-const entries = await queryCollection('blog')
-  .select('title', 'date', 'path')
-  .all()
-  .then(result => {
-    return result
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  })
+import { blogEntries } from '#build/markdown/blog-entries.mjs'
 </script>
 
 <template>
   <section class="flex flex-col gap-4 max-w-[37.50rem]">
     <NuxtLink
-      v-for="{ title, path, date } in entries"
+      v-for="{ title, path, date } in blogEntries"
       :key="path"
       :to="path"
       :title="title"
