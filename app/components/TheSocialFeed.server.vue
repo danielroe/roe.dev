@@ -23,10 +23,14 @@
 </template>
 
 <script lang="ts" setup>
+import type { BlueskyFeedItem } from '~~/modules/social/runtime/server/_social/bluesky.get'
+import type { MastodonFeedItem } from '~~/modules/social/runtime/server/_social/mastodon.get'
+
 const [mastodon, bluesky] = await Promise.all([
-  $fetch('/_social/mastodon'),
-  $fetch('/_social/bluesky').then(r => r.filter(p => !p.html?.includes('#ama'))),
+  $fetch<MastodonFeedItem[]>('/_social/mastodon'),
+  $fetch<BlueskyFeedItem[]>('/_social/bluesky').then(r => r.filter(p => !p.html?.includes('#ama'))),
 ])
+
 const sortedFeed = [...mastodon, ...bluesky]
   .sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),

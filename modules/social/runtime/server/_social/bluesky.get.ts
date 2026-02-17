@@ -18,7 +18,7 @@ export default defineEventHandler(async event => {
     }
   } while (cursor && feed.length < 20)
 
-  return Promise.all(feed.map((p): FeedItem => {
+  return Promise.all(feed.map((p): BlueskyFeedItem => {
     const post = p.post.record as AppBskyFeedPost.Record
     const embed = AppBskyEmbedImages.isMain(p.post.embed) ? p.post.embed : undefined
     const text = new MagicString(post.text)
@@ -74,7 +74,7 @@ export default defineEventHandler(async event => {
   }))
 })
 
-interface FeedItem {
+export interface BlueskyFeedItem {
   network: 'bluesky'
   accountLink: string
   avatar?: string

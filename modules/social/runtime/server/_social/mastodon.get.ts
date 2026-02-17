@@ -53,3 +53,19 @@ export default defineEventHandler(async event => {
       })),
   )
 })
+
+export interface MastodonFeedItem {
+  network: 'mastodon'
+  accountLink: string
+  avatar?: string
+  handle: string
+  createdAt: string
+  permalink: string
+  media: {
+    url: string
+    width?: number
+    height?: number
+    alt?: string | null
+  }[]
+  html: string
+}

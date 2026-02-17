@@ -51,7 +51,11 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     if (!existsSync(cacheDir)) {
       await mkdir(cacheDir, { recursive: true })
     }
-    const blueskyHandle = nuxt.options.social.networks.bluesky!.identifier
+    const blueskyHandle = nuxt.options.social ? nuxt.options.social.networks.bluesky!.identifier : null
+    if (!blueskyHandle) {
+      console.warn('Bluesky handle not configured in nuxt.config. Skipping Bluesky URI discovery.')
+      return
+    }
 
     // Receive blog data from the markdown module hook and discover Bluesky URIs
     const blogPosts: BlogPost[] = []
