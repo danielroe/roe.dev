@@ -14,12 +14,14 @@ export default defineEventHandler(event => {
     ? `tags: [${post.tags.join(', ')}]`
     : 'tags: []'
 
+  const esc = (s: string) => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+
   const md = [
     '---',
-    `title: "${post.title.replace(/"/g, '\\"')}"`,
+    `title: "${esc(post.title)}"`,
     `date: ${post.date}`,
     tagStr,
-    `description: "${post.description.replace(/"/g, '\\"')}"`,
+    `description: "${esc(post.description)}"`,
     `url: https://roe.dev/blog/${post.slug}`,
     '---',
     '',

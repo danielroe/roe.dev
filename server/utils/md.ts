@@ -1,10 +1,14 @@
 const SITE_URL = 'https://roe.dev'
 
+function yamlEscape (str: string): string {
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+}
+
 export function mdFrontmatter (path: string, meta: { title: string, description?: string }): string {
   const lines = ['---']
-  lines.push(`title: "${meta.title.replace(/"/g, '\\"')}"`)
+  lines.push(`title: "${yamlEscape(meta.title)}"`)
   if (meta.description) {
-    lines.push(`description: "${meta.description.replace(/"/g, '\\"')}"`)
+    lines.push(`description: "${yamlEscape(meta.description)}"`)
   }
   lines.push(`url: ${SITE_URL}${path}`)
   lines.push('---')
