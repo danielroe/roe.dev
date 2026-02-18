@@ -21,7 +21,3 @@
     </main>
   </div>
 </template>
-
-<script lang="ts" setup>
-definePageMeta({ title: 'Thank you!' })
-</script>

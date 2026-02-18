@@ -13,7 +13,3 @@
     </main>
   </div>
 </template>
-
-<script lang="ts" setup>
-definePageMeta({ title: 'Uses' })
-</script>

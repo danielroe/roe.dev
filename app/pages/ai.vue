@@ -17,7 +17,3 @@
     </main>
   </div>
 </template>
-
-<script lang="ts" setup>
-definePageMeta({ title: 'AI usage' })
-</script>

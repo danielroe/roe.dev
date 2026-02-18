@@ -7,7 +7,7 @@ import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 
-import { serializers } from './shared/serialisers'
+import { serialize } from './shared/serialisers'
 
 interface BlogFrontmatter {
   title: string
@@ -165,10 +165,7 @@ export async function getBody () {
     const rssMetadata: Record<string, any> = {}
 
     for (const post of blogPosts) {
-      let contents = post.body
-      for (const [pattern, replacement] of serializers) {
-        contents = contents.replace(pattern, replacement)
-      }
+      const contents = serialize(post.body)
       const date = new Date(post.date)
       rssMetadata[post.slug] = {
         title: post.title,
@@ -187,10 +184,7 @@ export async function getBody () {
     const syncArticles = blogPosts
       .filter(p => !p.skip_dev)
       .map(post => {
-        let body = post.body
-        for (const [pattern, replacement] of serializers) {
-          body = body.replace(pattern, replacement)
-        }
+        const body = serialize(post.body)
         const firstParagraph = post.body.split(/\n\s*\n/).find(p => p.trim())?.trim() || ''
         const date = new Date(post.date)
         return {
@@ -207,9 +201,31 @@ export async function getBody () {
     nuxt.options.nitro.virtual['#sync-articles.json'] = () =>
       `export const syncArticles = ${JSON.stringify(syncArticles)}`
 
+    // Raw blog markdown for .md routes (blog post bodies + frontmatter)
+    const rawBlogData = blogPosts.map(post => ({
+      slug: post.slug,
+      title: post.title,
+      date: typeof post.date === 'string' ? post.date.split('T')[0] : post.date,
+      tags: post.tags,
+      description: post.description,
+      body: serialize(post.body),
+    }))
+
+    nuxt.options.nitro.virtual['#md-raw-blog.json'] = () =>
+      `export const rawBlogPosts = ${JSON.stringify(rawBlogData)}`
+
+    // Raw page markdown for .md routes (ai, bio)
+    const rawPageData: Record<string, string> = {}
+    for (const [slug, body] of Object.entries(pageBodies)) {
+      rawPageData[slug] = serialize(body)
+    }
+
+    nuxt.options.nitro.virtual['#md-raw-pages.json'] = () =>
+      `export const rawPages = ${JSON.stringify(rawPageData)}`
+
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#metadata.json', '#sync-articles.json')
+    nuxt.options.nitro.externals.inline.push('#metadata.json', '#sync-articles.json', '#md-raw-blog.json', '#md-raw-pages.json')
 
     // --- Type declarations ---
 
@@ -238,8 +254,36 @@ declare module '#build/markdown/page/index.mjs' {
   import type { MDCParserResult } from '@nuxtjs/mdc'
   export const pageBodyLoaders: Record<string, () => Promise<MDCParserResult>>
 }
+
+declare module '#md-raw-blog.json' {
+  interface RawBlogPost {
+    slug: string
+    title: string
+    date: string
+    tags: string[]
+    description: string
+    body: string
+  }
+  export const rawBlogPosts: RawBlogPost[]
+}
+
+declare module '#md-raw-pages.json' {
+  export const rawPages: Record<string, string>
+}
+
+declare module '#md-page-meta.json' {
+  interface PageMeta {
+    title: string
+    description?: string
+  }
+  export const pageMeta: Record<string, PageMeta>
+}
+
+declare module '#md-pages.json' {
+  export const mdPages: Set<string>
+}
 `,
-    }, { nuxt: true })
+    }, { nuxt: true, nitro: true })
   },
 })
 

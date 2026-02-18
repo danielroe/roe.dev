@@ -16,8 +16,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ title: 'Blog' })
-
 const nuxtApp = useNuxtApp()
 onMounted(() => {
   nextTick(() =>

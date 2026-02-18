@@ -145,6 +145,7 @@ if (import.meta.server) {
       { rel: 'mask-icon', color: '#fff', href: '/favicon.svg' },
       { rel: 'icon', type: 'image/svg', href: '/favicon.svg' },
       { rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml' },
+      { rel: 'alternate', type: 'text/markdown', href: `https://roe.dev${path === '/' ? '/index' : withoutTrailingSlash(path)}.md` },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',

@@ -116,8 +116,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ title: 'Ask me anything' })
-
 const status = ref<'idle' | 'pending' | 'error' | 'success'>('idle')
 
 const denialDetected = ref(false)
