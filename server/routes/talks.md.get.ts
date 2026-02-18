@@ -1,13 +1,11 @@
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   if (import.meta.test) {
     return mdResponse('')
   }
 
-  const talks = await $fetch<Talk[]>('/api/talks', {
-    baseURL: getRequestURL(event).origin,
-  })
+  const talks = await $fetch<Talk[]>('/api/talks')
 
   // Group talks the same way the page does
   const groupedTalks: Record<string, Talk[]> = {}

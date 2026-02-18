@@ -1,18 +1,14 @@
 import { rawBlogPosts } from '#md-raw-blog.json'
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   if (import.meta.test) {
     return mdResponse('')
   }
 
   const [talks, upcomingConferences] = await Promise.all([
-    $fetch<Talk[]>('/api/talks', {
-      baseURL: getRequestURL(event).origin,
-    }).catch(() => [] as Talk[]),
-    $fetch<Conference[]>('/api/upcoming-conferences', {
-      baseURL: getRequestURL(event).origin,
-    }).catch(() => [] as Conference[]),
+    $fetch<Talk[]>('/api/talks').catch(() => [] as Talk[]),
+    $fetch<Conference[]>('/api/upcoming-conferences').catch(() => [] as Conference[]),
   ])
 
   // Group talks and take top 4
