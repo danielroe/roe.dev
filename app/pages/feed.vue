@@ -14,7 +14,3 @@
     </main>
   </div>
 </template>
-
-<script lang="ts" setup>
-definePageMeta({ title: 'Feed' })
-</script>

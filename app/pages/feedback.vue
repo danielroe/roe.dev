@@ -57,8 +57,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ title: 'Feedback' })
-
 const feedback = ref('')
 const status = ref<'idle' | 'pending' | 'error'>('idle')
 

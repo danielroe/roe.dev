@@ -80,8 +80,6 @@
 import { ref, onBeforeUnmount } from 'vue'
 import PartySocket from 'partysocket'
 
-definePageMeta({ title: 'Live Reactions' })
-
 const predefinedEmojis = ['👍', '❤️', '😂', '👏', '🔥', '🎉', '🤯', '👨‍💻', '🙌', '🎯', '✅']
 const customEmoji = ref('')
 const displayedReactions = ref<Array<{

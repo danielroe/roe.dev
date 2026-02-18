@@ -19,20 +19,7 @@ import {
 } from 'nuxt/kit'
 import { withLeadingSlash } from 'ufo'
 
-const routeMeta: Record<string, Record<string, any>> = {
-  '/blog': {
-    title: 'Blog',
-  },
-  '/talks': {
-    title: 'Talks',
-  },
-  '/uses': {
-    title: 'Uses',
-  },
-  '/work': {
-    title: 'Work',
-  },
-}
+import { pageMeta } from '../shared/page-meta'
 
 export default defineNuxtModule({
   meta: {
@@ -103,7 +90,7 @@ export default defineNuxtModule({
             //   interopDefault: true,
             // })})`,
             component: componentNames[f],
-            meta: JSON.stringify(routeMeta[path] || {}),
+            meta: JSON.stringify(pageMeta[path] || {}),
           }
         })
 

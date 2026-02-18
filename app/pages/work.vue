@@ -67,8 +67,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ title: 'Work' })
-
 const ideaText = ref('')
 const ideaStatus = ref<'ready' | 'submitting' | 'submitted' | 'error'>('ready')
 
