@@ -12,6 +12,7 @@ export default defineConfig({
           environmentOptions: {
             nuxt: {
               overrides: {
+                plausible: false,
                 ogImage: { enabled: false },
               },
             },
