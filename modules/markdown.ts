@@ -6,6 +6,7 @@ import grayMatter from 'gray-matter'
 import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
+import { convert as htmlToText } from 'html-to-text'
 
 import { serialize } from './shared/serialisers'
 
@@ -186,9 +187,9 @@ export async function getBody () {
       .map(async post => {
         const body = serialize(post.body)
         const date = new Date(post.date)
-        // Render markdown to HTML, then strip tags for faithful plaintext
+        // Render markdown to HTML, then convert to faithful plaintext
         const html = String(await md.process(body))
-        const textContent = html.replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()
+        const textContent = htmlToText(html, { wordwrap: false })
         return {
           type: 'blog' as const,
           title: post.title,
