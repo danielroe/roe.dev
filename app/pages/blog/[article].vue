@@ -60,6 +60,7 @@
 
 <script lang="ts" setup>
 import { needsRuntimeDiscovery, newestPostPath } from '#build/bsky-runtime-discovery.mjs'
+import { standardSiteDid } from '#build/standard-site/did.mjs'
 
 const route = useRoute('blog-article')
 const slug = route.params.article
@@ -142,6 +143,11 @@ if (import.meta.server) {
         type: 'application/ld+json',
         innerHTML: JSON.stringify(articleSchema),
       },
+    ],
+    link: [
+      ...standardSiteDid
+        ? [{ rel: 'site.standard.document', href: `at://${standardSiteDid}/site.standard.document/${slug}` }]
+        : [],
     ],
   })
 }

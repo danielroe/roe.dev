@@ -1,11 +1,13 @@
 import { GithubStarsProvider } from './github-stars'
 import { DevToProvider } from './dev-to'
 import { GdeAdvocuProvider } from './gde-advocu'
+import { StandardSiteProvider } from './standard-site'
 
 const providers = {
   'github-stars': new GithubStarsProvider(),
   'dev-to': new DevToProvider(),
   'gde-advocu': new GdeAdvocuProvider(),
+  'standard-site': new StandardSiteProvider(),
 } satisfies Record<string, SyncProvider>
 
 type ProviderName = keyof typeof providers
@@ -27,6 +29,7 @@ export interface SyncItem {
   title: string
   description?: string
   body_markdown?: string
+  text_content?: string
   canonical_url: string
   type: 'blog' | 'talk' | 'article' | 'event' | 'hackathon' | 'oss' | 'video' | 'forum' | 'other'
   date?: string
