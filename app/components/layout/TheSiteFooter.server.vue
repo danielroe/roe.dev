@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { links } from '~/utils/data'
+import { links } from '#shared/utils/links'
 
 const year = new Date().getFullYear()
 </script>

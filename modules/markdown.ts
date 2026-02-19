@@ -275,6 +275,7 @@ declare module '#md-page-meta.json' {
   interface PageMeta {
     title: string
     description?: string
+    llmLabel?: string
   }
   export const pageMeta: Record<string, PageMeta>
 }

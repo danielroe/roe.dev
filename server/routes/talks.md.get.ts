@@ -70,32 +70,3 @@ export default defineEventHandler(async () => {
 
   return mdResponse(lines.join('\n'))
 })
-
-function formatDate (dateStr: string): string {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
-
-interface Talk {
-  _id: string
-  title: string
-  description?: string
-  source: string
-  tags: string[]
-  link?: string
-  video?: string
-  date: string
-  type: string
-  slides?: string
-  repo?: string
-  demo?: string
-  group?: {
-    _id: string
-    title: string
-    description?: string
-  }
-}

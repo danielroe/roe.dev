@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { joinURL, withoutTrailingSlash } from 'ufo'
-import { links } from '~/utils/data'
+import { links } from '#shared/utils/links'
 
 const route = useRoute()
 
@@ -58,10 +58,16 @@ if (import.meta.server) {
     'url': 'https://roe.dev',
     'image': 'https://roe.dev/me.jpg',
     'jobTitle': 'Nuxt Core Team Lead',
+    'description': 'Open source maintainer and keynote speaker leading the Nuxt core team. Creator of developer tools across the Vue.js and JavaScript ecosystems.',
     'worksFor': {
       '@type': 'Organization',
       'name': 'Vercel',
       'url': 'https://vercel.com',
+    },
+    'memberOf': {
+      '@type': 'Organization',
+      'name': 'Nuxt',
+      'url': 'https://nuxt.com',
     },
     'alumniOf': [
       {
@@ -73,7 +79,25 @@ if (import.meta.server) {
         'name': 'Oak Hill College',
       },
     ],
-    'knowsAbout': ['Vue.js', 'Nuxt', 'JavaScript', 'TypeScript', 'Web Performance', 'Serverless', 'Open Source'],
+    'hasCredential': [
+      {
+        '@type': 'EducationalOccupationalCredential',
+        'credentialCategory': 'degree',
+        'name': 'MA in Jurisprudence',
+      },
+      {
+        '@type': 'EducationalOccupationalCredential',
+        'credentialCategory': 'degree',
+        'name': 'MTh in Theological and Pastoral Studies',
+      },
+    ],
+    'award': [
+      'Microsoft MVP',
+      'Google Developer Expert',
+      'GitHub Star',
+      'OpenUK 2025 New Year Honours',
+    ],
+    'knowsAbout': ['Vue.js', 'Nuxt', 'JavaScript', 'TypeScript', 'Web Performance', 'Serverless', 'Open Source', 'Nitro', 'UnJS'],
     'sameAs': [
       ...links.filter(link => link.link.startsWith('https://')).map(link => link.link),
       'https://x.com/danielcroe',
@@ -82,6 +106,11 @@ if (import.meta.server) {
     'homeLocation': {
       '@type': 'Place',
       'name': 'Scotland',
+      'address': {
+        '@type': 'PostalAddress',
+        'addressCountry': 'GB',
+        'addressRegion': 'Scotland',
+      },
     },
   }
 
