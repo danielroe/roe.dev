@@ -138,6 +138,11 @@ export default defineNuxtConfig({
     },
     devToToken: '',
     advocuToken: '',
+    standardSite: {
+      pdsUrl: '',
+      identifier: '',
+      password: '',
+    },
     public: {
       githubClientId: '',
     },

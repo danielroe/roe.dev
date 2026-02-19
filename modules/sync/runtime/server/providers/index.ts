@@ -1,11 +1,13 @@
 import { GithubStarsProvider } from './github-stars'
 import { DevToProvider } from './dev-to'
 import { GdeAdvocuProvider } from './gde-advocu'
+import { StandardSiteProvider } from './standard-site'
 
 const providers = {
   'github-stars': new GithubStarsProvider(),
   'dev-to': new DevToProvider(),
   'gde-advocu': new GdeAdvocuProvider(),
+  'standard-site': new StandardSiteProvider(),
 } satisfies Record<string, SyncProvider>
 
 type ProviderName = keyof typeof providers

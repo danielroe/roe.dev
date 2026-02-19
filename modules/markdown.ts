@@ -185,13 +185,12 @@ export async function getBody () {
       .filter(p => !p.skip_dev)
       .map(post => {
         const body = serialize(post.body)
-        const firstParagraph = post.body.split(/\n\s*\n/).find(p => p.trim())?.trim() || ''
         const date = new Date(post.date)
         return {
           type: 'blog' as const,
           title: post.title,
           date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
-          description: firstParagraph || '',
+          description: post.description || '',
           body_markdown: body,
           canonical_url: `https://roe.dev/blog/${post.slug}/`,
           tags: post.tags.length ? post.tags : undefined,
