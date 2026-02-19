@@ -69,7 +69,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Daniel Roe',
     },
     pageTransition: false,
     layoutTransition: false,
