@@ -11,6 +11,15 @@ export default defineNuxtModule({
 
     const blueskyHandle = nuxt.options.social ? nuxt.options.social.networks.bluesky?.identifier : null
 
+    addTypeTemplate({
+      filename: 'types/standard-site.d.ts',
+      getContents: () => `
+declare module '#standard-site-did.json' {
+  export const standardSiteDid: string | null
+}
+`,
+    }, { nitro: true })
+
     if (nuxt.options._prepare || nuxt.options.test || !blueskyHandle) {
       if (!nuxt.options._prepare && !nuxt.options.test) {
         console.warn('[standard-site] Bluesky handle not configured. Skipping DID resolution.')
@@ -56,15 +65,6 @@ export const standardSiteDid = ${JSON.stringify(did)}
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
     nuxt.options.nitro.externals.inline.push('#standard-site-did.json')
-
-    addTypeTemplate({
-      filename: 'types/standard-site.d.ts',
-      getContents: () => `
-declare module '#standard-site-did.json' {
-  export const standardSiteDid: string | null
-}
-`,
-    }, { nitro: true })
 
     // Register .well-known verification route
     addServerHandler({
