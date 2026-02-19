@@ -51,32 +51,6 @@ export function mdCleanHtml (content: string): string {
     .trim()
 }
 
-/** Strip markdown formatting to produce plain text. */
-export function mdStripFormatting (markdown: string): string {
-  return markdown
-    // Remove code blocks
-    .replace(/```[\s\S]*?```/g, '')
-    // Remove inline code
-    .replace(/`([^`]+)`/g, '$1')
-    // Remove images
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
-    // Remove links but keep text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    // Remove heading markers
-    .replace(/^#{1,6}\s+/gm, '')
-    // Remove bold/italic markers
-    .replace(/(\*{1,3}|_{1,3})(.*?)\1/g, '$2')
-    // Remove blockquotes
-    .replace(/^>\s?/gm, '')
-    // Remove horizontal rules
-    .replace(/^[-*_]{3,}\s*$/gm, '')
-    // Remove HTML tags
-    .replace(/<[^>]+>/g, '')
-    // Collapse multiple blank lines
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
-}
-
 export function mdResponse (content: string): Response {
   return new Response(content, {
     headers: { 'Content-Type': 'text/markdown; charset=utf-8' },

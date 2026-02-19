@@ -61,8 +61,8 @@ export class StandardSiteProvider implements SyncProvider {
         record.tags = item.tags
       }
 
-      if (item.body_markdown) {
-        record.textContent = mdStripFormatting(item.body_markdown)
+      if (item.text_content) {
+        record.textContent = item.text_content
       }
 
       await agent.com.atproto.repo.putRecord({

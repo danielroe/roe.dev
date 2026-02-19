@@ -29,6 +29,7 @@ export interface SyncItem {
   title: string
   description?: string
   body_markdown?: string
+  text_content?: string
   canonical_url: string
   type: 'blog' | 'talk' | 'article' | 'event' | 'hackathon' | 'oss' | 'video' | 'forum' | 'other'
   date?: string

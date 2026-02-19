@@ -69,7 +69,7 @@ declare module '#standard-site-did.json' {
     // Register .well-known verification route
     addServerHandler({
       route: '/.well-known/site.standard.publication',
-      handler: resolver.resolve('./standard-site/runtime/server/routes/well-known.get'),
+      handler: resolver.resolve('./runtime/server/routes/well-known.get'),
     })
 
     // Prerender the verification route

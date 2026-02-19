@@ -1,4 +1,3 @@
-// @ts-expect-error virtual file
 import { standardSiteDid } from '#standard-site-did.json'
 
 export default defineEventHandler(event => {

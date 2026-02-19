@@ -181,21 +181,25 @@ export async function getBody () {
       `export const metadata = ${JSON.stringify(rssMetadata)}`
 
     // Sync articles data, replaces sync/runtime/server/utils/items.ts reading from disk
-    const syncArticles = blogPosts
+    const syncArticles = await Promise.all(blogPosts
       .filter(p => !p.skip_dev)
-      .map(post => {
+      .map(async post => {
         const body = serialize(post.body)
         const date = new Date(post.date)
+        // Render markdown to HTML, then strip tags for faithful plaintext
+        const html = String(await md.process(body))
+        const textContent = html.replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()
         return {
           type: 'blog' as const,
           title: post.title,
           date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
           description: post.description || '',
           body_markdown: body,
+          text_content: textContent,
           canonical_url: `https://roe.dev/blog/${post.slug}/`,
           tags: post.tags.length ? post.tags : undefined,
         }
-      })
+      }))
 
     nuxt.options.nitro.virtual['#sync-articles.json'] = () =>
       `export const syncArticles = ${JSON.stringify(syncArticles)}`
