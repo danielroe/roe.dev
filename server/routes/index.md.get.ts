@@ -1,5 +1,6 @@
 import { rawBlogPosts } from '#md-raw-blog.json'
 import { pageMeta } from '#md-page-meta.json'
+import { links } from '#shared/utils/links'
 
 export default defineEventHandler(async () => {
   if (import.meta.test) {
@@ -34,12 +35,9 @@ export default defineEventHandler(async () => {
     '',
     '## Links',
     '',
-    '- [GitHub](https://github.com/danielroe/)',
-    '- [Bluesky](https://bsky.app/profile/danielroe.dev)',
-    '- [LinkedIn](https://www.linkedin.com/in/daniel-roe/)',
-    '- [Mastodon](https://mastodon.roe.dev/@daniel)',
-    '- [YouTube](https://www.youtube.com/@danielroe)',
-    '- [Twitch](https://twitch.tv/danielroe)',
+    ...links
+      .filter(l => l.link.startsWith('https://'))
+      .map(l => `- [${l.name}](${l.link})`),
     '- [Email](mailto:daniel@roe.dev)',
     '',
   ]
@@ -91,30 +89,3 @@ export default defineEventHandler(async () => {
 
   return mdResponse(lines.join('\n'))
 })
-
-function formatDate (dateStr: string): string {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
-
-interface Talk {
-  _id: string
-  title: string
-  source: string
-  link?: string
-  video?: string
-  date: string
-  type: string
-  group?: { _id: string }
-}
-
-interface Conference {
-  name: string
-  dates: string
-  link?: string
-  location?: string
-}
