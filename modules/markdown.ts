@@ -9,6 +9,7 @@ import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
 
 import { serialize } from './shared/serialisers'
+import { mdCleanHtml, mdInternalLinks } from './shared/md-transforms'
 
 interface BlogFrontmatter {
   title: string
@@ -39,7 +40,6 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const rootDir = nuxt.options.rootDir
 
-    // Read and parse all content files at build time
     const [blogFiles, pageFiles] = await Promise.all([
       glob('./content/blog/**/*.md', { cwd: rootDir, absolute: true }),
       glob('./content/*.md', { cwd: rootDir, absolute: true }),
@@ -48,7 +48,6 @@ export default defineNuxtModule({
     const blogPosts: ParsedBlogPost[] = []
     const pageBodies: Record<string, string> = {}
 
-    // Parse blog posts
     for (const filePath of blogFiles) {
       const raw = await readFile(filePath, 'utf-8')
       const { data, content } = grayMatter(raw)
@@ -68,7 +67,6 @@ export default defineNuxtModule({
       })
     }
 
-    // Parse page files
     for (const filePath of pageFiles) {
       const raw = await readFile(filePath, 'utf-8')
       const { content } = grayMatter(raw)
@@ -76,14 +74,9 @@ export default defineNuxtModule({
       pageBodies[slug] = content
     }
 
-    // Sort blog posts by date descending
     blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-    // Wait until all modules are loaded before calling the hook,
-    // so listeners don't depend on module load order.
     nuxt.hook('modules:done', () => nuxt.callHook('markdown:blog-entries', blogPosts))
-
-    // --- Client-side virtual modules ---
 
     addTemplate({
       filename: 'markdown/blog-entries.mjs',
@@ -159,9 +152,6 @@ export async function getBody () {
       write: true,
     })
 
-    // --- Server-side virtual modules ---
-
-    // RSS metadata (HTML rendering + frontmatter), replaces the old metadata.ts module
     const md = remark().use(remarkHtml)
     const rssMetadata: Record<string, any> = {}
 
@@ -181,13 +171,11 @@ export async function getBody () {
     nuxt.options.nitro.virtual['#metadata.json'] = () =>
       `export const metadata = ${JSON.stringify(rssMetadata)}`
 
-    // Sync articles data, replaces sync/runtime/server/utils/items.ts reading from disk
     const syncArticles = await Promise.all(blogPosts
       .filter(p => !p.skip_dev)
       .map(async post => {
         const body = serialize(post.body)
         const date = new Date(post.date)
-        // Render markdown to HTML, then convert to faithful plaintext
         const html = String(await md.process(body))
         const textContent = htmlToText(html, { wordwrap: false })
         return {
@@ -205,23 +193,21 @@ export async function getBody () {
     nuxt.options.nitro.virtual['#sync-articles.json'] = () =>
       `export const syncArticles = ${JSON.stringify(syncArticles)}`
 
-    // Raw blog markdown for .md routes (blog post bodies + frontmatter)
     const rawBlogData = blogPosts.map(post => ({
       slug: post.slug,
       title: post.title,
       date: typeof post.date === 'string' ? post.date.split('T')[0] : post.date,
       tags: post.tags,
       description: post.description,
-      body: serialize(post.body),
+      body: mdInternalLinks(serialize(post.body)).trim(),
     }))
 
     nuxt.options.nitro.virtual['#md-raw-blog.json'] = () =>
       `export const rawBlogPosts = ${JSON.stringify(rawBlogData)}`
 
-    // Raw page markdown for .md routes (ai, bio)
     const rawPageData: Record<string, string> = {}
     for (const [slug, body] of Object.entries(pageBodies)) {
-      rawPageData[slug] = serialize(body)
+      rawPageData[slug] = mdInternalLinks(mdCleanHtml(serialize(body)))
     }
 
     nuxt.options.nitro.virtual['#md-raw-pages.json'] = () =>
@@ -230,8 +216,6 @@ export async function getBody () {
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
     nuxt.options.nitro.externals.inline.push('#metadata.json', '#sync-articles.json', '#md-raw-blog.json', '#md-raw-pages.json')
-
-    // --- Type declarations ---
 
     addTypeTemplate({
       filename: 'types/markdown.d.ts',

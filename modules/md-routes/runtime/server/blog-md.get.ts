@@ -25,7 +25,7 @@ export default defineEventHandler(event => {
     `url: https://roe.dev/blog/${post.slug}`,
     '---',
     '',
-    mdInternalLinks(post.body.trim()),
+    post.body,
     '',
   ].join('\n')
 
