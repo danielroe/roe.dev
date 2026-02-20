@@ -1,45 +1,82 @@
-import { defu } from 'defu'
-import { defineNuxtModule, createResolver, addServerHandler } from 'nuxt/kit'
+import { createClient } from '@sanity/client'
+import { defineNuxtModule, useNuxt } from 'nuxt/kit'
+
+import { syncAll } from './providers'
+import type { SyncItem } from './providers'
+
+const TALK_TYPE_MAP: Record<string, SyncItem['type']> = {
+  podcast: 'video',
+  talk: 'talk',
+  meetup: 'talk',
+  conference: 'talk',
+  stream: 'video',
+  workshop: 'talk',
+}
 
 export default defineNuxtModule({
   meta: {
     name: 'sync',
-    configKey: 'sync',
   },
-  setup (_options, nuxt) {
-    if (nuxt.options.test) return
-    const resolver = createResolver(import.meta.url)
+  setup () {
+    const nuxt = useNuxt()
+    if (nuxt.options.test || nuxt.options._prepare) return
 
-    addServerHandler({
-      route: '/_tasks/sync',
-      handler: resolver.resolve('./runtime/server/routes/_tasks/sync'),
-    })
+    const dryRun = process.argv.includes('--dry-run')
+    const isProductionDeploy = process.env.VERCEL_ENV === 'production'
 
-    if (nuxt.options.dev) {
-      // register task for local use
-      nuxt.options.nitro.tasks = defu(nuxt.options.nitro.tasks, {
-        sync: {
-          handler: resolver.resolve('./runtime/server/tasks/sync'),
-        },
-      })
-      return
-    }
+    if (!dryRun && !isProductionDeploy) return
 
-    nuxt.options.nitro.prerender = nuxt.options.nitro.prerender || {}
-    nuxt.options.nitro.prerender.routes = nuxt.options.nitro.prerender.routes || []
-    if (!nuxt.options.nitro.prerender.routes.includes('/_tasks/sync')) {
-      nuxt.options.nitro.prerender.routes.push('/_tasks/sync')
-    }
+    nuxt.hook('markdown:sync-articles', async articles => {
+      const talks = await fetchTalks()
+      const items: SyncItem[] = [...articles, ...talks]
 
-    // Add to prerender routes
-    nuxt.hook('nitro:init', nitro => {
-      // prerender configuration only
-      const nitroConfig = nitro.options._config
-      nitroConfig.tasks = defu(nitroConfig.tasks, {
-        sync: {
-          handler: resolver.resolve('./runtime/server/tasks/sync'),
-        },
-      })
+      console.info(`[sync] ${dryRun ? 'Dry run' : 'Syncing'}: ${items.length} items (${articles.length} articles, ${talks.length} talks)`)
+      await syncAll(items, { dryRun })
     })
   },
 })
+
+async function fetchTalks (): Promise<SyncItem[]> {
+  const sanityToken = process.env.NUXT_SANITY_TOKEN
+  if (!sanityToken) {
+    console.warn('[sync] No NUXT_SANITY_TOKEN — skipping talks')
+    return []
+  }
+
+  const client = createClient({
+    projectId: '9bj3w2vo',
+    dataset: 'production',
+    apiVersion: '2025-01-01',
+    useCdn: false,
+    token: sanityToken,
+  })
+
+  try {
+    const talks = await client.fetch<Array<{
+      title: string
+      description?: string
+      date: string
+      type: string
+      tags?: string[]
+      link?: string
+      video?: string
+    }>>(`*[_type == "talk" && date < now() && defined(title) && title != ""] {
+      title, description, date, type, tags, link, video
+    } | order(date desc)`)
+
+    return talks
+      .filter(t => t.link || t.video)
+      .map(t => ({
+        type: TALK_TYPE_MAP[t.type] || 'talk' as SyncItem['type'],
+        title: t.title,
+        date: t.date,
+        body_markdown: t.description || '',
+        canonical_url: (t.link || t.video)!,
+        tags: Array.isArray(t.tags) ? t.tags : [],
+      }))
+  }
+  catch (error) {
+    console.warn('[sync] Failed to fetch talks:', error instanceof Error ? error.message : error)
+    return []
+  }
+}

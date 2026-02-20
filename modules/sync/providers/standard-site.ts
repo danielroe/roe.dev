@@ -1,15 +1,26 @@
 import { AtpAgent } from '@atproto/api'
 
-import type { SyncItem, SyncProvider } from './index'
+import type { SyncItem, SyncOptions, SyncProvider } from './index'
 
 export class StandardSiteProvider implements SyncProvider {
   name = 'standard-site'
 
-  async sync (items: SyncItem[]): Promise<{ status: string, count: number, total: number }> {
-    const config = useRuntimeConfig()
-    const pdsUrl = config.standardSite?.pdsUrl
-    const identifier = config.standardSite?.identifier
-    const password = config.standardSite?.password
+  async sync (items: SyncItem[], { dryRun }: SyncOptions): Promise<void> {
+    const blogItems = items.filter(i => i.type === 'blog')
+    if (!blogItems.length) return
+
+    if (dryRun) {
+      console.info(`[sync:standard-site] Would sync ${blogItems.length} blog posts as AT Protocol documents`)
+      for (const item of blogItems) {
+        const slug = item.canonical_url.replace('https://roe.dev/blog/', '').replace(/\/$/, '')
+        console.info(`[sync:standard-site]   /blog/${slug}: ${item.title}`)
+      }
+      return
+    }
+
+    const pdsUrl = process.env.NUXT_STANDARD_SITE_PDS_URL
+    const identifier = process.env.NUXT_STANDARD_SITE_IDENTIFIER
+    const password = process.env.NUXT_STANDARD_SITE_PASSWORD
     if (!pdsUrl || !identifier || !password) {
       throw new Error('Missing NUXT_STANDARD_SITE_PDS_URL, NUXT_STANDARD_SITE_IDENTIFIER, or NUXT_STANDARD_SITE_PASSWORD')
     }
@@ -19,7 +30,6 @@ export class StandardSiteProvider implements SyncProvider {
 
     const did = agent.session!.did
 
-    // Upsert the publication record
     await agent.com.atproto.repo.putRecord({
       repo: did,
       collection: 'site.standard.publication',
@@ -29,19 +39,12 @@ export class StandardSiteProvider implements SyncProvider {
         url: 'https://roe.dev',
         name: 'Daniel Roe',
         description: 'The personal website of Daniel Roe',
-        preferences: {
-          showInDiscover: true,
-        },
+        preferences: { showInDiscover: true },
       },
     })
 
     let updated = 0
-    for (const item of items) {
-      if (item.type !== 'blog') {
-        continue
-      }
-
-      // Extract slug from canonical_url: https://roe.dev/blog/<slug>/
+    for (const item of blogItems) {
       const slug = item.canonical_url.replace('https://roe.dev/blog/', '').replace(/\/$/, '')
       if (!slug) continue
 
@@ -53,17 +56,9 @@ export class StandardSiteProvider implements SyncProvider {
         publishedAt: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
       }
 
-      if (item.description) {
-        record.description = item.description
-      }
-
-      if (item.tags?.length) {
-        record.tags = item.tags
-      }
-
-      if (item.text_content) {
-        record.textContent = item.text_content
-      }
+      if (item.description) record.description = item.description
+      if (item.tags?.length) record.tags = item.tags
+      if (item.text_content) record.textContent = item.text_content
 
       await agent.com.atproto.repo.putRecord({
         repo: did,
@@ -75,6 +70,6 @@ export class StandardSiteProvider implements SyncProvider {
       updated++
     }
 
-    return { status: 'done', count: updated, total: items.length }
+    console.info(`[sync:standard-site] Done: ${updated} updated`)
   }
 }

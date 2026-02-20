@@ -133,14 +133,6 @@ export default defineNuxtConfig({
       // oauth flow
       clientSecret: '',
       inviteToken: '',
-      starsToken: '',
-    },
-    devToToken: '',
-    advocuToken: '',
-    standardSite: {
-      pdsUrl: '',
-      identifier: '',
-      password: '',
     },
     public: {
       githubClientId: '',
@@ -170,9 +162,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-09',
 
   nitro: {
-    experimental: {
-      tasks: true,
-    },
     replace: {
       'import.meta.test': isTest,
     },
