@@ -76,7 +76,12 @@ export default defineNuxtModule({
 
     blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-    nuxt.hook('modules:done', () => nuxt.callHook('markdown:blog-entries', blogPosts))
+    nuxt.hook('modules:done', async () => {
+      await Promise.all([
+        nuxt.callHook('markdown:blog-entries', blogPosts),
+        nuxt.callHook('markdown:sync-articles', syncArticles),
+      ])
+    })
 
     addTemplate({
       filename: 'markdown/blog-entries.mjs',
@@ -190,9 +195,6 @@ export async function getBody () {
         }
       }))
 
-    nuxt.options.nitro.virtual['#sync-articles.json'] = () =>
-      `export const syncArticles = ${JSON.stringify(syncArticles)}`
-
     const rawBlogData = blogPosts.map(post => ({
       slug: post.slug,
       title: post.title,
@@ -215,7 +217,7 @@ export async function getBody () {
 
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#metadata.json', '#sync-articles.json', '#md-raw-blog.json', '#md-raw-pages.json')
+    nuxt.options.nitro.externals.inline.push('#metadata.json', '#md-raw-blog.json', '#md-raw-pages.json')
 
     addTypeTemplate({
       filename: 'types/markdown.d.ts',
@@ -279,5 +281,15 @@ declare module '#md-pages.json' {
 declare module '@nuxt/schema' {
   interface NuxtHooks {
     'markdown:blog-entries': (entries: Array<{ path: string, slug: string, date: string, bluesky?: string }>) => void
+    'markdown:sync-articles': (articles: Array<{
+      type: 'blog'
+      title: string
+      date: string
+      description: string
+      body_markdown: string
+      text_content: string
+      canonical_url: string
+      tags?: string[]
+    }>) => void
   }
 }
