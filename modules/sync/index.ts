@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { createClient } from '@sanity/client'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
@@ -22,10 +23,10 @@ export default defineNuxtModule({
     if (nuxt.options.test || nuxt.options._prepare) return
 
     const dryRun = process.argv.includes('--dry-run')
-    const isProductionDeploy = process.env.VERCEL_ENV === 'production'
+    const isProductionDeploy = process.env.NUXT_ENV_VERCEL_ENV === 'production'
 
     if (!dryRun && !isProductionDeploy) {
-      console.info(`[sync] Skipped (VERCEL_ENV=${process.env.VERCEL_ENV || 'unset'})`)
+      console.info(`[sync] Skipped (VERCEL_ENV=${process.env.NUXT_ENV_VERCEL_ENV || 'unset'})`)
       return
     }
 
