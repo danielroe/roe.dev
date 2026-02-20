@@ -24,7 +24,10 @@ export default defineNuxtModule({
     const dryRun = process.argv.includes('--dry-run')
     const isProductionDeploy = process.env.VERCEL_ENV === 'production'
 
-    if (!dryRun && !isProductionDeploy) return
+    if (!dryRun && !isProductionDeploy) {
+      console.info(`[sync] Skipped (VERCEL_ENV=${process.env.VERCEL_ENV || 'unset'})`)
+      return
+    }
 
     nuxt.hook('markdown:sync-articles', async articles => {
       const talks = await fetchTalks()
@@ -32,6 +35,7 @@ export default defineNuxtModule({
 
       console.info(`[sync] ${dryRun ? 'Dry run' : 'Syncing'}: ${items.length} items (${articles.length} articles, ${talks.length} talks)`)
       await syncAll(items, { dryRun })
+      console.info('[sync] Complete')
     })
   },
 })
