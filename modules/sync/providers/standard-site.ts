@@ -58,8 +58,14 @@ export class StandardSiteProvider implements SyncProvider {
       // Record may not exist, that's fine
     }
 
-    // Delete any existing records with non-TID rkeys (slug-based)
-    const tidPattern = /^[234567abcdefghij][234567abcdefghijklmnopqrstuvwxyz]{12}$/
+    // Build set of expected rkeys from current blog posts
+    const expectedRkeys = new Set(
+      blogItems
+        .filter(i => i.date)
+        .map(i => tidFromDate(i.date!)),
+    )
+
+    // Delete any existing records that don't match a current blog post's TID
     try {
       const existing = await agent.com.atproto.repo.listRecords({
         repo: did,
@@ -68,8 +74,8 @@ export class StandardSiteProvider implements SyncProvider {
       })
       for (const record of existing.data.records) {
         const rkey = record.uri.split('/').pop()!
-        if (!tidPattern.test(rkey)) {
-          console.info(`[sync:standard-site] Deleting legacy record with rkey: ${rkey}`)
+        if (!expectedRkeys.has(rkey)) {
+          console.info(`[sync:standard-site] Deleting stale record with rkey: ${rkey}`)
           await agent.com.atproto.repo.deleteRecord({
             repo: did,
             collection: 'site.standard.document',
@@ -79,7 +85,7 @@ export class StandardSiteProvider implements SyncProvider {
       }
     }
     catch (error) {
-      console.warn('[sync:standard-site] Failed to clean up legacy records:', error instanceof Error ? error.message : error)
+      console.warn('[sync:standard-site] Failed to clean up stale records:', error instanceof Error ? error.message : error)
     }
 
     let updated = 0

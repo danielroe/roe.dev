@@ -184,13 +184,12 @@ export async function getBody () {
       .filter(p => !p.skip_dev)
       .map(async post => {
         const body = serialize(post.body)
-        const date = new Date(post.date)
         const html = String(await md.process(body))
         const textContent = htmlToText(html, { wordwrap: false })
         return {
           type: 'blog' as const,
           title: post.title,
-          date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
+          date: post.date,
           description: post.description || '',
           body_markdown: body,
           text_content: textContent,
