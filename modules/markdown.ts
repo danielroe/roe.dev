@@ -10,6 +10,7 @@ import { convert as htmlToText } from 'html-to-text'
 
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks } from './shared/md-transforms'
+import { tidFromDate } from './shared/tid'
 
 interface BlogFrontmatter {
   title: string
@@ -24,6 +25,7 @@ interface ParsedBlogPost {
   slug: string
   title: string
   date: string
+  tid: string
   tags: string[]
   description: string
   path: string
@@ -53,11 +55,13 @@ export default defineNuxtModule({
       const { data, content } = grayMatter(raw)
       const slug = filename(filePath)!
       const fm = data as BlogFrontmatter
+      const date = typeof fm.date === 'object' ? (fm.date as Date).toISOString() : fm.date
 
       blogPosts.push({
         slug,
         title: fm.title,
-        date: typeof fm.date === 'object' ? (fm.date as Date).toISOString() : fm.date,
+        date,
+        tid: tidFromDate(date),
         tags: fm.tags || [],
         description: fm.description || '',
         path: `/blog/${slug}`,
@@ -226,6 +230,7 @@ declare module '#build/markdown/blog-entries.mjs' {
   interface BlogEntry {
     title: string
     date: string
+    tid: string
     tags: string[]
     description: string
     path: string

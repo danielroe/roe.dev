@@ -83,6 +83,7 @@ const { data: page } = await useAsyncData(
     return {
       title: entry.title,
       date: entry.date,
+      tid: entry.tid,
       description: entry.description,
       tags: entry.tags,
       bluesky: entry.bluesky,
@@ -145,8 +146,8 @@ if (import.meta.server) {
       },
     ],
     link: [
-      ...standardSiteDid
-        ? [{ rel: 'site.standard.document', href: `at://${standardSiteDid}/site.standard.document/${slug}` }]
+      ...standardSiteDid && page.value.tid
+        ? [{ rel: 'site.standard.document', href: `at://${standardSiteDid}/site.standard.document/${page.value.tid}` }]
         : [],
     ],
   })
