@@ -1,7 +1,7 @@
 import { AtpAgent } from '@atproto/api'
 
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
-import { tidFromDate } from '../../shared/tid'
+import { publicationRkey, tidFromDate } from '../../shared/tid'
 
 export class StandardSiteProvider implements SyncProvider {
   name = 'standard-site'
@@ -35,7 +35,7 @@ export class StandardSiteProvider implements SyncProvider {
     await agent.com.atproto.repo.putRecord({
       repo: did,
       collection: 'site.standard.publication',
-      rkey: 'self',
+      rkey: publicationRkey,
       record: {
         $type: 'site.standard.publication',
         url: 'https://roe.dev',
@@ -44,6 +44,19 @@ export class StandardSiteProvider implements SyncProvider {
         preferences: { showInDiscover: true },
       },
     })
+
+    // Delete legacy 'self' rkey publication record if it exists
+    try {
+      await agent.com.atproto.repo.deleteRecord({
+        repo: did,
+        collection: 'site.standard.publication',
+        rkey: 'self',
+      })
+      console.info('[sync:standard-site] Deleted legacy publication record with rkey: self')
+    }
+    catch {
+      // Record may not exist, that's fine
+    }
 
     // Delete any existing records with non-TID rkeys (slug-based)
     const tidPattern = /^[234567abcdefghij][234567abcdefghijklmnopqrstuvwxyz]{12}$/
@@ -78,10 +91,11 @@ export class StandardSiteProvider implements SyncProvider {
 
       const record: Record<string, unknown> = {
         $type: 'site.standard.document',
-        site: `at://${did}/site.standard.publication/self`,
+        site: `at://${did}/site.standard.publication/${publicationRkey}`,
         path: `/blog/${slug}`,
         title: item.title,
         publishedAt: new Date(item.date).toISOString(),
+        updatedAt: new Date().toISOString(),
       }
 
       if (item.description) record.description = item.description

@@ -1,4 +1,4 @@
-import { standardSiteDid } from '#standard-site-did.json'
+import { standardSiteDid, standardSitePublicationRkey } from '#standard-site-did.json'
 
 export default defineEventHandler(event => {
   if (!standardSiteDid) {
@@ -6,5 +6,5 @@ export default defineEventHandler(event => {
   }
 
   setResponseHeader(event, 'content-type', 'text/plain')
-  return `at://${standardSiteDid}/site.standard.publication/self`
+  return `at://${standardSiteDid}/site.standard.publication/${standardSitePublicationRkey}`
 })

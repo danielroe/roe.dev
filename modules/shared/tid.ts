@@ -17,3 +17,6 @@ export function tidFromDate (date: string | Date): string {
   const timestamp = (typeof date === 'string' ? new Date(date) : date).getTime() * MS_TO_MICROSECONDS
   return TID.fromTime(timestamp, CLOCK_ID).toString()
 }
+
+/** Stable TID for the site's publication record, derived from the first commit date. */
+export const publicationRkey = tidFromDate('2019-12-10T20:18:52.000Z')

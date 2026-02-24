@@ -1,6 +1,8 @@
 import { addServerHandler, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { AtpAgent } from '@atproto/api'
 
+import { publicationRkey } from '../shared/tid'
+
 export default defineNuxtModule({
   meta: {
     name: 'standard-site',
@@ -16,6 +18,7 @@ export default defineNuxtModule({
       getContents: () => `
 declare module '#standard-site-did.json' {
   export const standardSiteDid: string | null
+  export const standardSitePublicationRkey: string
 }
 `,
     }, { nitro: true })
@@ -29,6 +32,8 @@ declare module '#standard-site-did.json' {
         getContents: () => `
 /** @type {string | null} */
 export const standardSiteDid = null
+/** @type {string} */
+export const standardSitePublicationRkey = ${JSON.stringify(publicationRkey)}
 `,
         write: true,
       })
@@ -53,6 +58,8 @@ export const standardSiteDid = null
       getContents: () => `
 /** @type {string | null} */
 export const standardSiteDid = ${JSON.stringify(did)}
+/** @type {string} */
+export const standardSitePublicationRkey = ${JSON.stringify(publicationRkey)}
 `,
       write: true,
     })
@@ -60,7 +67,7 @@ export const standardSiteDid = ${JSON.stringify(did)}
     // Server virtual module for .well-known route
     nuxt.options.nitro.virtual ||= {}
     nuxt.options.nitro.virtual['#standard-site-did.json'] = () =>
-      `export const standardSiteDid = ${JSON.stringify(did)}`
+      `export const standardSiteDid = ${JSON.stringify(did)}\nexport const standardSitePublicationRkey = ${JSON.stringify(publicationRkey)}`
 
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
