@@ -83,6 +83,7 @@ export class StandardSiteProvider implements SyncProvider {
     }
 
     let updated = 0
+    const now = Date.now()
     for (const item of blogItems) {
       const slug = item.canonical_url.replace('https://roe.dev/blog/', '').replace(/\/$/, '')
       if (!slug || !item.date) continue
@@ -95,7 +96,7 @@ export class StandardSiteProvider implements SyncProvider {
         path: `/blog/${slug}`,
         title: item.title,
         publishedAt: new Date(item.date).toISOString(),
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date(now + updated * 1000).toISOString(),
       }
 
       if (item.description) record.description = item.description
