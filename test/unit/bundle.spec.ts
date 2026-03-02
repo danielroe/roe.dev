@@ -83,7 +83,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8646k"`)
+      .toMatchInlineSnapshot(`"8815k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -116,9 +116,13 @@ describe('project sizes', () => {
         "@ungap/structured-clone",
         "@unocss/core",
         "@unocss/extractor-arbitrary-variants",
+        "@unocss/extractor-arbitrary-variants/node_modules/@unocss/core",
         "@unocss/preset-mini",
+        "@unocss/preset-mini/node_modules/@unocss/core",
         "@unocss/preset-wind3",
+        "@unocss/preset-wind3/node_modules/@unocss/core",
         "@unocss/rule-utils",
+        "@unocss/rule-utils/node_modules/@unocss/core",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
