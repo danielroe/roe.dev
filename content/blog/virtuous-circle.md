@@ -2,8 +2,6 @@
 title: The virtuous circle
 date: '2026-03-03T10:30:00.000Z'
 tags:
-  - ai
-  - life
   - open source
 description: "The virtuous circle is the most powerful pattern in developer tooling. And it's the myth of the 10x developer that makes it hard to see."
 ---
