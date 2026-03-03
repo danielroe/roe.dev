@@ -4,14 +4,13 @@ date: '2026-03-03T10:30:00.000Z'
 tags:
   - ai
   - life
-description: ""
+  - open source
+description: "The virtuous circle is the most powerful pattern in developer tooling. And it's the myth of the 10x developer that makes it hard to see."
 ---
 
-I'd like to talk about the Virtuous Circle and how it's made https://npmx.dev possible.
+The virtuous circle is the most powerful pattern in developer tooling. And it's the myth of the 10x developer that makes it hard to see.
 
-I think a virtuous circle the most powerful pattern when working on developer tooling, and indeed for any kind of progressive development.
-
-It's important that we talk about it, because there's a very popular (but poisonous) myth out there. That myth is the myth of the 10x developer.
+I've been thinking about this a lot recently, because of [npmx](https://npmx.dev).
 
 ## The 10x developer
 
@@ -55,5 +54,9 @@ The great thing about this is that we aren't being driven by a corporate agenda.
 
 ## Where we're going
 
-The project is community-driven, it's open-source, and we have open doors for absolutely anyone to contribute. We'd love to see you!
+I don't think we need 10x developers to build great things. I think we need 10x _teams_ &ndash; groups of people who care about the same problem, who iterate together, and who make each other better.
+
+npmx is community-driven and open source, and we have open doors for anyone to contribute. If you've ever felt the pain of navigating the npm registry, you already have something to offer.
+
+Come and build with us.
 
