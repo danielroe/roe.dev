@@ -27,7 +27,7 @@ But I think it's unhelpful. And I think it misses the point.
 
 ## Building together
 
-There are a couple of interesting studies out there that suggest that [iteration beats one-off design](https://hci.stanford.edu/publications/2009/PrototypingEfficacy-CC09/PrototypingEfficacy-CC09.pdf?utm_source=chatgpt.com) (at least, under time constraint), or that [working in parallel produces better results](https://hci.stanford.edu/publications/2010/parallel-prototyping/ParallelPrototyping2010-final.pdf?utm_source=chatgpt.com) than a traditional serial waterfall. And there is research to show that [teams outperform individuals on complex tasks](https://www.pnas.org/doi/10.1073/pnas.2101062118).
+There are a couple of interesting studies out there that suggest that [iteration beats one-off design](https://hci.stanford.edu/publications/2009/PrototypingEfficacy-CC09/PrototypingEfficacy-CC09.pdf) (at least, under time constraint), or that [working in parallel produces better results](https://hci.stanford.edu/publications/2010/parallel-prototyping/ParallelPrototyping2010-final.pdf) than a traditional serial waterfall. And there is research to show that [teams outperform individuals on complex tasks](https://www.pnas.org/doi/10.1073/pnas.2101062118).
 
 This doesn't refute the idea that some individuals might be 10x developers. But it does suggest that looking for individuals isn't the best approach.
 
