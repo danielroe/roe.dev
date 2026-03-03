@@ -41,7 +41,7 @@ But the real key was the response on Bluesky. Everyone wanted something. Everyon
 
 And, seeing that response, I messaged a friend.
 
-![A screenshot of me asking: want to collab with npmx.dev? I think it could be v big (because so many of us feel the pain)](/virtuous-circle/discord.png)
+![A screenshot of me asking: want to collab with npmx.dev? I think it could be v big (because so many of us feel the pain)](/img/virtuous-circle/discord.png)
 
 And as we started reaching out to friends &ndash; and then to people we respected on Bluesky and elsewhere &ndash; it became clear.
 
