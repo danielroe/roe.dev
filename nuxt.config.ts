@@ -144,6 +144,7 @@ export default defineNuxtConfig({
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
+    '/blog/a-virtuous-cycle': { redirect: '/blog/virtuous-circle' },
     '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
     '/.well-known/webfinger/**': {
       redirect: {
