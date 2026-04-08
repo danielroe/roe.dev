@@ -106,7 +106,7 @@ const formatter = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
 })
 
-defineOgImageComponent('DefaultImage', {
+defineOgImage('DefaultImage', {
   date: formatter.format(new Date(page.value.date)),
   title: page.value.title,
   tags: page.value.tags,

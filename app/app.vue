@@ -24,14 +24,14 @@ import { links } from '#shared/utils/links'
 
 const route = useRoute()
 
-defineOgImageComponent('DefaultImage', {
+defineOgImage('DefaultImage', {
   date: '',
   title: 'roe.dev',
   tags: [],
 })
 
 if (import.meta.server) {
-  prerenderRoutes(joinURL('/__og-image__/static', route.path, 'og.png'))
+  prerenderRoutes(joinURL('/_og/s', route.path, 'og.png'))
 }
 
 // TODO: interactive components within server components
@@ -144,7 +144,7 @@ if (import.meta.server) {
       { property: 'og:url', content: url },
       {
         property: 'og:image',
-        content: `https://roe.dev/__og-image__/static/og.png`,
+        content: `https://roe.dev/_og/s/og.png`,
         key: 'og:image',
       },
       { property: 'og:image:width', content: '1200' },
