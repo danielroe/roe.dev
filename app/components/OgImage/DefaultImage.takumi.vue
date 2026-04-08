@@ -29,7 +29,7 @@ defineProps({
         <div class="mr-6">
           Published
         </div>
-        <div class="font-bold mx-8">
+        <div class="font-semibold mx-8">
           {{ date }}
         </div>
       </div>
@@ -40,7 +40,7 @@ defineProps({
         <div class="mr-6">
           Tags
         </div>
-        <div class="font-bold mx-8 flex flex-row gap-4">
+        <div class="font-semibold mx-8 flex flex-row gap-4">
           <template v-for="(tag, index) in tags">
             <span v-if="index > 0">•</span>
             <span>{{ tag }}</span>
