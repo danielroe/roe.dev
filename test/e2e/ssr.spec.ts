@@ -33,8 +33,8 @@ test.describe(`pages`, () => {
       const mask: Locator[] = []
       if (path === '/') {
         mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
-        mask.push(page.locator('section:has(h2:text("upcoming talks"))'))
-        mask.push(page.locator('section:has(h2:text("recent talks"))'))
+        mask.push(page.locator('section:has(h2:text("upcoming talks")) ul'))
+        mask.push(page.locator('section:has(h2:text("recent talks")) ul'))
       }
 
       await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.05, mask })
