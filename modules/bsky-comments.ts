@@ -40,7 +40,7 @@ declare module '#build/bsky-runtime-discovery.mjs' {
 `,
     }, { nuxt: true })
 
-    if (nuxt.options._prepare || !nuxt.options.site) {
+    if (nuxt.options._prepare) {
       return
     }
 
@@ -61,6 +61,9 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     const blogPosts: BlogPost[] = []
 
     nuxt.hook('markdown:blog-entries', async entries => {
+      if (!nuxt.options.site) {
+        return
+      }
       const feedIterator = createFeedIterator(agent, blueskyHandle)
 
       for (const entry of entries) {
