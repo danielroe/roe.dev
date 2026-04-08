@@ -40,7 +40,7 @@ declare module '#build/bsky-runtime-discovery.mjs' {
 `,
     }, { nuxt: true })
 
-    if (nuxt.options._prepare) {
+    if (nuxt.options._prepare || !nuxt.options.site) {
       return
     }
 
