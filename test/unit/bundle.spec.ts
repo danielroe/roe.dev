@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"335k"`)
+      .toMatchInlineSnapshot(`"336k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"2343k"`)
+      .toMatchInlineSnapshot(`"2350k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8651k"`)
+      .toMatchInlineSnapshot(`"8370k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -100,7 +100,6 @@ describe('project sizes', () => {
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
-        "@jridgewell/sourcemap-codec",
         "@sanity/client",
         "@sanity/eventsource",
         "@sanity/webhook",
@@ -114,11 +113,6 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@ungap/structured-clone",
-        "@unocss/core",
-        "@unocss/extractor-arbitrary-variants",
-        "@unocss/preset-mini",
-        "@unocss/preset-wind3",
-        "@unocss/rule-utils",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
@@ -193,7 +187,6 @@ describe('project sizes', () => {
         "is-retry-allowed",
         "iso-datestring-validator",
         "longest-streak",
-        "magic-string",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -239,6 +232,7 @@ describe('project sizes', () => {
         "nanoid",
         "nanoid/url-alphabet",
         "node-emoji",
+        "nuxtseo-shared",
         "oniguruma-parser",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
@@ -250,6 +244,7 @@ describe('project sizes', () => {
         "perfect-debounce",
         "picomatch",
         "property-information",
+        "radix3",
         "readable-stream",
         "regex",
         "regex-recursion",
