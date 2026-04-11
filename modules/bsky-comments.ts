@@ -5,6 +5,7 @@ import { addServerHandler, addServerTemplate, addTemplate, addTypeTemplate, crea
 import { joinURL, withoutTrailingSlash } from 'ufo'
 import { join } from 'pathe'
 import { AtpAgent, AppBskyFeedPost } from '@atproto/api'
+import { toValue } from 'vue'
 
 // when I created my Bluesky account - don't judge me for hard coding it!
 const BLUESKY_ACCOUNT_CREATED = new Date('2023-04-26T05:22:14.855Z')
@@ -61,7 +62,8 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     const blogPosts: BlogPost[] = []
 
     nuxt.hook('markdown:blog-entries', async entries => {
-      if (!nuxt.options.site) {
+      const siteURL = nuxt.options.site && toValue(nuxt.options.site?.url)
+      if (!siteURL) {
         return
       }
       const feedIterator = createFeedIterator(agent, blueskyHandle)
@@ -70,7 +72,7 @@ declare module '#build/bsky-runtime-discovery.mjs' {
         if (!entry.date) continue
 
         const blogPath = entry.path
-        const blogUrl = withoutTrailingSlash(joinURL(nuxt.options.site.url, blogPath))
+        const blogUrl = withoutTrailingSlash(joinURL(siteURL, blogPath))
         const blogDate = new Date(entry.date)
         const cacheFile = join(cacheDir, `${entry.slug}.json`)
 
