@@ -243,12 +243,6 @@ export default defineNuxtConfig({
     },
   },
 
-  fonts: {
-    families: [
-      { name: 'Barlow', weights: [400, 500], global: true },
-    ],
-  },
-
   htmlValidator: {
     failOnError: true,
     options: {
