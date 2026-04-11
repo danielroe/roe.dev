@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"2350k"`)
+      .toMatchInlineSnapshot(`"2352k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8370k"`)
+      .toMatchInlineSnapshot(`"8832k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -93,10 +93,22 @@ describe('project sizes', () => {
       [
         "@atcute/bluesky-richtext-segmenter",
         "@atproto/api",
+        "@atproto/api/node_modules/@atproto/common-web",
+        "@atproto/api/node_modules/@atproto/common-web/node_modules/@atproto/lex-data",
+        "@atproto/api/node_modules/@atproto/common-web/node_modules/@atproto/lex-json",
+        "@atproto/api/node_modules/@atproto/common-web/node_modules/@atproto/lex-json/node_modules/@atproto/lex-data",
         "@atproto/common-web",
+        "@atproto/common-web/node_modules/@atproto/lex-data",
+        "@atproto/common-web/node_modules/@atproto/lex-json",
+        "@atproto/common-web/node_modules/@atproto/lex-json/node_modules/@atproto/lex-data",
         "@atproto/lex-data",
         "@atproto/lex-json",
+        "@atproto/lex-json/node_modules/@atproto/lex-data",
         "@atproto/lexicon",
+        "@atproto/lexicon/node_modules/@atproto/common-web",
+        "@atproto/lexicon/node_modules/@atproto/common-web/node_modules/@atproto/lex-data",
+        "@atproto/lexicon/node_modules/@atproto/common-web/node_modules/@atproto/lex-json",
+        "@atproto/lexicon/node_modules/@atproto/common-web/node_modules/@atproto/lex-json/node_modules/@atproto/lex-data",
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
@@ -133,7 +145,6 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
-        "debug",
         "decode-named-character-reference",
         "decompress-response",
         "detab",
@@ -151,11 +162,9 @@ describe('project sizes', () => {
         "extend",
         "feed",
         "flat",
-        "follow-redirects",
         "get-it",
         "github-slugger",
         "groq",
-        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -227,7 +236,6 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
-        "ms",
         "multiformats",
         "nanoid",
         "nanoid/url-alphabet",
@@ -270,7 +278,6 @@ describe('project sizes', () => {
         "space-separated-tokens",
         "string_decoder",
         "stringify-entities",
-        "supports-color",
         "through2",
         "tlds",
         "trim-lines",
