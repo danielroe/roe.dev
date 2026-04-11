@@ -299,10 +299,6 @@ export default defineNuxtConfig({
 
   ogImage: {
     zeroRuntime: true,
-    fonts: [
-      'Barlow:400',
-      'Barlow:600',
-    ],
   },
 
   plausible: {

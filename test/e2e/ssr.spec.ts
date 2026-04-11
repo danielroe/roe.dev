@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test'
 import { test, expect } from '@playwright/test'
 import { joinURL, withTrailingSlash } from 'ufo'
 
@@ -28,11 +29,12 @@ test.describe(`pages`, () => {
       const title = page.locator('title')
       expect(await title.textContent()).toContain('Daniel Roe')
 
-      // Mask dynamic content
-      const mask = []
+      // Mask dynamic content on home page
+      const mask: Locator[] = []
       if (path === '/') {
-        // Mask recent streams list on home page
         mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
+        mask.push(page.locator('section:has(h2:text("upcoming talks")) ul'))
+        mask.push(page.locator('section:has(h2:text("recent talks")) ul'))
       }
 
       await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 0.05, mask })
