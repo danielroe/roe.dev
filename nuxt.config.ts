@@ -4,6 +4,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { extendViteConfig } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
+import { pageMeta } from './modules/shared/page-meta'
 
 export default defineNuxtConfig({
   modules: [
@@ -176,7 +177,7 @@ export default defineNuxtConfig({
     future: { nativeSWR: true },
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/live', '/rss.xml', '/voted', '/work', '/feedback', '/ama', '/ai', '/llms.txt', '/llms-full.txt'],
+      routes: [...Object.keys(pageMeta), '/rss.xml', '/llms.txt', '/llms-full.txt'],
     },
     hooks: {
       'prerender:generate' (route) {
