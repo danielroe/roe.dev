@@ -24,6 +24,20 @@ interface AMADocument {
     mastodon?: boolean
     youtubeShorts?: boolean
   }
+  publishedLinks?: {
+    bluesky?: string
+    linkedin?: string
+    mastodon?: string
+    youtubeShorts?: string
+  }
+  publishLog?: Array<{
+    _type: string
+    _key: string
+    timestamp: string
+    platform: string
+    status: string
+    message: string
+  }>
   image?: {
     url: string
     dimensions: {
@@ -151,6 +165,8 @@ export default defineEventHandler(async event => {
           "dimensions": metadata.dimensions
         },
         video,
+        publishedLinks,
+        publishLog,
         lastWebhookEvent
       }`,
       { id: body._id },
@@ -178,17 +194,20 @@ export default defineEventHandler(async event => {
       throw new Error('No posts found for publishing')
     }
 
-    // Publish to platforms
+    // Publish to platforms, skipping any that already have a published link
     const results = await publishToPlatforms(event, document)
 
-    const publishedLinks: Record<string, string> = {}
+    // Merge new published links with any existing ones (preserves prior successes on retry)
+    const publishedLinks: Record<string, string> = { ...document.publishedLinks }
     results.forEach(result => {
       if (result.success && result.url) {
         publishedLinks[camelCase(result.platform)] = result.url
       }
     })
 
-    if (document.video) {
+    // Only clean up video if YouTube Shorts actually succeeded
+    const youtubeResult = results.find(r => r.platform === 'youtube-shorts')
+    if (document.video && youtubeResult?.success) {
       try {
         await sanity.client.patch(document._id).unset(['video']).commit()
         await sanity.client.delete(document.video.asset._ref)
@@ -198,7 +217,8 @@ export default defineEventHandler(async event => {
       }
     }
 
-    const publishLog = results.map(result => ({
+    // Append new log entries to existing publish log (preserves history across retries)
+    const newLogEntries = results.map(result => ({
       _type: 'object',
       _key: randomUUID(),
       timestamp: new Date().toISOString(),
@@ -206,8 +226,14 @@ export default defineEventHandler(async event => {
       status: result.success ? 'success' : 'error',
       message: result.success ? `Published: ${result.url}` : result.error,
     }))
+    const publishLog = [...(document.publishLog || []), ...newLogEntries]
 
-    const finalStatus = results.some(r => r.success) ? 'published' : 'failed'
+    // Determine final status based on all enabled platforms vs all published links
+    const enabledPlatforms = getEnabledPlatforms(document)
+    const allPublished = enabledPlatforms.every(p => publishedLinks[p])
+    const somePublished = enabledPlatforms.some(p => publishedLinks[p])
+    const finalStatus = allPublished ? 'published' : somePublished ? 'partially-published' : 'failed'
+
     await sanity.client
       .patch(document._id)
       .set({
@@ -227,16 +253,17 @@ export default defineEventHandler(async event => {
       .patch(body._id)
       .set({
         publishStatus: 'failed',
-        publishLog: [{
-          _type: 'object',
-          _key: randomUUID(),
-          timestamp: new Date().toISOString(),
-          platform: 'system',
-          status: 'error',
-          message: String(error),
-        }],
         lastWebhookEvent: { timestamp, signature },
       })
+      .setIfMissing({ publishLog: [] })
+      .append('publishLog', [{
+        _type: 'object',
+        _key: randomUUID(),
+        timestamp: new Date().toISOString(),
+        platform: 'system',
+        status: 'error',
+        message: String(error),
+      }])
       .commit()
 
     throw createError({
@@ -790,58 +817,109 @@ async function processManualThreads (posts: Array<{ content: PortableTextBlock[]
   return threads
 }
 
+function getEnabledPlatforms (document: AMADocument): string[] {
+  const platforms: string[] = []
+  if (document.platforms?.bluesky !== false) platforms.push('bluesky')
+  if (document.platforms?.mastodon !== false) platforms.push('mastodon')
+  if (document.platforms?.linkedin !== false) platforms.push('linkedin')
+  if (document.platforms?.youtubeShorts === true) platforms.push('youtubeShorts')
+  return platforms
+}
+
 async function publishToPlatforms (event: H3Event, document: AMADocument): Promise<PublishResult[]> {
   const results: PublishResult[] = []
+  const alreadyPublished = document.publishedLinks || {}
 
   // Publish to Bluesky with manual threading
   if (document.platforms?.bluesky !== false) {
-    try {
-      const blueskyThreads = await processManualThreads(document.posts)
-      const blueskyResult = await publishToBlueskyThreads(event, blueskyThreads, document.image, document.content)
-      results.push({ platform: 'bluesky', success: true, url: blueskyResult.url })
+    if (alreadyPublished.bluesky) {
+      console.log('Skipping Bluesky: already published at', alreadyPublished.bluesky)
     }
-    catch (error) {
-      results.push({ platform: 'bluesky', success: false, error: String(error) })
+    else {
+      try {
+        const blueskyThreads = await processManualThreads(document.posts)
+        const blueskyResult = await publishToBlueskyThreads(event, blueskyThreads, document.image, document.content)
+        results.push({ platform: 'bluesky', success: true, url: blueskyResult.url })
+      }
+      catch (error) {
+        results.push({ platform: 'bluesky', success: false, error: String(error) })
+      }
     }
   }
 
   // Publish to other platforms without threading
   if (document.platforms?.mastodon !== false) {
-    try {
-      const mastodonText = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
-      const mastodonFullText = `${mastodonText}\n\nhttps://roe.dev/ama\n\n#ama`
-      const mastodonResult = await publishToMastodon(event, mastodonFullText, document.image, document.content)
-      results.push({ platform: 'mastodon', success: true, url: mastodonResult.url })
+    if (alreadyPublished.mastodon) {
+      console.log('Skipping Mastodon: already published at', alreadyPublished.mastodon)
     }
-    catch (error) {
-      results.push({ platform: 'mastodon', success: false, error: String(error) })
+    else {
+      try {
+        const mastodonText = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'mastodon')
+        const mastodonFullText = `${mastodonText}\n\nhttps://roe.dev/ama\n\n#ama`
+        const mastodonResult = await publishToMastodon(event, mastodonFullText, document.image, document.content)
+        results.push({ platform: 'mastodon', success: true, url: mastodonResult.url })
+      }
+      catch (error) {
+        results.push({ platform: 'mastodon', success: false, error: String(error) })
+      }
     }
   }
 
   if (document.platforms?.linkedin !== false) {
-    try {
-      const linkedinText = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'linkedin')
-      const linkedinFullText = `${linkedinText}\n\nroe.dev/ama\n\n#ama`
-      const linkedinResult = await publishToLinkedIn(event, linkedinFullText, document.image, document.content)
-      results.push({ platform: 'linkedin', success: true, url: linkedinResult.url })
+    if (alreadyPublished.linkedin) {
+      console.log('Skipping LinkedIn: already published at', alreadyPublished.linkedin)
     }
-    catch (error) {
-      results.push({ platform: 'linkedin', success: false, error: String(error) })
+    else {
+      try {
+        const linkedinText = resolveTextForPlatform(document.posts.flatMap(p => p.content), 'linkedin')
+        const linkedinFullText = `${linkedinText}\n\nroe.dev/ama\n\n#ama`
+        const linkedinResult = await publishToLinkedIn(event, linkedinFullText, document.image, document.content)
+        results.push({ platform: 'linkedin', success: true, url: linkedinResult.url })
+      }
+      catch (error) {
+        results.push({ platform: 'linkedin', success: false, error: String(error) })
+      }
     }
   }
 
   // Publish to YouTube Shorts
   if (document.platforms?.youtubeShorts === true) {
-    try {
-      const youtubeResult = await publishToYouTubeShorts(event, document)
-      results.push({ platform: 'youtube-shorts', success: true, url: youtubeResult.url })
+    if (alreadyPublished.youtubeShorts) {
+      console.log('Skipping YouTube Shorts: already published at', alreadyPublished.youtubeShorts)
     }
-    catch (error) {
-      results.push({ platform: 'youtube-shorts', success: false, error: String(error) })
+    else {
+      try {
+        const youtubeResult = await publishToYouTubeShorts(event, document)
+        results.push({ platform: 'youtube-shorts', success: true, url: youtubeResult.url })
+      }
+      catch (error) {
+        results.push({ platform: 'youtube-shorts', success: false, error: String(error) })
+      }
     }
   }
 
   return results
+}
+
+async function resolveBlueskyPds (handle: string): Promise<string> {
+  // Resolve handle -> DID
+  const resolved = await fetch(`https://bsky.social/xrpc/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(handle)}`)
+  if (!resolved.ok) {
+    throw new Error(`Failed to resolve Bluesky handle ${handle}: ${resolved.status}`)
+  }
+  const { did } = await resolved.json() as { did: string }
+
+  // Resolve DID -> PDS endpoint from DID document
+  const didDoc = await fetch(`https://plc.directory/${encodeURIComponent(did)}`)
+  if (!didDoc.ok) {
+    throw new Error(`Failed to resolve DID document for ${did}: ${didDoc.status}`)
+  }
+  const doc = await didDoc.json() as { service?: Array<{ id: string, type: string, serviceEndpoint: string }> }
+  const pds = doc.service?.find(s => s.id === '#atproto_pds')?.serviceEndpoint
+  if (!pds) {
+    throw new Error(`No PDS endpoint found in DID document for ${did}`)
+  }
+  return pds
 }
 
 async function publishToBlueskyThreads (event: H3Event, threads: Array<{ text: string, facets: AppBskyRichtextFacet.Main[] }>, image: AMADocument['image'], altText: string): Promise<{ url: string }> {
@@ -849,7 +927,11 @@ async function publishToBlueskyThreads (event: H3Event, threads: Array<{ text: s
   const { identifier } = config.social.networks.bluesky
   const password = config.bluesky.accessToken
 
-  const agent = new AtpAgent({ service: 'https://bsky.social' })
+  // Resolve the account's PDS dynamically (supports custom PDS without extra config)
+  const pdsUrl = await resolveBlueskyPds(identifier)
+  console.log(`Resolved PDS for ${identifier}: ${pdsUrl}`)
+
+  const agent = new AtpAgent({ service: pdsUrl })
   await agent.login({ identifier, password })
 
   const postUrls: string[] = []

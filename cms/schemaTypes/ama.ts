@@ -58,10 +58,11 @@ export default defineType({
       }
 
       const statusEmoji: Record<string, string> = {
-        draft: '📝',
-        ready: '🚀',
-        published: '✅',
-        failed: '❌',
+        'draft': '📝',
+        'ready': '🚀',
+        'partially-published': '⚠️',
+        'published': '✅',
+        'failed': '❌',
       }
 
       const hasDraft = posts && posts.length > 0
@@ -166,6 +167,7 @@ export default defineType({
         list: [
           { title: 'Draft', value: 'draft' },
           { title: 'Ready to publish', value: 'ready' },
+          { title: 'Partially published', value: 'partially-published' },
           { title: 'Published', value: 'published' },
           { title: 'Failed', value: 'failed' },
         ],
@@ -225,7 +227,7 @@ export default defineType({
         }),
       ],
       readOnly: true,
-      hidden: ({ document }) => document?.publishStatus !== 'published',
+      hidden: ({ document }) => document?.publishStatus !== 'published' && document?.publishStatus !== 'partially-published',
     }),
     defineField({
       name: 'platforms',
