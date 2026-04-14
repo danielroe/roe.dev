@@ -27,8 +27,8 @@ import type { BlueskyFeedItem } from '~~/modules/social/runtime/server/_social/b
 import type { MastodonFeedItem } from '~~/modules/social/runtime/server/_social/mastodon.get'
 
 const [mastodon, bluesky] = await Promise.all([
-  $fetch<MastodonFeedItem[]>('/_social/mastodon'),
-  $fetch<BlueskyFeedItem[]>('/_social/bluesky').then(r => r.filter(p => !p.html?.includes('#ama'))),
+  $fetch<MastodonFeedItem[]>('/_social/mastodon').catch(() => [] as MastodonFeedItem[]),
+  $fetch<BlueskyFeedItem[]>('/_social/bluesky').then(r => r.filter(p => !p.html?.includes('#ama'))).catch(() => [] as BlueskyFeedItem[]),
 ])
 
 const sortedFeed = [...mastodon, ...bluesky]
