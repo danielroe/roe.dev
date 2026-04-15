@@ -3,7 +3,7 @@
 defineProps({
   title: {
     type: String,
-    required: true,
+    default: 'roe.dev',
   },
   date: {
     type: String,
