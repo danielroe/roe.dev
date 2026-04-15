@@ -228,7 +228,6 @@ export default defineNuxtConfig({
     nodeTsConfig: {
       include: ['../scripts'],
     },
-    hoist: ['vite'],
   },
 
   postcss: {
