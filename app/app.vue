@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { joinURL, withoutTrailingSlash } from 'ufo'
+import { withoutTrailingSlash } from 'ufo'
 import { links } from '#shared/utils/links'
 
 const route = useRoute()
@@ -29,10 +29,6 @@ defineOgImage('DefaultImage', {
   title: 'roe.dev',
   tags: [],
 })
-
-if (import.meta.server) {
-  prerenderRoutes(joinURL('/_og/s', route.path, 'og.png'))
-}
 
 // TODO: interactive components within server components
 const highlightIslands = ref(false)

@@ -36,7 +36,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes('**/*.js', publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"336k"`)
+      .toMatchInlineSnapshot(`"281k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -78,12 +78,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"2353k"`)
+      .toMatchInlineSnapshot(`"2377k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8370k"`)
+      .toMatchInlineSnapshot(`"8358k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -107,6 +107,7 @@ describe('project sizes', () => {
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
         "@shikijs/langs",
+        "@shikijs/primitive",
         "@shikijs/themes",
         "@shikijs/transformers",
         "@shikijs/types",
@@ -133,7 +134,6 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
-        "debug",
         "decode-named-character-reference",
         "decompress-response",
         "detab",
@@ -151,11 +151,9 @@ describe('project sizes', () => {
         "extend",
         "feed",
         "flat",
-        "follow-redirects",
         "get-it",
         "github-slugger",
         "groq",
-        "has-flag",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -227,7 +225,6 @@ describe('project sizes', () => {
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
         "mimic-response",
-        "ms",
         "multiformats",
         "nanoid",
         "nanoid/url-alphabet",
@@ -270,7 +267,6 @@ describe('project sizes', () => {
         "space-separated-tokens",
         "string_decoder",
         "stringify-entities",
-        "supports-color",
         "through2",
         "tlds",
         "trim-lines",
