@@ -88,7 +88,7 @@ importers:
         version: 1.0.8
       feed:
         specifier: ^5.2.0
-        version: 5.2.0
+        version: 5.2.1
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -120,8 +120,8 @@ importers:
         specifier: 4.3.1
         version: 4.3.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@parcel/watcher@2.5.6)(@types/node@25.6.0)(@vercel/blob@2.3.3)(@vue/compiler-sfc@3.5.32)(cac@6.7.14)(db0@0.3.4)(eslint@9.39.4(jiti@2.6.1))(ioredis@5.10.1)(lightningcss@1.32.0)(magicast@0.5.2)(meow@13.2.0)(optionator@0.9.4)(rolldown@1.0.0-rc.13)(rollup@4.60.2)(srvx@0.11.15)(stylelint@17.7.0(typescript@5.9.3))(terser@5.46.1)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vue-tsc@3.2.7(typescript@5.9.3))(yaml@2.8.3)
       nuxt-og-image:
-        specifier: 6.3.9
-        version: 6.3.9(f19d76abafebd9cb6e5851cb702f1f9c)
+        specifier: 6.4.4
+        version: 6.4.4(17a910bcfe7707b91b1e47b45c01612c)
       nuxt-security:
         specifier: 2.5.1
         version: 2.5.1(magicast@0.5.2)(rollup@4.60.2)
@@ -6555,8 +6555,8 @@ packages:
       picomatch:
         optional: true
 
-  feed@5.2.0:
-    resolution: {integrity: sha512-hgH6CCb+7+0c8PBlakI2KubG6R+Rb1MhpNcdvqUXZTBwBHf32piwY255diAkAmkGZ6AWlywOU88AkOgP9q8Rdw==}
+  feed@5.2.1:
+    resolution: {integrity: sha512-jTynzYPWs9ALjro0GW8j7sv9y7cJBeOdD4Y88kVqYy/eyusIX3g+499JiTDIlD9Ge/unebx57T4Uzo6vpYvMtA==}
     engines: {node: '>=20', pnpm: '>=10'}
 
   fetch-blob@3.2.0:
@@ -8338,8 +8338,8 @@ packages:
   nuxt-csurf@1.6.5:
     resolution: {integrity: sha512-/DMNTON8LIVhntamKbBmAuM879B0QnuSJa7ZAkmkZe+21m+1QGcjVUxtSkizaM48NUvkuAGYOG0ncn+kqEgrzw==}
 
-  nuxt-og-image@6.3.9:
-    resolution: {integrity: sha512-m2Jt727up78eMuWP3xDc82C5tHkUMFonDYmF4jCTFM/HGf2Z3B6+Wvuh/QFCGP7acyQR3NER+UMc0yHZCTj0nQ==}
+  nuxt-og-image@6.4.4:
+    resolution: {integrity: sha512-QM+eAsr6FzLVGzX7E1nWcPTxpWcGrANnb+zIN+n5jEgt0JE+r2funGS8aMhmKvtVkkyBBtZTG+JAH+9DNrcnrA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -8347,7 +8347,7 @@ packages:
       '@resvg/resvg-wasm': ^2.6.0
       '@takumi-rs/core': ^1.0.0-beta.3
       '@takumi-rs/wasm': ^1.0.0-beta.3
-      '@unhead/vue': ^2.0.5
+      '@unhead/vue': ^2.0.5 || ^3.0.0
       fontless: ^0.2.0
       playwright-core: ^1.50.0
       satori: '>=0.19.2'
@@ -9459,8 +9459,8 @@ packages:
       react-dom: ^19.2.2
       styled-components: ^6.1.15
 
-  sax@1.5.0:
-    resolution: {integrity: sha512-21IYA3Q5cQf089Z6tgaUTr7lDAyzoTPx5HRtbhsME8Udispad8dC/+sziTNugOEx54ilvatQ9YCzl4KQLPcRHA==}
+  sax@1.6.0:
+    resolution: {integrity: sha512-6R3J5M4AcbtLUdZmRv2SygeVaM7IhrLXu9BmnOGmmACak8fiUtOsYNWUS4uK7upbmHIBbLBeFeI//477BKLBzA==}
     engines: {node: '>=11.0.0'}
 
   saxes@6.0.0:
@@ -18316,7 +18316,7 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.4
 
-  feed@5.2.0:
+  feed@5.2.1:
     dependencies:
       xml-js: 1.6.11
 
@@ -20575,7 +20575,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  nuxt-og-image@6.3.9(f19d76abafebd9cb6e5851cb702f1f9c):
+  nuxt-og-image@6.4.4(17a910bcfe7707b91b1e47b45c01612c):
     dependencies:
       '@clack/prompts': 1.2.0
       '@nuxt/kit': 4.4.2(magicast@0.5.2)
@@ -20596,8 +20596,8 @@ snapshots:
       nypm: 0.6.5
       ofetch: 1.5.1
       ohash: 2.0.11
-      oxc-parser: 0.124.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)
-      oxc-walker: 0.7.0(oxc-parser@0.124.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2))
+      oxc-parser: 0.126.0
+      oxc-walker: 0.7.0(oxc-parser@0.126.0)
       pathe: 2.0.3
       pkg-types: 2.3.0
       radix3: 1.1.2
@@ -20618,8 +20618,6 @@ snapshots:
       sharp: 0.34.5
       unifont: 0.7.4
     transitivePeerDependencies:
-      - '@emnapi/core'
-      - '@emnapi/runtime'
       - '@nuxt/schema'
       - nuxt
       - supports-color
@@ -22258,7 +22256,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  sax@1.5.0: {}
+  sax@1.6.0: {}
 
   saxes@6.0.0:
     dependencies:
@@ -22797,7 +22795,7 @@ snapshots:
       css-what: 6.2.2
       csso: 5.0.5
       picocolors: 1.1.1
-      sax: 1.5.0
+      sax: 1.6.0
 
   symbol-tree@3.2.4: {}
 
@@ -23936,7 +23934,7 @@ snapshots:
 
   xml-js@1.6.11:
     dependencies:
-      sax: 1.5.0
+      sax: 1.6.0
 
   xml-name-validator@4.0.0: {}
 
