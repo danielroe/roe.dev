@@ -196,8 +196,48 @@ export default defineEventHandler(async event => {
       }
     }
 
+    if (document.publishStatus !== 'ready') {
+      console.log('Webhook ignored: document is not ready to publish (another invocation may be in flight)', {
+        id: body._id,
+        status: document.publishStatus,
+      })
+      return {
+        success: true,
+        message: 'Document not in ready state',
+        status: document.publishStatus,
+      }
+    }
+
     if (!document.posts || document.posts.length === 0) {
       throw new Error('No posts found for publishing')
+    }
+
+    // Claim exclusive ownership of this publish run by atomically transitioning
+    // `publishStatus` from `ready` to `publishing`, conditional on the revision we read.
+    // Any concurrent webhook delivery will fail this patch (revision mismatch) and bail.
+    // This prevents races where two invocations both publish to the same platforms and
+    // one deletes the video asset from under the other.
+    try {
+      await sanity.client
+        .patch(document._id)
+        .ifRevisionId(document._rev)
+        .set({
+          publishStatus: 'publishing',
+          lastWebhookEvent: { timestamp, signature },
+        })
+        .commit()
+    }
+    catch (error) {
+      // If the revision no longer matches, another webhook has already claimed this run.
+      console.log('Webhook ignored: failed to claim publish lock (another invocation has it)', {
+        id: body._id,
+        error: String(error),
+      })
+      return {
+        success: true,
+        message: 'Another publish run is in progress',
+        status: 'publishing',
+      }
     }
 
     // Publish to platforms, skipping any that already have a published link

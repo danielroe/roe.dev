@@ -60,6 +60,7 @@ export default defineType({
       const statusEmoji: Record<string, string> = {
         'draft': '📝',
         'ready': '🚀',
+        'publishing': '⏳',
         'partially-published': '⚠️',
         'published': '✅',
         'failed': '❌',
@@ -167,13 +168,14 @@ export default defineType({
         list: [
           { title: 'Draft', value: 'draft' },
           { title: 'Ready to publish', value: 'ready' },
+          { title: 'Publishing', value: 'publishing' },
           { title: 'Partially published', value: 'partially-published' },
           { title: 'Published', value: 'published' },
           { title: 'Failed', value: 'failed' },
         ],
       },
       initialValue: 'draft',
-      readOnly: ({ document }) => document?.publishStatus === 'ready' || document?.publishStatus === 'published',
+      readOnly: ({ document }) => document?.publishStatus === 'ready' || document?.publishStatus === 'publishing' || document?.publishStatus === 'published',
     }),
     defineField({
       name: 'generatedImage',
