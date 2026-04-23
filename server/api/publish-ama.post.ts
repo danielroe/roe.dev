@@ -49,6 +49,8 @@ interface AMADocument {
     asset: {
       _ref: string
     }
+    url?: string
+    mimeType?: string
   }
   lastWebhookEvent?: {
     timestamp: string
@@ -164,7 +166,11 @@ export default defineEventHandler(async event => {
           url,
           "dimensions": metadata.dimensions
         },
-        video,
+        video{
+          asset,
+          "url": asset->url,
+          "mimeType": asset->mimeType
+        },
         publishedLinks,
         publishLog,
         lastWebhookEvent
@@ -590,11 +596,17 @@ async function publishToYouTubeShorts (event: H3Event, document: AMADocument): P
   // Get a fresh access token (using refresh token if configured)
   const accessToken = await getValidYouTubeAccessToken(event)
 
-  // Check if pre-generated video exists (check both old and new field names for backwards compatibility)
+  // Check if pre-generated video exists
   const videoAsset = document.video
   if (!videoAsset) {
     throw new Error('No video found. Please generate a video in the CMS first.')
   }
+
+  console.log('YouTube Shorts: video asset resolved', {
+    ref: videoAsset.asset?._ref,
+    url: videoAsset.url,
+    mimeType: videoAsset.mimeType,
+  })
 
   // Extract question and answer from document
   const question = document.content
@@ -609,18 +621,34 @@ async function publishToYouTubeShorts (event: H3Event, document: AMADocument): P
 
   const shortDescription = `Q: ${question}\n\nA: ${answer.slice(0, 200)}${answer.length > 200 ? '...' : ''}\n\n🔗 roe.dev/ama\n\n${generatedMetadata.hashtags.map(tag => `#${tag}`).join(' ')}`
 
-  // Get video buffer from Sanity asset
-  const sanity = useSanity(event)
-  const videoData = await sanity.client.fetch('*[_id == $id][0]', { id: videoAsset.asset._ref })
-
-  if (!videoData?.url) {
-    throw new Error('Video asset not found or invalid.')
+  // Prefer the URL dereferenced in the main GROQ query; fall back to a direct asset lookup
+  // (e.g. if a draft was published in between and the initial query returned no url).
+  let videoUrl = videoAsset.url
+  if (!videoUrl) {
+    console.warn('YouTube Shorts: dereferenced video url missing, falling back to asset lookup', {
+      ref: videoAsset.asset?._ref,
+    })
+    const sanity = useSanity(event)
+    const videoData = await sanity.client.fetch<{ url?: string } | null>(
+      '*[_id == $id][0]{ url }',
+      { id: videoAsset.asset._ref },
+    )
+    videoUrl = videoData?.url
   }
 
+  if (!videoUrl) {
+    throw new Error(`Video asset not found or invalid. Asset ref: ${videoAsset.asset?._ref}`)
+  }
+
+  console.log('YouTube Shorts: downloading video from', videoUrl)
+
   // Download the video file
-  const videoResponse = await fetch(videoData.url)
+  const videoResponse = await fetch(videoUrl)
   if (!videoResponse.ok) {
-    throw new Error(`Failed to download video: ${videoResponse.statusText}`)
+    const responseBody = await videoResponse.text().catch(() => '<unreadable body>')
+    throw new Error(
+      `Failed to download video: ${videoResponse.status} ${videoResponse.statusText} (url: ${videoUrl}, assetRef: ${videoAsset.asset?._ref}) - ${responseBody.slice(0, 500)}`,
+    )
   }
 
   const videoBuffer = Buffer.from(await videoResponse.arrayBuffer())
