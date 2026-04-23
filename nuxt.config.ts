@@ -309,6 +309,12 @@ export default defineNuxtConfig({
   sanity: {
     apiVersion: '2025-02-19',
     perspective: 'published',
+    additionalClients: {
+      // non-CDN client for server-side writes and webhook processing
+      write: {
+        useCdn: false,
+      },
+    },
   },
 
   scripts: {

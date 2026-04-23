@@ -136,7 +136,7 @@ export default defineEventHandler(async event => {
     return { success: false, message: 'Invalid payload or not ready to publish' }
   }
 
-  const sanity = useSanity(event)
+  const sanity = useSanity(event, 'write')
 
   try {
     const document = await sanity.client.fetch<AMADocument>(
@@ -668,7 +668,7 @@ async function publishToYouTubeShorts (event: H3Event, document: AMADocument): P
     console.warn('YouTube Shorts: dereferenced video url missing, falling back to asset lookup', {
       ref: videoAsset.asset?._ref,
     })
-    const sanity = useSanity(event)
+    const sanity = useSanity(event, 'write')
     const videoData = await sanity.client.fetch<{ url?: string } | null>(
       '*[_id == $id][0]{ url }',
       { id: videoAsset.asset._ref },
