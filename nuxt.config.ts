@@ -146,6 +146,7 @@ export default defineNuxtConfig({
     '/feed.xml': { redirect: '/rss.xml' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
     '/blog/a-virtuous-cycle': { redirect: '/blog/virtuous-circle' },
+    '/blog/ai-writes-my-code': { redirect: 'https://www.youtube.com/watch?v=Zfs3BJZxKkc' },
     '/chat': { redirect: 'https://roe.dev/blog/open-invitation' },
     '/.well-known/webfinger/**': {
       redirect: {
