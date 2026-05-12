@@ -8,7 +8,7 @@ He is part of the team at [Vercel](https://vercel.com) where he is employed to w
 
 His open source work has a focus in the Vue.js and Nuxt ecosystems, but extends across the broader JavaScript ecosystem. He created [npmx.dev](https://npmx.dev), a fast, modern browser for the npm registry, and is a core contributor to [Nitro](https://nitro.build). He has also built type-safe developer tools like [magic-regexp](https://github.com/unjs/magic-regexp), web performance libraries like [fontaine](https://github.com/unjs/fontaine) and [beasties](https://github.com/danielroe/beasties), and community utilities like [page-speed.dev](https://page-speed.dev). He's a keynote speaker at conferences around the world, particularly around frontend, web performance, serverless and software architecture.
 
-<p class="my-4"><img class="w-full" src="/talk.jpg" alt="Daniel giving a talk at Vuefes Japan" width="600" height="400"></p>
+![Daniel giving a talk at Vuefes Japan](/talk.jpg){.w-full .my-4 width="600" height="400"}
 
 He continues to mentor founders as an expert-in-residence at the [Imperial Enterprise Lab](https://www.imperialenterpriselab.com/), and has been recognised as a [Microsoft MVP](https://mvp.microsoft.com/), a [Google GDE](https://developers.google.com/community/experts/) and a [GitHub Star](https://stars.github.com/profiles/danielroe/).
 
