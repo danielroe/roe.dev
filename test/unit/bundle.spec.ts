@@ -34,6 +34,9 @@ describe('project sizes', () => {
 
   it('default client bundle size', async () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
+    expect
+      .soft(roundToKilobytes(stats.client.totalBytes))
+      .toMatchInlineSnapshot(`"281k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
