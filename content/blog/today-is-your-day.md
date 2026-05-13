@@ -17,7 +17,7 @@ Reflection isn't my strong suit. I think. But I wish it were more part of my lif
 
 This year, I've attended conferences or meetups in Toronto, Prague, Seattle, Amsterdam, Glasgow, Middlesbrough, Bonn, Portlaoise, Athens, New Orleans, San Francisco, London and Edinburgh. I've also enjoyed making [EdinburghJS](https://www.edinburghjs.org/) a regular part of my life.
 
-<p><img src="/img/today-is-your-day/flighty-passport.png" alt="Flighty 'passport'" height="1572" width="1179" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
+![Flighty 'passport'](/img/today-is-your-day/flighty-passport.png){.md:float-right .md:w-1/2 .-md:mt-1 .my-2 .md:ml-4 width="1179" height="1572"}
 
 I've loved every moment of it. Not the places, so much as the _people_. The tech world is amazing - but the greatest part for me is meeting people I respect and collaborate with.
 
@@ -73,7 +73,7 @@ I count myself incredibly fortunate to be able to make a living from being a [fu
 
 It's something I _get_ to do rather than _have_ to.
 
-<p><img src="/img/today-is-your-day/twitch-recap.png" alt="Twitch recap titled 'Grass-Toucher of the Year', with 839 new followers, 4.27K total hours watched, 118 new subscribers, 40 streams, 7.22K total chats sent, 8 clips and the Nuxt logo as the top channel emote" height="2200" width="1760" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
+![Twitch recap titled 'Grass-Toucher of the Year', with 839 new followers, 4.27K total hours watched, 118 new subscribers, 40 streams, 7.22K total chats sent, 8 clips and the Nuxt logo as the top channel emote](/img/today-is-your-day/twitch-recap.png){.md:float-right .md:w-1/2 .-md:mt-1 .my-2 .md:ml-4 width="1760" height="2200"}
 
 That's one reason I stream maintenance, building things or talking to people. You can find me on [Algora](https://tv.algora.io/danielroe), [Twitch](https://www.twitch.tv/danielroe) or [YouTube](https://www.youtube.com/@danielroe). I think of it as 'coding with friends' and it's part of the fun.
 

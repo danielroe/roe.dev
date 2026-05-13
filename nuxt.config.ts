@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/mdc',
+    '@comark/nuxt',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
@@ -79,14 +79,6 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://roe.dev',
-  },
-
-  mdc: {
-    highlight: {
-      theme: 'material-theme-palenight',
-      langs: ['js', 'ts', 'json', 'vue', 'css', 'html', 'bash', 'md', 'mdc', 'yaml'],
-      noApiRoute: true,
-    },
   },
 
   runtimeConfig: {
