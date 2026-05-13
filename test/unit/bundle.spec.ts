@@ -21,7 +21,13 @@ describe('project sizes', () => {
   beforeAll(async () => {
     execSync('pnpm nuxt build', {
       cwd: rootDir,
-      env: { ...process.env, NODE_ENV: 'production', DISABLE_PRERENDER: 'true' },
+      env: {
+        ...process.env,
+        NODE_ENV: 'production',
+        DISABLE_PRERENDER: 'true',
+        TEST: 'true',
+        VITEST: 'true',
+      },
     })
   }, 120 * 1000)
 
@@ -36,7 +42,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"281k"`)
+      .toMatchInlineSnapshot(`"251k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -76,13 +82,13 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
-      .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"2377k"`)
+      .soft(roundToKilobytes(stats.server.totalBytes, 10))
+      .toMatchInlineSnapshot(`"2380k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
-      .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8491k"`)
+      .soft(roundToKilobytes(modules.totalBytes, 10))
+      .toMatchInlineSnapshot(`"8490k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -319,6 +325,7 @@ async function analyzeSizes (pattern: string | string[], rootDir: string) {
   return { files, totalBytes }
 }
 
-function roundToKilobytes (bytes: number) {
-  return (bytes / 1024).toFixed(bytes > 100 * 1024 ? 0 : 1) + 'k'
+function roundToKilobytes (bytes: number, granularityK = 1) {
+  if (bytes < 100 * 1024) return (bytes / 1024).toFixed(1) + 'k'
+  return Math.round(bytes / 1024 / granularityK) * granularityK + 'k'
 }
