@@ -188,8 +188,8 @@ export default defineComponent({
                         ? to.value
                         : router.resolve(to.value).fullPath
                     await Promise.all([
-                      nuxtApp.hooks
-                        .callHook('link:prefetch', path)
+                      Promise.resolve(nuxtApp.hooks
+                        .callHook('link:prefetch', path))
                         .catch(() => {}),
                       !isExternal.value
                       && preloadRouteComponents(
