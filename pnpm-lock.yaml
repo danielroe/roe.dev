@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  comark:
+    hash: f2d6e12e4365bfa851d60449ed5e0789648dc24052fe1a20532dd5936545232a
+    path: patches/comark.patch
+
 importers:
 
   .:
@@ -82,7 +87,7 @@ importers:
         version: 0.2.2
       comark:
         specifier: ^0.3.2
-        version: 0.3.2(shiki@4.0.2)
+        version: 0.3.2(patch_hash=f2d6e12e4365bfa851d60449ed5e0789648dc24052fe1a20532dd5936545232a)(shiki@4.0.2)
       defu:
         specifier: ^6.1.4
         version: 6.1.7
@@ -12060,7 +12065,7 @@ snapshots:
     dependencies:
       '@comark/vue': 0.3.1(shiki@4.0.2)(vue@3.5.30(typescript@5.9.3))
       '@nuxt/kit': 4.4.2(magicast@0.5.2)
-      comark: 0.3.2(shiki@4.0.2)
+      comark: 0.3.2(patch_hash=f2d6e12e4365bfa851d60449ed5e0789648dc24052fe1a20532dd5936545232a)(shiki@4.0.2)
       nuxt: 4.3.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@parcel/watcher@2.5.6)(@types/node@25.6.0)(@vercel/blob@2.3.3)(@vue/compiler-sfc@3.5.32)(cac@6.7.14)(db0@0.3.4)(eslint@9.39.4(jiti@2.6.1))(ioredis@5.10.1)(lightningcss@1.32.0)(magicast@0.5.2)(meow@13.2.0)(optionator@0.9.4)(rolldown@1.0.0-rc.13)(rollup@4.60.2)(srvx@0.11.15)(stylelint@17.9.0(typescript@5.9.3))(terser@5.46.1)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vue-tsc@3.2.7(typescript@5.9.3))(yaml@2.8.3)
     transitivePeerDependencies:
       - beautiful-mermaid
@@ -12071,7 +12076,7 @@ snapshots:
 
   '@comark/vue@0.3.1(shiki@4.0.2)(vue@3.5.30(typescript@5.9.3))':
     dependencies:
-      comark: 0.3.2(shiki@4.0.2)
+      comark: 0.3.2(patch_hash=f2d6e12e4365bfa851d60449ed5e0789648dc24052fe1a20532dd5936545232a)(shiki@4.0.2)
       vue: 3.5.30(typescript@5.9.3)
     optionalDependencies:
       shiki: 4.0.2
@@ -17115,7 +17120,7 @@ snapshots:
 
   colorette@2.0.20: {}
 
-  comark@0.3.2(shiki@4.0.2):
+  comark@0.3.2(patch_hash=f2d6e12e4365bfa851d60449ed5e0789648dc24052fe1a20532dd5936545232a)(shiki@4.0.2):
     dependencies:
       entities: 8.0.0
       htmlparser2: 12.0.0

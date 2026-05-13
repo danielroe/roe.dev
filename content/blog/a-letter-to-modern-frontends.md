@@ -18,22 +18,20 @@ For a start, let me say how much I enjoyed myself. The speakers were great! What
 
 You and I had a few moments to chat, particularly when you were feeling embattled because of comments on Twitter, and I’m sure you’ve seen these posts as they went up:
 
-<ul style="display:grid; grid-template-columns: auto auto auto;margin:0.5rem 0;">
-
-<li style="margin:0"><a href="https://dev.to/thisisjofrank/my-experience-of-modern-frontends-conference-1cgg">Jo</a></li>
-<li style="margin:0"><a href="https://www.cassie.codes/posts/modern-frontends/">Cassie</a></li>
-<li style="margin:0"><a href="https://hidde.blog/modern-frontends-live/">Hidde</a></li>
-<li style="margin:0"><a href="https://mhartington.io/post/modern-frontends-live/">Mike</a></li>
-<li style="margin:0"><a href="https://toddl.dev/posts/modern-frontends/">Todd</a></li>
-<li style="margin:0"><a href="https://andy-bell.co.uk/modern-frontends-live/">Andy</a></li>
-<li style="margin:0"><a href="https://christopherallanperry.github.io/blog/2022/11/20/modern_frontends-an_attendees_perspective.html">Chris</a></li>
-<li style="margin:0"><a href="https://jdhillen.com/blog/my-experience-at-modern-frontends-live/">JD</a></li>
-<li style="margin:0"><a href="https://dev.to/niamhmccoo/my-experience-at-modern-frontends-live-1lcn">Niamh</a></li>
-<li style="margin:0"><a href="https://kentcdodds.com/blog/my-modern-frontends-live-experience">Kent</a></li>
-<li style="margin:0"><a href="https://dylanbeattie.net/2022/11/22/modern-frontends-2022.html">Dylan</a></li>
-<li style="margin:0"><a href="https://nielsleenheer.com/articles/2022/red-flag-speakers-having-to-cover-their-own-travel/">Niels</a></li>
-
-</ul>
+:::div{.grid .grid-cols-1 .sm:grid-cols-2 .md:grid-cols-3 .my-2}
+- [Jo](https://dev.to/thisisjofrank/my-experience-of-modern-frontends-conference-1cgg)
+- [Cassie](https://www.cassie.codes/posts/modern-frontends/)
+- [Hidde](https://hidde.blog/modern-frontends-live/)
+- [Mike](https://mhartington.io/post/modern-frontends-live/)
+- [Todd](https://toddl.dev/posts/modern-frontends/)
+- [Andy](https://andy-bell.co.uk/modern-frontends-live/)
+- [Chris](https://christopherallanperry.github.io/blog/2022/11/20/modern_frontends-an_attendees_perspective.html)
+- [JD](https://jdhillen.com/blog/my-experience-at-modern-frontends-live/)
+- [Niamh](https://dev.to/niamhmccoo/my-experience-at-modern-frontends-live-1lcn)
+- [Kent](https://kentcdodds.com/blog/my-modern-frontends-live-experience)
+- [Dylan](https://dylanbeattie.net/2022/11/22/modern-frontends-2022.html)
+- [Niels](https://nielsleenheer.com/articles/2022/red-flag-speakers-having-to-cover-their-own-travel/)
+:::
 
 I would say their summary of the facts on the ground is fair.
 
