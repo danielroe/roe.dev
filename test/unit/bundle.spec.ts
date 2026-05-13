@@ -69,7 +69,6 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
-          "_scripts/script.js",
         ]
       `)
   })
