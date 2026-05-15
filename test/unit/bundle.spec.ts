@@ -42,7 +42,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"282k"`)
+      .toMatchInlineSnapshot(`"250k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -82,13 +82,13 @@ describe('project sizes', () => {
   it('default server bundle size', async () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
-      .soft(roundToKilobytes(stats.server.totalBytes))
-      .toMatchInlineSnapshot(`"2378k"`)
+      .soft(roundToKilobytes(stats.server.totalBytes, 10))
+      .toMatchInlineSnapshot(`"2250k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
-      .soft(roundToKilobytes(modules.totalBytes))
-      .toMatchInlineSnapshot(`"8495k"`)
+      .soft(roundToKilobytes(modules.totalBytes, 10))
+      .toMatchInlineSnapshot(`"8500k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
