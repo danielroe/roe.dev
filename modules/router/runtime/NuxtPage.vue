@@ -15,6 +15,16 @@ nuxtApp.hooks.hook('link:prefetch', url => {
   }
 })
 const done = nuxtApp.deferHydration()
+function onResolve () {
+  nextTick(async () => {
+    try {
+      await nuxtApp.callHook('page:finish', component.value)
+    }
+    finally {
+      done()
+    }
+  })
+}
 if (import.meta.client) {
   nuxtApp.hook('page:finish', () =>
     document.documentElement.scrollTo({
@@ -29,11 +39,7 @@ if (import.meta.client) {
     v-if="component"
     :suspensible="true"
     @pending="() => nuxtApp.callHook('page:start', component)"
-    @resolve="
-      () => {
-        nextTick(() => nuxtApp.callHook('page:finish', component).finally(done))
-      }
-    "
+    @resolve="onResolve"
   >
     <component
       :is="component"

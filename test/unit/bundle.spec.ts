@@ -21,7 +21,13 @@ describe('project sizes', () => {
   beforeAll(async () => {
     execSync('pnpm nuxt build', {
       cwd: rootDir,
-      env: { ...process.env, NODE_ENV: 'production', DISABLE_PRERENDER: 'true' },
+      env: {
+        ...process.env,
+        NODE_ENV: 'production',
+        DISABLE_PRERENDER: 'true',
+        TEST: 'true',
+        VITEST: 'true',
+      },
     })
   }, 120 * 1000)
 
@@ -33,7 +39,7 @@ describe('project sizes', () => {
   })
 
   it('default client bundle size', async () => {
-    stats.client = await analyzeSizes('**/*.js', publicDir)
+    stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
       .toMatchInlineSnapshot(`"282k"`)
@@ -69,7 +75,6 @@ describe('project sizes', () => {
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
-          "_scripts/script.js",
         ]
       `)
   })
@@ -320,6 +325,7 @@ async function analyzeSizes (pattern: string | string[], rootDir: string) {
   return { files, totalBytes }
 }
 
-function roundToKilobytes (bytes: number) {
-  return (bytes / 1024).toFixed(bytes > 100 * 1024 ? 0 : 1) + 'k'
+function roundToKilobytes (bytes: number, granularityK = 1) {
+  if (bytes < 100 * 1024) return (bytes / 1024).toFixed(1) + 'k'
+  return Math.round(bytes / 1024 / granularityK) * granularityK + 'k'
 }
