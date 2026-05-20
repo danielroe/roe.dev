@@ -18,7 +18,7 @@ For a start, let me say how much I enjoyed myself. The speakers were great! What
 
 You and I had a few moments to chat, particularly when you were feeling embattled because of comments on Twitter, and I’m sure you’ve seen these posts as they went up:
 
-:::div{.grid .grid-cols-1 .sm:grid-cols-2 .md:grid-cols-3 .my-2}
+::LinkGrid
 - [Jo](https://dev.to/thisisjofrank/my-experience-of-modern-frontends-conference-1cgg)
 - [Cassie](https://www.cassie.codes/posts/modern-frontends/)
 - [Hidde](https://hidde.blog/modern-frontends-live/)
@@ -31,7 +31,7 @@ You and I had a few moments to chat, particularly when you were feeling embattle
 - [Kent](https://kentcdodds.com/blog/my-modern-frontends-live-experience)
 - [Dylan](https://dylanbeattie.net/2022/11/22/modern-frontends-2022.html)
 - [Niels](https://nielsleenheer.com/articles/2022/red-flag-speakers-having-to-cover-their-own-travel/)
-:::
+::
 
 I would say their summary of the facts on the ground is fair.
 
