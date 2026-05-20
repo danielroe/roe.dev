@@ -1,23 +1,24 @@
 packages:
   - cms
 
-ignoreDepScripts: true
-
 ignoreWorkspaceRootCheck: true
 
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-  - unrs-resolver
-  - workerd
+overrides:
+  vite: 8.0.13
 
-onlyBuiltDependencies:
-  - better-sqlite3
-  - sharp
-  - simple-git-hooks
 patchedDependencies:
   comark: patches/comark.patch
 
 savePrefix: ''
 
 shellEmulator: true
+
+allowBuilds:
+  '*': false
+  '@parcel/watcher': false
+  better-sqlite3: true
+  esbuild: false
+  sharp: true
+  simple-git-hooks: true
+  unrs-resolver: false
+  workerd: false
