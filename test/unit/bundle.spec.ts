@@ -42,12 +42,13 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"241k"`)
+      .toMatchInlineSnapshot(`"247k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/BlueskyComments.js",
           "_nuxt/CalSchedule.js",
+          "_nuxt/LinkGrid.js",
           "_nuxt/ProseA.js",
           "_nuxt/ProseImg.js",
           "_nuxt/ProseTh.js",
@@ -61,12 +62,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1140k"`)
+      .toMatchInlineSnapshot(`"1220k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"5690k"`)
+      .toMatchInlineSnapshot(`"5810k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
