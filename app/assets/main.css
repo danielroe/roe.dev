@@ -34,16 +34,16 @@ p + p, p + blockquote {
   margin: 0.5rem 0;
 }
 
-.link-grid > ul {
+.link-grid.link-grid > ul {
   display: contents;
   padding-left: 0;
 }
 
-.link-grid li {
+.link-grid.link-grid > ul > li {
   margin: 0;
 }
 
-.link-grid li::before {
+.link-grid.link-grid > ul > li::before {
   content: none;
 }
 
