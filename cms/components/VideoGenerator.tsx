@@ -7,6 +7,7 @@ import { calculateVideoDuration } from '../utils/video-animation-config'
 import type { GSAPTimeline } from '../utils/video-gsap-animations'
 import { createPreviewAnimation, stopAnimations } from '../utils/video-gsap-animations'
 import { getHumanRelativeDate } from '../utils/date-formatting'
+import { getBackgroundStyle } from '../utils/backgrounds'
 import {
   fetchAudioTracks,
   selectAudioTrack,
@@ -42,6 +43,8 @@ export function VideoContentGenerator (props: VideoGeneratorProps) {
   const documentContent = useFormValue(['content']) as string
   const posts = useFormValue(['posts']) as Array<{ content: PortableTextTextBlock[] }>
   const existingVideo = useFormValue(['video']) as { asset?: { _ref: string } } | undefined
+  const backgroundStyleId = useFormValue(['backgroundStyle']) as string | undefined
+  const backgroundStyle = getBackgroundStyle(backgroundStyleId)
   const client = useClient({ apiVersion: '2025-02-10' })
 
   // Initialize video URL from existing asset
@@ -635,8 +638,7 @@ export function VideoContentGenerator (props: VideoGeneratorProps) {
                   style={{
                     position: 'absolute',
                     inset: '-9em',
-                    background: 'linear-gradient(yellow 5%, fuchsia, royalblue 95%)',
-                    filter: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMCI+IDxmaWx0ZXIgaWQ9Im15RmlsdGVyIj4gPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii4wMDUgLjAwMSIgbnVtT2N0YXZlcz0iMiIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIHhDaGFubmVsU2VsZWN0b3I9IlIiIHNjYWxlPSI1MDAiIGluPSJTb3VyY2VHcmFwaGljIiByZXN1bHQ9ImJhbmRzIiAvPiA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMy43MSIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIGluPSJiYW5kcyIgc2NhbGU9IjMyIiB4Q2hhbm5lbFNlbGVjdG9yPSJSIiAvPiA8L2ZpbHRlcj4gPC9zdmc+#myFilter")',
+                    ...backgroundStyle.style,
                   }}
                 />
 

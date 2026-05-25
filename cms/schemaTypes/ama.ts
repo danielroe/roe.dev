@@ -3,6 +3,7 @@ import { defineField, defineType } from 'sanity'
 import { CharacterCountInput } from '../components/CharacterCountInput'
 import { ImageGenerator } from '../components/ImageGenerator'
 import { VideoContentGenerator } from '../components/VideoGenerator'
+import { BACKGROUND_STYLES, DEFAULT_BACKGROUND_STYLE_ID } from '../utils/backgrounds'
 
 export default defineType({
   name: 'ama',
@@ -176,6 +177,18 @@ export default defineType({
       },
       initialValue: 'draft',
       readOnly: ({ document }) => document?.publishStatus === 'ready' || document?.publishStatus === 'publishing' || document?.publishStatus === 'published',
+    }),
+    defineField({
+      name: 'backgroundStyle',
+      title: 'Background style',
+      type: 'string',
+      description: 'Background used behind the generated image and video.',
+      options: {
+        list: BACKGROUND_STYLES.map(({ id, title }) => ({ value: id, title })),
+        layout: 'dropdown',
+      },
+      initialValue: DEFAULT_BACKGROUND_STYLE_ID,
+      readOnly: ({ document }) => document?.publishStatus === 'published',
     }),
     defineField({
       name: 'generatedImage',

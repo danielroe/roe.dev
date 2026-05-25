@@ -3,6 +3,7 @@ import { Stack, Text, Card, Button, Box, Flex } from '@sanity/ui'
 import { set, useFormValue, useClient } from 'sanity'
 import { domToBlob } from 'modern-screenshot'
 import { getHumanRelativeDate } from '../utils/date-formatting'
+import { getBackgroundStyle } from '../utils/backgrounds'
 
 // Detect iOS devices
 const isIOS = () => {
@@ -29,6 +30,8 @@ export function ImageGenerator (props: ImageGeneratorProps) {
   const relativeDate = getHumanRelativeDate(dateOfDocument)
 
   const documentContent = useFormValue(['content']) as string
+  const backgroundStyleId = useFormValue(['backgroundStyle']) as string | undefined
+  const backgroundStyle = getBackgroundStyle(backgroundStyleId)
   const client = useClient({ apiVersion: '2025-02-10' })
 
   // Format text for display - now just clean whitespace
@@ -346,12 +349,10 @@ export function ImageGenerator (props: ImageGeneratorProps) {
                 }}
                 >
                   <div
-                    ref={terminalRef}
                     style={{
                       position: 'absolute',
-                      background: 'linear-gradient(yellow 5%, fuchsia, royalblue 95%)',
-                      filter: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMCI+IDxmaWx0ZXIgaWQ9Im15RmlsdGVyIj4gPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii4wMDUgLjAwMSIgbnVtT2N0YXZlcz0iMiIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIHhDaGFubmVsU2VsZWN0b3I9IlIiIHNjYWxlPSI1MDAiIGluPSJTb3VyY2VHcmFwaGljIiByZXN1bHQ9ImJhbmRzIiAvPiA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMy43MSIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIGluPSJiYW5kcyIgc2NhbGU9IjMyIiB4Q2hhbm5lbFNlbGVjdG9yPSJSIiAvPiA8L2ZpbHRlcj4gPC9zdmc+#myFilter")',
                       inset: '-9em',
+                      ...backgroundStyle.style,
                     }}
                   />
                 </div>
