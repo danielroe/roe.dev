@@ -36,6 +36,11 @@ export const pageMeta: Record<string, PageMeta> = {
   '/live': {
     title: 'Live Reactions',
   },
+  '/projects': {
+    title: 'Projects',
+    description: 'Open source projects, libraries and sites by Daniel Roe',
+    llmLabel: 'Open source projects, libraries and sites',
+  },
   '/talks': {
     title: 'Talks',
     description: 'Talks and presentations by Daniel Roe',
@@ -48,10 +53,5 @@ export const pageMeta: Record<string, PageMeta> = {
   },
   '/voted': {
     title: 'Thank you!',
-  },
-  '/work': {
-    title: 'Work',
-    description: 'Open source projects and past client work by Daniel Roe',
-    llmLabel: 'Open source projects and past client work',
   },
 }

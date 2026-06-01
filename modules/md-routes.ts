@@ -20,7 +20,7 @@ export default defineNuxtModule({
       '/bio',
       '/talks',
       '/uses',
-      '/work',
+      '/projects',
       '/blog',
     ]
 

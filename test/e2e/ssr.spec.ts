@@ -10,7 +10,7 @@ const pages = [
   '/',
   '/talks',
   '/uses',
-  '/work',
+  '/projects',
   '/blog',
   '/blog/introduction',
   '/blog/serverless-functions-nuxt-zeit-now',

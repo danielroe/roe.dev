@@ -42,7 +42,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"256k"`)
+      .toMatchInlineSnapshot(`"254k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -83,7 +83,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2250k"`)
+      .toMatchInlineSnapshot(`"2260k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect

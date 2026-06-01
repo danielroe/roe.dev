@@ -7,6 +7,7 @@ export default defineConfig({
   content: {
     filesystem: [
       resolver.resolve('./content/**/*.md'),
+      resolver.resolve('./content/projects.yml'),
       resolver.resolve('./app/**/*.vue'),
     ],
   },
