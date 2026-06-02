@@ -22,7 +22,7 @@ The app is made by [The Positive Birth Company](https://thepositivebirthcompany.
 
 Their mission is to empower women and their birth partners. That resonated with us. In fact, we traveled 370 miles to attend one of their courses.
 
-<p><img src="/img/pbc.jpg" width="944" height="466" alt="The Positive Birth Company video still"></p>
+![The Positive Birth Company video still](/img/pbc.jpg){width="944" height="466"}
 
 ## Aesthetics and purpose
 

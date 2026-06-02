@@ -6,6 +6,9 @@ ignoreWorkspaceRootCheck: true
 overrides:
   vite: 8.0.13
 
+patchedDependencies:
+  comark: patches/comark.patch
+
 savePrefix: ''
 
 shellEmulator: true

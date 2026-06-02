@@ -1,0 +1,284 @@
+diff --git a/dist/internal/parse/html/index.d.ts b/dist/internal/parse/html/index.d.ts
+index 038d018134ab24bbef19c5cca5cabc129a089c0c..e373a48274089fdf636dd87b2689ebe81c19d642 100644
+--- a/dist/internal/parse/html/index.d.ts
++++ b/dist/internal/parse/html/index.d.ts
+@@ -1,4 +1,5 @@
+ import type { ComarkNode } from 'comark';
++export declare const VOID_ELEMENTS: Set<string>;
+ interface HtmlTagInfo {
+     tag: string;
+     attrs: Record<string, unknown>;
+diff --git a/dist/internal/parse/html/index.js b/dist/internal/parse/html/index.js
+index b58210e76f441c2c54e34ae95fcc1f2949546de6..f5dac420f2c80b28401384ab659bca397a0acbf3 100644
+--- a/dist/internal/parse/html/index.js
++++ b/dist/internal/parse/html/index.js
+@@ -1,5 +1,5 @@
+ import { Parser } from 'htmlparser2';
+-const VOID_ELEMENTS = new Set([
++export const VOID_ELEMENTS = new Set([
+     'area',
+     'base',
+     'br',
+diff --git a/dist/internal/parse/lift-block-html.d.ts b/dist/internal/parse/lift-block-html.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..6e329e3e9c8c4a0847a52531577130cbf4fefe8c
+--- /dev/null
++++ b/dist/internal/parse/lift-block-html.d.ts
+@@ -0,0 +1,17 @@
++import type { ComarkNode } from 'comark';
++/**
++ * HTML's content model rules say a block-level element implicitly closes any
++ * open `<p>` ancestor. When an author writes inline HTML like
++ *
++ *   <br><blockquote>...</blockquote>
++ *
++ * the leading inline `<br>` prevents markdown-it from classifying the line as
++ * a block, so the `<blockquote>` arrives nested inside the surrounding `<p>`
++ * paragraph. That produces structurally invalid HTML downstream.
++ *
++ * `liftBlockHtmlFromParagraphs` walks the tree and, when it finds a `<p>` whose
++ * inline children include a known block-level HTML element node (one tagged
++ * with `$.html` in its props), splits the paragraph at that point, lifting the
++ * block element to be a sibling of its (former) parent paragraph.
++ */
++export declare function liftBlockHtmlFromParagraphs(nodes: ComarkNode[]): ComarkNode[];
+diff --git a/dist/internal/parse/lift-block-html.js b/dist/internal/parse/lift-block-html.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..42555cdac26562ff24606f178b35a681a5dae90d
+--- /dev/null
++++ b/dist/internal/parse/lift-block-html.js
+@@ -0,0 +1,74 @@
++import block_names from "./html/html_blocks.js";
++const BLOCK_TAGS = new Set(block_names);
++/**
++ * HTML's content model rules say a block-level element implicitly closes any
++ * open `<p>` ancestor. When an author writes inline HTML like
++ *
++ *   <br><blockquote>...</blockquote>
++ *
++ * the leading inline `<br>` prevents markdown-it from classifying the line as
++ * a block, so the `<blockquote>` arrives nested inside the surrounding `<p>`
++ * paragraph. That produces structurally invalid HTML downstream.
++ *
++ * `liftBlockHtmlFromParagraphs` walks the tree and, when it finds a `<p>` whose
++ * inline children include a known block-level HTML element node (one tagged
++ * with `$.html` in its props), splits the paragraph at that point, lifting the
++ * block element to be a sibling of its (former) parent paragraph.
++ */
++export function liftBlockHtmlFromParagraphs(nodes) {
++    const out = [];
++    for (const node of nodes) {
++        if (typeof node === 'string') {
++            out.push(node);
++            continue;
++        }
++        if (!Array.isArray(node) || node.length < 2) {
++            out.push(node);
++            continue;
++        }
++        const [tag, props, ...children] = node;
++        const liftedChildren = liftBlockHtmlFromParagraphs(children);
++        if (tag !== 'p') {
++            out.push([tag, props, ...liftedChildren]);
++            continue;
++        }
++        // Scan paragraph children for embedded block-level HTML elements.
++        const splits = [];
++        let buffer = [];
++        for (const child of liftedChildren) {
++            if (isBlockHtmlElement(child)) {
++                if (buffer.length > 0) {
++                    splits.push([tag, props, ...buffer]);
++                    buffer = [];
++                }
++                splits.push(child);
++            }
++            else {
++                buffer.push(child);
++            }
++        }
++        if (splits.length === 0) {
++            out.push([tag, props, ...liftedChildren]);
++            continue;
++        }
++        if (buffer.length > 0) {
++            splits.push([tag, props, ...buffer]);
++        }
++        out.push(...splits);
++    }
++    return out;
++}
++function isBlockHtmlElement(node) {
++    if (typeof node === 'string' || !Array.isArray(node) || node.length < 2)
++        return false;
++    const [tag, props] = node;
++    if (typeof tag !== 'string')
++        return false;
++    if (!BLOCK_TAGS.has(tag))
++        return false;
++    // Only lift nodes that originated from raw HTML — markdown-produced block
++    // elements (which shouldn't appear inside <p> in the first place) are out of
++    // scope, and tagging by origin avoids surprising rewrites of authored AST.
++    const meta = props?.$;
++    return !!meta && meta.html === 1;
++}
+diff --git a/dist/internal/parse/token-processor.js b/dist/internal/parse/token-processor.js
+index 52ca383b83c7b6b96d0dc603c1bc81e67cfdf2eb..d327d38deb1d8a8d4e4d2a0d9db14b232f111cad 100644
+--- a/dist/internal/parse/token-processor.js
++++ b/dist/internal/parse/token-processor.js
+@@ -1,4 +1,4 @@
+-import { htmlToComarkNodes, parseInlineHtmlTag } from "./html/index.js";
++import { htmlToComarkNodes, parseInlineHtmlTag, VOID_ELEMENTS } from "./html/index.js";
+ // Mapping from token types to tag names
+ const BLOCK_TAG_MAP = {
+     blockquote_open: 'blockquote',
+@@ -20,6 +20,34 @@ const INLINE_TAG_MAP = {
+     sub_open: 'del',
+ };
+ // ─── main entry point ───────────────────────────────────────────────────────
++/**
++ * Whether the html_block token at `index` is part of a paired open/close
++ * structure (e.g. `<figure>` ... `</figure>`). Returns true if a matching
++ * `html_block_close` token exists later in the stream at the correct depth.
++ *
++ * Self-contained html_block tokens (a void element on its own line, a comment,
++ * or a chunk with its own closing tag) have no companion close token and
++ * should be handed straight to `htmlToComarkNodes`.
++ */
++function hasMatchingHtmlBlockClose(tokens, startIndex) {
++    if (tokens[startIndex]?.type !== 'html_block')
++        return false;
++    // Nested html_blocks may sit between an open and its close at the same depth;
++    // walk forward keeping a depth counter.
++    let depth = 1;
++    for (let j = startIndex + 1; j < tokens.length; j++) {
++        const t = tokens[j];
++        if (t.type === 'html_block') {
++            depth++;
++        }
++        else if (t.type === 'html_block_close') {
++            depth--;
++            if (depth === 0)
++                return true;
++        }
++    }
++    return false;
++}
+ /**
+  * Convert Markdown-It tokens to a Comark tree
+  */
+@@ -33,6 +61,18 @@ export function marmdownItTokensToComarkTree(tokens, options = { startLine: 0, p
+     let i = 0;
+     let endLine = options.startLine;
+     while (i < tokens.length) {
++        const token = tokens[i];
++        // An html_block whose own content already closes its outer element
++        // (e.g. `<p><img></p>`, `<div>foo</div>`, `<img>`, `<!-- ... -->`) has no
++        // paired html_block_close later in the stream.
++        if (token.type === 'html_block' && htmlBlockHasOwnClose(token.content || '')) {
++            const htmlNodes = htmlToComarkNodes(token.content || '');
++            for (const htmlNode of htmlNodes) {
++                nodes.push(htmlNode);
++            }
++            i++;
++            continue;
++        }
+         const result = processBlockToken(tokens, i, false, state);
+         if (result.node) {
+             if (options.preservePositions) {
+@@ -54,6 +94,27 @@ export function marmdownItTokensToComarkTree(tokens, options = { startLine: 0, p
+     }
+     return nodes;
+ }
++/**
++ * Whether an `html_block` token's content already closes its own outer element.
++ * The block tokeniser only emits an `html_block_close` for lines that begin with
++ * `</`, so any block whose closer sits on the opener's line (`<p><img></p>`),
++ * including void elements and comments, has no companion close token.
++ */
++function htmlBlockHasOwnClose(content) {
++    const trimmed = content.trim();
++    if (!trimmed)
++        return false;
++    // Comments, declarations, CDATA, processing instructions: self-terminating.
++    if (trimmed.startsWith('<!') || trimmed.startsWith('<?'))
++        return true;
++    const match = trimmed.match(/^<\s*([a-zA-Z][a-zA-Z0-9]*)/);
++    if (!match)
++        return false;
++    const tag = match[1];
++    if (VOID_ELEMENTS.has(tag.toLowerCase()))
++        return true;
++    return new RegExp(`</\\s*${tag}\\s*>`, 'i').test(trimmed);
++}
+ /**
+  * Extract and process attributes from a token's attrs array
+  */
+@@ -231,11 +292,16 @@ function processBlockToken(tokens, startIndex, insideNestedContext = false, stat
+             const inner = content.endsWith('-->') ? content.slice(4, -3) : content.slice(4);
+             return { node: [null, {}, inner], nextIndex: startIndex + 1 };
+         }
+-        const children = processBlockChildren(tokens, startIndex + 1, 'html_block_close', false, false, false, state);
+-        const [node1] = htmlToComarkNodes(content);
++        const htmlNodes = htmlToComarkNodes(content);
++        const [node1] = htmlNodes;
+         if (!node1) {
+             return { node: null, nextIndex: startIndex + 1 };
+         }
++        const isVoid = Array.isArray(node1) && VOID_ELEMENTS.has(node1[0]);
++        if (isVoid) {
++            return { node: node1, nextIndex: startIndex + 1 };
++        }
++        const children = processBlockChildren(tokens, startIndex + 1, 'html_block_close', false, false, false, state);
+         const node = [node1[0], node1[1], ...children.nodes];
+         return { node, nextIndex: children.nextIndex + 1 };
+     }
+@@ -354,8 +420,12 @@ function processBlockChildrenWithSlots(tokens, startIndex, closeType, state) {
+     let currentSlotChildren = [];
+     while (i < tokens.length && tokens[i].type !== closeType) {
+         const token = tokens[i];
+-        // html_block can produce multiple nodes — handle before processBlockToken
+-        if (token.type === 'html_block') {
++        // A self-contained html_block (no paired close in the stream) may contain
++        // multiple top-level HTML nodes — let htmlToComarkNodes split them.
++        // For nesting=1 tokens (block elements with a separate html_block_close)
++        // we fall through to processBlockToken so the recursive close-pairing
++        // logic can walk the children and rebuild the nesting.
++        if (token.type === 'html_block' && !hasMatchingHtmlBlockClose(tokens, i)) {
+             const htmlNodes = htmlToComarkNodes(token.content);
+             if (currentSlotName !== null) {
+                 currentSlotChildren.push(...htmlNodes);
+@@ -418,8 +488,8 @@ function processBlockChildren(tokens, startIndex, closeType, inlineOnly, inHeadi
+     let i = startIndex;
+     while (i < tokens.length && tokens[i].type !== closeType) {
+         const token = tokens[i];
+-        // html_block can produce multiple nodes — handle before processBlockToken
+-        if (token.type === 'html_block') {
++        // See processBlockChildrenWithSlots for the matching logic.
++        if (token.type === 'html_block' && !hasMatchingHtmlBlockClose(tokens, i)) {
+             nodes.push(...htmlToComarkNodes(token.content));
+             i++;
+             continue;
+diff --git a/dist/parse.js b/dist/parse.js
+index fbbc7be380b67c024e91f672d762940fe3879f94..f11e92e619f69121c184242f55f5a50d1ca6d199 100644
+--- a/dist/parse.js
++++ b/dist/parse.js
+@@ -3,6 +3,7 @@ import syntax from "./plugins/syntax.js";
+ import taskList from "./plugins/task-list.js";
+ import alert from "./plugins/alert.js";
+ import { applyAutoUnwrap } from "./internal/parse/auto-unwrap.js";
++import { liftBlockHtmlFromParagraphs } from "./internal/parse/lift-block-html.js";
+ import { marmdownItTokensToComarkTree } from "./internal/parse/token-processor.js";
+ import { autoCloseMarkdown } from "./internal/parse/auto-close/index.js";
+ import { parseFrontmatter } from "./internal/frontmatter.js";
+@@ -115,6 +116,10 @@ export function createParse(options = {}) {
+             startLine: state.parsedLines,
+             preservePositions: opts.streaming ?? false,
+         });
++        // Lift block-level HTML elements (e.g. <blockquote>) out of <p> ancestors
++        // when they end up there because of an adjacent inline html_inline token
++        // (markdown-it's html_block rule only fires at the start of a line).
++        nodes = liftBlockHtmlFromParagraphs(nodes);
+         if (autoUnwrap) {
+             nodes = nodes.map((node) => applyAutoUnwrap(node));
+         }

@@ -7,6 +7,8 @@ import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
+import { parse } from '@comark/nuxt/parse'
+import highlight from 'comark/plugins/highlight'
 
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks } from './shared/md-transforms'
@@ -96,18 +98,17 @@ export default defineNuxtModule({
       write: true,
     })
 
+    const renderParse = (source: string) => parse(source, {
+      plugins: [highlight()],
+    })
+
     for (const post of blogPosts) {
+      const tree = await renderParse(post.body)
       addTemplate({
         filename: `markdown/blog/${post.slug}.mjs`,
-        getContents: () => `
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-
-let _parsed
+        getContents: () => `export const tree = ${JSON.stringify(tree)}
 export async function getBody () {
-  if (!_parsed) {
-    _parsed = await parseMarkdown(${JSON.stringify(post.body)})
-  }
-  return _parsed
+  return tree
 }
 `,
         write: true,
@@ -115,17 +116,12 @@ export async function getBody () {
     }
 
     for (const slug of Object.keys(pageBodies)) {
+      const tree = await renderParse(pageBodies[slug]!)
       addTemplate({
         filename: `markdown/page/${slug}.mjs`,
-        getContents: () => `
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-
-let _parsed
+        getContents: () => `export const tree = ${JSON.stringify(tree)}
 export async function getBody () {
-  if (!_parsed) {
-    _parsed = await parseMarkdown(${JSON.stringify(pageBodies[slug])})
-  }
-  return _parsed
+  return tree
 }
 `,
         write: true,
@@ -240,13 +236,13 @@ declare module '#build/markdown/blog-entries.mjs' {
 }
 
 declare module '#build/markdown/blog/index.mjs' {
-  import type { MDCParserResult } from '@nuxtjs/mdc'
-  export const blogBodyLoaders: Record<string, () => Promise<MDCParserResult>>
+  import type { ComarkTree } from 'comark'
+  export const blogBodyLoaders: Record<string, () => Promise<ComarkTree>>
 }
 
 declare module '#build/markdown/page/index.mjs' {
-  import type { MDCParserResult } from '@nuxtjs/mdc'
-  export const pageBodyLoaders: Record<string, () => Promise<MDCParserResult>>
+  import type { ComarkTree } from 'comark'
+  export const pageBodyLoaders: Record<string, () => Promise<ComarkTree>>
 }
 
 declare module '#md-raw-blog.json' {

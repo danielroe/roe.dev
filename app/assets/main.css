@@ -28,6 +28,25 @@ p + p, p + blockquote {
   @apply mt-4;
 }
 
+.link-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin: 0.5rem 0;
+}
+
+.link-grid.link-grid > ul {
+  display: contents;
+  padding-left: 0;
+}
+
+.link-grid.link-grid > ul > li {
+  margin: 0;
+}
+
+.link-grid.link-grid > ul > li::before {
+  content: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
