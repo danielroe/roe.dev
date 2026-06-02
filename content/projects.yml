@@ -1,0 +1,245 @@
+# Projects displayed at /projects. Categories are rendered in `order`,
+# items within a category in `order` (lower = earlier). Optional fields:
+#   image: path under public/, e.g. /img/projects/nuxt-fyi.png
+#   icon:  unocss icon class (used when image is absent), e.g. i-ri:rocket-line
+#   repo:  GitHub URL; renders as an overlay link in the top-right
+#   url:   live site link (the card itself links here, or repo if absent)
+#   archived: true to dim the card and mark as archived
+
+
+- category: Sites & web apps
+  order: 1
+  items:
+    - name: firstcommit.is
+      description: Find your first open-source commit on GitHub.
+      url: https://firstcommit.is
+      repo: https://github.com/danielroe/firstcommit.is
+      image: /img/projects/firstcommit-is.png
+
+    - name: discal.dev
+      description: Your Discord events, everywhere. Subscribe once, sync to any calendar app.
+      url: https://discal.dev
+      repo: https://github.com/danielroe/discal.dev
+      image: /img/projects/discal-dev.png
+
+    - name: pangrum
+      description: A daily word puzzle game.
+      url: https://pangrum.com
+      repo: https://github.com/danielroe/pangrum
+      image: /img/projects/pangrum.png
+
+    - name: nuxt.fyi
+      description: Celebrating sites built with Nuxt in the wild.
+      url: https://nuxt.fyi
+      repo: https://github.com/danielroe/nuxt.fyi
+      image: /img/projects/nuxt-fyi.png
+
+    - name: page-speed.dev
+      description: See and share Core Web Vitals and PageSpeed Insights results, simply and easily.
+      url: https://page-speed.dev
+      repo: https://github.com/danielroe/page-speed.dev
+      image: /img/projects/page-speed-dev.png
+
+    - name: npmx.dev
+      description: A fast, modern browser for the npm registry.
+      url: https://npmx.dev
+      repo: https://github.com/npmx-dev/npmx.dev
+      image: /img/projects/npmx-dev.png
+
+    - name: unsight.dev
+      description: Detect duplicate GitHub issues, areas of concern and more across related repositories.
+      url: https://unsight.dev
+      repo: https://github.com/danielroe/unsight.dev
+      image: /img/projects/unsight-dev.png
+
+- category: Libraries
+  order: 2
+  items:
+    - name: magic-regexp
+      description: A compiled-away, type-safe, readable RegExp alternative.
+      url: https://regexp.dev
+      repo: https://github.com/unjs/magic-regexp
+      icon: i-ri:magic-line
+
+    - name: fontaine
+      description: Automatic font fallback metrics to eliminate layout shift from web fonts.
+      repo: https://github.com/unjs/fontaine
+      icon: i-ri:font-size
+
+    - name: beasties
+      description: Inline your app's critical CSS and lazy-load the rest.
+      url: https://npmx.dev/beasties
+      repo: https://github.com/danielroe/beasties
+      icon: i-ri:css3-line
+
+    - name: mkdist
+      description: Lightweight file-to-file transpiler.
+      repo: https://github.com/unjs/mkdist
+      icon: i-ri:archive-stack-line
+
+    - name: unifont
+      description: Framework-agnostic tools for accessing data from font CDNs and providers.
+      repo: https://github.com/unjs/unifont
+      icon: i-ri:font-family
+
+    - name: unrouting
+      description: Making filesystem routing universal.
+      repo: https://github.com/unjs/unrouting
+      icon: i-ri:route-line
+
+    - name: fetchdts
+      description: A suite of type utilities for building strongly-typed APIs.
+      repo: https://github.com/unjs/fetchdts
+      icon: i-ri:braces-line
+
+    - name: impound
+      description: Builder-agnostic plugin to allow restricting import patterns in certain parts of your code-base.
+      repo: https://github.com/unjs/impound
+      icon: i-ri:shield-keyhole-line
+
+    - name: oxc-walker
+      description: A wrapper around estree-walker that accepts an oxc AST.
+      repo: https://github.com/oxc-project/oxc-walker
+      icon: i-ri:walk-line
+
+    - name: postcss-capsize
+      description: PostCSS plugin to inject Capsize font metrics.
+      repo: https://github.com/danielroe/postcss-capsize
+      icon: i-ri:text-spacing
+
+    - name: errx
+      description: Zero-dependency library to capture and parse stack traces in Node, Bun, Deno and more.
+      repo: https://github.com/danielroe/errx
+      icon: i-ri:error-warning-line
+
+    - name: vue-bundle-renderer
+      description: SSR bundle renderer for Vue 3.
+      repo: https://github.com/nuxt-contrib/vue-bundle-renderer
+      icon: i-ri:server-line
+
+    - name: vue-sfc-transformer
+      description: Tools for minimal TypeScript transpilation of Vue SFCs.
+      repo: https://github.com/nuxt-contrib/vue-sfc-transformer
+      icon: i-ri:exchange-line
+
+    - name: unplugin-purge-polyfills
+      description: A tiny plugin to replace package imports with better native code.
+      repo: https://github.com/danielroe/unplugin-purge-polyfills
+      icon: i-ri:filter-off-line
+
+    - name: rollup-plugin-pure
+      description: Annotate functions as pure for Rollup.
+      repo: https://github.com/danielroe/rollup-plugin-pure
+      icon: i-ri:bubble-chart-line
+
+    - name: sanity-typed-queries
+      description: A typed, zero-dependency schema generator and query builder for Sanity.
+      repo: https://github.com/danielroe/sanity-typed-queries
+      icon: i-ri:database-2-line
+
+- category: Vue & Nuxt modules & plugins
+  order: 3
+  items:
+    - name: nuxt-workers
+      description: SSR-safe, zero-config Web Workers integration for Nuxt.
+      repo: https://github.com/danielroe/nuxt-workers
+      icon: i-ri:cpu-line
+
+    - name: nuxt-capo
+      description: capo.js implementation for Nuxt.
+      repo: https://github.com/danielroe/nuxt-capo
+      icon: i-ri:list-ordered
+
+    - name: nuxt-rebundle
+      description: Bundler optimisations for Nuxt.
+      repo: https://github.com/danielroe/nuxt-rebundle
+      icon: i-ri:archive-line
+
+    - name: vue-sanity
+      description: Sanity integration for Vue Composition API.
+      repo: https://github.com/danielroe/vue-sanity
+      icon: i-ri:database-line
+
+    - name: vue-bind-once
+      description: A tiny, SSR-safe directive for binding random data to an element.
+      repo: https://github.com/danielroe/vue-bind-once
+      icon: i-ri:link
+
+    - name: stream-vue
+      description: Vue component for Cloudflare Stream.
+      repo: https://github.com/danielroe/stream-vue
+      icon: i-ri:vidicon-line
+
+    - name: zero-vue
+      description: Vue bindings for Zero.
+      repo: https://github.com/danielroe/zero-vue
+      icon: i-ri:flashlight-line
+
+- category: Tools
+  order: 4
+  items:
+    - name: uppt
+      description: Turns conventional commits into a draft release PR, tags the PR on merge, and stages publishing to npm via OIDC trusted publishing.
+      repo: https://github.com/danielroe/uppt
+      icon: i-ri:arrow-up-circle-line
+
+    - name: provenance-action
+      description: Fail CI when dependencies in your lockfile lose npm provenance or trusted publisher status.
+      repo: https://github.com/danielroe/provenance-action
+      icon: i-ri:shield-check-line
+
+    - name: tsperf tracer
+      description: A VS Code extension to measure type complexity within a project.
+      url: https://tsperf.dev
+      repo: https://github.com/tsperf/tracer
+      icon: i-ri:dashboard-3-line
+
+    - name: goff
+      description: Sync GitHub issues offline into a local folder.
+      repo: https://github.com/danielroe/goff
+      icon: i-ri:folder-download-line
+
+    - name: dev-mode.dev
+      description: A site to toggle your developer mode on and off with one click.
+      url: https://dev-mode.dev
+      repo: https://github.com/danielroe/dev-mode.dev
+      icon: i-ri:toggle-line
+
+    - name: stackblitz.zip
+      description: Download StackBlitz projects programmatically.
+      url: https://stackblitz.zip
+      repo: https://github.com/stackblitz-labs/stackblitz.zip
+      icon: i-ri:file-zip-line
+
+- category: Demos & experiments
+  order: 6
+  items:
+    - name: hello-zero-nuxt
+      description: A minimal example app using Zero with Nuxt.
+      repo: https://github.com/danielroe/hello-zero-nuxt
+      icon: i-ri:flashlight-line
+
+    - name: nuxt-vercel-isr
+      description: A tiny demo showing off Nuxt's route rules integration with Vercel.
+      repo: https://github.com/danielroe/nuxt-vercel-isr
+      icon: i-ri:refresh-line
+
+    - name: nuxt-web-bundle
+      description: Generate web bundles with Nuxt.
+      repo: https://github.com/danielroe/nuxt-web-bundle
+      icon: i-ri:archive-stack-line
+
+    - name: n3rdle
+      description: A Wordle-style game built in Nuxt.
+      repo: https://github.com/danielroe/n3rdle
+      icon: i-ri:keyboard-line
+
+    - name: spooon
+      description: A tiny recipe app built in Nuxt for a live-coding session at Vue.js Nation 2024.
+      repo: https://github.com/danielroe/spooon
+      icon: i-ri:restaurant-line
+
+    - name: react-to-nuxt
+      description: Live-coding demo porting a React app to Nuxt.
+      repo: https://github.com/danielroe/react-to-nuxt
+      icon: i-ri:reactjs-line
