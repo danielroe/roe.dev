@@ -47,9 +47,6 @@ export default defineNuxtConfig({
 
   $production: {
     modules: ['nuxt-security'],
-    experimental: {
-      noVueServer: true,
-    },
     image: {
       provider: 'ipxStatic',
     },
