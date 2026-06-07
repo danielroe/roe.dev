@@ -29,8 +29,9 @@ test.describe(`pages`, () => {
       const title = page.locator('title')
       expect(await title.textContent()).toContain('Daniel Roe')
 
-      // Mask dynamic content on home page
-      const mask: Locator[] = []
+      const mask: Locator[] = [
+        page.locator('img[src*="s2/favicons"]'),
+      ]
       if (path === '/') {
         mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
         mask.push(page.locator('section:has(h2:text("upcoming talks")) ul'))
