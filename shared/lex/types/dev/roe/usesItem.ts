@@ -23,6 +23,7 @@ export interface Main {
   /** Lower values render first within the category. Defaults to 100 in the editor. */
   order: number
   image?: BlobRef
+  aspectRatio?: AspectRatio
   links?: Link[]
   createdAt: string
   [k: string]: unknown
@@ -58,4 +59,21 @@ export function isLink<V>(v: V) {
 
 export function validateLink<V>(v: V) {
   return validate<Link & V>(v, id, hashLink)
+}
+
+/** width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`. */
+export interface AspectRatio {
+  $type?: 'dev.roe.usesItem#aspectRatio'
+  width: number
+  height: number
+}
+
+const hashAspectRatio = 'aspectRatio'
+
+export function isAspectRatio<V>(v: V) {
+  return is$typed(v, id, hashAspectRatio)
+}
+
+export function validateAspectRatio<V>(v: V) {
+  return validate<AspectRatio & V>(v, id, hashAspectRatio)
 }

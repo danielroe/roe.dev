@@ -189,15 +189,30 @@ export async function listRecords<C extends Collection> (
 }
 
 /**
- * Build a public URL for fetching a blob from the PDS, suitable for use in
- * `<img src>` or as input to an image transformer. The PDS exposes blobs at
- * `/xrpc/com.atproto.sync.getBlob?did=<did>&cid=<cid>`.
+ * Resolve a blob ref to `{ url, width, height }`. Dimensions are taken
+ * from the record's `aspectRatio` sibling; the read path does not probe
+ * blob bytes. A missing `aspectRatio` on a record with an `image` is a
+ * write-path bug, not a read-time concern.
  */
-export async function blobUrl (event: H3Event, blob: unknown): Promise<string | null> {
+export interface BlobImage {
+  url: string
+  width: number | null
+  height: number | null
+}
+
+export async function blobImage (
+  event: H3Event,
+  blob: unknown,
+  aspectRatio?: { width?: number, height?: number },
+): Promise<BlobImage | null> {
   const cid = cidFromBlob(blob)
   if (!cid) return null
 
   const did = await resolveDid(event)
   const config = useRuntimeConfig(event)
-  return blobUrlFor(config.atproto.service, did, cid)
+  return {
+    url: blobUrlFor(config.atproto.service, did, cid),
+    width: aspectRatio?.width ?? null,
+    height: aspectRatio?.height ?? null,
+  }
 }

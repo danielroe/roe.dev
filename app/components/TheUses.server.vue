@@ -25,15 +25,14 @@
                 v-if="item.image"
                 class="relative flex flex-col justify-end bg-gray-100 dark:bg-gray-900 aspect-video overflow-hidden"
               >
-                <NuxtImg
-                  :src="item.image"
+                <img
+                  :src="item.image.url"
                   :alt="item.name"
-                  width="400"
-                  height="225"
+                  :width="item.image.width ?? 400"
+                  :height="item.image.height ?? 225"
                   class="w-full h-full object-cover"
                   loading="lazy"
-                  format="webp"
-                />
+                >
               </div>
 
               <div class="px-2 py-2 flex flex-col">

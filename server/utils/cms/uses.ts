@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 
-import { listRecords, blobUrl } from '../atproto'
+import { listRecords, blobImage } from '../atproto'
 import type { UsesCategory, UsesItem } from '#shared/cms/uses'
 
 export type { UsesCategory, UsesItem } from '#shared/cms/uses'
@@ -28,10 +28,10 @@ export async function getUses (event: H3Event): Promise<UsesCategory[]> {
   return Promise.all(categories.map(async cat => {
     const bucket = itemsByCategoryUri.get(cat.uri) ?? []
     const mappedItems: UsesItem[] = await Promise.all(bucket.map(async it => {
-      const { $type, category, image, createdAt, ...passthrough } = it.value
+      const { $type, category, image, aspectRatio, createdAt, ...passthrough } = it.value
       return {
         ...passthrough,
-        image: image ? await blobUrl(event, image) : null,
+        image: image ? await blobImage(event, image, aspectRatio) : null,
       }
     }))
 

@@ -172,13 +172,13 @@ async function ensureImageUploaded (): Promise<unknown> {
   const blob = pendingImage.value.blob
   uploadingPromise = (async () => {
     const buf = new Uint8Array(await blob.arrayBuffer())
-    const result = await $fetch<unknown>('/api/admin/blobs', {
+    const result = await $fetch<{ blob: unknown }>('/api/admin/blobs', {
       method: 'POST',
       body: buf,
       headers: { 'content-type': blob.type || 'image/png' },
     })
-    uploadedImage.value = result
-    return result
+    uploadedImage.value = result.blob
+    return result.blob
   })()
   try {
     return await uploadingPromise

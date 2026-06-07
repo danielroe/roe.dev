@@ -34,6 +34,7 @@ const form = reactive({
   description: props.initial?.description ?? '',
   order: props.initial?.order ?? 100,
   image: props.initial?.image,
+  aspectRatio: props.initial?.aspectRatio,
   links: (props.initial?.links ?? []).map(l => ({ url: l.url, label: l.label ?? '' })),
 })
 
@@ -62,12 +63,19 @@ async function onImageChange (e: Event) {
 
   const buf = new Uint8Array(await file.arrayBuffer())
   try {
-    const blob = await $fetch<NonNullable<UsesItemValue['image']>>('/api/admin/blobs', {
-      method: 'POST',
-      body: buf,
-      headers: { 'content-type': file.type || 'application/octet-stream' },
-    })
-    form.image = blob
+    const [uploaded, clientAspectRatio] = await Promise.all([
+      $fetch<{
+        blob: NonNullable<UsesItemValue['image']>
+        aspectRatio?: { width: number, height: number }
+      }>('/api/admin/blobs', {
+        method: 'POST',
+        body: buf,
+        headers: { 'content-type': file.type || 'application/octet-stream' },
+      }),
+      probeImageAspectRatio(file),
+    ])
+    form.image = uploaded.blob
+    form.aspectRatio = clientAspectRatio ?? uploaded.aspectRatio
   }
   catch (err) {
     error.value = err instanceof Error ? err.message : String(err)
@@ -80,6 +88,7 @@ async function onImageChange (e: Event) {
 
 function clearImage () {
   form.image = undefined
+  form.aspectRatio = undefined
   if (localPreviewUrl.value) {
     URL.revokeObjectURL(localPreviewUrl.value)
     localPreviewUrl.value = null
@@ -112,6 +121,7 @@ async function onSubmit () {
       ...(form.description ? { description: form.description } : {}),
       order: form.order,
       ...(form.image ? { image: form.image } : {}),
+      ...(form.image && form.aspectRatio ? { aspectRatio: form.aspectRatio } : {}),
       ...(form.links.filter(l => l.url).length
         ? {
             links: form.links

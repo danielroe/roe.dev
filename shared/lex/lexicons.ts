@@ -461,10 +461,32 @@ export const schemaDict = {
               accept: ['image/*'],
               maxSize: 5000000,
             },
+            aspectRatio: {
+              type: 'ref',
+              ref: 'lex:dev.roe.talk#aspectRatio',
+              description:
+                'Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+            },
             createdAt: {
               type: 'string',
               format: 'datetime',
             },
+          },
+        },
+      },
+      aspectRatio: {
+        type: 'object',
+        description:
+          'width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+        required: ['width', 'height'],
+        properties: {
+          width: {
+            type: 'integer',
+            minimum: 1,
+          },
+          height: {
+            type: 'integer',
+            minimum: 1,
           },
         },
       },
@@ -579,6 +601,12 @@ export const schemaDict = {
               accept: ['image/*'],
               maxSize: 5000000,
             },
+            aspectRatio: {
+              type: 'ref',
+              ref: 'lex:dev.roe.usesItem#aspectRatio',
+              description:
+                'Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+            },
             links: {
               type: 'array',
               items: {
@@ -606,6 +634,22 @@ export const schemaDict = {
             type: 'string',
             maxLength: 256,
             maxGraphemes: 64,
+          },
+        },
+      },
+      aspectRatio: {
+        type: 'object',
+        description:
+          'width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+        required: ['width', 'height'],
+        properties: {
+          width: {
+            type: 'integer',
+            minimum: 1,
+          },
+          height: {
+            type: 'integer',
+            minimum: 1,
           },
         },
       },

@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 
 import type { Talk } from '../md'
-import { listRecords, blobUrl } from '../atproto'
+import { listRecords, blobImage } from '../atproto'
 
 import { toTalk, rkeyFromUri } from '#shared/cms/talk-mapper'
 
@@ -47,7 +47,7 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
 
   return Promise.all(upcoming.map(async t => {
     const v = t.value
-    const url = v.image ? await blobUrl(event, v.image) : null
+    const image = v.image ? await blobImage(event, v.image, v.aspectRatio) : null
     return {
       ...(v.title ? { title: v.title } : {}),
       name: v.source || v.title || '',
@@ -55,9 +55,9 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
       ...(v.endDate ? { endDate: v.endDate } : {}),
       link: v.link ?? '',
       location: v.location ?? '',
-      // PDS blobs don't carry intrinsic dimensions; the consumer either
-      // uses <NuxtImg> with a provider that probes, or accepts 0s.
-      image: url ? { url, width: 0, height: 0 } : null,
+      image: image
+        ? { url: image.url, width: image.width ?? 0, height: image.height ?? 0 }
+        : null,
     }
   }))
 }
