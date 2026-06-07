@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Talk } from '#shared/cms/talks'
+
 const links = [
   {
     name: 'Bluesky',
@@ -72,20 +74,6 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
     },
   }),
 ])
-
-interface Talk {
-  _id: string
-  title: string
-  source: string
-  tags: string[]
-  link?: string
-  video?: string
-  date: string
-  type: 'conference' | 'podcast' | 'meetup' | 'workshop' | 'mini-workshop' | 'stream'
-  slides?: string
-  repo?: string
-  demo?: string
-}
 </script>
 
 <template>

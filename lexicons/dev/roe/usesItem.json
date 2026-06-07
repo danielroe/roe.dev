@@ -1,0 +1,69 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.usesItem",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A single item on the /uses page, belonging to a dev.roe.usesCategory.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["category", "name", "createdAt"],
+        "properties": {
+          "category": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong-ref to the parent dev.roe.usesCategory record."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "maxGraphemes": 2500
+          },
+          "order": {
+            "type": "integer",
+            "description": "Lower values render first within the category. Defaults to 100 in the editor.",
+            "default": 100
+          },
+          "image": {
+            "type": "blob",
+            "accept": ["image/*"],
+            "maxSize": 5000000
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "ref",
+              "ref": "#link"
+            },
+            "maxLength": 32
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 256,
+          "maxGraphemes": 64
+        }
+      }
+    }
+  }
+}

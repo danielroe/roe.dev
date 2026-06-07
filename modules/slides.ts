@@ -1,7 +1,9 @@
-import { defineNuxtModule, useNuxt, useRuntimeConfig } from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule, useNuxt, useRuntimeConfig } from 'nuxt/kit'
 import { $fetch } from 'ofetch'
 import { put, head } from '@vercel/blob'
-import { createClient } from '@sanity/client'
+
+import { listAllRecords } from './shared/atproto-read'
+import type { DevRoeTalk } from '../shared/lex'
 
 export default defineNuxtModule({
   meta: {
@@ -13,6 +15,15 @@ export default defineNuxtModule({
 
     if (!config.github.token || nuxt.options._prepare || nuxt.options.test) return
 
+    if (nuxt.options.dev) {
+      const resolver = createResolver(import.meta.url)
+      addServerHandler({
+        route: '/slides/:id.pdf',
+        handler: resolver.resolve('./runtime/server/slides/[id].pdf'),
+      })
+      return
+    }
+
     const $gh = $fetch.create({
       baseURL: 'https://api.github.com/repos/danielroe/slides/releases',
       headers: {
@@ -22,31 +33,15 @@ export default defineNuxtModule({
 
     const token = config.blobReadWriteToken
 
-    const sanityClient = createClient({
-      projectId: '9bj3w2vo',
-      dataset: 'production',
-      apiVersion: '2025-01-01',
-      useCdn: false,
-      token: process.env.NUXT_SANITY_TOKEN,
-    })
+    const releases = await fetchSlideReleases()
 
-    const talks = await sanityClient.fetch(`
-      *[_type == "talk" && defined(slides)] {
-        _id,
-        slides,
-        "release": slides
-      }
-    `)
-
-    for (const talk of talks) {
-      if (!talk.release) continue
-
-      const pathname = `slides/${talk.release}.pdf`
+    for (const release of releases) {
+      const pathname = `slides/${release}.pdf`
 
       const existingBlob = await head(pathname, { token }).catch(() => null)
       if (!existingBlob) {
-        const release = await $gh<GitHubRelease>(`/tags/${talk.release}`)
-        const id = release?.assets.find(a => a.name.endsWith('.pdf'))?.id
+        const ghRelease = await $gh<GitHubRelease>(`/tags/${release}`)
+        const id = ghRelease?.assets.find(a => a.name.endsWith('.pdf'))?.id
 
         if (!id) continue
 
@@ -63,20 +58,27 @@ export default defineNuxtModule({
         })
 
         nuxt.options.routeRules ||= {}
-        nuxt.options.routeRules[`/slides/${talk.release}.pdf`] = {
+        nuxt.options.routeRules[`/slides/${release}.pdf`] = {
           redirect: blob.url,
         }
       }
       else {
         // File already exists, set up route rule with existing blob URL
         nuxt.options.routeRules ||= {}
-        nuxt.options.routeRules[`/slides/${talk.release}.pdf`] = {
+        nuxt.options.routeRules[`/slides/${release}.pdf`] = {
           redirect: existingBlob.url,
         }
       }
     }
   },
 })
+
+async function fetchSlideReleases (): Promise<string[]> {
+  const records = await listAllRecords<DevRoeTalk.Record>('dev.roe.talk')
+  return records
+    .map(r => r.value.slides)
+    .filter((s): s is string => Boolean(s))
+}
 
 interface GitHubRelease {
   assets: Array<{ id: number, name: string }>

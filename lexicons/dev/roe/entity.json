@@ -1,0 +1,54 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.entity",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A person or organisation referenced by AMA responses via @-mentions. Holds the canonical name plus per-platform social handles so the publisher can rewrite mentions correctly for each platform.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "socialHandles": {
+            "type": "ref",
+            "ref": "#socialHandles"
+          },
+          "website": {
+            "type": "string",
+            "format": "uri"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "socialHandles": {
+      "type": "object",
+      "properties": {
+        "bluesky": {
+          "type": "string",
+          "description": "Handle without leading @ (e.g. nuxt.bsky.social)",
+          "maxLength": 256
+        },
+        "linkedin": {
+          "type": "string",
+          "description": "Company or person handle (e.g. nuxtjs)",
+          "maxLength": 256
+        },
+        "mastodon": {
+          "type": "string",
+          "description": "Full handle including instance (e.g. nuxt@fosstodon.org)",
+          "maxLength": 256
+        }
+      }
+    }
+  }
+}

@@ -80,8 +80,9 @@ export default defineNuxtModule({
               '',
             ),
           )
+          const isDynamic = path.includes('[')
           return {
-            path: path.includes('[')
+            path: isDynamic
               ? `/${path
                 .replace(/\[(.*)\]/g, '(?<$1>.+)')
                 .replace(/\//g, '\\/')}/`
@@ -91,8 +92,11 @@ export default defineNuxtModule({
             // })})`,
             component: componentNames[f],
             meta: JSON.stringify(pageMeta[path] || {}),
+            _isDynamic: isDynamic,
           }
         })
+          .sort((a, b) => Number(a._isDynamic) - Number(b._isDynamic))
+          .map(({ _isDynamic, ...rest }) => rest)
 
         return `
         ${Object.entries(componentNames).map(([path, name]) => genImport(path, { name })).join('\n')}

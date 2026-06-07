@@ -1,0 +1,30 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.sync",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Dedupe marker for a syndication pipeline. One record per (provider, canonical URL) pair that has been submitted; presence of a record means we've already synced and shouldn't re-submit.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["provider", "canonicalUrl", "syncedAt"],
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Identifier of the syndication target (e.g. `gde-advocu`).",
+            "maxLength": 64
+          },
+          "canonicalUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "syncedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

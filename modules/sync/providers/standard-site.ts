@@ -1,4 +1,5 @@
 import { AtpAgent } from '@atproto/api'
+import { useNuxt } from 'nuxt/kit'
 
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
 import { publicationRkey, tidFromDate } from '../../shared/tid'
@@ -20,15 +21,16 @@ export class StandardSiteProvider implements SyncProvider {
       return
     }
 
-    const pdsUrl = process.env.NUXT_STANDARD_SITE_PDS_URL
-    const identifier = process.env.NUXT_STANDARD_SITE_IDENTIFIER
-    const password = process.env.NUXT_STANDARD_SITE_PASSWORD
-    if (!pdsUrl || !identifier || !password) {
-      throw new Error('Missing NUXT_STANDARD_SITE_PDS_URL, NUXT_STANDARD_SITE_IDENTIFIER, or NUXT_STANDARD_SITE_PASSWORD')
+    // Build-time module code: pull credentials from the resolved runtime
+    // config rather than `process.env` directly so there's one source of
+    // truth shared with the runtime `server/utils/atproto.ts`.
+    const { service: pdsUrl, handle, password } = useNuxt().options.runtimeConfig.atproto
+    if (!pdsUrl || !handle || !password) {
+      throw new Error('Missing NUXT_ATPROTO_SERVICE / NUXT_ATPROTO_HANDLE / NUXT_ATPROTO_PASSWORD')
     }
 
     const agent = new AtpAgent({ service: pdsUrl })
-    await agent.login({ identifier, password })
+    await agent.login({ identifier: handle, password })
 
     const did = agent.session!.did
 

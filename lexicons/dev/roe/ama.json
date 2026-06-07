@@ -1,0 +1,121 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.ama",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An anonymous question, optionally with a published answer. While unanswered the question text is encrypted server-side (private to roe.dev). Once published, the question is rewritten in plaintext alongside the answer and per-platform URLs.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["status", "createdAt"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "knownValues": ["unanswered", "answered"]
+          },
+          "encryptedQuestion": {
+            "type": "string",
+            "description": "AES-256-GCM envelope holding the raw question text. Present iff status=unanswered."
+          },
+          "question": {
+            "type": "string",
+            "description": "Plaintext question. Present iff status=answered; the editor decrypts encryptedQuestion at publish time and writes it here so the record is self-contained going forward.",
+            "maxLength": 200000,
+            "maxGraphemes": 50000
+          },
+          "posts": {
+            "type": "array",
+            "description": "Thread of response posts. Each post is the body of one Bluesky-thread item (and one Mastodon status, one LinkedIn comment chain entry, etc).",
+            "items": {
+              "type": "ref",
+              "ref": "#post"
+            },
+            "maxLength": 16
+          },
+          "platforms": {
+            "type": "ref",
+            "ref": "#platforms",
+            "description": "Which platforms the editor enabled when publishing."
+          },
+          "publishedLinks": {
+            "type": "ref",
+            "ref": "#publishedLinks",
+            "description": "Resolved per-platform URLs after publish."
+          },
+          "image": {
+            "type": "blob",
+            "accept": ["image/*"],
+            "maxSize": 5000000
+          },
+          "imageDimensions": {
+            "type": "ref",
+            "ref": "#imageDimensions",
+            "description": "Pixel dimensions of `image`. Stored alongside because PDS blobs don't carry intrinsic dimensions and Bluesky's image embed needs `aspectRatio`."
+          },
+          "backgroundStyle": {
+            "type": "string",
+            "description": "ID of the background style used to render the image. See `shared/cms/backgrounds.ts`.",
+            "maxLength": 64
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "answeredAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "description": "One post in the response thread. Mentions reference dev.roe.entity records by AT URI so the publisher can rewrite per-platform handles at publish time.",
+      "required": ["text"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Body text. Plain text with `@<entity-rkey>` placeholders for entity mentions (e.g. `Thanks @abc123def456 for the help`). The placeholder syntax is internal; the publisher swaps them for the right per-platform handle.",
+          "maxLength": 200000,
+          "maxGraphemes": 50000
+        },
+        "mentions": {
+          "type": "array",
+          "description": "Strong-refs to dev.roe.entity records keyed by the placeholder token used in `text` (the entity rkey).",
+          "items": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef"
+          },
+          "maxLength": 32
+        }
+      }
+    },
+    "platforms": {
+      "type": "object",
+      "properties": {
+        "bluesky": { "type": "boolean", "default": true },
+        "mastodon": { "type": "boolean", "default": true },
+        "linkedin": { "type": "boolean", "default": true },
+        "youtubeShorts": { "type": "boolean", "default": false }
+      }
+    },
+    "publishedLinks": {
+      "type": "object",
+      "properties": {
+        "bluesky": { "type": "string", "format": "uri" },
+        "mastodon": { "type": "string", "format": "uri" },
+        "linkedin": { "type": "string", "format": "uri" },
+        "youtubeShorts": { "type": "string", "format": "uri" }
+      }
+    },
+    "imageDimensions": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

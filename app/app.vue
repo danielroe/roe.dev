@@ -11,10 +11,10 @@
     >
       Skip to main content
     </a>
-    <LayoutTheSiteHeader />
+    <LayoutTheSiteHeader v-if="!isAdmin" />
     <NuxtPage />
-    <LayoutThePresenceIndicator />
-    <LayoutTheSiteFooter />
+    <LayoutThePresenceIndicator v-if="!isAdmin" />
+    <LayoutTheSiteFooter v-if="!isAdmin" />
   </div>
 </template>
 
@@ -29,6 +29,8 @@ defineOgImage('DefaultImage', {
   title: 'roe.dev',
   tags: [],
 })
+
+const isAdmin = computed(() => route.path === '/admin' || route.path.startsWith('/admin/'))
 
 // TODO: interactive components within server components
 const highlightIslands = ref(false)

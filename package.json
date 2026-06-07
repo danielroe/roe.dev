@@ -19,8 +19,7 @@
     "auth:linkedin": "node --env-file=.env scripts/linkedin-auth.ts",
     "auth:youtube": "node --env-file=.env scripts/youtube-auth.ts",
     "auth:youtube:refresh": "node --env-file=.env scripts/youtube-auth.ts refresh",
-    "import-streambeats": "node --env-file=.env scripts/import-streambeats.mjs",
-    "import-streambeats:dry-run": "node --env-file=.env scripts/import-streambeats.mjs --dry-run"
+    "lex:gen": "node scripts/gen-lex.mjs"
   },
   "nano-staged": {
     "*.{js,ts,mjs,vue}": [
@@ -31,6 +30,9 @@
   "dependencies": {
     "@atcute/bluesky-richtext-segmenter": "^3.0.0",
     "@atproto/api": "^0.19.18",
+    "@atproto/lexicon": "^0.6.2",
+    "@atproto/oauth-client-node": "0.4.1",
+    "@formkit/drag-and-drop": "0.5.3",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/svg-spinners": "^1.2.4",
     "@iconify-json/tabler": "^1.2.35",
@@ -42,10 +44,6 @@
     "@nuxtjs/html-validator": "2.1.0",
     "@nuxtjs/mdc": "0.22.0",
     "@nuxtjs/plausible": "3.0.2",
-    "@nuxtjs/sanity": "^2.3.0",
-    "@portabletext/types": "^4.0.2",
-    "@sanity/client": "^7.22.0",
-    "@sanity/webhook": "^4.0.4",
     "@takumi-rs/core": "^1.1.2",
     "@unhead/vue": "2.1.13",
     "@unocss/nuxt": "66.6.8",
@@ -57,6 +55,7 @@
     "exsolve": "^1.0.8",
     "feed": "^5.2.1",
     "gray-matter": "4.0.3",
+    "gsap": "^3.15.0",
     "h3": "^1.15.11",
     "image-meta": "^0.2.2",
     "js-yaml": "^4.1.1",
@@ -64,8 +63,11 @@
     "magic-regexp": "0.11.0",
     "magic-string": "^0.30.21",
     "masto": "^7.11.1",
+    "mediabunny": "^1.45.2",
     "mlly": "^1.8.2",
     "mocked-exports": "^0.1.1",
+    "modern-screenshot": "^4.7.0",
+    "multiformats": "14.0.0",
     "nuxt": "4.4.5",
     "nuxt-og-image": "6.5.0",
     "nuxt-security": "2.6.0",
@@ -92,7 +94,6 @@
     "@commitlint/config-conventional": "21.0.1",
     "@nuxt/test-utils": "4.0.3",
     "@playwright/test": "1.60.0",
-    "@sanity/eslint-config-studio": "6.0.0",
     "@types/html-to-text": "9.0.4",
     "@types/js-yaml": "^4.0.9",
     "@vue/test-utils": "2.4.10",

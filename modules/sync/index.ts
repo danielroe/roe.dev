@@ -1,9 +1,10 @@
 import process from 'node:process'
-import { createClient } from '@sanity/client'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 import { syncAll } from './providers'
 import type { SyncItem } from './providers'
+import { listAllRecords } from '../shared/atproto-read'
+import type { DevRoeTalk } from '../../shared/lex'
 
 const TALK_TYPE_MAP: Record<string, SyncItem['type']> = {
   podcast: 'video',
@@ -42,46 +43,25 @@ export default defineNuxtModule({
 })
 
 async function fetchTalks (): Promise<SyncItem[]> {
-  const sanityToken = process.env.NUXT_SANITY_TOKEN
-  if (!sanityToken) {
-    console.warn('[sync] No NUXT_SANITY_TOKEN — skipping talks')
-    return []
-  }
-
-  const client = createClient({
-    projectId: '9bj3w2vo',
-    dataset: 'production',
-    apiVersion: '2025-01-01',
-    useCdn: false,
-    token: sanityToken,
-  })
-
   try {
-    const talks = await client.fetch<Array<{
-      title: string
-      description?: string
-      date: string
-      type: string
-      tags?: string[]
-      link?: string
-      video?: string
-    }>>(`*[_type == "talk" && date < now() && defined(title) && title != ""] {
-      title, description, date, type, tags, link, video
-    } | order(date desc)`)
-
-    return talks
+    const records = await listAllRecords<DevRoeTalk.Record>('dev.roe.talk')
+    const now = new Date().toISOString()
+    return records
+      .map(r => r.value)
+      .filter(t => t.date < now && t.title && t.title.trim() !== '')
       .filter(t => t.link || t.video)
       .map(t => ({
         type: TALK_TYPE_MAP[t.type] || 'talk' as SyncItem['type'],
-        title: t.title,
+        title: t.title!,
         date: t.date,
         body_markdown: t.description || '',
         canonical_url: (t.link || t.video)!,
         tags: Array.isArray(t.tags) ? t.tags : [],
       }))
+      .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
   }
   catch (error) {
-    console.warn('[sync] Failed to fetch talks:', error instanceof Error ? error.message : error)
+    console.warn('[sync] Failed to fetch talks from atproto:', error instanceof Error ? error.message : error)
     return []
   }
 }

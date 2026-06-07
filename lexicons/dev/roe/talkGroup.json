@@ -1,0 +1,31 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.talkGroup",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A talk given at one or more events. Holds the canonical title/description shared across performances; per-event details (date, source, video, etc.) live on dev.roe.talk records that strong-ref this group.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["title", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "maxGraphemes": 2500
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

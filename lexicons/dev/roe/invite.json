@@ -1,0 +1,29 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.invite",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An invitation link that grants access to a private GitHub repository. Both the URL slug and the repo name are sensitive (knowing the slug equals being granted access), so the entire payload is encrypted server-side before being written to the PDS.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["encrypted", "isActive", "createdAt"],
+        "properties": {
+          "encrypted": {
+            "type": "string",
+            "description": "AES-256-GCM envelope (see server/utils/admin/encryption.ts) holding { slug, repo } as JSON. Opaque to anyone without the server key."
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether this invite is currently honoured. Inactive invites stay around for audit but don't get wired up in the route table."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

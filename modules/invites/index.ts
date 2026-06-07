@@ -1,6 +1,18 @@
+/**
+ * Wire up invitation-link routes from the encrypted `dev.roe.invite`
+ * records on the PDS.
+ *
+ * Each active invite decrypts to a `{ slug, repo }` pair. The slug becomes
+ * a public redirect at `/<slug>` that kicks off the GitHub OAuth dance, and
+ * the repo lives in `runtimeConfig.invites.map` for the callback handler
+ * to read once the OAuth round-trip lands.
+ */
 import { addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit'
 import { defu } from 'defu'
-import { createClient } from '@sanity/client'
+
+import { listAllRecords } from '../shared/atproto-read'
+import { decryptJSON } from '../../server/utils/admin/encryption'
+import type { DevRoeInvite } from '../../shared/lex'
 
 export default defineNuxtModule({
   meta: {
@@ -19,25 +31,33 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
     const gitHubClientId = process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID || nuxt.options.runtimeConfig.public.githubClientId
 
-    // fetch invitations from Sanity
-    const sanityClient = createClient({
-      projectId: '9bj3w2vo',
-      dataset: 'production',
-      apiVersion: '2025-02-19',
-      useCdn: false,
-      token: process.env.NUXT_SANITY_TOKEN,
-    })
+    const map: Record<string, string> = {}
 
-    const invitations = await sanityClient.fetch<Array<{ slug: string, repo: string }>>(`*[_type == "invite" && isActive == true]{
-      "slug": slug.current,
-      repo
-    }`)
-
-    const map = Object.fromEntries(invitations.map(invite => [invite.slug, invite.repo]))
+    if (process.env.NUXT_PDS_ENCRYPTION_KEY) {
+      try {
+        const records = await listAllRecords<DevRoeInvite.Record>('dev.roe.invite')
+        for (const r of records) {
+          if (!r.value.isActive) continue
+          try {
+            const { slug, repo } = decryptJSON<{ slug: string, repo: string }>(r.value.encrypted)
+            map[slug] = repo
+          }
+          catch (err) {
+            console.warn(`[invites] Failed to decrypt invite ${r.uri}:`, err instanceof Error ? err.message : err)
+          }
+        }
+      }
+      catch (err) {
+        console.warn('[invites] Failed to list invites from PDS:', err instanceof Error ? err.message : err)
+      }
+    }
+    else {
+      console.warn('[invites] NUXT_PDS_ENCRYPTION_KEY not set; invite map will be empty.')
+    }
 
     nuxt.options.runtimeConfig.invites = { map }
 
-    if (!gitHubClientId || invitations.length === 0) return
+    if (!gitHubClientId || Object.keys(map).length === 0) return
 
     const redirect = nuxt.options.dev
       ? '&redirect_uri=http://localhost:3000/auth/github'

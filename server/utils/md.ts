@@ -30,25 +30,7 @@ export function formatDate (dateStr: string): string {
   })
 }
 
-export interface Talk {
-  _id: string
-  title: string
-  description?: string
-  source: string
-  tags?: string[]
-  link?: string
-  video?: string
-  date: string
-  type: string
-  slides?: string
-  repo?: string
-  demo?: string
-  group?: {
-    _id: string
-    title?: string
-    description?: string
-  }
-}
+export type { Talk } from '#shared/cms/talks'
 
 export interface Conference {
   name: string

@@ -52,9 +52,9 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     if (!existsSync(cacheDir)) {
       await mkdir(cacheDir, { recursive: true })
     }
-    const blueskyHandle = nuxt.options.social ? nuxt.options.social.networks.bluesky!.identifier : null
+    const blueskyHandle = nuxt.options.runtimeConfig.atproto?.handle || null
     if (!blueskyHandle) {
-      console.warn('Bluesky handle not configured in nuxt.config. Skipping Bluesky URI discovery.')
+      console.warn('Bluesky handle not configured (no runtimeConfig.atproto.handle). Skipping Bluesky URI discovery.')
       return
     }
 

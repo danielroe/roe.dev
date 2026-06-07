@@ -1,35 +1,9 @@
-import { groq } from '#imports'
-
-const locationQuery = groq`
-*[_type == 'location'] | order(_updatedAt desc)[0] {
-  city,
-  region,
-  country,
-  countryCode,
-  meetupAvailable,
-  _updatedAt
-}
-`
-
-interface Location {
-  city: string
-  region?: string
-  country: string
-  countryCode: string
-  meetupAvailable: boolean
-  _updatedAt: string
-}
+import { getCurrentLocation } from '../utils/cms/location'
 
 export default defineEventHandler(async event => {
-  const sanity = useSanity(event)
+  const location = await getCurrentLocation(event)
+  if (!location) return null
 
-  const location = await sanity.client.fetch<Location>(locationQuery)
-
-  if (!location) {
-    return null
-  }
-
-  // Convert country code to flag emoji
   const flagEmoji = location.region === 'Scotland'
     ? '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
     : location.countryCode
@@ -37,6 +11,9 @@ export default defineEventHandler(async event => {
           char.charCodeAt(0) + 127397))
       : '🌍'
 
+  // Some geocoders return verbose ISO 3166 country names (e.g. "United
+  // Kingdom of Great Britain and Northern Ireland (the)"); prefer the
+  // sub-region for those countries when we have one.
   const locationMaps: Record<string, string | undefined> = {
     'United Kingdom of Great Britain and Northern Ireland (the)': location.region,
     'United States of America (the)': location.region,
