@@ -1,4 +1,4 @@
-import { getOauthClient } from '../../../utils/admin/oauth'
+import { getOauthClient } from '../utils/admin/oauth'
 
 export default defineEventHandler(async event => {
   const handle = useRuntimeConfig(event).atproto.handle

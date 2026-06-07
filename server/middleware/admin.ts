@@ -1,8 +1,6 @@
 import { getAdminSessionCookie } from '../utils/admin/oauth'
 
 const PUBLIC_PATHS = new Set<string>([
-  '/admin/login',
-  '/api/admin/auth/start',
   '/api/admin/auth/callback',
   '/api/admin/auth/logout',
 ])
@@ -22,6 +20,5 @@ export default defineEventHandler(async event => {
   if (isAdminApi) {
     throw createError({ statusCode: 401, statusMessage: 'Not signed in.' })
   }
-  const next = encodeURIComponent(event.path ?? '/admin')
-  return sendRedirect(event, `/admin/login?next=${next}`, 303)
+  return sendRedirect(event, '/login', 303)
 })
