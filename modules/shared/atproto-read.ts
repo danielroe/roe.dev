@@ -19,7 +19,7 @@ function cfg () {
 let agent: AtpAgent | null = null
 function getAgent (): AtpAgent {
   if (agent) return agent
-  agent = new AtpAgent({ service: cfg().service })
+  agent = new AtpAgent({ service: useNuxt().options.runtimeConfig.public.atproto.service })
   return agent
 }
 

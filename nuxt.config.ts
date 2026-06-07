@@ -98,7 +98,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     atproto: {
-      service: 'https://npmx.social',
       password: '',
       did: '',
       handle: '',
@@ -152,7 +151,7 @@ export default defineNuxtConfig({
       githubClientId: '',
       atproto: {
         did: '',
-        service: 'https://npmx.social',
+        service: '',
       },
     },
   },

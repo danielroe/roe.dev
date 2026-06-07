@@ -41,7 +41,7 @@ async function persistQuestion (question: string, config: ReturnType<typeof useR
   const validation = lexicons.validate('dev.roe.ama', record)
   if (!validation.success) throw new Error(validation.error.message)
 
-  const agent = new AtpAgent({ service: config.atproto.service })
+  const agent = new AtpAgent({ service: config.public.atproto.service })
   await agent.login({ identifier: config.atproto.handle, password: config.atproto.password })
   await agent.com.atproto.repo.putRecord({
     repo: agent.session!.did,

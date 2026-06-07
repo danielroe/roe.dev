@@ -29,7 +29,7 @@ let authedAgent: { agent: AtpAgent, did: string } | null = null
 function getReadAgent (event: H3Event): AtpAgent {
   if (readAgent) return readAgent
   const config = useRuntimeConfig(event)
-  readAgent = new AtpAgent({ service: config.atproto.service })
+  readAgent = new AtpAgent({ service: config.public.atproto.service })
   return readAgent
 }
 
@@ -37,7 +37,8 @@ async function getAuthedAgent (event: H3Event): Promise<{ agent: AtpAgent, did: 
   if (authedAgent) return authedAgent
 
   const config = useRuntimeConfig(event)
-  const { service, handle, password } = config.atproto
+  const service = config.public.atproto.service
+  const { handle, password } = config.atproto
 
   if (!service || !handle || !password) {
     throw createError({
@@ -211,7 +212,7 @@ export async function blobImage (
   const did = await resolveDid(event)
   const config = useRuntimeConfig(event)
   return {
-    url: blobUrlFor(config.atproto.service, did, cid),
+    url: blobUrlFor(config.public.atproto.service, did, cid),
     width: aspectRatio?.width ?? null,
     height: aspectRatio?.height ?? null,
   }

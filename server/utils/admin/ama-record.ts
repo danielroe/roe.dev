@@ -187,7 +187,7 @@ export function publishImageFromBody (
   if (!cid || !did) return undefined
   const mimeType = (body.image as { mimeType?: string } | undefined)?.mimeType
   return {
-    url: blobUrlFor(config.atproto.service, did, cid),
+    url: blobUrlFor(config.public.atproto.service, did, cid),
     width: body.imageDimensions.width,
     height: body.imageDimensions.height,
     ...(mimeType ? { mimeType } : {}),

@@ -42,9 +42,11 @@ export class GdeAdvocuProvider implements SyncProvider {
     const advocuToken = process.env.NUXT_ADVOCU_TOKEN
     if (!advocuToken) throw new Error('No NUXT_ADVOCU_TOKEN provided.')
 
-    const { service: pdsUrl, handle, password } = useNuxt().options.runtimeConfig.atproto
+    const cfg = useNuxt().options.runtimeConfig
+    const pdsUrl = cfg.public.atproto.service
+    const { handle, password } = cfg.atproto
     if (!pdsUrl || !handle || !password) {
-      throw new Error('Missing NUXT_ATPROTO_SERVICE / NUXT_ATPROTO_HANDLE / NUXT_ATPROTO_PASSWORD for Advocu dedupe tracking.')
+      throw new Error('atproto identity / credentials not configured for Advocu dedupe tracking (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
     }
 
     const synced = new Set(

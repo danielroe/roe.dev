@@ -24,9 +24,11 @@ export class StandardSiteProvider implements SyncProvider {
     // Build-time module code: pull credentials from the resolved runtime
     // config rather than `process.env` directly so there's one source of
     // truth shared with the runtime `server/utils/atproto.ts`.
-    const { service: pdsUrl, handle, password } = useNuxt().options.runtimeConfig.atproto
+    const cfg = useNuxt().options.runtimeConfig
+    const pdsUrl = cfg.public.atproto.service
+    const { handle, password } = cfg.atproto
     if (!pdsUrl || !handle || !password) {
-      throw new Error('Missing NUXT_ATPROTO_SERVICE / NUXT_ATPROTO_HANDLE / NUXT_ATPROTO_PASSWORD')
+      throw new Error('atproto identity / credentials not configured (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
     }
 
     const agent = new AtpAgent({ service: pdsUrl })
