@@ -100,8 +100,14 @@ export default defineNuxtConfig({
       handle: '',
     },
     admin: {
-      // public URL for the OAuth client_id metadata URL and redirect_uri.
-      baseUrl: 'https://roe.dev',
+      // Public origin used to derive the OAuth `client_id`
+      // (`<baseUrl>/oauth-client-metadata.json`) and `redirect_uri`. Vercel
+      // preview deployments self-host their own metadata so each preview
+      // registers a fresh OAuth client with the IdP rather than pointing
+      // back at production.
+      baseUrl: process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production' && process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'https://roe.dev',
     },
     blobReadWriteToken: '',
     mastodon: {
