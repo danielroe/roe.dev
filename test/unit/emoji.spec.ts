@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isValidEmoji } from '#shared/utils/emoji'
+import { isValidEmoji } from '../../shared/utils/emoji'
 
 describe('emoji validation', () => {
   it('validates basic emoji correctly', () => {
