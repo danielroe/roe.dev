@@ -42,7 +42,7 @@ describe('project sizes', () => {
     stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"254k"`)
+      .toMatchInlineSnapshot(`"587k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -83,12 +83,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2260k"`)
+      .toMatchInlineSnapshot(`"2630k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"8610k"`)
+      .toMatchInlineSnapshot(`"11540k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -97,14 +97,35 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atcute/bluesky-richtext-segmenter",
+        "@atproto-labs/did-resolver",
+        "@atproto-labs/fetch",
+        "@atproto-labs/fetch-node",
+        "@atproto-labs/handle-resolver",
+        "@atproto-labs/handle-resolver-node",
+        "@atproto-labs/identity-resolver",
+        "@atproto-labs/pipe",
+        "@atproto-labs/simple-store",
+        "@atproto-labs/simple-store-memory",
         "@atproto/api",
         "@atproto/common-web",
+        "@atproto/did",
+        "@atproto/jwk",
+        "@atproto/jwk-jose",
+        "@atproto/jwk-webcrypto",
+        "@atproto/jwk/node_modules/multiformats",
         "@atproto/lex-data",
+        "@atproto/lex-data/node_modules/multiformats",
         "@atproto/lex-json",
         "@atproto/lexicon",
+        "@atproto/lexicon/node_modules/multiformats",
+        "@atproto/oauth-client",
+        "@atproto/oauth-client-node",
+        "@atproto/oauth-client/node_modules/multiformats",
+        "@atproto/oauth-types",
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
+        "@formkit/drag-and-drop",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -136,8 +157,8 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
+        "core-js",
         "decode-named-character-reference",
-        "decompress-response",
         "detab",
         "devalue",
         "devlop",
@@ -149,13 +170,10 @@ describe('project sizes', () => {
         "estree-walker",
         "events-to-async",
         "events-to-async/module",
-        "eventsource",
         "extend",
         "feed",
         "flat",
-        "get-it",
         "github-slugger",
-        "groq",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -177,16 +195,19 @@ describe('project sizes', () => {
         "html-void-elements",
         "html-whitespace-sensitive-tag-names",
         "image-meta",
-        "inherits",
+        "ipaddr.js",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
-        "is-retry-allowed",
         "iso-datestring-validator",
+        "jose",
+        "jose/dist/node/esm",
         "longest-streak",
+        "lru-cache",
+        "lru-cache/dist/esm",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -200,6 +221,7 @@ describe('project sizes', () => {
         "mdast-util-to-hast",
         "mdast-util-to-markdown",
         "mdast-util-to-string",
+        "mediabunny",
         "micromark",
         "micromark-core-commonmark",
         "micromark-extension-gfm",
@@ -226,10 +248,8 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
-        "mimic-response",
+        "modern-screenshot",
         "multiformats",
-        "nanoid",
-        "nanoid/url-alphabet",
         "node-emoji",
         "nuxtseo-shared",
         "oniguruma-parser",
@@ -241,10 +261,8 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "perfect-debounce",
-        "picomatch",
         "property-information",
         "radix3",
-        "readable-stream",
         "regex",
         "regex-recursion",
         "regex-utilities",
@@ -259,26 +277,23 @@ describe('project sizes', () => {
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
-        "rxjs",
-        "safe-buffer",
         "sax",
         "scule",
         "shiki",
         "skin-tone",
         "source-map-js",
         "space-separated-tokens",
-        "string_decoder",
         "stringify-entities",
-        "through2",
         "tlds",
         "trim-lines",
         "trim-trailing-lines",
         "trough",
         "ts-custom-error",
         "tslib",
-        "tunnel-agent",
         "ufo",
         "uint8arrays",
+        "uint8arrays/node_modules/multiformats",
+        "undici",
         "unhead",
         "unicode-emoji-modifier-base",
         "unicode-segmenter",
@@ -289,7 +304,6 @@ describe('project sizes', () => {
         "unist-util-stringify-position",
         "unist-util-visit",
         "unist-util-visit-parents",
-        "util-deprecate",
         "vfile",
         "vfile-location",
         "vfile-message",
