@@ -5,6 +5,7 @@ import { join, relative } from 'pathe'
 import {
   genSafeVariableName,
   genArrayFromRaw,
+  genDynamicImport,
   genString,
   genImport,
 } from 'knitwork'
@@ -65,17 +66,22 @@ export default defineNuxtModule({
       path: resolver.resolve('./runtime/path.global.ts'),
     })
 
+    const pagesDir = resolver.resolve('../../app/pages')
+    const isAdminFile = (f: string) =>
+      relative(pagesDir, f).split('/')[0] === 'admin'
+
     addTemplate({
       filename: 'routes.mjs',
       write: true,
       async getContents () {
-        const files = await readRecursive(resolver.resolve('../../app/pages'))
+        const files = await readRecursive(pagesDir)
+        const staticImports = files.filter(f => !isAdminFile(f))
         const componentNames = Object.fromEntries(
-          files.map(f => [f, genSafeVariableName(f)]),
+          staticImports.map(f => [f, genSafeVariableName(f)]),
         )
         const routes = files.map(f => {
           const path = withLeadingSlash(
-            relative(resolver.resolve('../../app/pages'), f).replace(
+            relative(pagesDir, f).replace(
               /(\/?index)?\.vue$/,
               '',
             ),
@@ -87,10 +93,9 @@ export default defineNuxtModule({
                 .replace(/\[(.*)\]/g, '(?<$1>.+)')
                 .replace(/\//g, '\\/')}/`
               : genString(path),
-            // component: `defineAsyncComponent(${genDynamicImport(f, {
-            //   interopDefault: true,
-            // })})`,
-            component: componentNames[f],
+            component: isAdminFile(f)
+              ? `defineAsyncComponent(${genDynamicImport(f, { interopDefault: true })})`
+              : componentNames[f],
             meta: JSON.stringify(pageMeta[path] || {}),
             _isDynamic: isDynamic,
           }
@@ -99,6 +104,7 @@ export default defineNuxtModule({
           .map(({ _isDynamic, ...rest }) => rest)
 
         return `
+        import { defineAsyncComponent } from 'vue'
         ${Object.entries(componentNames).map(([path, name]) => genImport(path, { name })).join('\n')}
         export default ${genArrayFromRaw(routes)}`
       },

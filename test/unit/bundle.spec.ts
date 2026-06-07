@@ -1,6 +1,6 @@
 /** @vitest-environment node */
 
-import { fileURLToPath } from 'node:url'
+import { pathToFileURL, fileURLToPath } from 'node:url'
 import fsp from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 
@@ -38,12 +38,20 @@ describe('project sizes', () => {
     )
   })
 
-  it('default client bundle size', async () => {
-    stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
+  it('public (non-admin) client bundle size', async () => {
+    const adminOnly = await loadAdminOnlyChunks(serverDir)
+
+    const allFiles: string[] = await globby(
+      ['**/*.js', '!_scripts/**', '!**/_payload.js', '!_nuxt/builds/**'],
+      { cwd: publicDir },
+    )
+    const publicFiles = allFiles.filter(f => !adminOnly.has(basenameOf(f)))
+    stats.client = await measureFiles(publicFiles, publicDir)
+
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"587k"`)
-    expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
+      .toMatchInlineSnapshot(`"259k"`)
+    expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/BlueskyComments.js",
@@ -321,6 +329,10 @@ describe('project sizes', () => {
 
 async function analyzeSizes (pattern: string | string[], rootDir: string) {
   const files: string[] = await globby(pattern, { cwd: rootDir })
+  return measureFiles(files, rootDir)
+}
+
+async function measureFiles (files: string[], rootDir: string) {
   let totalBytes = 0
   for (const file of files) {
     const path = join(rootDir, file)
@@ -334,6 +346,48 @@ async function analyzeSizes (pattern: string | string[], rootDir: string) {
     }
   }
   return { files, totalBytes }
+}
+
+/**
+ * Reads Nuxt/Nitro's precomputed client manifest (the same graph the SSR
+ * renderer uses to emit `<link rel="modulepreload">` tags) and returns the
+ * set of chunk file names reachable only from `pages/admin/**` source keys.
+ *
+ * "Reachable" here means the per-route `preload` closure that Nitro already
+ * computed for us; we subtract anything reachable from any non-admin source
+ * key so shared chunks (entry, mdc components, etc.) stay in the public set.
+ */
+async function loadAdminOnlyChunks (serverDir: string): Promise<Set<string>> {
+  const manifestPath = join(serverDir, 'chunks/build/client.precomputed.mjs')
+  const mod = await import(pathToFileURL(manifestPath).href) as {
+    default?: { dependencies?: Record<string, ManifestDeps> }
+    client_precomputed?: { dependencies?: Record<string, ManifestDeps> }
+  }
+  const manifest = mod.default ?? mod.client_precomputed
+  const dependencies = manifest?.dependencies ?? {}
+
+  const adminReach = new Set<string>()
+  const publicReach = new Set<string>()
+  for (const [key, val] of Object.entries(dependencies)) {
+    // Skip the synthetic `_<chunk>.js` entries Nitro emits for shared chunks;
+    // they list themselves and would otherwise leak admin-only chunks into the
+    // public set via the chunk's own metadata entry.
+    if (key.startsWith('_') && key.endsWith('.js')) continue
+    const target = key.startsWith('pages/admin/') ? adminReach : publicReach
+    for (const dep of Object.values(val.preload ?? {})) target.add(dep.file)
+    for (const dep of Object.values(val.scripts ?? {})) target.add(dep.file)
+  }
+  return new Set([...adminReach].filter(f => !publicReach.has(f)))
+}
+
+function basenameOf (file: string) {
+  const slash = file.lastIndexOf('/')
+  return slash === -1 ? file : file.slice(slash + 1)
+}
+
+interface ManifestDeps {
+  preload?: Record<string, { file: string }>
+  scripts?: Record<string, { file: string }>
 }
 
 function roundToKilobytes (bytes: number, granularityK = 1) {
