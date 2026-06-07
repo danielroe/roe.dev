@@ -7,7 +7,7 @@
  * `@atproto/api` and only need the per-record types and the validator
  * registry. A hand-written barrel is restored from this script.
  */
-import { execSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -34,8 +34,33 @@ if (!lexiconFiles.length) {
 
 console.log(`Generating types for ${lexiconFiles.length} lexicons → ${outDir}`)
 
-const cmd = ['pnpm', 'dlx', '@atproto/lex-cli', 'gen-api', outDir, ...lexiconFiles].join(' ')
-execSync(`yes y | ${cmd}`, { stdio: 'inherit', cwd: root })
+/**
+ * `@atproto/lex-cli gen-api` prompts to overwrite each generated file. We
+ * pipe a stream of `y\n` into its stdin instead of shelling out to
+ * `yes y | …`, so lexicon paths containing spaces or shell metacharacters
+ * can't break (or be abused to alter) the command line.
+ */
+await new Promise((resolvePromise, reject) => {
+  const child = spawn(
+    'pnpm',
+    ['dlx', '@atproto/lex-cli', 'gen-api', outDir, ...lexiconFiles],
+    { stdio: ['pipe', 'inherit', 'inherit'], cwd: root },
+  )
+  const writeY = () => {
+    while (child.stdin.writable && child.stdin.write('y\n')) {
+      // keep filling the buffer until the kernel says back off
+    }
+  }
+  child.stdin.on('drain', writeY)
+  child.stdin.on('error', () => {})
+  writeY()
+  child.on('error', reject)
+  child.on('exit', code => {
+    child.stdin.end()
+    if (code === 0) resolvePromise()
+    else reject(new Error(`lex-cli exited with code ${code}`))
+  })
+})
 
 /**
  * Rewrite the generated relative-imports from `.js` to `.ts` so Node’s native
