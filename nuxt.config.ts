@@ -152,6 +152,7 @@ export default defineNuxtConfig({
       githubClientId: '',
       atproto: {
         did: '',
+        service: 'https://npmx.social',
       },
     },
   },
