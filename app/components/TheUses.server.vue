@@ -2,11 +2,11 @@
   <div>
     <section
       v-for="category in sortedCategories"
-      :key="category.category"
+      :key="category.title"
       class="mb-12"
     >
       <h2 class="text-lg">
-        {{ category.category }}
+        {{ category.title }}
       </h2>
 
       <div
@@ -25,12 +25,14 @@
                 v-if="item.image"
                 class="relative flex flex-col justify-end bg-gray-100 dark:bg-gray-900 aspect-video overflow-hidden"
               >
-                <NuxtImg
-                  provider="sanity"
-                  :src="item.image"
+                <img
+                  :src="item.image.url"
                   :alt="item.name"
+                  :width="item.image.width ?? 400"
+                  :height="item.image.height ?? 225"
                   class="w-full h-full object-cover"
-                />
+                  loading="lazy"
+                >
               </div>
 
               <div class="px-2 py-2 flex flex-col">
@@ -128,46 +130,9 @@
 </template>
 
 <script setup lang="ts">
-interface Link {
-  url: string
-  label?: string
-}
+import type { UsesCategory } from '#shared/cms/uses'
 
-interface UsesItem {
-  name: string
-  description?: string
-  link?: string
-  links?: Link[]
-  image?: any
-  order?: number
-}
-
-interface UsesCategory {
-  _id: string
-  category: string
-  order: number
-  displayAsGrid?: boolean
-  items: UsesItem[]
-}
-
-const { data } = await useSanityQuery<UsesCategory[]>(`
-  *[_type == "uses"] {
-    _id,
-    category,
-    order,
-    displayAsGrid,
-    items[] {
-      name,
-      description,
-      links[] {
-        url,
-        label
-      },
-      "image": image.asset->_id,
-      order
-    }
-  }
-`)
+const { data } = await useFetch<UsesCategory[]>('/api/uses')
 
 function getHost (url: string): string {
   try {

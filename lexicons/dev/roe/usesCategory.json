@@ -1,0 +1,35 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.usesCategory",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A category on the /uses page. Items belong to a category via dev.roe.usesItem.category.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["title", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "order": {
+            "type": "integer",
+            "description": "Lower values render first. Defaults to 100 in the editor.",
+            "default": 100
+          },
+          "displayAsGrid": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

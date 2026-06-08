@@ -1,6 +1,6 @@
 /** @vitest-environment node */
 
-import { fileURLToPath } from 'node:url'
+import { pathToFileURL, fileURLToPath } from 'node:url'
 import fsp from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 
@@ -38,12 +38,20 @@ describe('project sizes', () => {
     )
   })
 
-  it('default client bundle size', async () => {
-    stats.client = await analyzeSizes(['**/*.js', '!_scripts/**'], publicDir)
+  it('public (non-admin) client bundle size', async () => {
+    const adminOnly = await loadAdminOnlyChunks(serverDir)
+
+    const allFiles: string[] = await globby(
+      ['**/*.js', '!_scripts/**', '!**/_payload.js', '!_nuxt/builds/**'],
+      { cwd: publicDir },
+    )
+    const publicFiles = allFiles.filter(f => !adminOnly.has(basenameOf(f)))
+    stats.client = await measureFiles(publicFiles, publicDir)
+
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"254k"`)
-    expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js').replace(/_scripts\/.*\.js/, '_scripts/script.js')).sort())
+      .toMatchInlineSnapshot(`"259k"`)
+    expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/BlueskyComments.js",
@@ -83,12 +91,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2260k"`)
+      .toMatchInlineSnapshot(`"2710k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"8610k"`)
+      .toMatchInlineSnapshot(`"11540k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -97,17 +105,35 @@ describe('project sizes', () => {
     expect.soft(packages).toMatchInlineSnapshot(`
       [
         "@atcute/bluesky-richtext-segmenter",
+        "@atproto-labs/did-resolver",
+        "@atproto-labs/fetch",
+        "@atproto-labs/fetch-node",
+        "@atproto-labs/handle-resolver",
+        "@atproto-labs/handle-resolver-node",
+        "@atproto-labs/identity-resolver",
+        "@atproto-labs/pipe",
+        "@atproto-labs/simple-store",
+        "@atproto-labs/simple-store-memory",
         "@atproto/api",
         "@atproto/common-web",
+        "@atproto/did",
+        "@atproto/jwk",
+        "@atproto/jwk-jose",
+        "@atproto/jwk-webcrypto",
+        "@atproto/jwk/node_modules/multiformats",
         "@atproto/lex-data",
+        "@atproto/lex-data/node_modules/multiformats",
         "@atproto/lex-json",
         "@atproto/lexicon",
+        "@atproto/lexicon/node_modules/multiformats",
+        "@atproto/oauth-client",
+        "@atproto/oauth-client-node",
+        "@atproto/oauth-client/node_modules/multiformats",
+        "@atproto/oauth-types",
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
-        "@sanity/client",
-        "@sanity/eventsource",
-        "@sanity/webhook",
+        "@formkit/drag-and-drop",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -139,8 +165,8 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
+        "core-js",
         "decode-named-character-reference",
-        "decompress-response",
         "detab",
         "devalue",
         "devlop",
@@ -152,13 +178,10 @@ describe('project sizes', () => {
         "estree-walker",
         "events-to-async",
         "events-to-async/module",
-        "eventsource",
         "extend",
         "feed",
         "flat",
-        "get-it",
         "github-slugger",
-        "groq",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -180,16 +203,19 @@ describe('project sizes', () => {
         "html-void-elements",
         "html-whitespace-sensitive-tag-names",
         "image-meta",
-        "inherits",
+        "ipaddr.js",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
         "is-decimal",
         "is-hexadecimal",
         "is-plain-obj",
-        "is-retry-allowed",
         "iso-datestring-validator",
+        "jose",
+        "jose/dist/node/esm",
         "longest-streak",
+        "lru-cache",
+        "lru-cache/dist/esm",
         "markdown-table",
         "mdast-util-find-and-replace",
         "mdast-util-from-markdown",
@@ -203,6 +229,7 @@ describe('project sizes', () => {
         "mdast-util-to-hast",
         "mdast-util-to-markdown",
         "mdast-util-to-string",
+        "mediabunny",
         "micromark",
         "micromark-core-commonmark",
         "micromark-extension-gfm",
@@ -229,10 +256,8 @@ describe('project sizes', () => {
         "micromark-util-resolve-all",
         "micromark-util-sanitize-uri",
         "micromark-util-subtokenize",
-        "mimic-response",
+        "modern-screenshot",
         "multiformats",
-        "nanoid",
-        "nanoid/url-alphabet",
         "node-emoji",
         "nuxtseo-shared",
         "oniguruma-parser",
@@ -244,10 +269,8 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "perfect-debounce",
-        "picomatch",
         "property-information",
         "radix3",
-        "readable-stream",
         "regex",
         "regex-recursion",
         "regex-utilities",
@@ -262,26 +285,23 @@ describe('project sizes', () => {
         "remark-parse",
         "remark-rehype",
         "remark-stringify",
-        "rxjs",
-        "safe-buffer",
         "sax",
         "scule",
         "shiki",
         "skin-tone",
         "source-map-js",
         "space-separated-tokens",
-        "string_decoder",
         "stringify-entities",
-        "through2",
         "tlds",
         "trim-lines",
         "trim-trailing-lines",
         "trough",
         "ts-custom-error",
         "tslib",
-        "tunnel-agent",
         "ufo",
         "uint8arrays",
+        "uint8arrays/node_modules/multiformats",
+        "undici",
         "unhead",
         "unicode-emoji-modifier-base",
         "unicode-segmenter",
@@ -292,7 +312,6 @@ describe('project sizes', () => {
         "unist-util-stringify-position",
         "unist-util-visit",
         "unist-util-visit-parents",
-        "util-deprecate",
         "vfile",
         "vfile-location",
         "vfile-message",
@@ -310,6 +329,10 @@ describe('project sizes', () => {
 
 async function analyzeSizes (pattern: string | string[], rootDir: string) {
   const files: string[] = await globby(pattern, { cwd: rootDir })
+  return measureFiles(files, rootDir)
+}
+
+async function measureFiles (files: string[], rootDir: string) {
   let totalBytes = 0
   for (const file of files) {
     const path = join(rootDir, file)
@@ -323,6 +346,48 @@ async function analyzeSizes (pattern: string | string[], rootDir: string) {
     }
   }
   return { files, totalBytes }
+}
+
+/**
+ * Reads Nuxt/Nitro's precomputed client manifest (the same graph the SSR
+ * renderer uses to emit `<link rel="modulepreload">` tags) and returns the
+ * set of chunk file names reachable only from `pages/admin/**` source keys.
+ *
+ * "Reachable" here means the per-route `preload` closure that Nitro already
+ * computed for us; we subtract anything reachable from any non-admin source
+ * key so shared chunks (entry, mdc components, etc.) stay in the public set.
+ */
+async function loadAdminOnlyChunks (serverDir: string): Promise<Set<string>> {
+  const manifestPath = join(serverDir, 'chunks/build/client.precomputed.mjs')
+  const mod = await import(pathToFileURL(manifestPath).href) as {
+    default?: { dependencies?: Record<string, ManifestDeps> }
+    client_precomputed?: { dependencies?: Record<string, ManifestDeps> }
+  }
+  const manifest = mod.default ?? mod.client_precomputed
+  const dependencies = manifest?.dependencies ?? {}
+
+  const adminReach = new Set<string>()
+  const publicReach = new Set<string>()
+  for (const [key, val] of Object.entries(dependencies)) {
+    // Skip the synthetic `_<chunk>.js` entries Nitro emits for shared chunks;
+    // they list themselves and would otherwise leak admin-only chunks into the
+    // public set via the chunk's own metadata entry.
+    if (key.startsWith('_') && key.endsWith('.js')) continue
+    const target = key.startsWith('pages/admin/') ? adminReach : publicReach
+    for (const dep of Object.values(val.preload ?? {})) target.add(dep.file)
+    for (const dep of Object.values(val.scripts ?? {})) target.add(dep.file)
+  }
+  return new Set([...adminReach].filter(f => !publicReach.has(f)))
+}
+
+function basenameOf (file: string) {
+  const slash = file.lastIndexOf('/')
+  return slash === -1 ? file : file.slice(slash + 1)
+}
+
+interface ManifestDeps {
+  preload?: Record<string, { file: string }>
+  scripts?: Record<string, { file: string }>
 }
 
 function roundToKilobytes (bytes: number, granularityK = 1) {

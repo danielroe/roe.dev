@@ -8,7 +8,6 @@ import { pageMeta } from './modules/shared/page-meta'
 
 export default defineNuxtConfig({
   modules: [
-    '@nuxtjs/sanity',
     'nuxt-og-image',
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
@@ -36,13 +35,18 @@ export default defineNuxtConfig({
         }
       },
     ],
+    runtimeConfig: {
+      admin: {
+        baseUrl: 'http://127.0.0.1:3000',
+      },
+    },
+    devServer: {
+      host: '127.0.0.1',
+    },
   },
 
   $production: {
     modules: ['nuxt-security'],
-    experimental: {
-      noVueServer: true,
-    },
     image: {
       provider: 'ipxStatic',
     },
@@ -90,9 +94,20 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    sanity: {
-      token: '',
-      webhookToken: '',
+    atproto: {
+      password: '',
+      did: '',
+      handle: '',
+    },
+    admin: {
+      // Public origin used to derive the OAuth `client_id`
+      // (`<baseUrl>/oauth-client-metadata.json`) and `redirect_uri`. Vercel
+      // preview deployments self-host their own metadata so each preview
+      // registers a fresh OAuth client with the IdP rather than pointing
+      // back at production.
+      baseUrl: process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production' && process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'https://roe.dev',
     },
     blobReadWriteToken: '',
     mastodon: {
@@ -137,10 +152,21 @@ export default defineNuxtConfig({
     },
     public: {
       githubClientId: '',
+      atproto: {
+        did: '',
+        service: '',
+      },
     },
   },
 
   routeRules: {
+    '/admin/**': { prerender: false },
+    '/api/admin/**': { prerender: false },
+    '/api/talks': { swr: 1 },
+    '/api/upcoming-conferences': { swr: 1 },
+    '/api/uses': { swr: 1 },
+    '/api/current-location': { swr: 1 },
+    '/uses.md': { swr: 1 },
     '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
@@ -173,6 +199,8 @@ export default defineNuxtConfig({
       tsConfig: {
         compilerOptions: {
           noUncheckedIndexedAccess: true,
+          allowImportingTsExtensions: true,
+          noEmit: true,
         },
       },
     },
@@ -220,15 +248,39 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: [
+        '@formkit/drag-and-drop/vue',
+        'gsap',
         'magic-regexp',
+        'mediabunny',
+        'modern-screenshot',
         'partysocket',
       ],
     },
   },
 
   typescript: {
+    // The generated lexicon types in `shared/lex/**` cross-reference each
+    // other with `.ts` extensions so that Node’s native type-stripping can
+    // resolve them at runtime (`node script.ts`) without a loader. Every
+    // tsconfig that transitively includes those files needs to allow that.
+    tsConfig: {
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+        noEmit: true,
+      },
+    },
     nodeTsConfig: {
       include: ['../scripts'],
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+        noEmit: true,
+      },
+    },
+    sharedTsConfig: {
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+        noEmit: true,
+      },
     },
   },
 
@@ -269,7 +321,7 @@ export default defineNuxtConfig({
       's3.nl-ams.scw.cloud',
       'cdn.bsky.social',
       'cdn.bsky.app',
-      'cdn.sanity.io',
+      'npmx.social',
       'images.jsworldconference.com',
       'www.middlesbroughfe.co.uk',
       'res.cloudinary.com',
@@ -288,9 +340,6 @@ export default defineNuxtConfig({
       'gdg.community.dev',
       'www.lambdatest.com',
     ],
-    sanity: {
-      projectId: '9bj3w2vo',
-    },
     screens: {
       logo: 40,
       avatar: 70,
@@ -308,17 +357,6 @@ export default defineNuxtConfig({
     apiHost: 'https://v.roe.dev',
   },
 
-  sanity: {
-    apiVersion: '2025-02-19',
-    perspective: 'published',
-    additionalClients: {
-      // non-CDN client for server-side writes and webhook processing
-      write: {
-        useCdn: false,
-      },
-    },
-  },
-
   scripts: {
     defaultScriptOptions: {
       bundle: true,
@@ -331,7 +369,7 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
         'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://static.cloudflareinsights.com'],
-        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://www.google.com', 'https://cdn.sanity.io', 'https://*.gstatic.com', 'https://cdn.bsky.app'],
+        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://www.google.com', 'https://*.gstatic.com', 'https://cdn.bsky.app', 'https://npmx.social'],
       },
     },
   },

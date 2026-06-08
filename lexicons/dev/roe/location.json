@@ -1,0 +1,47 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.location",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Current location (singleton; rkey is always 'self').",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["city", "country", "countryCode", "createdAt"],
+        "properties": {
+          "city": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "region": {
+            "type": "string",
+            "description": "Region/state. Used to special-case Scotland and US/UK subdivisions on the public site.",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "country": {
+            "type": "string",
+            "maxLength": 1024,
+            "maxGraphemes": 256
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code, uppercase. Used to compute a flag emoji.",
+            "minLength": 2,
+            "maxLength": 2
+          },
+          "meetupAvailable": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,28 +1,13 @@
 import { pageMeta } from '#md-page-meta.json'
 
+import { getUses } from '../utils/cms/uses'
+
 export default defineEventHandler(async event => {
   if (import.meta.test) {
     return mdResponse('')
   }
 
-  const sanity = useSanity(event)
-  const categories = await sanity.client.fetch<UsesCategory[]>(`
-    *[_type == "uses"] {
-      _id,
-      category,
-      order,
-      items[] {
-        name,
-        description,
-        links[] {
-          url,
-          label
-        },
-        order
-      }
-    }
-  `)
-
+  const categories = await getUses(event)
   const sorted = [...categories].sort((a, b) => (a.order || 100) - (b.order || 100))
 
   const lines = [
@@ -31,7 +16,7 @@ export default defineEventHandler(async event => {
   ]
 
   for (const category of sorted) {
-    lines.push(`## ${category.category}`)
+    lines.push(`## ${category.title}`)
     lines.push('')
 
     const items = [...(category.items || [])].sort((a, b) => (a.order || 100) - (b.order || 100))
@@ -41,7 +26,6 @@ export default defineEventHandler(async event => {
       const desc = item.description ? ` — ${item.description}` : ''
       lines.push(`- **${name}**${desc}`)
 
-      // Additional links beyond the primary
       const extraLinks = item.links?.slice(1)
       if (extraLinks?.length) {
         const linkStr = extraLinks.map(l => `[${l.label || 'Link'}](${l.url})`).join(', ')
@@ -54,17 +38,3 @@ export default defineEventHandler(async event => {
 
   return mdResponse(lines.join('\n'))
 })
-
-interface UsesCategory {
-  _id: string
-  category: string
-  order: number
-  items: UsesItem[]
-}
-
-interface UsesItem {
-  name: string
-  description?: string
-  links?: { url: string, label?: string }[]
-  order?: number
-}

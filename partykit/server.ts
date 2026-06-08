@@ -1,5 +1,5 @@
 import type { PartyKitServer, Room } from 'partykit/server'
-import { isValidEmoji } from '../shared/utils/emoji'
+import { isValidEmoji } from '#shared/utils/emoji'
 
 export default {
   async onConnect (ws, party) {

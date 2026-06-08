@@ -27,6 +27,9 @@
           >
             answer it on social media </a>.
         </p>
+        <p class="text-sm text-muted">
+          If I answer them they'll appear publicly on social media. Don't include anything you wouldn't want public.
+        </p>
         <textarea
           id="question"
           v-model="questionText"

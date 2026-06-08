@@ -42,6 +42,16 @@ jobs:
         env:
           BASE_URL: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.environment_url }}
 
+      - name: Upload playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 14
+
   lighthouse:
     environment:
       name: ${{ github.event.deployment.environment || 'Production' }}

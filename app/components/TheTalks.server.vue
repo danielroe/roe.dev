@@ -1,25 +1,5 @@
 <script setup lang="ts">
-interface TalkGroup {
-  _id: string
-  title: string
-  description: string
-}
-
-interface Talk {
-  _id: string
-  title: string
-  description?: string
-  source: string
-  tags: string[]
-  link?: string
-  video?: string
-  date: string
-  type: 'conference' | 'podcast' | 'meetup' | 'workshop' | 'stream'
-  slides?: string // GitHub release tag
-  repo?: string
-  demo?: string
-  group?: TalkGroup
-}
+import type { Talk } from '#shared/cms/talks'
 
 const { data: groups } = await useAsyncData(
   'past-talks',

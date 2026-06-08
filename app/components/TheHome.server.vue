@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Talk } from '#shared/cms/talks'
+
 const links = [
   {
     name: 'Bluesky',
@@ -72,20 +74,6 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
     },
   }),
 ])
-
-interface Talk {
-  _id: string
-  title: string
-  source: string
-  tags: string[]
-  link?: string
-  video?: string
-  date: string
-  type: 'conference' | 'podcast' | 'meetup' | 'workshop' | 'mini-workshop' | 'stream'
-  slides?: string
-  repo?: string
-  demo?: string
-}
 </script>
 
 <template>
@@ -224,18 +212,16 @@ interface Talk {
                 <div
                   class="relative flex flex-col justify-center bg-gray-100 dark:bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
                 >
-                  <NuxtImg
+                  <img
                     v-if="conference.image.url"
-                    :preload="index < 2"
                     :loading="index > 1 ? 'lazy' : 'eager'"
                     decoding="async"
-                    format="webp"
                     :src="conference.image.url"
-                    :width="320"
-                    :height="Math.round(conference.image.height! / (conference.image.width! / 320))"
+                    width="320"
+                    height="128"
                     :alt="`Logo for ${conference.name}`"
-                    class="object-cover object-center"
-                  />
+                    class="w-full h-full object-cover object-center"
+                  >
                 </div>
                 <div
                   class="px-2 py-2 flex flex-row justify-between items-end leading-none"

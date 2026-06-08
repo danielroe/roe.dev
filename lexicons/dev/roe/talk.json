@@ -1,0 +1,112 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.talk",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A talk, podcast appearance, workshop, stream, or similar event.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["source", "date", "type", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Optional for upcoming events with no announced title. Required for past talks unless the talk is part of a group.",
+            "maxLength": 2048,
+            "maxGraphemes": 512
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 20000,
+            "maxGraphemes": 5000
+          },
+          "date": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Start date of the talk/event. Date-only values are stored as midnight UTC."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "datetime",
+            "description": "End date for multi-day events. Optional."
+          },
+          "source": {
+            "type": "string",
+            "description": "Conference name, meetup, podcast title, etc.",
+            "maxLength": 2048,
+            "maxGraphemes": 512
+          },
+          "location": {
+            "type": "string",
+            "description": "Free-form: city, country, or 'Online'.",
+            "maxLength": 2048,
+            "maxGraphemes": 512
+          },
+          "type": {
+            "type": "string",
+            "knownValues": ["conference", "meetup", "podcast", "workshop", "stream", "talk"]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 256,
+              "maxGraphemes": 64
+            },
+            "maxLength": 32
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "Event page, podcast episode URL, etc."
+          },
+          "video": {
+            "type": "string",
+            "format": "uri"
+          },
+          "slides": {
+            "type": "string",
+            "description": "Identifier for slides; historically a GitHub release tag from danielroe/slides."
+          },
+          "demo": {
+            "type": "string",
+            "format": "uri"
+          },
+          "repo": {
+            "type": "string",
+            "format": "uri"
+          },
+          "group": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong-ref to a dev.roe.talkGroup record."
+          },
+          "image": {
+            "type": "blob",
+            "accept": ["image/*"],
+            "maxSize": 5000000
+          },
+          "aspectRatio": {
+            "type": "ref",
+            "ref": "#aspectRatio",
+            "description": "Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "aspectRatio": {
+      "type": "object",
+      "description": "width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

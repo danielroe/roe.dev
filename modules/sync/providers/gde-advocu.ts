@@ -1,7 +1,13 @@
-import { createClient } from '@sanity/client'
 import { $fetch } from 'ofetch'
+import { AtpAgent } from '@atproto/api'
+import { TID } from '@atproto/common-web'
+import { useNuxt } from 'nuxt/kit'
 
+import { listAllRecords } from '../../shared/atproto-read'
+import type { DevRoeSync } from '../../../shared/lex'
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
+
+const PROVIDER = 'gde-advocu'
 
 // Advocu allowed tags enum (from API docs)
 const ADVOCU_TAGS = [
@@ -33,33 +39,37 @@ export class GdeAdvocuProvider implements SyncProvider {
       return
     }
 
-    const token = process.env.NUXT_ADVOCU_TOKEN
-    if (!token) throw new Error('No NUXT_ADVOCU_TOKEN provided.')
+    const advocuToken = process.env.NUXT_ADVOCU_TOKEN
+    if (!advocuToken) throw new Error('No NUXT_ADVOCU_TOKEN provided.')
 
-    const sanityToken = process.env.NUXT_SANITY_TOKEN
-    if (!sanityToken) throw new Error('No NUXT_SANITY_TOKEN provided for Advocu dedupe tracking.')
+    const cfg = useNuxt().options.runtimeConfig
+    const pdsUrl = cfg.public.atproto.service
+    const { handle, password } = cfg.atproto
+    if (!pdsUrl || !handle || !password) {
+      throw new Error('atproto identity / credentials not configured for Advocu dedupe tracking (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
+    }
 
-    const sanityClient = createClient({
-      projectId: '9bj3w2vo',
-      dataset: 'production',
-      apiVersion: '2025-01-01',
-      useCdn: false,
-      token: sanityToken,
-    })
+    const synced = new Set(
+      (await listAllRecords<DevRoeSync.Record>('dev.roe.sync'))
+        .filter(r => r.value.provider === PROVIDER)
+        .map(r => r.value.canonicalUrl),
+    )
+
+    const agent = new AtpAgent({ service: pdsUrl })
+    await agent.login({ identifier: handle, password })
+    const did = agent.session!.did
 
     const $advocu = $fetch.create({
       baseURL: 'https://api.advocu.com/personal-api/v1/gde',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${advocuToken}`,
       },
     })
 
-    let synced = 0
+    let count = 0
     for (const item of eligible) {
-      const sanityId = `advocu-sync-${item.type}-${base64url(item.canonical_url)}`
-      const existing = await sanityClient.fetch('*[_id == $id][0]', { id: sanityId })
-      if (existing) continue
+      if (synced.has(item.canonical_url)) continue
 
       const safeTags = validateTags(item.tags)
       if (item.tags && safeTags.length === 0) {
@@ -97,21 +107,22 @@ export class GdeAdvocuProvider implements SyncProvider {
         continue
       }
 
-      synced++
-      await sanityClient.createOrReplace({
-        _id: sanityId,
-        _type: 'advocuSync',
-        canonical_url: item.canonical_url,
-        syncedAt: new Date().toISOString(),
+      await agent.com.atproto.repo.putRecord({
+        repo: did,
+        collection: 'dev.roe.sync',
+        rkey: TID.nextStr(),
+        record: {
+          $type: 'dev.roe.sync',
+          provider: PROVIDER,
+          canonicalUrl: item.canonical_url,
+          syncedAt: new Date().toISOString(),
+        } satisfies DevRoeSync.Record,
       })
+      count++
     }
 
-    console.info(`[sync:gde-advocu] Done: ${synced} synced`)
+    console.info(`[sync:gde-advocu] Done: ${count} synced`)
   }
-}
-
-function base64url (str: string): string {
-  return Buffer.from(str).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
 function validateTags (tags: string[] = []): string[] {

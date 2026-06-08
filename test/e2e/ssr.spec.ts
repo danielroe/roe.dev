@@ -1,6 +1,20 @@
-import type { Locator } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 import { test, expect } from '@playwright/test'
 import { joinURL, withTrailingSlash } from 'ufo'
+
+async function waitForImages (page: Page) {
+  await page.evaluate(() => {
+    for (const img of document.images) img.loading = 'eager'
+  })
+  await page.evaluate(() => Promise.all(
+    Array.from(document.images)
+      .filter(img => !img.complete)
+      .map(img => new Promise(resolve => {
+        img.addEventListener('load', () => resolve(null), { once: true })
+        img.addEventListener('error', () => resolve(null), { once: true })
+      })),
+  ))
+}
 
 const baseURL = process.env.BASE_URL || 'https://roe.dev/'
 
@@ -29,8 +43,11 @@ test.describe(`pages`, () => {
       const title = page.locator('title')
       expect(await title.textContent()).toContain('Daniel Roe')
 
-      // Mask dynamic content on home page
-      const mask: Locator[] = []
+      await waitForImages(page)
+
+      const mask: Locator[] = [
+        page.locator('img[src*="s2/favicons"]'),
+      ]
       if (path === '/') {
         mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
         mask.push(page.locator('section:has(h2:text("upcoming talks")) ul'))
@@ -46,6 +63,7 @@ test.describe(`pages`, () => {
       const ogImage = page.locator('[property="og:image"]').first()
       const ogURL = await ogImage.getAttribute('content')
       await page.goto(ogURL!.replace('https://roe.dev/', withTrailingSlash(baseURL)))
+      await waitForImages(page)
       await expect(page).toHaveScreenshot()
     })
   }
