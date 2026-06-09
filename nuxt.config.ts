@@ -46,9 +46,6 @@ export default defineNuxtConfig({
 
   $production: {
     modules: ['nuxt-security'],
-    image: {
-      provider: 'ipxStatic',
-    },
   },
 
   $test: {
@@ -345,10 +342,6 @@ export default defineNuxtConfig({
       380: 380,
       760: 760,
     },
-  },
-
-  ogImage: {
-    zeroRuntime: true,
   },
 
   plausible: {
