@@ -159,6 +159,7 @@ export default defineNuxtConfig({
   routeRules: {
     ...Object.fromEntries(Object.keys(pageMeta).flatMap(path => [
       [path, { swr: 60 * 60 }],
+      [path + '/_payload.json', { swr: 60 * 60 }],
       [path + '.md', { swr: 60 * 60 }],
     ])),
     '/admin/**': { prerender: false },
