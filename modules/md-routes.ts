@@ -24,12 +24,6 @@ export default defineNuxtModule({
       '/blog',
     ]
 
-    const mdRoutes = mdPages.map(p => p === '/' ? '/index.md' : `${p}.md`)
-
-    nuxt.options.nitro.prerender ||= {}
-    nuxt.options.nitro.prerender.routes ||= []
-    nuxt.options.nitro.prerender.routes.push(...mdRoutes)
-
     // Register blog post .md handlers once we know all the slugs
     nuxt.hook('markdown:blog-entries', entries => {
       for (const entry of entries) {
@@ -40,7 +34,6 @@ export default defineNuxtModule({
           handler: resolver.resolve('./md-routes/runtime/server/blog-md.get'),
         })
 
-        nuxt.options.nitro.prerender!.routes!.push(route)
         mdPages.push(entry.path)
       }
 
