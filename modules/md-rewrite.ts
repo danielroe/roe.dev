@@ -18,21 +18,18 @@ export default defineNuxtModule({
         const vcJSON = resolve(nitro.options.output.dir, 'config.json')
         const vcConfig = JSON.parse(await readFile(vcJSON, 'utf8'))
 
-        // Redirect Accept: text/markdown requests to the .md
-        // version. A redirect gives the markdown response its own URL and
-        // therefore its own edge cache key, so a markdown-accepting client
-        // can't poison the HTML cache entry for the bare URL.
+        // Rewrite requests with Accept: text/markdown to the .md version
         // The home page needs special handling: / -> /index.md
         vcConfig.routes.unshift({
           src: '^/$',
-          status: 302,
-          headers: { Location: '/index.md' },
+          dest: '/index.md',
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
+          check: true,
         }, {
           src: '^/(.+?)/?$',
-          status: 302,
-          headers: { Location: '/$1.md' },
+          dest: '/$1.md',
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
+          check: true,
         })
 
         await writeFile(vcJSON, JSON.stringify(vcConfig, null, 2), 'utf8')
