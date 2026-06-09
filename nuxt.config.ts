@@ -157,18 +157,20 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/admin/**': { prerender: false },
-    '/api/admin/**': { prerender: false },
     ...Object.fromEntries(Object.keys(pageMeta).flatMap(path => [
       [path, { swr: 60 * 60 }],
       [path + '.md', { swr: 60 * 60 }],
     ])),
+    '/admin/**': { prerender: false },
+    // api routes
+    '/api/admin/**': { prerender: false },
     '/api/talks': { swr: 60 * 60 },
     '/api/upcoming-conferences': { swr: 60 * 60 },
     '/api/uses': { swr: 60 * 60 },
     '/api/current-location': { swr: 60 * 5 },
     '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },
+    // redirects
     '/feed.xml': { redirect: '/rss.xml' },
     '/work': { redirect: '/projects' },
     '/thumbnail/**': { cache: { maxAge: 60 * 60 * 24 * 365 } },
