@@ -24,12 +24,10 @@ export default defineNuxtModule({
           src: '^/$',
           dest: '/index.md',
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
-          check: true,
         }, {
           src: '^/(.+?)/?$',
           dest: '/$1.md',
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
-          check: true,
         })
 
         await writeFile(vcJSON, JSON.stringify(vcConfig, null, 2), 'utf8')
