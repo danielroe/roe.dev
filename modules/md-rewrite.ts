@@ -18,18 +18,18 @@ export default defineNuxtModule({
         const vcJSON = resolve(nitro.options.output.dir, 'config.json')
         const vcConfig = JSON.parse(await readFile(vcJSON, 'utf8'))
 
-        // Rewrite requests with Accept: text/markdown to the .md version
+        // Redirect requests with Accept: text/markdown to the .md version
         // The home page needs special handling: / -> /index.md
         vcConfig.routes.unshift({
           src: '^/$',
-          dest: '/index.md',
+          status: 302,
+          headers: { Location: '/index.md' },
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
-          check: true,
         }, {
-          src: '^/((?:(?!\\.md/?$).)+?)/?$',
-          dest: '/$1.md',
+          src: '^/(.+?)/?$',
+          status: 302,
+          headers: { Location: '/$1.md' },
           has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
-          check: true,
         })
 
         await writeFile(vcJSON, JSON.stringify(vcConfig, null, 2), 'utf8')
