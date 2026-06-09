@@ -4,8 +4,6 @@ import { getUpcomingTalks } from '../utils/cms/talks'
 import type { UpcomingConference } from '../utils/cms/talks'
 
 export default defineEventHandler(async event => {
-  if (!import.meta.dev && !import.meta.prerender) return []
-
   const upcomingConferences = await getUpcomingTalks(event)
 
   const formatter = new Intl.DateTimeFormat('en', {

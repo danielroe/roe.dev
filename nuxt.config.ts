@@ -4,6 +4,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { extendViteConfig } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
+import { pageMeta } from './modules/shared/page-meta'
 
 export default defineNuxtConfig({
   modules: [
@@ -158,11 +159,14 @@ export default defineNuxtConfig({
   routeRules: {
     '/admin/**': { prerender: false },
     '/api/admin/**': { prerender: false },
-    '/api/talks': { swr: 1 },
-    '/api/upcoming-conferences': { swr: 1 },
-    '/api/uses': { swr: 1 },
-    '/api/current-location': { swr: 1 },
-    '/uses.md': { swr: 1 },
+    ...Object.fromEntries(Object.keys(pageMeta).flatMap(path => [
+      [path, { swr: 60 * 60 }],
+      [path + '.md', { swr: 60 * 60 }],
+    ])),
+    '/api/talks': { swr: 60 * 60 },
+    '/api/upcoming-conferences': { swr: 60 * 60 },
+    '/api/uses': { swr: 60 * 60 },
+    '/api/current-location': { swr: 60 * 5 },
     '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },
     '/feed.xml': { redirect: '/rss.xml' },
