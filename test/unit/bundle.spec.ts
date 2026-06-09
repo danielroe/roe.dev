@@ -50,7 +50,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"259k"`)
+      .toMatchInlineSnapshot(`"268k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -91,12 +91,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2710k"`)
+      .toMatchInlineSnapshot(`"2870k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"11540k"`)
+      .toMatchInlineSnapshot(`"39020k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -114,6 +114,8 @@ describe('project sizes', () => {
         "@atproto-labs/pipe",
         "@atproto-labs/simple-store",
         "@atproto-labs/simple-store-memory",
+        "@atproto-labs/simple-store-memory/node_modules/lru-cache",
+        "@atproto-labs/simple-store-memory/node_modules/lru-cache/dist/esm",
         "@atproto/api",
         "@atproto/common-web",
         "@atproto/did",
@@ -133,7 +135,11 @@ describe('project sizes', () => {
         "@atproto/syntax",
         "@atproto/xrpc",
         "@babel/parser",
+        "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
+        "@img/colour",
+        "@img/sharp-libvips-linux-x64",
+        "@img/sharp-linux-x64",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -144,6 +150,9 @@ describe('project sizes', () => {
         "@shikijs/types",
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
+        "@takumi-rs/core",
+        "@takumi-rs/core-linux-x64-gnu",
+        "@takumi-rs/helpers",
         "@ungap/structured-clone",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
@@ -157,6 +166,7 @@ describe('project sizes', () => {
         "@vue/shared",
         "await-lock",
         "bail",
+        "boolbase",
         "ccount",
         "char-regex",
         "character-entities",
@@ -165,23 +175,47 @@ describe('project sizes', () => {
         "character-reference-invalid",
         "comma-separated-tokens",
         "consola",
+        "cookie-es",
         "core-js",
+        "css-select",
+        "css-select/lib/esm",
+        "css-tree",
+        "css-tree/node_modules/mdn-data",
+        "css-what",
+        "csso",
+        "csso/node_modules/css-tree",
+        "csso/node_modules/css-tree/node_modules/mdn-data",
         "decode-named-character-reference",
+        "defu",
+        "destr",
         "detab",
+        "detect-libc",
         "devalue",
         "devlop",
+        "dom-serializer",
+        "dom-serializer/lib/esm",
+        "dom-serializer/node_modules/entities",
+        "dom-serializer/node_modules/entities/lib/esm",
+        "domelementtype",
+        "domelementtype/lib/esm",
+        "domhandler",
+        "domhandler/lib/esm",
+        "domutils",
+        "domutils/lib/esm",
         "emojilib",
         "emoticon",
         "entities",
         "entities/dist/commonjs",
         "escape-string-regexp",
         "estree-walker",
+        "etag",
         "events-to-async",
         "events-to-async/module",
         "extend",
         "feed",
         "flat",
         "github-slugger",
+        "h3",
         "hast-util-embedded",
         "hast-util-format",
         "hast-util-from-parse5",
@@ -204,6 +238,8 @@ describe('project sizes', () => {
         "html-whitespace-sensitive-tag-names",
         "image-meta",
         "ipaddr.js",
+        "ipx",
+        "iron-webcrypto",
         "is-absolute-url",
         "is-alphabetical",
         "is-alphanumerical",
@@ -229,6 +265,7 @@ describe('project sizes', () => {
         "mdast-util-to-hast",
         "mdast-util-to-markdown",
         "mdast-util-to-string",
+        "mdn-data",
         "mediabunny",
         "micromark",
         "micromark-core-commonmark",
@@ -259,7 +296,12 @@ describe('project sizes', () => {
         "modern-screenshot",
         "multiformats",
         "node-emoji",
+        "node-fetch-native",
+        "node-mock-http",
+        "nth-check",
+        "nth-check/lib/esm",
         "nuxtseo-shared",
+        "ofetch",
         "oniguruma-parser",
         "oniguruma-to-es",
         "oniguruma-to-es/dist/esm",
@@ -268,6 +310,7 @@ describe('project sizes', () => {
         "parse5/node_modules/entities",
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
+        "pathe",
         "perfect-debounce",
         "property-information",
         "radix3",
@@ -287,11 +330,16 @@ describe('project sizes', () => {
         "remark-stringify",
         "sax",
         "scule",
+        "semver",
+        "sharp",
         "shiki",
         "skin-tone",
         "source-map-js",
         "space-separated-tokens",
         "stringify-entities",
+        "svgo",
+        "svgo/node_modules/css-tree",
+        "svgo/node_modules/css-tree/node_modules/mdn-data",
         "tlds",
         "trim-lines",
         "trim-trailing-lines",
@@ -301,6 +349,8 @@ describe('project sizes', () => {
         "ufo",
         "uint8arrays",
         "uint8arrays/node_modules/multiformats",
+        "ultrahtml",
+        "uncrypto",
         "undici",
         "unhead",
         "unicode-emoji-modifier-base",
