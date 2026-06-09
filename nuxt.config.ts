@@ -163,6 +163,7 @@ export default defineNuxtConfig({
       [path + '.md', { swr: 60 * 60 }],
     ])),
     '/admin/**': { prerender: false },
+    '/blog/**': { swr: 60 * 60 },
     // api routes
     '/api/admin/**': { prerender: false },
     '/api/talks': { swr: 60 * 60 },
