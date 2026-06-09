@@ -210,7 +210,7 @@ export default defineNuxtConfig({
     },
     hooks: {
       'prerender:generate' (route) {
-        if (route.fileName && route.route !== '/index.md')
+        if (route.fileName)
           route.fileName = route.fileName.replace(
             /(\.\w{2,3})\/index.html$/,
             '$1',
