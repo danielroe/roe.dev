@@ -16,18 +16,20 @@ export default defineEventHandler(async event => {
   }
 
   const config = useRuntimeConfig(event)
-  if (process.env.NUXT_PDS_ENCRYPTION_KEY) {
-    event.waitUntil(persistQuestion(question, config).catch(err => console.error('[question] PDS write failed:', err)))
-  }
-  else {
-    console.error('[question] NUXT_PDS_ENCRYPTION_KEY is not configured; question will not be persisted.')
-  }
 
-  await sendPushoverNotification(event, {
+  const persist = process.env.NUXT_PDS_ENCRYPTION_KEY
+    ? persistQuestion(question, config).catch(err => {
+        console.error('[question] PDS write failed:', err)
+      })
+    : (console.error('[question] NUXT_PDS_ENCRYPTION_KEY is not configured; question will not be persisted.'), Promise.resolve())
+
+  const notify = sendPushoverNotification(event, {
     title: 'Anonymous question',
     message: question,
     priority: 0,
   })
+
+  await Promise.all([persist, notify])
   return null
 })
 
