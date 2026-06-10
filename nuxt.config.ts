@@ -165,7 +165,6 @@ export default defineNuxtConfig({
     '/admin/**': { prerender: false },
     '/blog/**': { swr: 60 * 60 },
     // api routes
-    '/api/admin/**': { prerender: false },
     '/api/talks': { swr: 60 * 60 },
     '/api/upcoming-conferences': { swr: 60 * 60 },
     '/api/uses': { swr: 60 * 60 },

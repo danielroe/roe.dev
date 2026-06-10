@@ -195,11 +195,11 @@ export async function publishMastodon (
   for (let i = 0; i < chunks.length; i++) {
     let mediaIds: string[] = []
     if (i === 0 && image) {
-      // Re-tag with an explicit mime type so Mastodon doesn't reject the
-      // upload as `application/octet-stream`.
+      const mime = image.mimeType || 'image/png'
+      const ext = mime.split('/')[1]?.split('+')[0] || 'png'
       const imageBuffer = await fetch(image.url).then(r => r.arrayBuffer())
-      const typedBlob = new Blob([imageBuffer], { type: image.mimeType || 'image/png' })
-      const media = await client.v2.media.create({ file: typedBlob, description: altText })
+      const file = new File([imageBuffer], `ama.${ext}`, { type: mime })
+      const media = await client.v2.media.create({ file, description: altText })
       mediaIds = [media.id]
     }
     const status = await client.v1.statuses.create({

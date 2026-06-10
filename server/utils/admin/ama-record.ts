@@ -3,7 +3,7 @@ import type { H3Event } from 'h3'
 import { requireAdminAgent } from './agent'
 import type { DevRoeAma } from '#shared/lex'
 import { lexicons } from '#shared/lex'
-import { jsonToLex } from '@atproto/lexicon'
+import { jsonToLex, BlobRef } from '@atproto/lexicon'
 import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
 import type { AdminRecord } from './crud'
 import { decrypt } from './encryption'
@@ -124,9 +124,13 @@ export async function mergePublishedLink (
     const lexRecord = jsonToLex(next as never) as DevRoeAma.Record
     const validation = lexicons.validate('dev.roe.ama', lexRecord)
     if (!validation.success) {
-      throw createError({
-        statusCode: 422,
-        statusMessage: `dev.roe.ama record failed validation: ${validation.error.message}`,
+      const lr = lexRecord as { image?: unknown }
+      console.warn('[ama-record] local validation failed for', platform, 'rkey=', rkey, {
+        error: validation.error.message,
+        rawImage: (next as { image?: unknown }).image,
+        lexImage: lr.image,
+        lexImageIsBlobRef: lr.image instanceof BlobRef,
+        updateImageSource: update.image ? 'body' : 'current',
       })
     }
 
@@ -141,8 +145,10 @@ export async function mergePublishedLink (
       return
     }
     catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      const looksLikeSwapMiss = /swap|cid|conflict|InvalidSwap/i.test(msg)
+      const e = err as { error?: string, name?: string, status?: number, message?: string } | undefined
+      const looksLikeSwapMiss = e?.error === 'InvalidSwap'
+        || e?.name === 'InvalidSwapError'
+        || /invalidswap|swap|record was at/i.test(e?.message ?? '')
       if (!looksLikeSwapMiss || attempt >= MAX_ATTEMPTS) throw err
       await new Promise(r => setTimeout(r, 50 * attempt))
     }

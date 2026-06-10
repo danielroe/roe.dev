@@ -19,8 +19,19 @@ interface AmaEntry {
 
 const { data, refresh } = await useFetch<AmaEntry[]>('/api/admin/ama', { default: () => [] })
 
-const filter = ref<'unanswered' | 'all'>('unanswered')
-const visible = computed(() => (data.value ?? []).filter(a => filter.value === 'all' || a.status === 'unanswered'))
+function hasMissingPublishes (a: AmaEntry): boolean {
+  const p = a.platforms
+  if (!p) return false
+  const links = a.publishedLinks ?? {}
+  return (['bluesky', 'mastodon', 'linkedin', 'youtubeShorts'] as const)
+    .some(k => p[k] && !links[k])
+}
+
+const filter = ref<'todo' | 'all'>('todo')
+const visible = computed(() => (data.value ?? []).filter(a => {
+  if (filter.value === 'all') return true
+  return a.status === 'unanswered' || hasMissingPublishes(a)
+}))
 
 const formatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeStyle: 'short' })
 
@@ -36,7 +47,7 @@ async function remove (rkey: string) {
     <div class="flex items-center gap-3 mb-4">
       <div class="flex gap-1 text-sm">
         <button
-          v-for="f in ['unanswered', 'all'] as const"
+          v-for="f in ['todo', 'all'] as const"
           :key="f"
           type="button"
           :class="filter === f ? 'bg-primary text-background' : 'bg-accent text-muted'"
@@ -63,6 +74,10 @@ async function remove (rkey: string) {
           </NuxtLink>
           <div class="text-xs text-muted mt-1 flex flex-wrap gap-x-3">
             <span>{{ ama.status === 'answered' ? '✅' : '✨' }} {{ ama.status }}</span>
+            <span
+              v-if="hasMissingPublishes(ama)"
+              class="text-amber-500"
+            >⚠️ needs republish</span>
             <span>{{ formatter.format(new Date(ama.createdAt)) }}</span>
             <a
               v-if="ama.publishedLinks?.bluesky"
@@ -101,7 +116,7 @@ async function remove (rkey: string) {
       v-if="!visible.length"
       class="text-muted text-sm"
     >
-      {{ filter === 'unanswered' ? 'No unanswered questions.' : 'No questions yet.' }}
+      {{ filter === 'todo' ? 'Nothing to answer or republish.' : 'No questions yet.' }}
     </p>
   </AdminShell>
 </template>
