@@ -1,6 +1,8 @@
 import { createRestAPIClient } from 'masto'
 import { parseURL, withProtocol } from 'ufo'
 
+import { linkifyBareUrls } from './linkify'
+
 export default defineEventHandler(async event => {
   const acct = useRuntimeConfig(event).social.networks.mastodon.identifier
 
@@ -49,7 +51,7 @@ export default defineEventHandler(async event => {
           height: m.meta?.original?.height,
           alt: m.description,
         })),
-        html: p.content,
+        html: linkifyBareUrls(p.content),
       })),
   )
 })
