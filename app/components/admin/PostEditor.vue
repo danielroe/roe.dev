@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { serialiseEditor } from './post-editor-serialise'
 import type { DevRoeEntity } from '#shared/lex'
 
 /**
@@ -92,37 +93,87 @@ function buildLinkChip (label: string, url: string): HTMLElement {
 }
 
 function serialiseFromDom (): string {
-  if (!editorRef.value) return ''
-  let out = ''
-  for (const node of editorRef.value.childNodes) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      out += node.textContent ?? ''
-    }
-    else if (node instanceof HTMLElement) {
-      if (node.dataset.mentionRkey) {
-        out += `@${node.dataset.mentionRkey}`
-      }
-      else if (node.dataset.linkUri) {
-        out += `[${node.textContent ?? ''}](${node.dataset.linkUri})`
-      }
-      else if (node.tagName === 'BR') {
-        out += '\n'
-      }
-      else if (node.tagName === 'DIV' || node.tagName === 'P') {
-        // Browsers wrap newlines in <div>/<p> on Enter.
-        if (out && !out.endsWith('\n')) out += '\n'
-        out += node.textContent ?? ''
-      }
-      else {
-        out += node.textContent ?? ''
-      }
-    }
-  }
-  return out
+  return editorRef.value ? serialiseEditor(editorRef.value) : ''
 }
 
 function onInput () {
   emit('update:modelValue', serialiseFromDom())
+}
+
+function selectionInEditor (): Range | null {
+  const editor = editorRef.value
+  if (!editor) return null
+  const sel = window.getSelection()
+  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return null
+  const range = sel.getRangeAt(0)
+  if (!editor.contains(range.commonAncestorContainer)) return null
+  return range
+}
+
+// Copy/cut write the storage form (`@<rkey>` / `[label](url)`) into
+// `text/plain` so chips survive a round-trip through the OS clipboard.
+// Without this, the browser's default serialiser keeps the chip's
+// visible label (`@Vercel`) and drops the `data-mention-rkey` attribute
+// on paste, silently turning the mention into plain text.
+function writeSelectionToClipboard (event: ClipboardEvent) {
+  const range = selectionInEditor()
+  if (!range || !event.clipboardData) return
+  const wrapper = document.createElement('div')
+  wrapper.appendChild(range.cloneContents())
+  const text = serialiseEditor(wrapper)
+  event.clipboardData.setData('text/plain', text)
+  event.preventDefault()
+}
+
+function onCopy (event: ClipboardEvent) {
+  writeSelectionToClipboard(event)
+}
+
+function onCut (event: ClipboardEvent) {
+  const range = selectionInEditor()
+  if (!range) return
+  writeSelectionToClipboard(event)
+  range.deleteContents()
+  onInput()
+}
+
+// Paste through the storage form: the source editor wrote `@<rkey>`
+// into `text/plain`, so we insert that as text and then re-render the
+// whole editor from the resulting serialised value, which rebuilds
+// chips at the paste site.
+function onPaste (event: ClipboardEvent) {
+  const editor = editorRef.value
+  if (!editor || !event.clipboardData) return
+  const text = event.clipboardData.getData('text/plain')
+  if (!text) return
+  event.preventDefault()
+
+  const sel = window.getSelection()
+  if (!sel || sel.rangeCount === 0 || !editor.contains(sel.anchorNode)) {
+    editor.appendChild(document.createTextNode(text))
+  }
+  else {
+    const range = sel.getRangeAt(0)
+    range.deleteContents()
+    const node = document.createTextNode(text)
+    range.insertNode(node)
+    range.setStartAfter(node)
+    range.setEndAfter(node)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  }
+
+  const next = serialiseFromDom()
+  renderToDom(next)
+  // renderToDom rebuilds child nodes, so the previous range is detached.
+  // Drop the caret at the end of the editor; matches default paste UX.
+  const endRange = document.createRange()
+  endRange.selectNodeContents(editor)
+  endRange.collapse(false)
+  const sel2 = window.getSelection()
+  sel2?.removeAllRanges()
+  sel2?.addRange(endRange)
+  emit('update:modelValue', next)
 }
 
 function insertNode (node: Node) {
@@ -187,5 +238,8 @@ watch(() => props.modelValue, next => {
     :data-placeholder="placeholder"
     class="bg-accent px-3 py-2 text-sm w-full min-h-[6rem] whitespace-pre-wrap break-words empty:before:content-[attr(data-placeholder)] empty:before:text-muted"
     @input="onInput"
+    @copy="onCopy"
+    @cut="onCut"
+    @paste="onPaste"
   />
 </template>

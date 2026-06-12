@@ -288,7 +288,5 @@ export async function publishLinkedIn (
     },
   })
 
-  const activityId = post.id.split(':').pop()
-  const identifier = config.social?.networks?.linkedin?.identifier || 'daniel-roe'
-  return { url: `https://www.linkedin.com/posts/${identifier}_${activityId}` }
+  return { url: `https://www.linkedin.com/feed/update/${post.id}/` }
 }
