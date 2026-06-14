@@ -96,7 +96,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"39020k"`)
+      .toMatchInlineSnapshot(`"37560k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -122,15 +122,11 @@ describe('project sizes', () => {
         "@atproto/jwk",
         "@atproto/jwk-jose",
         "@atproto/jwk-webcrypto",
-        "@atproto/jwk/node_modules/multiformats",
         "@atproto/lex-data",
-        "@atproto/lex-data/node_modules/multiformats",
         "@atproto/lex-json",
         "@atproto/lexicon",
-        "@atproto/lexicon/node_modules/multiformats",
         "@atproto/oauth-client",
         "@atproto/oauth-client-node",
-        "@atproto/oauth-client/node_modules/multiformats",
         "@atproto/oauth-types",
         "@atproto/syntax",
         "@atproto/xrpc",
@@ -155,14 +151,21 @@ describe('project sizes', () => {
         "@takumi-rs/helpers",
         "@ungap/structured-clone",
         "@vue/compiler-core",
+        "@vue/compiler-core/node_modules/@vue/shared",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
         "@vue/compiler-dom",
+        "@vue/compiler-dom/node_modules/@vue/shared",
         "@vue/compiler-ssr",
+        "@vue/compiler-ssr/node_modules/@vue/shared",
         "@vue/reactivity",
+        "@vue/reactivity/node_modules/@vue/shared",
         "@vue/runtime-core",
+        "@vue/runtime-core/node_modules/@vue/shared",
         "@vue/runtime-dom",
+        "@vue/runtime-dom/node_modules/@vue/shared",
         "@vue/server-renderer",
+        "@vue/server-renderer/node_modules/@vue/shared",
         "@vue/shared",
         "await-lock",
         "bail",
@@ -345,10 +348,8 @@ describe('project sizes', () => {
         "trim-trailing-lines",
         "trough",
         "ts-custom-error",
-        "tslib",
         "ufo",
         "uint8arrays",
-        "uint8arrays/node_modules/multiformats",
         "ultrahtml",
         "uncrypto",
         "undici",
@@ -367,6 +368,7 @@ describe('project sizes', () => {
         "vfile-message",
         "vue",
         "vue-bundle-renderer",
+        "vue/node_modules/@vue/shared",
         "web-namespaces",
         "xml-js",
         "yaml",
