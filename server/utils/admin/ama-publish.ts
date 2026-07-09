@@ -6,8 +6,10 @@
 import type { H3Event } from 'h3'
 import type { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet } from '@atproto/api'
 import { AtpAgent } from '@atproto/api'
+import { BlobRef, jsonToLex } from '@atproto/lexicon'
 import { createRestAPIClient } from 'masto'
 import { parseURL, withProtocol } from 'ufo'
+import { BLUESKY_IMAGE_MAX_BYTES } from '#shared/cms/blob'
 
 export interface PublishImage {
   /** Publicly-fetchable URL (typically a PDS blob URL). */
@@ -16,6 +18,13 @@ export interface PublishImage {
   height: number
   /** Used by Mastodon, which rejects un-typed uploads. */
   mimeType?: string
+}
+
+export interface BlueskyImage {
+  blob: unknown
+  width: number
+  height: number
+  size?: number | null
 }
 
 export interface ResolvedPost {
@@ -42,7 +51,7 @@ async function resolveBlueskyPds (handle: string): Promise<string> {
 export async function publishBlueskyThread (
   event: H3Event,
   posts: ResolvedPost[],
-  image: PublishImage | undefined,
+  image: BlueskyImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
   const config = useRuntimeConfig(event)
@@ -61,16 +70,22 @@ export async function publishBlueskyThread (
     let embed: AppBskyEmbedImages.Main | undefined
 
     if (i === 0 && image) {
-      const imageResponse = await fetch(image.url)
-      const imageBuffer = await imageResponse.arrayBuffer()
-      const encoding = image.mimeType ?? imageResponse.headers.get('content-type') ?? 'image/png'
-      const uploadResult = await agent.uploadBlob(new Uint8Array(imageBuffer), { encoding })
+      if (image.size != null && image.size > BLUESKY_IMAGE_MAX_BYTES) {
+        throw createError({
+          statusCode: 413,
+          statusMessage: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
+        })
+      }
+      const blob = jsonToLex(image.blob as never)
+      if (!(blob instanceof BlobRef)) {
+        throw new Error('AMA image is not a valid blob ref; cannot embed.')
+      }
 
       embed = {
         $type: 'app.bsky.embed.images',
         images: [{
           alt: altText,
-          image: uploadResult.data.blob,
+          image: blob,
           aspectRatio: {
             $type: 'app.bsky.embed.defs#aspectRatio',
             width: image.width,

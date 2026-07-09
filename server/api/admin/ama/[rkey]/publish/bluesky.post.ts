@@ -1,4 +1,4 @@
-import { ensureNotAlreadyPublished, mergePublishedLink, publishImageFromBody } from '../../../../../utils/admin/ama-record'
+import { ensureNotAlreadyPublished, mergePublishedLink, prepareAmaImage } from '../../../../../utils/admin/ama-record'
 import { blueskyThread, buildEntityLookup } from '../../../../../utils/admin/ama-resolve'
 import { publishBlueskyThread } from '../../../../../utils/admin/ama-publish'
 import type { AmaUpdate } from '../../../../../utils/admin/ama-record'
@@ -21,7 +21,8 @@ export default defineEventHandler(async event => {
   await ensureNotAlreadyPublished(event, rkey, 'bluesky', Boolean(body.force))
 
   const entities = await buildEntityLookup(event)
-  const { url } = await publishBlueskyThread(event, blueskyThread(body.posts, entities), publishImageFromBody(event, body), body.question)
+  const image = await prepareAmaImage(event, rkey, body)
+  const { url } = await publishBlueskyThread(event, blueskyThread(body.posts, entities), image, body.question)
 
   await mergePublishedLink(event, rkey, 'bluesky', url, body)
   return { success: true, url }

@@ -81,6 +81,17 @@ interface PendingVideo {
 }
 const pendingImage = ref<PendingImage | null>(null)
 const pendingVideo = ref<PendingVideo | null>(null)
+const imageRemoved = ref(false)
+
+function onImageGenerated (image: PendingImage) {
+  pendingImage.value = image
+  imageRemoved.value = false
+}
+
+function onImageRemoved () {
+  pendingImage.value = null
+  imageRemoved.value = true
+}
 
 // Plain-text answer for the video generator + YouTube description, with
 // entity mention placeholders swapped for bare names.
@@ -98,6 +109,10 @@ const plainAnswerForVideo = computed(() => posts.value
 
 const error = ref<string | null>(null)
 const submitting = computed(() => ALL_PLATFORMS.some(p => platformState[p].status === 'publishing'))
+
+const saving = ref(false)
+const savedAt = ref<string | null>(null)
+const saveError = ref<string | null>(null)
 
 function addPost () {
   posts.value.push({ text: '', mentions: [] })
@@ -201,6 +216,46 @@ function requirePosts (): boolean {
   return false
 }
 
+async function buildPayload (): Promise<Record<string, unknown>> {
+  const image = await ensureImageUploaded()
+  const payload: Record<string, unknown> = {
+    question: props.question,
+    posts: posts.value
+      .filter(p => p.text.trim())
+      .map(p => ({ text: p.text, mentions: p.mentions })),
+    platforms: { ...platforms },
+  }
+  if (image && pendingImage.value) {
+    payload.image = image
+    payload.imageDimensions = { width: pendingImage.value.width, height: pendingImage.value.height }
+    payload.backgroundStyle = pendingImage.value.backgroundStyleId
+  }
+  else if (imageRemoved.value) {
+    payload.image = null
+    payload.imageDimensions = null
+    payload.backgroundStyle = null
+  }
+  return payload
+}
+
+async function saveDraft () {
+  if (saving.value) return
+  saving.value = true
+  saveError.value = null
+  try {
+    await $fetch(`/api/admin/ama/${props.rkey}`, { method: 'PATCH', body: await buildPayload() })
+    savedAt.value = new Date().toISOString()
+    imageRemoved.value = false
+  }
+  catch (err) {
+    const data = (err as { data?: { statusMessage?: string } }).data
+    saveError.value = data?.statusMessage || (err instanceof Error ? err.message : String(err))
+  }
+  finally {
+    saving.value = false
+  }
+}
+
 async function publishToPlatform (platform: AmaPlatform, force = false) {
   if (platformState[platform].status === 'publishing') return
   if (!requirePosts()) return
@@ -208,20 +263,8 @@ async function publishToPlatform (platform: AmaPlatform, force = false) {
   platformState[platform] = { status: 'publishing' }
 
   try {
-    const image = await ensureImageUploaded()
     const baseBody = {
-      question: props.question,
-      posts: posts.value
-        .filter(p => p.text.trim())
-        .map(p => ({ text: p.text, mentions: p.mentions })),
-      platforms,
-      ...(image && pendingImage.value
-        ? {
-            image,
-            imageDimensions: { width: pendingImage.value.width, height: pendingImage.value.height },
-            backgroundStyle: pendingImage.value.backgroundStyleId,
-          }
-        : {}),
+      ...(await buildPayload()),
       ...(force ? { force: true } : {}),
     }
 
@@ -358,7 +401,8 @@ async function publishAll () {
       :created-at="createdAt"
       :initial-preview-url="initialImagePreviewUrl"
       :initial-background-style-id="initialBackgroundStyleId"
-      @generated="pendingImage = $event"
+      @generated="onImageGenerated"
+      @removed="onImageRemoved"
       @cleared="pendingImage = null"
     />
 
@@ -446,7 +490,7 @@ async function publishAll () {
       </ul>
     </section>
 
-    <div class="flex gap-3">
+    <div class="flex items-center gap-3">
       <button
         type="button"
         :disabled="submitting"
@@ -455,6 +499,22 @@ async function publishAll () {
       >
         {{ submitting ? 'Publishing…' : 'Publish all enabled' }}
       </button>
+      <button
+        type="button"
+        :disabled="saving"
+        class="bg-accent text-primary px-4 py-2 hover:bg-accent/70 transition-colors disabled:opacity-60"
+        @click="saveDraft"
+      >
+        {{ saving ? 'Saving…' : 'Save draft' }}
+      </button>
+      <span
+        v-if="saveError"
+        class="text-sm text-red-500"
+      >{{ saveError }}</span>
+      <span
+        v-else-if="savedAt"
+        class="text-sm text-muted"
+      >Draft saved</span>
       <NuxtLink
         to="/admin/ama"
         class="text-muted hover:text-primary self-center text-sm"

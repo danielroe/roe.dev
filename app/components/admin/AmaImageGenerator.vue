@@ -23,8 +23,37 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'generated', value: GeneratedImage): void
-  (e: 'cleared'): void
+  (e: 'cleared' | 'removed'): void
 }>()
+
+const BLUESKY_EMBED_MAX_BYTES = 950_000
+
+function canvasToBlob (canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob | null> {
+  return new Promise(resolve => canvas.toBlob(resolve, type, quality))
+}
+
+async function compressUnderLimit (source: Blob, width: number, height: number, maxBytes: number): Promise<Blob> {
+  const bitmap = await createImageBitmap(source)
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')
+  if (!ctx) throw new Error('Could not get a canvas context to compress the image.')
+  ctx.drawImage(bitmap, 0, 0, width, height)
+  bitmap.close?.()
+
+  let smallest: Blob | null = null
+  for (const type of ['image/webp', 'image/jpeg']) {
+    for (let quality = 0.92; quality >= 0.5; quality -= 0.07) {
+      const candidate = await canvasToBlob(canvas, type, quality)
+      if (!candidate) continue
+      if (!smallest || candidate.size < smallest.size) smallest = candidate
+      if (candidate.size <= maxBytes) return candidate
+    }
+  }
+  if (smallest && smallest.size <= maxBytes) return smallest
+  throw new Error(`Could not compress the image under ${maxBytes} bytes for Bluesky. Shorten the question or pick a simpler background.`)
+}
 
 const backgroundStyleId = ref(props.initialBackgroundStyleId ?? DEFAULT_BACKGROUND_STYLE_ID)
 const backgroundStyle = computed(() => getBackgroundStyle(backgroundStyleId.value))
@@ -144,12 +173,16 @@ async function generate () {
     const width = Math.round(naturalWidth * captureScale)
     const height = Math.round(naturalHeight * captureScale)
 
+    const finalBlob = blob.size > BLUESKY_EMBED_MAX_BYTES
+      ? await compressUnderLimit(blob, width, height, BLUESKY_EMBED_MAX_BYTES)
+      : blob
+
     if (generatedUrl.value?.startsWith('blob:')) URL.revokeObjectURL(generatedUrl.value)
-    generatedUrl.value = URL.createObjectURL(blob)
+    generatedUrl.value = URL.createObjectURL(finalBlob)
     lastSignature.value = `${formattedText.value}::${backgroundStyleId.value}`
 
     emit('generated', {
-      blob,
+      blob: finalBlob,
       width,
       height,
       backgroundStyleId: backgroundStyleId.value,
@@ -167,7 +200,7 @@ function clear () {
   if (generatedUrl.value?.startsWith('blob:')) URL.revokeObjectURL(generatedUrl.value)
   generatedUrl.value = null
   lastSignature.value = null
-  emit('cleared')
+  emit('removed')
 }
 </script>
 

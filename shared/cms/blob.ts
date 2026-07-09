@@ -1,13 +1,11 @@
 /**
  * Extract the base32 CID string from a blob ref. Accepts the IPLD-JSON
- * form (`{ ref: { $link: cid } }`), a `BlobRef` instance with a `CID`
- * `ref`, and the legacy flat `{ cid }` shape.
+ * form (`{ ref: { $link: cid } }`) and a `BlobRef` instance with a `CID`
+ * `ref`.
  */
 export function cidFromBlob (blob: unknown): string | null {
   if (!blob || typeof blob !== 'object') return null
   const b = blob as Record<string, unknown>
-
-  if (typeof b.cid === 'string') return b.cid
 
   const ref = b.ref
   if (!ref) return null
@@ -25,4 +23,12 @@ export function cidFromBlob (blob: unknown): string | null {
 export function blobUrlFor (service: string, did: string, cid: string): string {
   const base = service.replace(/\/$/, '')
   return `${base}/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(did)}&cid=${encodeURIComponent(cid)}`
+}
+
+export const BLUESKY_IMAGE_MAX_BYTES = 1_000_000
+
+export function blobSize (blob: unknown): number | null {
+  if (!blob || typeof blob !== 'object') return null
+  const size = (blob as { size?: unknown }).size
+  return typeof size === 'number' && Number.isFinite(size) ? size : null
 }

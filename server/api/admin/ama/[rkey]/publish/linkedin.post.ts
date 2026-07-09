@@ -1,4 +1,4 @@
-import { ensureNotAlreadyPublished, mergePublishedLink, publishImageFromBody } from '../../../../../utils/admin/ama-record'
+import { ensureNotAlreadyPublished, mergePublishedLink, prepareAmaImage } from '../../../../../utils/admin/ama-record'
 import { buildEntityLookup, platformText } from '../../../../../utils/admin/ama-resolve'
 import { publishLinkedIn } from '../../../../../utils/admin/ama-publish'
 import type { AmaUpdate } from '../../../../../utils/admin/ama-record'
@@ -23,7 +23,7 @@ export default defineEventHandler(async event => {
   const { url } = await publishLinkedIn(
     event,
     platformText(body.posts, 'linkedin', entities),
-    publishImageFromBody(event, body),
+    await prepareAmaImage(event, rkey, body),
     body.question,
   )
   await mergePublishedLink(event, rkey, 'linkedin', url, body)
