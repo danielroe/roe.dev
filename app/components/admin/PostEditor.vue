@@ -80,11 +80,21 @@ function buildMentionChip (rkey: string): HTMLElement {
   return span
 }
 
+function isSafeUrl (url: string): boolean {
+  try {
+    const parsed = new URL(url, 'https://example.com')
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:'
+  }
+  catch {
+    return false
+  }
+}
+
 function buildLinkChip (label: string, url: string): HTMLElement {
   const a = document.createElement('a')
   a.dataset.linkUri = url
   a.contentEditable = 'false'
-  a.href = url
+  a.href = isSafeUrl(url) ? url : '#'
   a.target = '_blank'
   a.rel = 'noopener noreferrer'
   a.className = 'inline-block px-1.5 py-0.5 rounded bg-background text-primary underline underline-offset-2 text-sm mx-0.5'

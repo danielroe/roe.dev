@@ -33,6 +33,15 @@ const SCOPES = [
 const REDIRECT_URI = 'http://localhost:8080/callback'
 const PORT = 8080
 
+function escapeHtml (str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 interface YouTubeCredentials {
   client_id: string
   client_secret: string
@@ -194,7 +203,7 @@ class YouTubeAuthGenerator {
 
           if (error) {
             res.writeHead(400, { 'Content-Type': 'text/html' })
-            res.end(`<h1>Authorization Error</h1><p>${error}</p>`)
+            res.end(`<h1>Authorization Error</h1><p>${escapeHtml(String(error))}</p>`)
             reject(new Error(`Authorization error: ${error}`))
             return
           }
@@ -215,7 +224,7 @@ class YouTubeAuthGenerator {
             }
             catch (error) {
               res.writeHead(500, { 'Content-Type': 'text/html' })
-              res.end(`<h1>❌ Token Exchange Error</h1><p>${error instanceof Error ? error.message : error}</p>`)
+              res.end(`<h1>❌ Token Exchange Error</h1><p>${escapeHtml(error instanceof Error ? error.message : String(error))}</p>`)
               reject(error)
             }
           }

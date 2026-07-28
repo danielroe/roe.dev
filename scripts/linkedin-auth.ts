@@ -44,6 +44,15 @@ const SCOPES = [
 const REDIRECT_URI = 'http://localhost:8080/callback'
 const PORT = 8080
 
+function escapeHtml (str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 interface LinkedInTokenResponse {
   access_token: string
   token_type: string
@@ -145,7 +154,7 @@ class LinkedInAuthGenerator {
 
           if (error) {
             res.writeHead(400, { 'Content-Type': 'text/html' })
-            res.end(`<h1>Authorization Error</h1><p>${error}: ${error_description}</p>`)
+            res.end(`<h1>Authorization Error</h1><p>${escapeHtml(String(error))}: ${escapeHtml(String(error_description || ''))}</p>`)
             reject(new Error(`Authorization error: ${error} - ${error_description}`))
             return
           }
@@ -166,7 +175,7 @@ class LinkedInAuthGenerator {
             }
             catch (error) {
               res.writeHead(500, { 'Content-Type': 'text/html' })
-              res.end(`<h1>❌ Token Exchange Error</h1><p>${error instanceof Error ? error.message : error}</p>`)
+              res.end(`<h1>❌ Token Exchange Error</h1><p>${escapeHtml(error instanceof Error ? error.message : String(error))}</p>`)
               reject(error)
             }
           }
