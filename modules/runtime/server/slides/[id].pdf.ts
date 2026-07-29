@@ -27,18 +27,18 @@ async function getKnownSlideIds (event: Parameters<typeof listRecords>[0]): Prom
 
 export default defineEventHandler(async event => {
   const id = getRouterParam(event, 'id')
-  if (!id) throw createError({ statusCode: 404 })
+  if (!id) throw createError({ status: 404 })
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   if (!config.github.token) {
     throw createError({
-      statusCode: 503,
-      statusMessage: 'GitHub token not configured (NUXT_GITHUB_TOKEN); cannot serve slides in dev.',
+      status: 503,
+      message: 'GitHub token not configured (NUXT_GITHUB_TOKEN); cannot serve slides in dev.',
     })
   }
 
   const known = await getKnownSlideIds(event)
-  if (!known.has(id)) throw createError({ statusCode: 404 })
+  if (!known.has(id)) throw createError({ status: 404 })
 
   setResponseHeader(event, 'content-type', 'application/pdf')
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async event => {
   )
 
   const assetId = release.assets.find(a => a.name.endsWith('.pdf'))?.id
-  if (!assetId) throw createError({ statusCode: 404 })
+  if (!assetId) throw createError({ status: 404 })
 
   const file = await $fetch<ArrayBuffer>(
     `https://api.github.com/repos/danielroe/slides/releases/assets/${assetId}`,

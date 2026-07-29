@@ -8,7 +8,7 @@ const loginURL = `https://github.com/login/oauth/authorize?client_id=${config.pu
 const mobileMenuRef = ref<HTMLElement | null>(null)
 const showMenu = ref(false)
 
-const { data: currentLocation } = await useFetch('/api/current-location', {
+const { data: currentLocation } = await useApiFetch('/api/current-location', {
   transform: location => ({
     area: location!.area,
     flagEmoji: location!.flagEmoji,

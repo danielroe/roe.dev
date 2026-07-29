@@ -1,9 +1,11 @@
-export default defineEventHandler(async event => {
+import type { SessionUser } from '#shared/types/api'
+
+export default defineEventHandler(async (event): Promise<SessionUser> => {
   const { data: payload } = await getUserSession(event)
   return {
-    authenticated: payload.authenticated,
+    authenticated: !!payload?.authenticated,
     sponsor: !!payload?.sponsor,
-    avatar: payload?.avatar as string | undefined,
-    name: payload?.name as string | undefined,
+    avatar: payload?.avatar,
+    name: payload?.name,
   }
 })

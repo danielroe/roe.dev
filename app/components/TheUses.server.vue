@@ -132,7 +132,7 @@
 <script setup lang="ts">
 import type { UsesCategory } from '#shared/cms/uses'
 
-const { data } = await useFetch<UsesCategory[]>('/api/uses')
+const { data } = await useApiFetch('/api/uses')
 
 function getHost (url: string): string {
   try {

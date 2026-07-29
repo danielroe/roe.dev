@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import { Agent } from '@atproto/api'
 
 import { clearAdminSessionCookie, getAdminSessionCookie, getOauthClient } from './oauth'
@@ -8,7 +8,7 @@ export async function requireAdminAgent (event: H3Event): Promise<{ agent: Agent
   const sess = await getAdminSessionCookie(event)
   const did = sess.data.did
   if (!did) {
-    throw createError({ statusCode: 401, statusMessage: 'Not signed in.' })
+    throw createError({ status: 401, message: 'Not signed in.' })
   }
 
   const client = getOauthClient(event)
@@ -19,6 +19,6 @@ export async function requireAdminAgent (event: H3Event): Promise<{ agent: Agent
   catch (err) {
     console.warn('[admin] OAuth restore failed:', err instanceof Error ? err.message : err)
     await clearAdminSessionCookie(event)
-    throw createError({ statusCode: 401, statusMessage: 'Session expired. Please sign in again.' })
+    throw createError({ status: 401, message: 'Session expired. Please sign in again.' })
   }
 }

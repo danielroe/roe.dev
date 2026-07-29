@@ -1,19 +1,19 @@
 import type { RuntimeConfig } from 'nuxt/schema'
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')
   const repo = slug && config.invites?.map?.[slug as keyof RuntimeConfig['invites']['map']]
   if (!repo) {
-    throw createError({ statusCode: 404 })
+    throw createError({ status: 404 })
   }
 
   const { code } = getQuery(event)
 
   if (!code) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Missing authorisation code.',
+      status: 422,
+      message: 'Missing authorisation code.',
     })
   }
 
@@ -34,8 +34,8 @@ export default defineEventHandler(async event => {
 
   if (!access_token) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Authorisation code invalid.',
+      status: 422,
+      message: 'Authorisation code invalid.',
     })
   }
 
@@ -48,8 +48,8 @@ export default defineEventHandler(async event => {
 
   if (!username) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Access code invalid.',
+      status: 422,
+      message: 'Access code invalid.',
     })
   }
 
@@ -75,5 +75,5 @@ export default defineEventHandler(async event => {
     console.log('could not add collaborator', err)
     console.log({ inviteToken: config.github.inviteToken })
   }
-  return sendRedirect(event, `https://github.com/${repo}/invitations`)
+  return redirect(`https://github.com/${repo}/invitations`)
 })

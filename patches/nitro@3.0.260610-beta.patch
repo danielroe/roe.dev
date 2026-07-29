@@ -1,0 +1,46 @@
+diff --git a/dist/_build/common.mjs b/dist/_build/common.mjs
+index 76694ff062bae1ef5f6d548ae80b53dcfd8362ef..7483e19fc4fee650411b8b4d0fea96f2b7ad6fc9 100644
+--- a/dist/_build/common.mjs
++++ b/dist/_build/common.mjs
+@@ -20813,7 +20813,10 @@ async function writeTypes(nitro) {
+ 					if (!dir || !name) path = resolvedPath;
+ 					else {
+ 						const subpath = await lookupNodeModuleSubpath(resolvedPath);
+-						path = subpath && subpath !== "./" ? join$2(dir, name, subpath) : resolvedPath;
++						if (subpath && subpath !== "./") {
++							const joined = join$2(dir, name, subpath);
++							path = existsSync(joined) ? joined : name + subpath.slice(1);
++						} else path = subpath === "./" ? name : resolvedPath;
+ 					}
+ 				}
+ 			}
+@@ -28175,7 +28178,8 @@ function virtual(input) {
+ 				if (!mod) return null;
+ 				return {
+ 					code: await mod.render(),
+-					map: null
++					map: null,
++					moduleType: "js"
+ 				};
+ 			}
+ 		}
+diff --git a/dist/runtime/internal/route-rules.mjs b/dist/runtime/internal/route-rules.mjs
+index 7752a328bbed030c4950dca47a7be2b3e1929c98..1a9e56bcd8db0a35ff2e160dc3266e4a4e4d7c16 100644
+--- a/dist/runtime/internal/route-rules.mjs
++++ b/dist/runtime/internal/route-rules.mjs
+@@ -63,13 +63,14 @@ export const cache = ((m) => function cacheRouteRule(event, next) {
+ 	const key = `${m.route}:${route}`;
+ 	let cachedHandler = cachedHandlers.get(key);
+ 	if (!cachedHandler) {
+-		cachedHandler = defineCachedHandler(handler, {
++		cachedHandler = defineCachedHandler((e) => e.context.__nitroCacheNext ? e.context.__nitroCacheNext() : handler(e), {
+ 			group: "nitro/route-rules",
+ 			name: key,
+ 			...m.options
+ 		});
+ 		cachedHandlers.set(key, cachedHandler);
+ 	}
++	event.context.__nitroCacheNext = next;
+ 	return cachedHandler(event);
+ });
+ 

@@ -1,7 +1,9 @@
-export default defineCachedEventHandler(async event => {
+import type { Stream } from '#shared/types/api'
+
+export default defineCachedEventHandler(async (): Promise<Stream[]> => {
   if (import.meta.test) return []
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const token = await $fetch<TwitchTokenResponse>(
     'https://id.twitch.tv/oauth2/token',
     {

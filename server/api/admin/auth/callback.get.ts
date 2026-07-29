@@ -7,7 +7,7 @@ import {
 } from '../../../utils/admin/oauth'
 
 export default defineEventHandler(async event => {
-  const expectedHandle = useRuntimeConfig(event).atproto.handle
+  const expectedHandle = useRuntimeConfig().atproto.handle
   const client = getOauthClient(event)
   const params = new URLSearchParams(getQuery(event) as Record<string, string>)
 
@@ -17,7 +17,7 @@ export default defineEventHandler(async event => {
   }
   catch (err) {
     console.error('[admin] OAuth callback failed:', err)
-    throw createError({ statusCode: 401, statusMessage: 'OAuth callback failed.' })
+    throw createError({ status: 401, message: 'OAuth callback failed.' })
   }
 
   const profile = await new Agent(session).com.atproto.repo.describeRepo({ repo: session.did })
@@ -27,11 +27,11 @@ export default defineEventHandler(async event => {
     await client.revoke(session.did).catch(() => {})
     await clearAdminSessionCookie(event)
     throw createError({
-      statusCode: 403,
-      statusMessage: `OAuth session belongs to ${handle}; only ${expectedHandle} can access /admin.`,
+      status: 403,
+      message: `OAuth session belongs to ${handle}; only ${expectedHandle} can access /admin.`,
     })
   }
 
   await updateAdminSessionCookie(event, { did: session.did, handle })
-  return sendRedirect(event, '/admin', 303)
+  return redirect('/admin', 303)
 })

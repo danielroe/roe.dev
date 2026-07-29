@@ -10,12 +10,12 @@ export default defineEventHandler(async event => {
   if (event.method === 'OPTIONS') return null
   assertMethod(event, 'POST')
 
-  const { question } = await readBody(event)
+  const { question } = await requireBody<{ question?: unknown }>(event)
   if (!question || typeof question !== 'string' || !question.trim()) {
-    throw createError({ statusCode: 422, statusMessage: 'question is required' })
+    throw createError({ status: 422, message: 'question is required' })
   }
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 
   const persist = process.env.NUXT_PDS_ENCRYPTION_KEY
     ? persistQuestion(question, config).catch(err => {

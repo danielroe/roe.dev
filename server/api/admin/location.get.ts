@@ -5,7 +5,7 @@ export default defineEventHandler(async event => {
     return await getAdminRecord(event, 'dev.roe.location', 'self')
   }
   catch (err) {
-    if (err && typeof err === 'object' && 'statusCode' in err && (err as { statusCode: number }).statusCode === 404) {
+    if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 404) {
       return null
     }
     throw err

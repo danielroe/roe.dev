@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 
 import { requireAdminAgent } from './agent'
 import type { DevRoeAma } from '#shared/lex'
@@ -134,8 +134,8 @@ function toLexRecord (record: DevRoeAma.Record, action: string): DevRoeAma.Recor
   const validation = lexicons.validate('dev.roe.ama', lexRecord)
   if (!validation.success) {
     throw createError({
-      statusCode: 422,
-      statusMessage: `Invalid AMA ${action}: ${validation.error.message}`,
+      status: 422,
+      message: `Invalid AMA ${action}: ${validation.error.message}`,
     })
   }
   return lexRecord
@@ -190,8 +190,8 @@ async function mutateAmaRecord (
   }
 
   throw createError({
-    statusCode: 500,
-    statusMessage: `AMA ${action} exhausted ${MAX_ATTEMPTS} attempts for rkey=${rkey} without writing.`,
+    status: 500,
+    message: `AMA ${action} exhausted ${MAX_ATTEMPTS} attempts for rkey=${rkey} without writing.`,
   })
 }
 
@@ -257,8 +257,8 @@ export async function ensureNotAlreadyPublished (
   const existing = (res.data.value as DevRoeAma.Record).publishedLinks?.[platform]
   if (existing) {
     throw createError({
-      statusCode: 409,
-      statusMessage: `${platform} already published at ${existing}. Pass force=true to re-publish.`,
+      status: 409,
+      message: `${platform} already published at ${existing}. Pass force=true to re-publish.`,
     })
   }
 }
@@ -281,12 +281,12 @@ export async function prepareAmaImage (
 
   const cid = cidFromBlob(body.image)
   if (!cid) {
-    throw createError({ statusCode: 422, statusMessage: 'Invalid AMA image blob.' })
+    throw createError({ status: 422, message: 'Invalid AMA image blob.' })
   }
 
-  const service = useRuntimeConfig(event).public.atproto.service
+  const service = useRuntimeConfig().public.atproto.service
   if (!service) {
-    throw createError({ statusCode: 500, statusMessage: 'PDS service is not configured.' })
+    throw createError({ status: 500, message: 'PDS service is not configured.' })
   }
 
   const { did } = await requireAdminAgent(event)

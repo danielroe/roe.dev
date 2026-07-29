@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 
 import { getRecord, putRecord } from '../atproto'
 import type { DevRoeLocation } from '#shared/lex'

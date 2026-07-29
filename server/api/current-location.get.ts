@@ -1,6 +1,7 @@
 import { getCurrentLocation } from '../utils/cms/location'
+import type { CurrentLocation } from '#shared/types/api'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async (event): Promise<CurrentLocation | null> => {
   const location = await getCurrentLocation(event)
   if (!location) return null
 

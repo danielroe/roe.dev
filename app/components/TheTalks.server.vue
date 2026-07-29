@@ -5,7 +5,7 @@ const { data: groups } = await useAsyncData(
   'past-talks',
   async () => {
     try {
-      const talks = await $fetch<Talk[]>('/api/talks')
+      const talks = await apiFetch('/api/talks')
 
       const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
 

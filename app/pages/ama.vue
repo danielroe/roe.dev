@@ -152,7 +152,7 @@ async function askQuestion () {
   try {
     status.value = 'pending'
 
-    await $fetch('/api/question', {
+    await apiFetch('/api/question', {
       method: 'POST',
       body: {
         question: questionText.value,

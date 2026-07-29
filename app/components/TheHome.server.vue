@@ -25,9 +25,9 @@ const links = [
 ]
 
 const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams }, { data: articles }, { data: talks }] = await Promise.all([
-  useFetch('/api/current-location'),
-  useFetch('/api/upcoming-conferences'),
-  useFetch('/api/streams', {
+  useApiFetch('/api/current-location'),
+  useApiFetch('/api/upcoming-conferences'),
+  useApiFetch('/api/streams', {
     transform: streams =>
       streams.slice(0, 5).map(stream => ({
         title: stream.title,
@@ -45,7 +45,7 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
     const { blogEntries } = await import('#build/markdown/blog-entries.mjs')
     return blogEntries.slice(0, 4).map(({ title, path, date }) => ({ title, path, date }))
   }),
-  useFetch('/api/talks', {
+  useApiFetch('/api/talks', {
     transform: talks => {
       // Group talks by group or individual ID
       const groupedTalks: Record<string, [Talk, ...Talk[]]> = {}
