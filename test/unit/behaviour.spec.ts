@@ -41,4 +41,30 @@ describe('site behaviour', { timeout: 10000 }, () => {
     expect(logs).toMatchInlineSnapshot(`[]`)
     await page.close()
   })
+
+  it('renders blog posts navigated to on the client', async () => {
+    const errors: string[] = []
+    const page = await createPage()
+    await page.route('**/api/discover-bluesky-post', route =>
+      route.fulfill({ json: { uri: null } }),
+    )
+    page.on('pageerror', error => errors.push(error.message))
+
+    await page.goto(url('/blog/'))
+    await page.waitForLoadState('networkidle')
+
+    const link = page.locator('main a[href^="/blog/"]').first()
+    const title = await link.getAttribute('title')
+
+    // the post metadata is only in the route payload, so a client-side
+    // navigation that fails to load it renders nothing at all
+    const rendered = page.locator('h1', { hasText: title! }).waitFor()
+    await link.click()
+    await Promise.race([rendered, page.waitForEvent('pageerror')]).catch(() => {})
+
+    expect(errors).toStrictEqual([])
+    expect(await page.locator('h1').textContent()).toBe(title)
+    expect(await page.locator('section p').count()).toBeGreaterThan(0)
+    await page.close()
+  })
 })

@@ -2,6 +2,7 @@ import { statSync } from 'node:fs'
 import fsp from 'node:fs/promises'
 
 import { join, relative } from 'pathe'
+
 import {
   genSafeVariableName,
   genArrayFromRaw,
@@ -12,6 +13,7 @@ import {
 import {
   addComponent,
   addImports,
+  addPlugin,
   addTemplate,
   addRouteMiddleware,
   createResolver,
@@ -30,6 +32,11 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
     nuxt.options.pages = false
+
+    // https://github.com/nuxt/nuxt/pull/35794
+    if (nuxt.options.experimental.payloadExtraction) {
+      addPlugin(join(nuxt.options.appDir, 'plugins/payload.client'))
+    }
 
     addImports({
       name: 'definePageMeta',
