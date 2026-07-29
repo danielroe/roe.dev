@@ -129,7 +129,8 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
                     width="320"
                     height="168"
                     decoding="async"
-                    :preload="index < 2"
+                    :fetchpriority="index === 0 ? 'high' : undefined"
+                    :preload="index === 0 ? { fetchPriority: 'high' } : index < 2"
                     :loading="index > 1 ? 'lazy' : 'eager'"
                     :alt="`Still thumbnail for ${video.title}`"
                     :src="video.thumbnail"
@@ -212,16 +213,17 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
                 <div
                   class="relative flex flex-col justify-center bg-gray-100 dark:bg-gray-900 w-[20rem] h-[8rem] overflow-hidden"
                 >
-                  <img
+                  <NuxtImg
                     v-if="conference.image.url"
                     :loading="index > 1 ? 'lazy' : 'eager'"
                     decoding="async"
+                    format="webp"
                     :src="conference.image.url"
                     width="320"
                     height="128"
                     :alt="`Logo for ${conference.name}`"
                     class="w-full h-full object-cover object-center"
-                  >
+                  />
                 </div>
                 <div
                   class="px-2 py-2 flex flex-row justify-between items-end leading-none"

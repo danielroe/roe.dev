@@ -353,6 +353,12 @@ export default defineNuxtConfig({
     },
   },
 
+  fonts: {
+    families: [
+      { name: 'Barlow', preload: true },
+    ],
+  },
+
   htmlValidator: {
     failOnError: true,
     options: {
@@ -367,6 +373,7 @@ export default defineNuxtConfig({
   },
 
   image: {
+    quality: 80,
     domains: [
       'www.dundeescript.co.uk',
       'devoxx.gr',
