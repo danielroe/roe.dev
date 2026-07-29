@@ -249,6 +249,21 @@ header dl dd:first-of-type {
     content: '›';
   }
 
+  ul.link-grid {
+    @apply pl-0 my-2;
+
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+
+  ul.link-grid li {
+    @apply my-0;
+
+    &::before {
+      content: none;
+    }
+  }
+
   ol li::before {
     @apply text-xs;
 

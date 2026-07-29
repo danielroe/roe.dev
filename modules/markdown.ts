@@ -7,9 +7,13 @@ import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
+import { createParse } from 'comark/parse'
+import highlight from 'comark/plugins/highlight'
+import palenight from 'shiki/themes/material-theme-palenight.mjs'
 
+import { headingIds } from './shared/comark-heading-ids'
 import { serialize } from './shared/serialisers'
-import { mdCleanHtml, mdInternalLinks } from './shared/md-transforms'
+import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
 import { tidFromDate } from './shared/tid'
 
 interface BlogFrontmatter {
@@ -96,18 +100,23 @@ export default defineNuxtModule({
       write: true,
     })
 
+    const parse = createParse({
+      plugins: [
+        headingIds(),
+        // code blocks always render on a dark background, so both themes match
+        highlight({
+          themes: { light: palenight, dark: palenight },
+        }),
+      ],
+    })
+
     for (const post of blogPosts) {
+      const tree = await parse(post.body)
       addTemplate({
         filename: `markdown/blog/${post.slug}.mjs`,
-        getContents: () => `
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-
-let _parsed
+        getContents: () => `const tree = ${JSON.stringify(tree)}
 export async function getBody () {
-  if (!_parsed) {
-    _parsed = await parseMarkdown(${JSON.stringify(post.body)})
-  }
-  return _parsed
+  return tree
 }
 `,
         write: true,
@@ -115,17 +124,12 @@ export async function getBody () {
     }
 
     for (const slug of Object.keys(pageBodies)) {
+      const tree = await parse(pageBodies[slug]!)
       addTemplate({
         filename: `markdown/page/${slug}.mjs`,
-        getContents: () => `
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-
-let _parsed
+        getContents: () => `const tree = ${JSON.stringify(tree)}
 export async function getBody () {
-  if (!_parsed) {
-    _parsed = await parseMarkdown(${JSON.stringify(pageBodies[slug])})
-  }
-  return _parsed
+  return tree
 }
 `,
         write: true,
@@ -204,7 +208,7 @@ export async function getBody () {
       date: typeof post.date === 'string' ? post.date.split('T')[0] : post.date,
       tags: post.tags,
       description: post.description,
-      body: mdInternalLinks(serialize(post.body)).trim(),
+      body: mdInternalLinks(mdStripContainers(serialize(post.body))).trim(),
     }))
 
     nuxt.options.nitro.virtual['#md-raw-blog.json'] = () =>
@@ -212,7 +216,7 @@ export async function getBody () {
 
     const rawPageData: Record<string, string> = {}
     for (const [slug, body] of Object.entries(pageBodies)) {
-      rawPageData[slug] = mdInternalLinks(mdCleanHtml(serialize(body)))
+      rawPageData[slug] = mdInternalLinks(mdCleanHtml(mdStripContainers(serialize(body))))
     }
 
     nuxt.options.nitro.virtual['#md-raw-pages.json'] = () =>
@@ -240,13 +244,13 @@ declare module '#build/markdown/blog-entries.mjs' {
 }
 
 declare module '#build/markdown/blog/index.mjs' {
-  import type { MDCParserResult } from '@nuxtjs/mdc'
-  export const blogBodyLoaders: Record<string, () => Promise<MDCParserResult>>
+  import type { ComarkTree } from 'comark'
+  export const blogBodyLoaders: Record<string, () => Promise<ComarkTree>>
 }
 
 declare module '#build/markdown/page/index.mjs' {
-  import type { MDCParserResult } from '@nuxtjs/mdc'
-  export const pageBodyLoaders: Record<string, () => Promise<MDCParserResult>>
+  import type { ComarkTree } from 'comark'
+  export const pageBodyLoaders: Record<string, () => Promise<ComarkTree>>
 }
 
 declare module '#md-raw-blog.json' {

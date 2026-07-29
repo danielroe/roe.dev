@@ -35,7 +35,7 @@ It's possible to use server components within [Nuxt](https://nuxt.com/), even if
 
    <br>This means you can use server components on **static hosting** - no need to update to serverless/edge rendering in order to benefit.
 
-   <br><blockquote>⚡️ Plus, if you have enabled payload extraction (which is enabled by default in generated/static sites, and can also be enabled for hybrid deployments), then Nuxt will even prefetch server components used in pages you might navigate to, so they will load instantly.</blockquote>
+   > ⚡️ Plus, if you have enabled payload extraction (which is enabled by default in generated/static sites, and can also be enabled for hybrid deployments), then Nuxt will even prefetch server components used in pages you might navigate to, so they will load instantly.
 
 1. 🔄 Server components **are interchangeable with normal components**.
 
