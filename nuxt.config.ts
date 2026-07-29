@@ -294,6 +294,24 @@ export default defineNuxtConfig({
     },
   },
 
+  hooks: {
+    /**
+     * The client manifest is inlined into the server bundle rather than emitted
+     * to disk, so persist a copy for `test/unit/bundle.spec.ts`.
+     */
+    async 'build:manifest' (manifest) {
+      if (!isTest) return
+      const { mkdir, writeFile } = await import('node:fs/promises')
+      const dir = new URL('node_modules/.cache/', import.meta.url)
+      await mkdir(dir, { recursive: true })
+      await writeFile(
+        new URL('client.manifest.json', dir),
+        JSON.stringify(manifest),
+        'utf8',
+      )
+    },
+  },
+
   eslint: {
     config: {
       stylistic: true,
