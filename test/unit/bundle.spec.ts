@@ -99,13 +99,18 @@ describe('project sizes', () => {
       .toMatchInlineSnapshot(`"2980k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
+    const portableModules = await analyzeSizes(
+      ['node_modules/**/*', '!node_modules/**/*linux-{arm64,x64}*/**'],
+      serverDir,
+    )
     expect
-      .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"42270k"`)
+      .soft(roundToKilobytes(portableModules.totalBytes, 10))
+      .toMatchInlineSnapshot(`"20300k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
       .map(m => m.replace('/package.json', '').replace('node_modules/', ''))
+      .map(m => m.replace(/linux-(?:arm64|x64)/, 'linux-<arch>'))
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
@@ -140,8 +145,8 @@ describe('project sizes', () => {
         "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
         "@img/colour",
-        "@img/sharp-libvips-linux-arm64",
-        "@img/sharp-linux-arm64",
+        "@img/sharp-libvips-linux-<arch>",
+        "@img/sharp-linux-<arch>",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -153,7 +158,7 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@takumi-rs/core",
-        "@takumi-rs/core-linux-arm64-gnu",
+        "@takumi-rs/core-linux-<arch>-gnu",
         "@takumi-rs/helpers",
         "@ungap/structured-clone",
         "@vue/compiler-core",
