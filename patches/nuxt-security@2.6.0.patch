@@ -1,0 +1,24 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 23a6ce2eb06c1d59d1b168c5db85e29251dcdab9..3e86bdc5b8509cf2d5fc574d7789e7af671fea6e 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -229,12 +229,17 @@ export {}
+ `
+     }, { nitro: true, nuxt: false });
+     nuxt.hook("nitro:init", (nitro) => {
++      nitro.options.devStorage = defu(
++        { build: { driver: "fs", base: nuxt.options.buildDir } },
++        nitro.options.devStorage
++      );
+       nitro.hooks.hook("prerender:done", async () => {
++        const headersDir = createResolver(nuxt.options.buildDir).resolve("./nuxt-security");
+         nitro.options.serverAssets.push({
+           baseName: "nuxt-security",
+-          dir: createResolver(nuxt.options.buildDir).resolve("./nuxt-security")
++          dir: headersDir
+         });
+-        const prerenderedHeaders = await nitro.storage.getItem("build:nuxt-security:headers.json") || {};
++        const prerenderedHeaders = await readFile(join(headersDir, "headers.json"), "utf8").then(JSON.parse).catch(() => ({}));
+         if (securityOptions.ssg && securityOptions.ssg.exportToPresets) {
+           const prerenderedHeadersRouteRules = Object.fromEntries(Object.entries(prerenderedHeaders).map(([route, headers]) => [route, { headers }]));
+           const n = useNitro();
