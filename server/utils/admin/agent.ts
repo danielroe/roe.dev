@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import { Agent } from '@atproto/api'
 
-import { getAdminSessionCookie, getOauthClient } from './oauth'
+import { clearAdminSessionCookie, getAdminSessionCookie, getOauthClient } from './oauth'
 
 /** Restore the admin's OAuth session into an `@atproto/api` Agent. */
 export async function requireAdminAgent (event: H3Event): Promise<{ agent: Agent, did: string }> {
@@ -18,6 +18,7 @@ export async function requireAdminAgent (event: H3Event): Promise<{ agent: Agent
   }
   catch (err) {
     console.warn('[admin] OAuth restore failed:', err instanceof Error ? err.message : err)
+    await clearAdminSessionCookie(event)
     throw createError({ statusCode: 401, statusMessage: 'Session expired. Please sign in again.' })
   }
 }
