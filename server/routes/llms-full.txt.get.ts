@@ -1,5 +1,3 @@
-import { rawBlogPosts } from '#md-raw-blog.json'
-import { rawPages } from '#md-raw-pages.json'
 import { links } from '#shared/utils/links'
 
 export default defineEventHandler(async () => {
@@ -12,6 +10,10 @@ export default defineEventHandler(async () => {
     $fetch<Conference[]>('/api/upcoming-conferences').catch(() => [] as Conference[]),
   ])
 
+  const bio = contentPage('/bio')
+  const ai = contentPage('/ai')
+  const posts = blogPosts()
+
   const lines = [
     '# Daniel Roe',
     '',
@@ -21,13 +23,13 @@ export default defineEventHandler(async () => {
     '',
     '## Bio',
     '',
-    rawPages['bio'] || '',
+    bio?.meta.markdown || '',
     '',
     '---',
     '',
     '## AI Policy',
     '',
-    rawPages['ai'] || '',
+    ai?.meta.markdown || '',
     '',
     '---',
     '',
@@ -74,17 +76,17 @@ export default defineEventHandler(async () => {
   // All blog posts with descriptions
   lines.push('## Blog Posts')
   lines.push('')
-  for (const post of rawBlogPosts) {
-    lines.push(`### ${post.title}`)
+  for (const post of posts) {
+    lines.push(`### ${post.data.title}`)
     lines.push('')
-    lines.push(`- **Date:** ${post.date}`)
-    lines.push(`- **URL:** https://roe.dev/blog/${post.slug}.md`)
-    if (post.tags.length) {
-      lines.push(`- **Tags:** ${post.tags.join(', ')}`)
+    lines.push(`- **Date:** ${isoDate(post.data.date)}`)
+    lines.push(`- **URL:** https://roe.dev${post.path}.md`)
+    if (post.data.tags.length) {
+      lines.push(`- **Tags:** ${post.data.tags.join(', ')}`)
     }
-    if (post.description) {
+    if (post.data.description) {
       lines.push('')
-      lines.push(post.description)
+      lines.push(post.data.description)
     }
     lines.push('')
   }

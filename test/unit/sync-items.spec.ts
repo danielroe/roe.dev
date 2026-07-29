@@ -1,45 +1,32 @@
-import { readFile } from 'node:fs/promises'
-import process from 'node:process'
 import { describe, it, expect } from 'vitest'
-import grayMatter from 'gray-matter'
-import { filename } from 'pathe/utils'
-import { glob } from 'tinyglobby'
+
+import { content } from '../../content.config'
+
+const posts = await content.list(['blog'])
 
 describe('blog content parsing', () => {
-  it('all blog posts have required frontmatter', async () => {
-    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
-    expect(files.length).toBeGreaterThan(0)
+  it('all blog posts have required frontmatter', () => {
+    expect(posts.length).toBeGreaterThan(0)
 
-    for (const file of files) {
-      const raw = await readFile(file, 'utf-8')
-      const { data } = grayMatter(raw)
-      const slug = filename(file)
-
-      expect(data.title, `${slug} missing title`).toBeTruthy()
-      expect(data.date, `${slug} missing date`).toBeTruthy()
-      expect(Array.isArray(data.tags), `${slug} tags should be an array`).toBe(true)
+    for (const { path, data } of posts) {
+      expect(data.title, `${path} missing title`).toBeTruthy()
+      expect(data.date, `${path} missing date`).toBeTruthy()
+      expect(Array.isArray(data.tags), `${path} tags should be an array`).toBe(true)
     }
   })
 
-  it('blog post dates are valid', async () => {
-    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
+  it('blog post dates are valid', () => {
+    for (const { path, data } of posts) {
+      const date = new Date(data.date as string)
 
-    for (const file of files) {
-      const raw = await readFile(file, 'utf-8')
-      const { data } = grayMatter(raw)
-      const slug = filename(file)
-      const date = new Date(data.date)
-
-      expect(date.toString(), `${slug} has invalid date: ${data.date}`).not.toBe('Invalid Date')
+      expect(date.toString(), `${path} has invalid date: ${data.date}`).not.toBe('Invalid Date')
     }
   })
 
-  it('blog post slugs form valid paths', async () => {
-    const files = await glob('./content/blog/**/*.md', { cwd: process.cwd(), absolute: true })
-
-    for (const file of files) {
-      const slug = filename(file)
-      expect(slug, `${file} has no slug`).toBeTruthy()
+  it('blog post slugs form valid paths', () => {
+    for (const { path, meta } of posts) {
+      const slug = meta.stem
+      expect(slug, `${path} has no slug`).toBeTruthy()
       expect(slug).toMatch(/^[a-z0-9-]+$/)
     }
   })
