@@ -32,7 +32,7 @@ export const ANIMATION_CONFIG = {
 } as const
 
 export function calculateVideoDuration (questionLines: number, answerLines: number, questionText?: string, typingIntervals?: number[]): number {
-  let typewriterDuration = 0
+  let typewriterDuration: number
   if (typingIntervals && typingIntervals.length > 0) {
     typewriterDuration = typingIntervals.reduce((sum, interval) => sum + interval, 0) / 1000
   }
