@@ -108,7 +108,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"38790k"`)
+      .toMatchInlineSnapshot(`"42270k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -135,15 +135,11 @@ describe('project sizes', () => {
         "@atproto/jwk",
         "@atproto/jwk-jose",
         "@atproto/jwk-webcrypto",
-        "@atproto/jwk/node_modules/multiformats",
         "@atproto/lex-data",
-        "@atproto/lex-data/node_modules/multiformats",
         "@atproto/lex-json",
         "@atproto/lexicon",
-        "@atproto/lexicon/node_modules/multiformats",
         "@atproto/oauth-client",
         "@atproto/oauth-client-node",
-        "@atproto/oauth-client/node_modules/multiformats",
         "@atproto/oauth-types",
         "@atproto/syntax",
         "@atproto/xrpc",
@@ -360,13 +356,13 @@ describe('project sizes', () => {
         "trim-trailing-lines",
         "trough",
         "ts-custom-error",
-        "tslib",
         "ufo",
-        "uint8arrays",
-        "uint8arrays/node_modules/multiformats",
         "ultrahtml",
         "uncrypto",
         "undici",
+        "undici_v6",
+        "undici_v7",
+        "undici_v8",
         "unhead",
         "unicode-emoji-modifier-base",
         "unicode-segmenter",
