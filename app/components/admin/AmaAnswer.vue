@@ -33,7 +33,7 @@ const props = defineProps<{
 const FOOTER_PREVIEW_LENGTH = '\n\nroe.dev/ama\n\n#ama'.length
 const BLUESKY_LIMIT = 300
 
-const { data: entities } = useFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
+const { data: entities } = useAdminFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
 
 interface DraftPost {
   text: string

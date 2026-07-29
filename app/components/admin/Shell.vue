@@ -5,6 +5,18 @@ defineProps<{
 
 const route = useRoute()
 
+// The server middleware only lets an authenticated admin reach these
+// pages, so remember the visit to surface an "Admin" shortcut in the
+// main site navigation.
+onMounted(() => {
+  try {
+    localStorage.setItem('admin-visited', '1')
+  }
+  catch {
+    // storage unavailable (private browsing etc.)
+  }
+})
+
 const nav = [
   { label: 'Dashboard', to: '/admin' },
   { label: 'AMA', to: '/admin/ama' },

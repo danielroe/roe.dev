@@ -22,7 +22,7 @@ const emit = defineEmits<{
   (e: 'submit', value: UsesItemValue): void
 }>()
 
-const { data: categories } = useFetch<UsesCategoryEntry[]>('/api/admin/uses-categories', { default: () => [] })
+const { data: categories } = useAdminFetch<UsesCategoryEntry[]>('/api/admin/uses-categories', { default: () => [] })
 
 const { public: publicConfig } = useRuntimeConfig()
 const pdsService = publicConfig.atproto?.service || null

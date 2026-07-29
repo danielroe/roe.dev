@@ -12,10 +12,13 @@ interface TalkGroupEntry {
   value: DevRoeTalkGroup.Record
 }
 
-const [{ data: talksData, refresh: refreshTalks }, { data: groupsData, refresh: refreshGroups }] = await Promise.all([
-  useFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] }),
-  useFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] }),
-])
+const { data: talksData, refresh: refreshTalks, status: talksStatus } = useAdminFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] })
+const { data: groupsData, refresh: refreshGroups, status: groupsStatus } = useAdminFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] })
+
+const showSkeleton = computed(() =>
+  (talksStatus.value === 'pending' || groupsStatus.value === 'pending')
+  && !talksData.value.length && !groupsData.value.length,
+)
 
 const filter = ref<'all' | 'past' | 'upcoming'>('all')
 const now = new Date().toISOString()
@@ -75,8 +78,18 @@ async function putTalk (talk: TalkEntry, mutate: (value: TalkEntry['value']) => 
   const value = { ...talk.value }
   mutate(value)
   delete (value as Record<string, unknown>).$type
-  await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'PUT', body: value })
-  await refreshTalks()
+  const previous = talksData.value
+  talksData.value = talksData.value.map(t =>
+    t.rkey === talk.rkey ? { ...t, value: { ...value, $type: talk.value.$type } } : t,
+  )
+  try {
+    await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'PUT', body: value })
+    refreshTalks()
+  }
+  catch (error) {
+    talksData.value = previous
+    throw error
+  }
 }
 
 async function makeGroupFromTalk (talk: TalkEntry) {
@@ -93,10 +106,10 @@ async function makeGroupFromTalk (talk: TalkEntry) {
     },
   )
 
+  await refreshGroups()
   await putTalk(talk, v => {
     v.group = { uri: created.uri, cid: created.cid }
   })
-  await refreshGroups()
 }
 
 // `targetUri` is the destination `<ul>`'s `data-target-uri`: a group's
@@ -127,8 +140,16 @@ function promoteToTopLevel (talk: TalkEntry) {
 
 async function deleteTalk (talk: TalkEntry) {
   if (!confirm(`Delete "${talk.value.title || talk.value.source}"?`)) return
-  await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'DELETE' })
-  await refreshTalks()
+  const previous = talksData.value
+  talksData.value = talksData.value.filter(t => t.rkey !== talk.rkey)
+  try {
+    await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'DELETE' })
+    refreshTalks()
+  }
+  catch (error) {
+    talksData.value = previous
+    throw error
+  }
 }
 
 async function deleteGroup (group: TalkGroupEntry) {
@@ -140,14 +161,32 @@ async function deleteGroup (group: TalkGroupEntry) {
 
   // Promote children to top-level first so their strong-refs don't dangle.
   const children = bucketed.value.get(group.uri) ?? []
-  for (const child of children) {
-    const value = { ...child.value }
+  const previousTalks = talksData.value
+  const previousGroups = groupsData.value
+  const childKeys = new Set(children.map(c => c.rkey))
+  talksData.value = talksData.value.map(t => {
+    if (!childKeys.has(t.rkey)) return t
+    const value = { ...t.value }
     delete value.group
-    delete (value as Record<string, unknown>).$type
-    await $fetch(`/api/admin/talks/${child.rkey}`, { method: 'PUT', body: value })
+    return { ...t, value }
+  })
+  groupsData.value = groupsData.value.filter(g => g.rkey !== group.rkey)
+  try {
+    for (const child of children) {
+      const value = { ...child.value }
+      delete value.group
+      delete (value as Record<string, unknown>).$type
+      await $fetch(`/api/admin/talks/${child.rkey}`, { method: 'PUT', body: value })
+    }
+    await $fetch(`/api/admin/talk-groups/${group.rkey}`, { method: 'DELETE' })
+    refreshTalks()
+    refreshGroups()
   }
-  await $fetch(`/api/admin/talk-groups/${group.rkey}`, { method: 'DELETE' })
-  await Promise.all([refreshTalks(), refreshGroups()])
+  catch (error) {
+    talksData.value = previousTalks
+    groupsData.value = previousGroups
+    throw error
+  }
 }
 
 // Each top-level talk lives in its own single-item draggable list so
@@ -189,13 +228,46 @@ function singletonList (talk: TalkEntry): TalkEntry[] {
     </div>
 
     <p
-      v-if="!timeline.length"
+      v-if="!showSkeleton && !timeline.length"
       class="text-muted text-sm"
     >
       No talks yet.
     </p>
 
-    <div class="flex flex-col gap-6">
+    <div
+      v-if="showSkeleton"
+      class="flex flex-col gap-6"
+      aria-hidden="true"
+    >
+      <AdminSkeletonRows
+        variant="card"
+        meta="xs"
+        :rows="2"
+      />
+      <section
+        v-for="i in 2"
+        :key="i"
+      >
+        <header class="flex items-center gap-3 mb-2">
+          <h2 class="text-lg">
+            <AdminSkeleton class="bg-accent w-40" />
+          </h2>
+          <span class="text-xs text-muted">
+            <AdminSkeleton class="bg-accent w-28" />
+          </span>
+        </header>
+        <AdminSkeletonRows
+          variant="card"
+          meta="xs"
+          :rows="3"
+        />
+      </section>
+    </div>
+
+    <div
+      v-else
+      class="flex flex-col gap-6"
+    >
       <template
         v-for="entry in timeline"
         :key="entry.kind === 'group' ? entry.group.rkey : entry.talk.rkey"

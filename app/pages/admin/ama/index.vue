@@ -17,7 +17,9 @@ interface AmaEntry {
   answeredAt?: string
 }
 
-const { data, refresh } = await useFetch<AmaEntry[]>('/api/admin/ama', { default: () => [] })
+const { data, refresh, status } = useAdminFetch<AmaEntry[]>('/api/admin/ama', { default: () => [] })
+
+const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
 
 function hasMissingPublishes (a: AmaEntry): boolean {
   const p = a.platforms
@@ -37,8 +39,16 @@ const formatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeStyle
 
 async function remove (rkey: string) {
   if (!confirm('Delete this question?')) return
-  await $fetch(`/api/admin/ama/${rkey}`, { method: 'DELETE' })
-  await refresh()
+  const previous = data.value
+  data.value = data.value.filter(a => a.rkey !== rkey)
+  try {
+    await $fetch(`/api/admin/ama/${rkey}`, { method: 'DELETE' })
+    refresh()
+  }
+  catch (error) {
+    data.value = previous
+    throw error
+  }
 }
 </script>
 
@@ -59,7 +69,15 @@ async function remove (rkey: string) {
       </div>
     </div>
 
-    <ul class="divide-y divide-accent">
+    <AdminSkeletonRows
+      v-if="showSkeleton"
+      meta="xs"
+      align="start"
+    />
+    <ul
+      v-else
+      class="divide-y divide-accent"
+    >
       <li
         v-for="ama in visible"
         :key="ama.rkey"
@@ -113,7 +131,7 @@ async function remove (rkey: string) {
     </ul>
 
     <p
-      v-if="!visible.length"
+      v-if="!showSkeleton && !visible.length"
       class="text-muted text-sm"
     >
       {{ filter === 'todo' ? 'Nothing to answer or republish.' : 'No questions yet.' }}

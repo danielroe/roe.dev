@@ -25,7 +25,7 @@ interface ItemEntry {
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request
 // when `navigateTo` clears `route.params.rkey` on unmount.
-const { data } = await useFetch<ItemEntry>(`/api/admin/uses-items/${rkey.value}`, {
+const { data, status } = useAdminFetch<ItemEntry>(`/api/admin/uses-items/${rkey.value}`, {
   watch: false,
 })
 
@@ -43,6 +43,11 @@ async function save (value: UsesItemValue) {
       :initial="data.value"
       submit-label="Save"
       @submit="save"
+    />
+    <AdminSkeletonForm
+      v-else-if="status === 'pending'"
+      :fields="['text', 'text', 'textarea', 'text', 'text']"
+      width-class="max-w-2xl"
     />
   </AdminShell>
 </template>

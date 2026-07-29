@@ -28,8 +28,8 @@ const emit = defineEmits<{
   (e: 'submit', value: TalkValue): void
 }>()
 
-const { data: groups } = useFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] })
-const { data: releases } = useFetch<GitHubRelease[]>('/api/admin/github-releases', { default: () => [] })
+const { data: groups } = useAdminFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] })
+const { data: releases } = useAdminFetch<GitHubRelease[]>('/api/admin/github-releases', { default: () => [] })
 
 const { public: publicConfig } = useRuntimeConfig()
 const pdsService = publicConfig.atproto?.service || null

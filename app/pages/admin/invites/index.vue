@@ -12,12 +12,22 @@ interface InviteEntry {
   createdAt: string
 }
 
-const { data, refresh } = await useFetch<InviteEntry[]>('/api/admin/invites', { default: () => [] })
+const { data, refresh, status } = useAdminFetch<InviteEntry[]>('/api/admin/invites', { default: () => [] })
+
+const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
 
 async function remove (rkey: string, slug: string) {
   if (!confirm(`Delete invite "${slug}"?`)) return
-  await $fetch(`/api/admin/invites/${rkey}`, { method: 'DELETE' })
-  await refresh()
+  const previous = data.value
+  data.value = data.value.filter(i => i.rkey !== rkey)
+  try {
+    await $fetch(`/api/admin/invites/${rkey}`, { method: 'DELETE' })
+    refresh()
+  }
+  catch (error) {
+    data.value = previous
+    throw error
+  }
 }
 </script>
 
@@ -32,7 +42,11 @@ async function remove (rkey: string, slug: string) {
       </NuxtLink>
     </div>
 
-    <ul class="divide-y divide-accent">
+    <AdminSkeletonRows v-if="showSkeleton" />
+    <ul
+      v-else
+      class="divide-y divide-accent"
+    >
       <li
         v-for="invite in data"
         :key="invite.rkey"
@@ -64,7 +78,7 @@ async function remove (rkey: string, slug: string) {
     </ul>
 
     <p
-      v-if="!data?.length"
+      v-if="!showSkeleton && !data?.length"
       class="text-muted text-sm"
     >
       No invites yet.

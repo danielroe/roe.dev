@@ -15,7 +15,17 @@ const { data: currentLocation } = await useFetch('/api/current-location', {
   }),
 })
 
-const menu = [
+const showAdminLink = ref(false)
+onMounted(() => {
+  try {
+    showAdminLink.value = localStorage.getItem('admin-visited') === '1'
+  }
+  catch {
+    // storage unavailable (private browsing etc.)
+  }
+})
+
+const menu = computed(() => [
   {
     name: 'Home',
     path: '/',
@@ -36,7 +46,8 @@ const menu = [
     name: 'Blog',
     path: '/blog',
   },
-]
+  ...(showAdminLink.value ? [{ name: 'Admin', path: '/admin' }] : []),
+])
 
 useRouter().afterEach(() => {
   mobileMenuRef.value?.hidePopover()
