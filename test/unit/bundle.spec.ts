@@ -12,7 +12,10 @@ describe('project sizes', () => {
   const rootDir = fileURLToPath(new URL('../..', import.meta.url))
   const publicDir = join(rootDir, '.output/public')
   const serverDir = join(rootDir, '.output/server')
-  const manifestPath = join(rootDir, 'node_modules/.cache/client.manifest.json')
+  const manifestPath = join(
+    rootDir,
+    'node_modules/.cache/bundle-test-client-manifest.json',
+  )
 
   const stats = {
     client: { totalBytes: 0, files: [] as string[] },
@@ -28,6 +31,7 @@ describe('project sizes', () => {
         DISABLE_PRERENDER: 'true',
         TEST: 'true',
         VITEST: 'true',
+        NUXT_CLIENT_MANIFEST_PATH: manifestPath,
       },
     })
   }, 120 * 1000)
@@ -51,7 +55,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"269k"`)
+      .toMatchInlineSnapshot(`"283k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -92,12 +96,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2900k"`)
+      .toMatchInlineSnapshot(`"2990k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"39020k"`)
+      .toMatchInlineSnapshot(`"39160k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -215,6 +219,7 @@ describe('project sizes', () => {
         "extend",
         "feed",
         "flat",
+        "fnv1a-64",
         "github-slugger",
         "h3",
         "hast-util-embedded",
@@ -299,9 +304,11 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "node-mock-http",
+        "nostics",
         "nth-check",
         "nth-check/lib/esm",
         "nuxtseo-shared",
+        "object-identity",
         "ofetch",
         "oniguruma-parser",
         "oniguruma-to-es",
@@ -312,7 +319,6 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "pathe",
-        "perfect-debounce",
         "property-information",
         "radix3",
         "regex",

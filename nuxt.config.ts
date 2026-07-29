@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import process from 'node:process'
 
 import { defineNuxtConfig } from 'nuxt/config'
@@ -297,18 +299,14 @@ export default defineNuxtConfig({
   hooks: {
     /**
      * The client manifest is inlined into the server bundle rather than emitted
-     * to disk, so persist a copy for `test/unit/bundle.spec.ts`.
+     * to disk, so persist a copy when a consumer asks for one by setting
+     * `NUXT_CLIENT_MANIFEST_PATH` (see `test/unit/bundle.spec.ts`).
      */
     async 'build:manifest' (manifest) {
-      if (!isTest) return
-      const { mkdir, writeFile } = await import('node:fs/promises')
-      const dir = new URL('node_modules/.cache/', import.meta.url)
-      await mkdir(dir, { recursive: true })
-      await writeFile(
-        new URL('client.manifest.json', dir),
-        JSON.stringify(manifest),
-        'utf8',
-      )
+      const target = process.env.NUXT_CLIENT_MANIFEST_PATH
+      if (!target) return
+      await mkdir(dirname(target), { recursive: true })
+      await writeFile(target, JSON.stringify(manifest), 'utf8')
     },
   },
 
