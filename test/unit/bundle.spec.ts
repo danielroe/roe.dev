@@ -1,6 +1,6 @@
 /** @vitest-environment node */
 
-import { pathToFileURL, fileURLToPath } from 'node:url'
+import { fileURLToPath } from 'node:url'
 import fsp from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 
@@ -12,6 +12,10 @@ describe('project sizes', () => {
   const rootDir = fileURLToPath(new URL('../..', import.meta.url))
   const publicDir = join(rootDir, '.output/public')
   const serverDir = join(rootDir, '.output/server')
+  const manifestPath = join(
+    rootDir,
+    'node_modules/.cache/bundle-test-client-manifest.json',
+  )
 
   const stats = {
     client: { totalBytes: 0, files: [] as string[] },
@@ -27,6 +31,7 @@ describe('project sizes', () => {
         DISABLE_PRERENDER: 'true',
         TEST: 'true',
         VITEST: 'true',
+        NUXT_CLIENT_MANIFEST_PATH: manifestPath,
       },
     })
   }, 120 * 1000)
@@ -39,7 +44,7 @@ describe('project sizes', () => {
   })
 
   it('public (non-admin) client bundle size', async () => {
-    const adminOnly = await loadAdminOnlyChunks(serverDir)
+    const adminOnly = await loadAdminOnlyChunks(manifestPath)
 
     const allFiles: string[] = await globby(
       ['**/*.js', '!_scripts/**', '!**/_payload.js', '!_nuxt/builds/**'],
@@ -50,7 +55,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"269k"`)
+      .toMatchInlineSnapshot(`"283k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -91,12 +96,12 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2900k"`)
+      .toMatchInlineSnapshot(`"2990k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"39020k"`)
+      .toMatchInlineSnapshot(`"39160k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -214,6 +219,7 @@ describe('project sizes', () => {
         "extend",
         "feed",
         "flat",
+        "fnv1a-64",
         "github-slugger",
         "h3",
         "hast-util-embedded",
@@ -298,9 +304,11 @@ describe('project sizes', () => {
         "node-emoji",
         "node-fetch-native",
         "node-mock-http",
+        "nostics",
         "nth-check",
         "nth-check/lib/esm",
         "nuxtseo-shared",
+        "object-identity",
         "ofetch",
         "oniguruma-parser",
         "oniguruma-to-es",
@@ -311,7 +319,6 @@ describe('project sizes', () => {
         "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "pathe",
-        "perfect-debounce",
         "property-information",
         "radix3",
         "regex",
@@ -399,33 +406,37 @@ async function measureFiles (files: string[], rootDir: string) {
 }
 
 /**
- * Reads Nuxt/Nitro's precomputed client manifest (the same graph the SSR
- * renderer uses to emit `<link rel="modulepreload">` tags) and returns the
- * set of chunk file names reachable only from `pages/admin/**` source keys.
+ * Reads the client manifest dumped by the `build:manifest` hook in
+ * `nuxt.config.ts` and returns the set of chunk file names reachable only from
+ * `pages/admin/**` source keys.
  *
- * "Reachable" here means the per-route `preload` closure that Nitro already
- * computed for us; we subtract anything reachable from any non-admin source
- * key so shared chunks (entry, mdc components, etc.) stay in the public set.
+ * "Reachable" means the transitive static-import closure of each entry, which
+ * is what the SSR renderer emits as `<link rel="modulepreload">`; anything
+ * reachable from a non-admin key is subtracted so shared chunks (entry, mdc
+ * components, etc.) stay in the public set.
  */
-async function loadAdminOnlyChunks (serverDir: string): Promise<Set<string>> {
-  const manifestPath = join(serverDir, 'chunks/build/client.precomputed.mjs')
-  const mod = await import(pathToFileURL(manifestPath).href) as {
-    default?: { dependencies?: Record<string, ManifestDeps> }
-    client_precomputed?: { dependencies?: Record<string, ManifestDeps> }
+async function loadAdminOnlyChunks (manifestPath: string): Promise<Set<string>> {
+  const manifest = JSON.parse(
+    await fsp.readFile(manifestPath, 'utf8'),
+  ) as Record<string, ManifestEntry>
+
+  function collect (key: string, into: Set<string>, seen = new Set<string>()) {
+    if (seen.has(key)) return
+    seen.add(key)
+    const entry = manifest[key]
+    if (!entry) return
+    if (entry.file?.endsWith('.js')) into.add(basenameOf(entry.file))
+    for (const imported of entry.imports ?? []) collect(imported, into, seen)
   }
-  const manifest = mod.default ?? mod.client_precomputed
-  const dependencies = manifest?.dependencies ?? {}
 
   const adminReach = new Set<string>()
   const publicReach = new Set<string>()
-  for (const [key, val] of Object.entries(dependencies)) {
-    // Skip the synthetic `_<chunk>.js` entries Nitro emits for shared chunks;
-    // they list themselves and would otherwise leak admin-only chunks into the
+  for (const key of Object.keys(manifest)) {
+    // Skip the synthetic `_<chunk>.js` entries emitted for shared chunks; they
+    // list themselves and would otherwise leak admin-only chunks into the
     // public set via the chunk's own metadata entry.
     if (key.startsWith('_') && key.endsWith('.js')) continue
-    const target = key.startsWith('pages/admin/') ? adminReach : publicReach
-    for (const dep of Object.values(val.preload ?? {})) target.add(dep.file)
-    for (const dep of Object.values(val.scripts ?? {})) target.add(dep.file)
+    collect(key, key.startsWith('pages/admin/') ? adminReach : publicReach)
   }
   return new Set([...adminReach].filter(f => !publicReach.has(f)))
 }
@@ -435,9 +446,9 @@ function basenameOf (file: string) {
   return slash === -1 ? file : file.slice(slash + 1)
 }
 
-interface ManifestDeps {
-  preload?: Record<string, { file: string }>
-  scripts?: Record<string, { file: string }>
+interface ManifestEntry {
+  file?: string
+  imports?: string[]
 }
 
 function roundToKilobytes (bytes: number, granularityK = 1) {

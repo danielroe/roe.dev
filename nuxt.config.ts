@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import process from 'node:process'
 
 import { defineNuxtConfig } from 'nuxt/config'
@@ -291,6 +293,20 @@ export default defineNuxtConfig({
     plugins: {
       'postcss-nesting': {},
       '@unocss/postcss': {},
+    },
+  },
+
+  hooks: {
+    /**
+     * The client manifest is inlined into the server bundle rather than emitted
+     * to disk, so persist a copy when a consumer asks for one by setting
+     * `NUXT_CLIENT_MANIFEST_PATH` (see `test/unit/bundle.spec.ts`).
+     */
+    async 'build:manifest' (manifest) {
+      const target = process.env.NUXT_CLIENT_MANIFEST_PATH
+      if (!target) return
+      await mkdir(dirname(target), { recursive: true })
+      await writeFile(target, JSON.stringify(manifest), 'utf8')
     },
   },
 
