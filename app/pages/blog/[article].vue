@@ -59,6 +59,8 @@
 </template>
 
 <script lang="ts" setup>
+import { defineLink } from '@unhead/vue'
+
 import { needsRuntimeDiscovery, newestPostPath } from '#build/bsky-runtime-discovery.mjs'
 
 const standardSiteDid = useRuntimeConfig().public.atproto?.did || null
@@ -148,7 +150,7 @@ if (import.meta.server) {
     ],
     link: [
       ...(standardSiteDid && page.value.tid)
-        ? [{ rel: 'site.standard.document', href: `at://${standardSiteDid}/site.standard.document/${page.value.tid}` }]
+        ? [defineLink({ rel: 'site.standard.document', href: `at://${standardSiteDid}/site.standard.document/${page.value.tid}` })]
         : [],
     ],
   })
