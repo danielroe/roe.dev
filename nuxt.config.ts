@@ -267,19 +267,19 @@ export default defineNuxtConfig({
       modulePreload: {
         polyfill: false,
       },
-      rollupOptions: {
-        output: {
-          // Merge modules shared between the entry and lazy chunks into a
-          // single chunk (excluding /admin js)
-          advancedChunks: {
-            groups: [
-              {
-                name: 'shared',
-                minShareCount: 2,
-                test: (id: string) =>
-                  !/[\\/](?:app[\\/](?:components|pages)[\\/]admin|shared[\\/](?:lex|cms)|node_modules[\\/](?:@formkit|@atproto|@atcute|multiformats|gsap|mediabunny|modern-screenshot))[\\/]/.test(id),
-              },
-            ],
+    },
+    $client: {
+      build: {
+        rollupOptions: {
+          output: {
+            codeSplitting: {
+              groups: [
+                {
+                  name: 'shared',
+                  tags: ['$initial'],
+                },
+              ],
+            },
           },
         },
       },
