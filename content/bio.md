@@ -1,8 +1,6 @@
-<div class="text-xl mb-4">
-
+::div{.text-xl.mb-4}
 Daniel leads the [Nuxt core team](https://nuxt.com). Previously, he was CTO of a SaaS startup and founder of a creative agency focusing on clarity of vision and message.
-
-</div>
+::
 
 He is part of the team at [Vercel](https://vercel.com) where he is employed to work full-time on Nuxt.
 

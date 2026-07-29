@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/mdc',
+    '@comark/nuxt',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
@@ -65,6 +65,13 @@ export default defineNuxtConfig({
     },
   },
 
+  components: [
+    // markdown components are passed explicitly to `<ComarkRenderer>` rather
+    // than registered globally, so they stay out of the client bundle
+    { path: '~/components/markdown', pathPrefix: false },
+    '~/components',
+  ],
+
   imports: {
     polyfills: true,
   },
@@ -83,14 +90,6 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://roe.dev',
-  },
-
-  mdc: {
-    highlight: {
-      theme: 'material-theme-palenight',
-      langs: ['js', 'ts', 'json', 'vue', 'css', 'html', 'bash', 'md', 'mdc', 'yaml'],
-      noApiRoute: true,
-    },
   },
 
   runtimeConfig: {

@@ -1,6 +1,8 @@
-import { MDCRenderer } from '#components'
+import { CalSchedule, ComarkRenderer, ProseA, ProseH2, ProseH3, ProseImg, ProseTh, SocialPost } from '#components'
 import { blogBodyLoaders } from '#build/markdown/blog/index.mjs'
 import { pageBodyLoaders } from '#build/markdown/page/index.mjs'
+
+const components = { CalSchedule, ProseA, ProseH2, ProseH3, ProseImg, ProseTh, SocialPost }
 
 export default defineComponent({
   props: {
@@ -16,7 +18,7 @@ export default defineComponent({
       return () => null
     }
 
-    const parsed = await loader()
-    return () => h(MDCRenderer, { body: parsed.body, tag: 'div' })
+    const tree = await loader()
+    return () => h(ComarkRenderer, { tree, components })
   },
 })

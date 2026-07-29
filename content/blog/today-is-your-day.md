@@ -13,8 +13,7 @@ Reflection isn't my strong suit. I think. But I wish it were more part of my lif
 
 ## Oh, the places you'll go!
 
-<div>
-
+::div
 This year, I've attended conferences or meetups in Toronto, Prague, Seattle, Amsterdam, Glasgow, Middlesbrough, Bonn, Portlaoise, Athens, New Orleans, San Francisco, London and Edinburgh. I've also enjoyed making [EdinburghJS](https://www.edinburghjs.org/) a regular part of my life.
 
 <p><img src="/img/today-is-your-day/flighty-passport.png" alt="Flighty 'passport'" height="1572" width="1179" class="md:float-right md:w-1/2 -md:mt-1 my-2 md:ml-4"></p>
@@ -26,8 +25,7 @@ I also find that travelling can be productive. I love coding on the plane or tra
 - **Next year, I'd like to widen the circle**.
 
 I'd like to see more folk I don't already know. That will mean answering CFPs at conferences further afield. Recommendations welcome 🙏
-
-</div>
+::
 
 ## You’ll be seeing great sights!
 
@@ -57,17 +55,15 @@ I _love_ coding. It's fun and my hobby. I don't have an objective to be 'active'
 
 That's a side-effect of doing something that I enjoy.
 
-<figure class="my-4">
+::figure{.my-4}
 <a href="https://git-wrapped.com/profiles/danielroe">
 <img src="/img/today-is-your-day/git-wrapped.png" alt="Git Wrapped profile for @danielroe, showing my 2024 Year in Code, with 👑 Universal Rank: Top 0.5%, ⚡️ Longest Streak: 366 days, 🏆 Total Commits: 13,020, 📅 Most Active Month: December, 📊 Most Active Day: Tuesday, ⭐ Stars Earned: 81,796, 🚀 Top Language: TypeScript, 🪐 Power Level: God Mode" height="1282" width="1536">
 </a>
 
-<figcaption class="text-xs">
-
+:::figcaption{.text-xs}
 the chart shows [issues, PRs, discussions and commits](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile) on GitHub
-
-</figcaption>
-</figure>
+:::
+::
 
 I count myself incredibly fortunate to be able to make a living from being a [full-time open source maintainer](/blog/funding).
 

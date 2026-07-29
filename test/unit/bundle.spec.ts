@@ -8,6 +8,13 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { glob as globby } from 'tinyglobby'
 import { join } from 'pathe'
 
+/**
+ * Prebuilt native binaries are resolved for whichever platform the build runs
+ * on, so their names and sizes can't be snapshotted.
+ */
+const NATIVE_BINARY_RE = /(?:linux|darwin|win32)-(?:arm64|x64)/
+const NATIVE_BINARY_GLOB = '!node_modules/**/*{linux,darwin,win32}-{arm64,x64}*/**'
+
 describe('project sizes', () => {
   const rootDir = fileURLToPath(new URL('../..', import.meta.url))
   const publicDir = join(rootDir, '.output/public')
@@ -55,38 +62,11 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"284k"`)
+      .toMatchInlineSnapshot(`"263k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
           "_nuxt/BlueskyComments.js",
-          "_nuxt/CalSchedule.js",
-          "_nuxt/ProseA.js",
-          "_nuxt/ProseBlockquote.js",
-          "_nuxt/ProseCode.js",
-          "_nuxt/ProseEm.js",
-          "_nuxt/ProseH1.js",
-          "_nuxt/ProseH2.js",
-          "_nuxt/ProseH3.js",
-          "_nuxt/ProseH4.js",
-          "_nuxt/ProseH5.js",
-          "_nuxt/ProseH6.js",
-          "_nuxt/ProseHr.js",
-          "_nuxt/ProseImg.js",
-          "_nuxt/ProseLi.js",
-          "_nuxt/ProseOl.js",
-          "_nuxt/ProseP.js",
-          "_nuxt/ProsePre.js",
-          "_nuxt/ProseScript.js",
-          "_nuxt/ProseStrong.js",
-          "_nuxt/ProseTable.js",
-          "_nuxt/ProseTbody.js",
-          "_nuxt/ProseTd.js",
-          "_nuxt/ProseTh.js",
-          "_nuxt/ProseThead.js",
-          "_nuxt/ProseTr.js",
-          "_nuxt/ProseUl.js",
-          "_nuxt/SocialPost.js",
           "_nuxt/entry.js",
         ]
       `)
@@ -96,21 +76,20 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2980k"`)
+      .toMatchInlineSnapshot(`"1840k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
-      ['node_modules/**/*', '!node_modules/**/*linux-{arm64,x64}*/**'],
+      ['node_modules/**/*', NATIVE_BINARY_GLOB],
       serverDir,
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"20300k"`)
+      .toMatchInlineSnapshot(`"16680k"`)
 
     const packages = modules.files
-      .filter(m => m.endsWith('package.json'))
+      .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
       .map(m => m.replace('/package.json', '').replace('node_modules/', ''))
-      .map(m => m.replace(/linux-(?:arm64|x64)/, 'linux-<arch>'))
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
@@ -145,22 +124,8 @@ describe('project sizes', () => {
         "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
         "@img/colour",
-        "@img/sharp-libvips-linux-<arch>",
-        "@img/sharp-linux-<arch>",
-        "@shikijs/core",
-        "@shikijs/engine-javascript",
-        "@shikijs/engine-oniguruma",
-        "@shikijs/langs",
-        "@shikijs/primitive",
-        "@shikijs/themes",
-        "@shikijs/transformers",
-        "@shikijs/types",
-        "@shikijs/vscode-textmate",
-        "@sindresorhus/is",
         "@takumi-rs/core",
-        "@takumi-rs/core-linux-<arch>-gnu",
         "@takumi-rs/helpers",
-        "@ungap/structured-clone",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
@@ -172,15 +137,9 @@ describe('project sizes', () => {
         "@vue/server-renderer",
         "@vue/shared",
         "await-lock",
-        "bail",
         "boolbase",
-        "ccount",
-        "char-regex",
-        "character-entities",
-        "character-entities-html4",
-        "character-entities-legacy",
-        "character-reference-invalid",
-        "comma-separated-tokens",
+        "comark",
+        "comark/node_modules/entities",
         "consola",
         "cookie-es",
         "core-js",
@@ -192,13 +151,10 @@ describe('project sizes', () => {
         "csso",
         "csso/node_modules/css-tree",
         "csso/node_modules/css-tree/node_modules/mdn-data",
-        "decode-named-character-reference",
         "defu",
         "destr",
-        "detab",
         "detect-libc",
         "devalue",
-        "devlop",
         "dom-serializer",
         "dom-serializer/lib/esm",
         "dom-serializer/node_modules/entities",
@@ -209,101 +165,29 @@ describe('project sizes', () => {
         "domhandler/lib/esm",
         "domutils",
         "domutils/lib/esm",
-        "emojilib",
-        "emoticon",
         "entities",
-        "entities/dist/commonjs",
-        "escape-string-regexp",
         "estree-walker",
         "etag",
         "events-to-async",
         "events-to-async/module",
-        "extend",
         "feed",
-        "flat",
         "fnv1a-64",
-        "github-slugger",
         "h3",
-        "hast-util-embedded",
-        "hast-util-format",
-        "hast-util-from-parse5",
-        "hast-util-has-property",
-        "hast-util-is-body-ok-link",
-        "hast-util-is-element",
-        "hast-util-minify-whitespace",
-        "hast-util-parse-selector",
-        "hast-util-phrasing",
-        "hast-util-raw",
-        "hast-util-to-html",
-        "hast-util-to-mdast",
-        "hast-util-to-parse5",
-        "hast-util-to-string",
-        "hast-util-to-text",
-        "hast-util-whitespace",
-        "hastscript",
         "hookable",
-        "html-void-elements",
-        "html-whitespace-sensitive-tag-names",
         "image-meta",
         "ipaddr.js",
         "ipx",
         "iron-webcrypto",
-        "is-absolute-url",
-        "is-alphabetical",
-        "is-alphanumerical",
-        "is-decimal",
-        "is-hexadecimal",
-        "is-plain-obj",
         "iso-datestring-validator",
         "jose",
         "jose/dist/node/esm",
-        "longest-streak",
+        "js-yaml",
         "lru-cache",
         "lru-cache/dist/esm",
-        "markdown-table",
-        "mdast-util-find-and-replace",
-        "mdast-util-from-markdown",
-        "mdast-util-gfm",
-        "mdast-util-gfm-autolink-literal",
-        "mdast-util-gfm-footnote",
-        "mdast-util-gfm-strikethrough",
-        "mdast-util-gfm-table",
-        "mdast-util-gfm-task-list-item",
-        "mdast-util-phrasing",
-        "mdast-util-to-hast",
-        "mdast-util-to-markdown",
-        "mdast-util-to-string",
         "mdn-data",
         "mediabunny",
-        "micromark",
-        "micromark-core-commonmark",
-        "micromark-extension-gfm",
-        "micromark-extension-gfm-autolink-literal",
-        "micromark-extension-gfm-footnote",
-        "micromark-extension-gfm-strikethrough",
-        "micromark-extension-gfm-table",
-        "micromark-extension-gfm-tagfilter",
-        "micromark-extension-gfm-task-list-item",
-        "micromark-factory-destination",
-        "micromark-factory-label",
-        "micromark-factory-space",
-        "micromark-factory-title",
-        "micromark-factory-whitespace",
-        "micromark-util-character",
-        "micromark-util-chunked",
-        "micromark-util-classify-character",
-        "micromark-util-combine-extensions",
-        "micromark-util-decode-numeric-character-reference",
-        "micromark-util-decode-string",
-        "micromark-util-encode",
-        "micromark-util-html-tag-name",
-        "micromark-util-normalize-identifier",
-        "micromark-util-resolve-all",
-        "micromark-util-sanitize-uri",
-        "micromark-util-subtokenize",
         "modern-screenshot",
         "multiformats",
-        "node-emoji",
         "node-fetch-native",
         "node-mock-http",
         "nostics",
@@ -312,47 +196,17 @@ describe('project sizes', () => {
         "nuxtseo-shared",
         "object-identity",
         "ofetch",
-        "oniguruma-parser",
-        "oniguruma-to-es",
-        "oniguruma-to-es/dist/esm",
-        "parse-entities",
-        "parse5",
-        "parse5/node_modules/entities",
-        "parse5/node_modules/entities/dist/esm",
         "partysocket",
         "pathe",
-        "property-information",
         "radix3",
-        "regex",
-        "regex-recursion",
-        "regex-utilities",
-        "rehype-external-links",
-        "rehype-minify-whitespace",
-        "rehype-raw",
-        "rehype-sort-attribute-values",
-        "rehype-sort-attributes",
-        "remark-emoji",
-        "remark-gfm",
-        "remark-mdc",
-        "remark-parse",
-        "remark-rehype",
-        "remark-stringify",
         "sax",
-        "scule",
         "semver",
         "sharp",
-        "shiki",
-        "skin-tone",
         "source-map-js",
-        "space-separated-tokens",
-        "stringify-entities",
         "svgo",
         "svgo/node_modules/css-tree",
         "svgo/node_modules/css-tree/node_modules/mdn-data",
         "tlds",
-        "trim-lines",
-        "trim-trailing-lines",
-        "trough",
         "ts-custom-error",
         "ufo",
         "ultrahtml",
@@ -362,25 +216,11 @@ describe('project sizes', () => {
         "undici_v7",
         "undici_v8",
         "unhead",
-        "unicode-emoji-modifier-base",
         "unicode-segmenter",
-        "unified",
-        "unist-util-find-after",
-        "unist-util-is",
-        "unist-util-position",
-        "unist-util-stringify-position",
-        "unist-util-visit",
-        "unist-util-visit-parents",
-        "vfile",
-        "vfile-location",
-        "vfile-message",
         "vue",
         "vue-bundle-renderer",
-        "web-namespaces",
         "xml-js",
-        "yaml",
         "zod",
-        "zwitch",
       ]
     `)
   })
@@ -414,7 +254,7 @@ async function measureFiles (files: string[], rootDir: string) {
  *
  * "Reachable" means the transitive static-import closure of each entry, which
  * is what the SSR renderer emits as `<link rel="modulepreload">`; anything
- * reachable from a non-admin key is subtracted so shared chunks (entry, mdc
+ * reachable from a non-admin key is subtracted so shared chunks (entry, prose
  * components, etc.) stay in the public set.
  */
 async function loadAdminOnlyChunks (manifestPath: string): Promise<Set<string>> {
