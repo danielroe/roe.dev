@@ -157,8 +157,8 @@ export default defineComponent({
     const el = import.meta.server ? undefined : ref<HTMLElement | null>(null)
     const elRef = import.meta.server
       ? undefined
-      : (ref: any) => {
-          el!.value = ref?.$el
+      : (vm: any) => {
+          el!.value = vm?.$el
         }
 
     if (import.meta.client) {
