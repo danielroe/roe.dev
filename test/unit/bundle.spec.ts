@@ -55,7 +55,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"283k"`)
+      .toMatchInlineSnapshot(`"290k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -87,7 +87,14 @@ describe('project sizes', () => {
           "_nuxt/ProseTr.js",
           "_nuxt/ProseUl.js",
           "_nuxt/SocialPost.js",
+          "_nuxt/defu.js",
+          "_nuxt/dist.js",
           "_nuxt/entry.js",
+          "_nuxt/nuxt.js",
+          "_nuxt/ready.js",
+          "_nuxt/route-composables.js",
+          "_nuxt/runtime-core.js",
+          "_nuxt/virtual_nuxt_node_modules_.js",
         ]
       `)
   })
@@ -101,7 +108,7 @@ describe('project sizes', () => {
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     expect
       .soft(roundToKilobytes(modules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"39160k"`)
+      .toMatchInlineSnapshot(`"38790k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json'))
@@ -113,6 +120,7 @@ describe('project sizes', () => {
         "@atproto-labs/did-resolver",
         "@atproto-labs/fetch",
         "@atproto-labs/fetch-node",
+        "@atproto-labs/fetch-node/node_modules/undici",
         "@atproto-labs/handle-resolver",
         "@atproto-labs/handle-resolver-node",
         "@atproto-labs/identity-resolver",
@@ -143,8 +151,8 @@ describe('project sizes', () => {
         "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
         "@img/colour",
-        "@img/sharp-libvips-linux-x64",
-        "@img/sharp-linux-x64",
+        "@img/sharp-libvips-linux-arm64",
+        "@img/sharp-linux-arm64",
         "@shikijs/core",
         "@shikijs/engine-javascript",
         "@shikijs/engine-oniguruma",
@@ -156,7 +164,7 @@ describe('project sizes', () => {
         "@shikijs/vscode-textmate",
         "@sindresorhus/is",
         "@takumi-rs/core",
-        "@takumi-rs/core-linux-x64-gnu",
+        "@takumi-rs/core-linux-arm64-gnu",
         "@takumi-rs/helpers",
         "@ungap/structured-clone",
         "@vue/compiler-core",
