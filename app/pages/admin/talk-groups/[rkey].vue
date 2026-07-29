@@ -25,7 +25,7 @@ interface TalkGroupEntry {
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request
 // when `navigateTo` clears `route.params.rkey` on unmount.
-const { data } = await useFetch<TalkGroupEntry>(`/api/admin/talk-groups/${rkey.value}`, {
+const { data, status } = useAdminFetch<TalkGroupEntry>(`/api/admin/talk-groups/${rkey.value}`, {
   watch: false,
 })
 
@@ -43,6 +43,10 @@ async function save (value: TalkGroupValue) {
       :initial="data.value"
       submit-label="Save"
       @submit="save"
+    />
+    <AdminSkeletonForm
+      v-else-if="status === 'pending'"
+      :fields="['text', 'textarea']"
     />
   </AdminShell>
 </template>

@@ -25,7 +25,7 @@ interface CategoryEntry {
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request
 // when `navigateTo` clears `route.params.rkey` on unmount.
-const { data } = await useFetch<CategoryEntry>(`/api/admin/uses-categories/${rkey.value}`, {
+const { data, status } = useAdminFetch<CategoryEntry>(`/api/admin/uses-categories/${rkey.value}`, {
   watch: false,
 })
 
@@ -43,6 +43,10 @@ async function save (value: UsesCategoryValue) {
       :initial="data.value"
       submit-label="Save"
       @submit="save"
+    />
+    <AdminSkeletonForm
+      v-else-if="status === 'pending'"
+      :fields="['text', 'text', 'checkbox']"
     />
   </AdminShell>
 </template>

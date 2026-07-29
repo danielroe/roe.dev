@@ -11,12 +11,22 @@ interface EntityEntry {
   value: DevRoeEntity.Record
 }
 
-const { data, refresh } = await useFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
+const { data, refresh, status } = useAdminFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
+
+const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
 
 async function remove (rkey: string, name: string) {
   if (!confirm(`Delete entity "${name}"?`)) return
-  await $fetch(`/api/admin/entities/${rkey}`, { method: 'DELETE' })
-  await refresh()
+  const previous = data.value
+  data.value = data.value.filter(e => e.rkey !== rkey)
+  try {
+    await $fetch(`/api/admin/entities/${rkey}`, { method: 'DELETE' })
+    refresh()
+  }
+  catch (error) {
+    data.value = previous
+    throw error
+  }
 }
 </script>
 
@@ -31,7 +41,11 @@ async function remove (rkey: string, name: string) {
       </NuxtLink>
     </div>
 
-    <ul class="divide-y divide-accent">
+    <AdminSkeletonRows v-if="showSkeleton" />
+    <ul
+      v-else
+      class="divide-y divide-accent"
+    >
       <li
         v-for="entity in data"
         :key="entity.rkey"
@@ -60,7 +74,7 @@ async function remove (rkey: string, name: string) {
     </ul>
 
     <p
-      v-if="!data?.length"
+      v-if="!showSkeleton && !data?.length"
       class="text-muted text-sm"
     >
       No entities yet.

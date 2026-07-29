@@ -26,7 +26,7 @@ if (!rkey.value) {
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request
 // when `navigateTo` clears `route.params.rkey` on unmount.
-const { data } = await useFetch<TalkEntry>(`/api/admin/talks/${rkey.value}`, {
+const { data, status } = useAdminFetch<TalkEntry>(`/api/admin/talks/${rkey.value}`, {
   watch: false,
 })
 
@@ -47,6 +47,11 @@ async function save (value: TalkValue) {
       :initial="data.value"
       submit-label="Save"
       @submit="save"
+    />
+    <AdminSkeletonForm
+      v-else-if="status === 'pending'"
+      :fields="['text', 'textarea', 'pair', 'pair', 'pair', 'text', 'pair', 'pair', 'text', 'text']"
+      width-class=""
     />
   </AdminShell>
 </template>
