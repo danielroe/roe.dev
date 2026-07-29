@@ -9,6 +9,7 @@ import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
 import type { ComarkTree } from 'comark'
 import type { Nitro } from 'nitropack'
+import type { ViteDevServer } from 'vite'
 
 import { contentCMS } from '../content.config'
 import { serialize } from './shared/serialisers'
@@ -186,6 +187,11 @@ export async function getBody () {
         nitro = instance
       })
 
+      let vite: ViteDevServer | undefined
+      nuxt.hook('vite:serverCreated', (server, env) => {
+        if (env.isClient) vite = server
+      })
+
       await cms.watch()
 
       const refresh = async () => {
@@ -196,6 +202,9 @@ export async function getBody () {
         // `#content-manifest` is inlined into the server build, so the server
         // has to be rebuilt before it serves the new text
         await nitro?.hooks.callHook('rollup:reload')
+        // content lives outside the client module graph, so nothing else would
+        // prompt the browser to pick up the re-render
+        vite?.hot.send({ type: 'full-reload' })
       }
 
       cms.hooks.hook('watch:file:update', refresh)
