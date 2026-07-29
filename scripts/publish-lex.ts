@@ -3,19 +3,27 @@
  * `com.atproto.lexicon.schema` records, so that they can be resolved by third
  * parties per https://atproto.com/specs/lexicon#lexicon-publication-and-resolution.
  *
- * Resolution also requires a DNS TXT record for each NSID authority. Every
- * schema here lives under the `dev.roe` authority.
+ * Identity is resolved the same way the site resolves it at build time, so the
+ * only secret needed is the app password: the DID comes from the authority
+ * domain's `_atproto` TXT record (or `--did`), and the PDS endpoint from the
+ * `#atproto_pds` service entry of the DID document.
  *
- *   _lexicon.roe.dev  TXT  "did=did:plc:jbeaa5kdaladzwq3r7f5xgwe"
+ * Resolution by third parties also requires a DNS TXT record for each NSID
+ * authority. Every schema here lives under `dev.roe`, so one record covers all
+ * of them:
+ *
+ *   _lexicon.roe.dev  TXT  "did=<did>"
  *
  * Usage:
  *   node --env-file=.env scripts/publish-lex.ts
  *   node --env-file=.env scripts/publish-lex.ts --dry-run
  *
  * Environment variables:
- *   NUXT_ATPROTO_HANDLE, NUXT_ATPROTO_PASSWORD, NUXT_PUBLIC_ATPROTO_SERVICE
+ *   NUXT_ATPROTO_PASSWORD  app password (required)
+ *   NUXT_ATPROTO_DID, NUXT_PUBLIC_ATPROTO_SERVICE  optional overrides
  */
 import { readFileSync, readdirSync } from 'node:fs'
+import { promises as dns } from 'node:dns'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -26,8 +34,17 @@ import { defineCommand, runMain } from 'citty'
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const lexRoot = join(root, 'lexicons')
 
-/** Authorities we control, and so are allowed to publish schemas for. */
+/**
+ * NSID authorities we control. Each one needs its own `_lexicon.<authority
+ * reversed>` TXT record; the first is also where we look up the publishing
+ * identity.
+ */
 const OWNED_AUTHORITIES = ['dev.roe']
+
+/** `dev.roe` -> `roe.dev` */
+function authorityDomain (authority: string): string {
+  return authority.split('.').reverse().join('.')
+}
 
 interface LexiconFile {
   path: string
@@ -52,8 +69,35 @@ function collectLexicons (dir: string): LexiconFile[] {
 }
 
 function isOwned (nsid: string): boolean {
-  const authority = nsid.split('.').slice(0, -1).join('.')
-  return OWNED_AUTHORITIES.includes(authority)
+  return OWNED_AUTHORITIES.includes(nsid.split('.').slice(0, -1).join('.'))
+}
+
+async function resolveDid (domain: string): Promise<string> {
+  const records = await dns.resolveTxt(`_atproto.${domain}`).catch(() => [])
+  for (const chunks of records) {
+    const value = chunks.join('')
+    if (value.startsWith('did=')) return value.slice('did='.length)
+  }
+
+  const res = await fetch(`https://${domain}/.well-known/atproto-did`)
+  if (!res.ok) throw new Error(`could not resolve a DID for ${domain} via _atproto TXT or /.well-known/atproto-did`)
+  return (await res.text()).trim()
+}
+
+async function resolvePdsEndpoint (did: string): Promise<string> {
+  const url = did.startsWith('did:plc:')
+    ? `https://plc.directory/${did}`
+    : did.startsWith('did:web:')
+      ? `https://${did.slice('did:web:'.length)}/.well-known/did.json`
+      : null
+  if (!url) throw new Error(`unsupported DID method: ${did}`)
+
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`${url} -> ${res.status}`)
+  const doc = await res.json() as { service?: Array<{ id: string, serviceEndpoint: string }> }
+  const pds = doc.service?.find(s => s.id === '#atproto_pds' || s.id.endsWith('#atproto_pds'))
+  if (!pds?.serviceEndpoint) throw new Error(`DID doc for ${did} has no #atproto_pds service entry`)
+  return pds.serviceEndpoint
 }
 
 /**
@@ -85,14 +129,15 @@ const main = defineCommand({
       description: 'Print what would change without writing to the PDS',
       default: false,
     },
+    'did': {
+      type: 'string',
+      description: 'Publish to this DID instead of the one resolved from DNS',
+    },
   },
   async run ({ args }) {
-    const service = process.env.NUXT_PUBLIC_ATPROTO_SERVICE || 'https://bsky.social'
-    const identifier = process.env.NUXT_ATPROTO_HANDLE
     const password = process.env.NUXT_ATPROTO_PASSWORD
-
-    if (!identifier || !password) {
-      console.error('Set NUXT_ATPROTO_HANDLE and NUXT_ATPROTO_PASSWORD (see .env.example).')
+    if (!password) {
+      console.error('Set NUXT_ATPROTO_PASSWORD (see .env.example).')
       process.exitCode = 1
       return
     }
@@ -104,10 +149,13 @@ const main = defineCommand({
       return
     }
 
+    const domain = authorityDomain(OWNED_AUTHORITIES[0]!)
+    const did = args.did || process.env.NUXT_ATPROTO_DID || await resolveDid(domain)
+    const service = process.env.NUXT_PUBLIC_ATPROTO_SERVICE || await resolvePdsEndpoint(did)
+    console.log(`${did} @ ${service}\n`)
+
     const agent = new AtpAgent({ service })
-    await agent.login({ identifier, password })
-    const did = agent.session?.did
-    if (!did) throw new Error('atproto login did not return a session')
+    await agent.login({ identifier: did, password })
 
     for (const { nsid, doc } of lexicons.sort((a, b) => a.nsid.localeCompare(b.nsid))) {
       const record = toSchemaRecord(doc)
@@ -147,7 +195,9 @@ const main = defineCommand({
     }
 
     console.log(`\nat://${did}/com.atproto.lexicon.schema/<nsid>`)
-    console.log('Resolution requires: _lexicon.roe.dev TXT "did=' + did + '"')
+    for (const authority of OWNED_AUTHORITIES) {
+      console.log(`DNS: _lexicon.${authorityDomain(authority)} TXT "did=${did}"`)
+    }
   },
 })
 

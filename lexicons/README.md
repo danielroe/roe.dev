@@ -5,7 +5,9 @@ upstream schemas we reference; everything under `dev/roe/` is mine.
 
 - `pnpm lex:gen` regenerates the TypeScript types in `shared/lex/`.
 - `pnpm lex:publish` writes each `dev.roe.*` schema to the PDS as a
-  `com.atproto.lexicon.schema` record, with the NSID as the record key.
+  `com.atproto.lexicon.schema` record, with the NSID as the record key. It needs
+  only `NUXT_ATPROTO_PASSWORD`; the DID and PDS endpoint are resolved from DNS
+  and the DID document.
 
 Third-party resolution also needs a DNS TXT record for the `dev.roe` authority
 (reverse the NSID minus its final segment):
