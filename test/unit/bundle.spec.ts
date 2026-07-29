@@ -8,6 +8,13 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { glob as globby } from 'tinyglobby'
 import { join } from 'pathe'
 
+/**
+ * Prebuilt native binaries are resolved for whichever platform the build runs
+ * on, so their names and sizes can't be snapshotted.
+ */
+const NATIVE_BINARY_RE = /(?:linux|darwin|win32)-(?:arm64|x64)/
+const NATIVE_BINARY_GLOB = '!node_modules/**/*{linux,darwin,win32}-{arm64,x64}*/**'
+
 describe('project sizes', () => {
   const rootDir = fileURLToPath(new URL('../..', import.meta.url))
   const publicDir = join(rootDir, '.output/public')
@@ -73,7 +80,7 @@ describe('project sizes', () => {
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
-      ['node_modules/**/*', '!node_modules/**/*linux-{arm64,x64}*/**'],
+      ['node_modules/**/*', NATIVE_BINARY_GLOB],
       serverDir,
     )
     expect
@@ -81,9 +88,8 @@ describe('project sizes', () => {
       .toMatchInlineSnapshot(`"16680k"`)
 
     const packages = modules.files
-      .filter(m => m.endsWith('package.json'))
+      .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
       .map(m => m.replace('/package.json', '').replace('node_modules/', ''))
-      .map(m => m.replace(/linux-(?:arm64|x64)/, 'linux-<arch>'))
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
@@ -118,10 +124,7 @@ describe('project sizes', () => {
         "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
         "@img/colour",
-        "@img/sharp-libvips-linux-<arch>",
-        "@img/sharp-linux-<arch>",
         "@takumi-rs/core",
-        "@takumi-rs/core-linux-<arch>-gnu",
         "@takumi-rs/helpers",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
