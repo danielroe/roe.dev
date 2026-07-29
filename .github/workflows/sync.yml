@@ -8,6 +8,9 @@ on:
       - "src/content/blog/**"
       - ".github/workflows/test.yml"
 
+permissions:
+  contents: read
+
 jobs:
   sync_devto:
     runs-on: ubuntu-latest
