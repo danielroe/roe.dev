@@ -1,4 +1,3 @@
-import { rawBlogPosts } from '#md-raw-blog.json'
 import { pageMeta } from '#md-page-meta.json'
 import { links } from '#shared/utils/links'
 
@@ -9,7 +8,7 @@ export default defineEventHandler(async () => {
 
   const upcomingConferences = await $fetch<Conference[]>('/api/upcoming-conferences').catch(() => [] as Conference[])
 
-  const recentPosts = rawBlogPosts.slice(0, 5)
+  const recentPosts = blogPosts().slice(0, 5)
 
   const pageIndex = Object.entries(pageMeta)
     .filter(([, meta]) => meta.llmLabel)
@@ -48,7 +47,7 @@ export default defineEventHandler(async () => {
     lines.push('## Recent Blog Posts')
     lines.push('')
     for (const post of recentPosts) {
-      lines.push(`- [${post.title}](https://roe.dev/blog/${post.slug}.md) — ${post.date}`)
+      lines.push(blogListItem(post))
     }
     lines.push('')
   }

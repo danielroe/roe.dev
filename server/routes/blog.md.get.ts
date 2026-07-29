@@ -1,20 +1,19 @@
-import { rawBlogPosts } from '#md-raw-blog.json'
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(() => {
+export default defineEventHandler(event => {
   const lines = [
     mdFrontmatter('/blog', pageMeta['/blog']!),
     '',
   ]
 
-  for (const post of rawBlogPosts) {
-    lines.push(`- [${post.title}](https://roe.dev/blog/${post.slug}.md) — ${post.date}`)
-    if (post.description) {
-      lines.push(`  ${post.description}`)
+  for (const post of blogPosts()) {
+    lines.push(blogListItem(post))
+    if (post.data.description) {
+      lines.push(`  ${post.data.description}`)
     }
   }
 
   lines.push('')
 
-  return mdResponse(lines.join('\n'))
+  return mdResponse(event, lines.join('\n'))
 })

@@ -1,8 +1,8 @@
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async event => {
   if (import.meta.test) {
-    return mdResponse('')
+    return mdResponse(event, '')
   }
 
   const talks = await $fetch<Talk[]>('/api/talks')
@@ -68,5 +68,5 @@ export default defineEventHandler(async () => {
     lines.push('')
   }
 
-  return mdResponse(lines.join('\n'))
+  return mdResponse(event, lines.join('\n'))
 })

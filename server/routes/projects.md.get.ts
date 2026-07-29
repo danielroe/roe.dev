@@ -1,7 +1,7 @@
 import { projects } from '#projects.json'
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(() => {
+export default defineEventHandler(event => {
   const lines = [
     mdFrontmatter('/projects', pageMeta['/projects']!),
     '',
@@ -26,5 +26,5 @@ export default defineEventHandler(() => {
     lines.push('')
   }
 
-  return mdResponse(lines.join('\n'))
+  return mdResponse(event, lines.join('\n'))
 })

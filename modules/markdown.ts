@@ -1,31 +1,25 @@
-import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { gzipSync } from 'node:zlib'
 
-import { addTemplate, addTypeTemplate, defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { glob } from 'tinyglobby'
-import grayMatter from 'gray-matter'
-import { filename } from 'pathe/utils'
+import { addTemplate, addTypeTemplate, defineNuxtModule, updateTemplates, useNuxt } from 'nuxt/kit'
+import { generateSourceTypes } from '@comark/cms'
+import type { CMSListFile } from '@comark/cms'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
-import { createParse } from 'comark/parse'
-import highlight from 'comark/plugins/highlight'
-import palenight from 'shiki/themes/material-theme-palenight.mjs'
+import type { ComarkTree } from 'comark'
+import type { Nitro } from 'nitropack'
 
-import { headingIds } from './shared/comark-heading-ids'
+import { contentCMS } from '../content.config'
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
 import { tidFromDate } from './shared/tid'
 
-interface BlogFrontmatter {
-  title: string
-  date: string
-  tags: string[]
-  description: string
-  skip_dev?: boolean
-  bluesky?: string
+type ContentDocument = CMSListFile<Record<string, any>> & {
+  meta: { markdown: string, html?: string }
 }
 
-interface ParsedBlogPost {
+interface BlogEntry {
   slug: string
   title: string
   date: string
@@ -35,7 +29,16 @@ interface ParsedBlogPost {
   path: string
   skip_dev?: boolean
   bluesky?: string
-  body: string
+}
+
+const md = remark().use(remarkHtml)
+
+/** Directory each source's body templates are written to, relative to `markdown/`. */
+const templateDirs = { blog: 'blog', pages: 'page' } as const
+type ContentSource = keyof typeof templateDirs
+
+function stripFrontmatter (raw: string): string {
+  return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
 }
 
 export default defineNuxtModule({
@@ -44,49 +47,89 @@ export default defineNuxtModule({
   },
   async setup () {
     const nuxt = useNuxt()
-    const rootDir = nuxt.options.rootDir
+    const cms = contentCMS
 
-    const [blogFiles, pageFiles] = await Promise.all([
-      glob('./content/blog/**/*.md', { cwd: rootDir, absolute: true }),
-      glob('./content/*.md', { cwd: rootDir, absolute: true }),
-    ])
+    /** Serialised source text per blog post path, used to build the sync payload. */
+    const bodies = new Map<string, string>()
 
-    const blogPosts: ParsedBlogPost[] = []
-    const pageBodies: Record<string, string> = {}
+    // the plain-markdown routes and the feeds serve transformed source text
+    // rather than parsed nodes, so it travels with the document
+    cms.hooks.hook('file:parsed', async ctx => {
+      const file = ctx.file
+      if (!file) return
 
-    for (const filePath of blogFiles) {
-      const raw = await readFile(filePath, 'utf-8')
-      const { data, content } = grayMatter(raw)
-      const slug = filename(filePath)!
-      const fm = data as BlogFrontmatter
-      const date = typeof fm.date === 'object' ? (fm.date as Date).toISOString() : fm.date
+      const raw = String(await ctx.source.getItem(`${file.meta.stem}${file.meta.extension}`))
+      const body = serialize(stripFrontmatter(raw))
 
-      blogPosts.push({
-        slug,
-        title: fm.title,
-        date,
-        tid: tidFromDate(date),
-        tags: fm.tags || [],
-        description: fm.description || '',
-        path: `/blog/${slug}`,
-        skip_dev: fm.skip_dev,
-        bluesky: fm.bluesky,
-        body: content,
-      })
+      if (ctx.sourceName === 'blog') {
+        bodies.set(file.path, body)
+        file.meta.markdown = mdInternalLinks(mdStripContainers(body)).trim()
+        file.meta.html = String(await md.process(body))
+      }
+      else {
+        file.meta.markdown = mdInternalLinks(mdCleanHtml(mdStripContainers(body)))
+      }
+    })
+
+    await cms.init({ metaOnly: true })
+
+    let blogEntries: BlogEntry[] = []
+    const trees: Record<string, ComarkTree> = {}
+    let documents: ContentDocument[] = []
+
+    const slugsFor = (source: ContentSource) =>
+      documents.filter(doc => doc.meta.source === source).map(doc => doc.meta.stem)
+
+    async function collect () {
+      const [blog, pages] = await Promise.all([
+        cms.list(['blog']),
+        cms.list(['pages']),
+      ])
+
+      blog.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+
+      blogEntries = blog.map(entry => ({
+        slug: entry.meta.stem,
+        title: entry.data.title,
+        date: entry.data.date,
+        tid: tidFromDate(entry.data.date),
+        tags: entry.data.tags,
+        description: entry.data.description,
+        path: entry.path,
+        skip_dev: entry.data.skip_dev,
+        bluesky: entry.data.bluesky,
+      }))
+
+      documents = [...blog, ...pages] as ContentDocument[]
+
+      await Promise.all(documents.map(async entry => {
+        const file = await cms.get(entry.path)
+        trees[`${entry.meta.source}/${entry.meta.stem}`] = {
+          frontmatter: {},
+          meta: {},
+          nodes: file?.nodes ?? [],
+        }
+      }))
     }
 
-    for (const filePath of pageFiles) {
-      const raw = await readFile(filePath, 'utf-8')
-      const { content } = grayMatter(raw)
-      const slug = filename(filePath)!
-      pageBodies[slug] = content
-    }
+    await collect()
 
-    blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    const syncArticles = documents
+      .filter(doc => doc.meta.source === 'blog' && !doc.data.skip_dev)
+      .map(post => ({
+        type: 'blog' as const,
+        title: post.data.title,
+        date: post.data.date,
+        description: post.data.description || '',
+        body_markdown: bodies.get(post.path)!,
+        text_content: htmlToText(post.meta.html!, { wordwrap: false }),
+        canonical_url: `https://roe.dev${post.path}/`,
+        tags: post.data.tags.length ? post.data.tags : undefined,
+      }))
 
     nuxt.hook('modules:done', async () => {
       await Promise.all([
-        nuxt.callHook('markdown:blog-entries', blogPosts),
+        nuxt.callHook('markdown:blog-entries', blogEntries),
         nuxt.callHook('markdown:sync-articles', syncArticles),
       ])
     })
@@ -94,137 +137,81 @@ export default defineNuxtModule({
     addTemplate({
       filename: 'markdown/blog-entries.mjs',
       getContents: () => {
-        const entries = blogPosts.map(({ slug: _, body: __, ...entry }) => entry)
+        const entries = blogEntries.map(({ slug: _, ...entry }) => entry)
         return `export const blogEntries = ${JSON.stringify(entries)}`
       },
       write: true,
     })
 
-    const parse = createParse({
-      plugins: [
-        headingIds(),
-        // code blocks always render on a dark background, so both themes match
-        highlight({
-          themes: { light: palenight, dark: palenight },
-        }),
-      ],
-    })
+    for (const source of Object.keys(templateDirs) as ContentSource[]) {
+      const dir = templateDirs[source]
 
-    for (const post of blogPosts) {
-      const tree = await parse(post.body)
-      addTemplate({
-        filename: `markdown/blog/${post.slug}.mjs`,
-        getContents: () => `const tree = ${JSON.stringify(tree)}
+      for (const slug of slugsFor(source)) {
+        addTemplate({
+          filename: `markdown/${dir}/${slug}.mjs`,
+          getContents: () => `const tree = ${JSON.stringify(trees[`${source}/${slug}`])}
 export async function getBody () {
   return tree
 }
 `,
-        write: true,
-      })
-    }
-
-    for (const slug of Object.keys(pageBodies)) {
-      const tree = await parse(pageBodies[slug]!)
-      addTemplate({
-        filename: `markdown/page/${slug}.mjs`,
-        getContents: () => `const tree = ${JSON.stringify(tree)}
-export async function getBody () {
-  return tree
-}
-`,
-        write: true,
-      })
-    }
-
-    addTemplate({
-      filename: 'markdown/blog/index.mjs',
-      getContents: () => {
-        const imports = blogPosts.map(
-          (p, i) => `import { getBody as getBody${i} } from './${p.slug}.mjs'`,
-        ).join('\n')
-        const entries = blogPosts.map(
-          (p, i) => `  '${p.slug}': getBody${i},`,
-        ).join('\n')
-        return `${imports}\n\nexport const blogBodyLoaders = {\n${entries}\n}\n`
-      },
-      write: true,
-    })
-
-    addTemplate({
-      filename: 'markdown/page/index.mjs',
-      getContents: () => {
-        const slugs = Object.keys(pageBodies)
-        const imports = slugs.map(
-          (slug, i) => `import { getBody as getBody${i} } from './${slug}.mjs'`,
-        ).join('\n')
-        const entries = slugs.map(
-          (slug, i) => `  '${slug}': getBody${i},`,
-        ).join('\n')
-        return `${imports}\n\nexport const pageBodyLoaders = {\n${entries}\n}\n`
-      },
-      write: true,
-    })
-
-    const md = remark().use(remarkHtml)
-    const rssMetadata: Record<string, any> = {}
-
-    for (const post of blogPosts) {
-      const contents = serialize(post.body)
-      const date = new Date(post.date)
-      rssMetadata[post.slug] = {
-        title: post.title,
-        description: post.description,
-        tags: post.tags,
-        html: await md.process(contents).then(r => r.value),
-        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+          write: true,
+        })
       }
+
+      addTemplate({
+        filename: `markdown/${dir}/index.mjs`,
+        getContents: () => {
+          const entries = slugsFor(source)
+          const imports = entries.map((slug, i) => `import { getBody as getBody${i} } from './${slug}.mjs'`)
+          const loaders = entries.map((slug, i) => `  '${slug}': getBody${i},`)
+          return `${imports.join('\n')}\n\nexport const ${dir}BodyLoaders = {\n${loaders.join('\n')}\n}\n`
+        },
+        write: true,
+      })
     }
 
     nuxt.options.nitro.virtual ||= {}
-    nuxt.options.nitro.virtual['#metadata.json'] = () =>
-      `export const metadata = ${JSON.stringify(rssMetadata)}`
-
-    const syncArticles = await Promise.all(blogPosts
-      .filter(p => !p.skip_dev)
-      .map(async post => {
-        const body = serialize(post.body)
-        const html = String(await md.process(body))
-        const textContent = htmlToText(html, { wordwrap: false })
-        return {
-          type: 'blog' as const,
-          title: post.title,
-          date: post.date,
-          description: post.description || '',
-          body_markdown: body,
-          text_content: textContent,
-          canonical_url: `https://roe.dev/blog/${post.slug}/`,
-          tags: post.tags.length ? post.tags : undefined,
-        }
-      }))
-
-    const rawBlogData = blogPosts.map(post => ({
-      slug: post.slug,
-      title: post.title,
-      date: typeof post.date === 'string' ? post.date.split('T')[0] : post.date,
-      tags: post.tags,
-      description: post.description,
-      body: mdInternalLinks(mdStripContainers(serialize(post.body))).trim(),
-    }))
-
-    nuxt.options.nitro.virtual['#md-raw-blog.json'] = () =>
-      `export const rawBlogPosts = ${JSON.stringify(rawBlogData)}`
-
-    const rawPageData: Record<string, string> = {}
-    for (const [slug, body] of Object.entries(pageBodies)) {
-      rawPageData[slug] = mdInternalLinks(mdCleanHtml(mdStripContainers(serialize(body))))
-    }
-
-    nuxt.options.nitro.virtual['#md-raw-pages.json'] = () =>
-      `export const rawPages = ${JSON.stringify(rawPageData)}`
+    // gzipped rather than inlined as JSON: nitro rewrites `import.meta.*` in
+    // module source, which corrupts posts that quote it in a code sample
+    nuxt.options.nitro.virtual['#content-manifest'] = () =>
+      `export const compressed = ${JSON.stringify(gzipSync(JSON.stringify(documents)).toString('base64'))}`
 
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#metadata.json', '#md-raw-blog.json', '#md-raw-pages.json')
+    nuxt.options.nitro.externals.inline.push('#content-manifest')
+
+    if (nuxt.options.dev) {
+      let nitro: Nitro | undefined
+      nuxt.hook('nitro:init', instance => {
+        nitro = instance
+      })
+
+      await cms.watch()
+
+      const refresh = async () => {
+        await collect()
+        await updateTemplates({
+          filter: template => !!template.filename?.startsWith('markdown/'),
+        })
+        // `#content-manifest` is inlined into the server build, so the server
+        // has to be rebuilt before it serves the new text
+        await nitro?.hooks.callHook('rollup:reload')
+      }
+
+      cms.hooks.hook('watch:file:update', refresh)
+      cms.hooks.hook('watch:file:remove', refresh)
+    }
+
+    addTypeTemplate({
+      filename: 'types/content.d.ts',
+      getContents: () => generateSourceTypes(cms),
+    }, { nuxt: true, nitro: true })
+
+    // this module reads the sources it generates types for, so it needs the
+    // registry augmentation in the node project too
+    nuxt.hook('prepare:types', ({ nodeReferences }) => {
+      nodeReferences.push({ path: join(nuxt.options.buildDir, 'types/content.d.ts') })
+    })
 
     addTypeTemplate({
       filename: 'types/markdown.d.ts',
@@ -253,20 +240,8 @@ declare module '#build/markdown/page/index.mjs' {
   export const pageBodyLoaders: Record<string, () => Promise<ComarkTree>>
 }
 
-declare module '#md-raw-blog.json' {
-  interface RawBlogPost {
-    slug: string
-    title: string
-    date: string
-    tags: string[]
-    description: string
-    body: string
-  }
-  export const rawBlogPosts: RawBlogPost[]
-}
-
-declare module '#md-raw-pages.json' {
-  export const rawPages: Record<string, string>
+declare module '#content-manifest' {
+  export const compressed: string
 }
 
 declare module '#md-page-meta.json' {

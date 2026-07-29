@@ -1,10 +1,9 @@
-import { rawBlogPosts } from '#md-raw-blog.json'
 import { pageMeta } from '#md-page-meta.json'
 import { links } from '#shared/utils/links'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async event => {
   if (import.meta.test) {
-    return mdResponse('')
+    return mdResponse(event, '')
   }
 
   const [talks, upcomingConferences] = await Promise.all([
@@ -24,7 +23,7 @@ export default defineEventHandler(async () => {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 4)
 
-  const recentPosts = rawBlogPosts.slice(0, 4)
+  const recentPosts = blogPosts().slice(0, 4)
 
   const lines = [
     mdFrontmatter('/', pageMeta['/']!),
@@ -71,7 +70,7 @@ export default defineEventHandler(async () => {
     lines.push('## Latest from the Blog')
     lines.push('')
     for (const post of recentPosts) {
-      lines.push(`- [${post.title}](https://roe.dev/blog/${post.slug}.md) — ${post.date}`)
+      lines.push(blogListItem(post))
     }
     lines.push('')
     lines.push('[More articles](https://roe.dev/blog.md)')
@@ -87,5 +86,5 @@ export default defineEventHandler(async () => {
   lines.push('My open source work is supported by sponsors. [More about how I\'m funded](https://roe.dev/blog/funding.md).')
   lines.push('')
 
-  return mdResponse(lines.join('\n'))
+  return mdResponse(event, lines.join('\n'))
 })
