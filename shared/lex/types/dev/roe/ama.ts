@@ -9,6 +9,7 @@ import {
   is$typed as _is$typed,
   type OmitKey,
 } from '../../../util.ts'
+import type * as DevRoeDefs from './defs.ts'
 import type * as ComAtprotoRepoStrongRef from '../../com/atproto/repo/strongRef.ts'
 
 const is$typed = _is$typed,
@@ -27,8 +28,8 @@ export interface Main {
   platforms?: Platforms
   publishedLinks?: PublishedLinks
   image?: BlobRef
-  imageDimensions?: ImageDimensions
-  /** ID of the background style used to render the image. See `shared/cms/backgrounds.ts`. */
+  imageDimensions?: DevRoeDefs.AspectRatio
+  /** ID of the background style used to render the image. The set of styles is internal to roe.dev. */
   backgroundStyle?: string
   createdAt: string
   answeredAt?: string
@@ -56,7 +57,7 @@ export interface Post {
   $type?: 'dev.roe.ama#post'
   /** Body text. Plain text with `@<entity-rkey>` placeholders for entity mentions (e.g. `Thanks @abc123def456 for the help`). The placeholder syntax is internal; the publisher swaps them for the right per-platform handle. */
   text: string
-  /** Strong-refs to dev.roe.entity records keyed by the placeholder token used in `text` (the entity rkey). */
+  /** Strong-refs to dev.roe.entity records. The rkey of each referenced record is the placeholder token used in `text`. */
   mentions?: ComAtprotoRepoStrongRef.Main[]
 }
 
@@ -104,20 +105,4 @@ export function isPublishedLinks<V>(v: V) {
 
 export function validatePublishedLinks<V>(v: V) {
   return validate<PublishedLinks & V>(v, id, hashPublishedLinks)
-}
-
-export interface ImageDimensions {
-  $type?: 'dev.roe.ama#imageDimensions'
-  width: number
-  height: number
-}
-
-const hashImageDimensions = 'imageDimensions'
-
-export function isImageDimensions<V>(v: V) {
-  return is$typed(v, id, hashImageDimensions)
-}
-
-export function validateImageDimensions<V>(v: V) {
-  return validate<ImageDimensions & V>(v, id, hashImageDimensions)
 }

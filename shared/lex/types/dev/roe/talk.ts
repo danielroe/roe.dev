@@ -10,6 +10,7 @@ import {
   type OmitKey,
 } from '../../../util.ts'
 import type * as ComAtprotoRepoStrongRef from '../../com/atproto/repo/strongRef.ts'
+import type * as DevRoeDefs from './defs.ts'
 
 const is$typed = _is$typed,
   validate = _validate
@@ -46,7 +47,7 @@ export interface Main {
   repo?: string
   group?: ComAtprotoRepoStrongRef.Main
   image?: BlobRef
-  aspectRatio?: AspectRatio
+  aspectRatio?: DevRoeDefs.AspectRatio
   createdAt: string
   [k: string]: unknown
 }
@@ -65,21 +66,4 @@ export {
   type Main as Record,
   isMain as isRecord,
   validateMain as validateRecord,
-}
-
-/** width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`. */
-export interface AspectRatio {
-  $type?: 'dev.roe.talk#aspectRatio'
-  width: number
-  height: number
-}
-
-const hashAspectRatio = 'aspectRatio'
-
-export function isAspectRatio<V>(v: V) {
-  return is$typed(v, id, hashAspectRatio)
-}
-
-export function validateAspectRatio<V>(v: V) {
-  return validate<AspectRatio & V>(v, id, hashAspectRatio)
 }

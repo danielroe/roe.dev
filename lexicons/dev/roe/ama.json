@@ -16,12 +16,13 @@
           },
           "encryptedQuestion": {
             "type": "string",
-            "description": "AES-256-GCM envelope holding the raw question text. Present iff status=unanswered."
+            "description": "AES-256-GCM envelope holding the raw question text. Present iff status=unanswered.",
+            "maxLength": 500000
           },
           "question": {
             "type": "string",
             "description": "Plaintext question. Present iff status=answered; the editor decrypts encryptedQuestion at publish time and writes it here so the record is self-contained going forward.",
-            "maxLength": 200000,
+            "maxLength": 500000,
             "maxGraphemes": 50000
           },
           "posts": {
@@ -50,12 +51,12 @@
           },
           "imageDimensions": {
             "type": "ref",
-            "ref": "#imageDimensions",
+            "ref": "dev.roe.defs#aspectRatio",
             "description": "Pixel dimensions of `image`. Stored alongside because PDS blobs don't carry intrinsic dimensions and Bluesky's image embed needs `aspectRatio`."
           },
           "backgroundStyle": {
             "type": "string",
-            "description": "ID of the background style used to render the image. See `shared/cms/backgrounds.ts`.",
+            "description": "ID of the background style used to render the image. The set of styles is internal to roe.dev.",
             "maxLength": 64
           },
           "createdAt": {
@@ -77,12 +78,12 @@
         "text": {
           "type": "string",
           "description": "Body text. Plain text with `@<entity-rkey>` placeholders for entity mentions (e.g. `Thanks @abc123def456 for the help`). The placeholder syntax is internal; the publisher swaps them for the right per-platform handle.",
-          "maxLength": 200000,
+          "maxLength": 500000,
           "maxGraphemes": 50000
         },
         "mentions": {
           "type": "array",
-          "description": "Strong-refs to dev.roe.entity records keyed by the placeholder token used in `text` (the entity rkey).",
+          "description": "Strong-refs to dev.roe.entity records. The rkey of each referenced record is the placeholder token used in `text`.",
           "items": {
             "type": "ref",
             "ref": "com.atproto.repo.strongRef"
@@ -108,14 +109,7 @@
         "linkedin": { "type": "string", "format": "uri" },
         "youtubeShorts": { "type": "string", "format": "uri" }
       }
-    },
-    "imageDimensions": {
-      "type": "object",
-      "required": ["width", "height"],
-      "properties": {
-        "width": { "type": "integer", "minimum": 1 },
-        "height": { "type": "integer", "minimum": 1 }
-      }
     }
   }
 }
+

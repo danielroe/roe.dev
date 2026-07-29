@@ -12,18 +12,18 @@
         "properties": {
           "city": {
             "type": "string",
-            "maxLength": 1024,
+            "maxLength": 2560,
             "maxGraphemes": 256
           },
           "region": {
             "type": "string",
             "description": "Region/state. Used to special-case Scotland and US/UK subdivisions on the public site.",
-            "maxLength": 1024,
+            "maxLength": 2560,
             "maxGraphemes": 256
           },
           "country": {
             "type": "string",
-            "maxLength": 1024,
+            "maxLength": 2560,
             "maxGraphemes": 256
           },
           "countryCode": {

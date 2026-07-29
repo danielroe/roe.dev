@@ -12,7 +12,8 @@
         "properties": {
           "encrypted": {
             "type": "string",
-            "description": "AES-256-GCM envelope (see server/utils/admin/encryption.ts) holding { slug, repo } as JSON. Opaque to anyone without the server key."
+            "description": "AES-256-GCM envelope holding `{ slug, repo }` as JSON. Opaque to anyone without the server key.",
+            "maxLength": 8192
           },
           "isActive": {
             "type": "boolean",

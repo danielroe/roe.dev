@@ -19,7 +19,8 @@
     "auth:linkedin": "node --env-file=.env scripts/linkedin-auth.ts",
     "auth:youtube": "node --env-file=.env scripts/youtube-auth.ts",
     "auth:youtube:refresh": "node --env-file=.env scripts/youtube-auth.ts refresh",
-    "lex:gen": "node scripts/gen-lex.mjs"
+    "lex:gen": "node scripts/gen-lex.mjs",
+    "lex:publish": "node --env-file=.env scripts/publish-lex.ts"
   },
   "nano-staged": {
     "*.{js,ts,mjs,vue}": [

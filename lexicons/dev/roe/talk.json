@@ -13,12 +13,12 @@
           "title": {
             "type": "string",
             "description": "Optional for upcoming events with no announced title. Required for past talks unless the talk is part of a group.",
-            "maxLength": 2048,
+            "maxLength": 5120,
             "maxGraphemes": 512
           },
           "description": {
             "type": "string",
-            "maxLength": 20000,
+            "maxLength": 50000,
             "maxGraphemes": 5000
           },
           "date": {
@@ -34,13 +34,13 @@
           "source": {
             "type": "string",
             "description": "Conference name, meetup, podcast title, etc.",
-            "maxLength": 2048,
+            "maxLength": 5120,
             "maxGraphemes": 512
           },
           "location": {
             "type": "string",
             "description": "Free-form: city, country, or 'Online'.",
-            "maxLength": 2048,
+            "maxLength": 5120,
             "maxGraphemes": 512
           },
           "type": {
@@ -51,7 +51,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "maxLength": 256,
+              "maxLength": 640,
               "maxGraphemes": 64
             },
             "maxLength": 32
@@ -67,7 +67,8 @@
           },
           "slides": {
             "type": "string",
-            "description": "Identifier for slides; historically a GitHub release tag from danielroe/slides."
+            "description": "Identifier for slides; historically a GitHub release tag from danielroe/slides.",
+            "maxLength": 512
           },
           "demo": {
             "type": "string",
@@ -89,23 +90,14 @@
           },
           "aspectRatio": {
             "type": "ref",
-            "ref": "#aspectRatio",
-            "description": "Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`."
+            "ref": "dev.roe.defs#aspectRatio",
+            "description": "Intrinsic pixel dimensions of `image`."
           },
           "createdAt": {
             "type": "string",
             "format": "datetime"
           }
         }
-      }
-    },
-    "aspectRatio": {
-      "type": "object",
-      "description": "width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.",
-      "required": ["width", "height"],
-      "properties": {
-        "width": { "type": "integer", "minimum": 1 },
-        "height": { "type": "integer", "minimum": 1 }
       }
     }
   }

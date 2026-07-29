@@ -1,0 +1,15 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.defs",
+  "defs": {
+    "aspectRatio": {
+      "type": "object",
+      "description": "Intrinsic width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

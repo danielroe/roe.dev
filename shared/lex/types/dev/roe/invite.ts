@@ -16,7 +16,7 @@ const id = 'dev.roe.invite'
 
 export interface Main {
   $type: 'dev.roe.invite'
-  /** AES-256-GCM envelope (see server/utils/admin/encryption.ts) holding { slug, repo } as JSON. Opaque to anyone without the server key. */
+  /** AES-256-GCM envelope holding `{ slug, repo }` as JSON. Opaque to anyone without the server key. */
   encrypted: string
   /** Whether this invite is currently honoured. Inactive invites stay around for audit but don't get wired up in the route table. */
   isActive: boolean

@@ -52,12 +52,13 @@ export const schemaDict = {
               type: 'string',
               description:
                 'AES-256-GCM envelope holding the raw question text. Present iff status=unanswered.',
+              maxLength: 500000,
             },
             question: {
               type: 'string',
               description:
                 'Plaintext question. Present iff status=answered; the editor decrypts encryptedQuestion at publish time and writes it here so the record is self-contained going forward.',
-              maxLength: 200000,
+              maxLength: 500000,
               maxGraphemes: 50000,
             },
             posts: {
@@ -88,14 +89,14 @@ export const schemaDict = {
             },
             imageDimensions: {
               type: 'ref',
-              ref: 'lex:dev.roe.ama#imageDimensions',
+              ref: 'lex:dev.roe.defs#aspectRatio',
               description:
                 "Pixel dimensions of `image`. Stored alongside because PDS blobs don't carry intrinsic dimensions and Bluesky's image embed needs `aspectRatio`.",
             },
             backgroundStyle: {
               type: 'string',
               description:
-                'ID of the background style used to render the image. See `shared/cms/backgrounds.ts`.',
+                'ID of the background style used to render the image. The set of styles is internal to roe.dev.',
               maxLength: 64,
             },
             createdAt: {
@@ -119,13 +120,13 @@ export const schemaDict = {
             type: 'string',
             description:
               'Body text. Plain text with `@<entity-rkey>` placeholders for entity mentions (e.g. `Thanks @abc123def456 for the help`). The placeholder syntax is internal; the publisher swaps them for the right per-platform handle.',
-            maxLength: 200000,
+            maxLength: 500000,
             maxGraphemes: 50000,
           },
           mentions: {
             type: 'array',
             description:
-              'Strong-refs to dev.roe.entity records keyed by the placeholder token used in `text` (the entity rkey).',
+              'Strong-refs to dev.roe.entity records. The rkey of each referenced record is the placeholder token used in `text`.',
             items: {
               type: 'ref',
               ref: 'lex:com.atproto.repo.strongRef',
@@ -176,8 +177,16 @@ export const schemaDict = {
           },
         },
       },
-      imageDimensions: {
+    },
+  },
+  DevRoeDefs: {
+    lexicon: 1,
+    id: 'dev.roe.defs',
+    defs: {
+      aspectRatio: {
         type: 'object',
+        description:
+          'Intrinsic width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.',
         required: ['width', 'height'],
         properties: {
           width: {
@@ -207,7 +216,7 @@ export const schemaDict = {
           properties: {
             name: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             socialHandles: {
@@ -264,7 +273,8 @@ export const schemaDict = {
             encrypted: {
               type: 'string',
               description:
-                'AES-256-GCM envelope (see server/utils/admin/encryption.ts) holding { slug, repo } as JSON. Opaque to anyone without the server key.',
+                'AES-256-GCM envelope holding `{ slug, repo }` as JSON. Opaque to anyone without the server key.',
+              maxLength: 8192,
             },
             isActive: {
               type: 'boolean',
@@ -294,19 +304,19 @@ export const schemaDict = {
           properties: {
             city: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             region: {
               type: 'string',
               description:
                 'Region/state. Used to special-case Scotland and US/UK subdivisions on the public site.',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             country: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             countryCode: {
@@ -378,12 +388,12 @@ export const schemaDict = {
               type: 'string',
               description:
                 'Optional for upcoming events with no announced title. Required for past talks unless the talk is part of a group.',
-              maxLength: 2048,
+              maxLength: 5120,
               maxGraphemes: 512,
             },
             description: {
               type: 'string',
-              maxLength: 20000,
+              maxLength: 50000,
               maxGraphemes: 5000,
             },
             date: {
@@ -400,13 +410,13 @@ export const schemaDict = {
             source: {
               type: 'string',
               description: 'Conference name, meetup, podcast title, etc.',
-              maxLength: 2048,
+              maxLength: 5120,
               maxGraphemes: 512,
             },
             location: {
               type: 'string',
               description: "Free-form: city, country, or 'Online'.",
-              maxLength: 2048,
+              maxLength: 5120,
               maxGraphemes: 512,
             },
             type: {
@@ -424,7 +434,7 @@ export const schemaDict = {
               type: 'array',
               items: {
                 type: 'string',
-                maxLength: 256,
+                maxLength: 640,
                 maxGraphemes: 64,
               },
               maxLength: 32,
@@ -442,6 +452,7 @@ export const schemaDict = {
               type: 'string',
               description:
                 'Identifier for slides; historically a GitHub release tag from danielroe/slides.',
+              maxLength: 512,
             },
             demo: {
               type: 'string',
@@ -463,30 +474,13 @@ export const schemaDict = {
             },
             aspectRatio: {
               type: 'ref',
-              ref: 'lex:dev.roe.talk#aspectRatio',
-              description:
-                'Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+              ref: 'lex:dev.roe.defs#aspectRatio',
+              description: 'Intrinsic pixel dimensions of `image`.',
             },
             createdAt: {
               type: 'string',
               format: 'datetime',
             },
-          },
-        },
-      },
-      aspectRatio: {
-        type: 'object',
-        description:
-          'width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.',
-        required: ['width', 'height'],
-        properties: {
-          width: {
-            type: 'integer',
-            minimum: 1,
-          },
-          height: {
-            type: 'integer',
-            minimum: 1,
           },
         },
       },
@@ -507,12 +501,12 @@ export const schemaDict = {
           properties: {
             title: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             description: {
               type: 'string',
-              maxLength: 10000,
+              maxLength: 25000,
               maxGraphemes: 2500,
             },
             createdAt: {
@@ -539,7 +533,7 @@ export const schemaDict = {
           properties: {
             title: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             order: {
@@ -582,12 +576,12 @@ export const schemaDict = {
             },
             name: {
               type: 'string',
-              maxLength: 1024,
+              maxLength: 2560,
               maxGraphemes: 256,
             },
             description: {
               type: 'string',
-              maxLength: 10000,
+              maxLength: 25000,
               maxGraphemes: 2500,
             },
             order: {
@@ -603,9 +597,8 @@ export const schemaDict = {
             },
             aspectRatio: {
               type: 'ref',
-              ref: 'lex:dev.roe.usesItem#aspectRatio',
-              description:
-                'Intrinsic pixel dimensions of `image`. Mirrors `app.bsky.embed.defs#aspectRatio`.',
+              ref: 'lex:dev.roe.defs#aspectRatio',
+              description: 'Intrinsic pixel dimensions of `image`.',
             },
             links: {
               type: 'array',
@@ -632,24 +625,8 @@ export const schemaDict = {
           },
           label: {
             type: 'string',
-            maxLength: 256,
+            maxLength: 640,
             maxGraphemes: 64,
-          },
-        },
-      },
-      aspectRatio: {
-        type: 'object',
-        description:
-          'width:height of an image in pixels. Mirrors `app.bsky.embed.defs#aspectRatio`.',
-        required: ['width', 'height'],
-        properties: {
-          width: {
-            type: 'integer',
-            minimum: 1,
-          },
-          height: {
-            type: 'integer',
-            minimum: 1,
           },
         },
       },
@@ -690,6 +667,7 @@ export function validate(
 export const ids = {
   ComAtprotoRepoStrongRef: 'com.atproto.repo.strongRef',
   DevRoeAma: 'dev.roe.ama',
+  DevRoeDefs: 'dev.roe.defs',
   DevRoeEntity: 'dev.roe.entity',
   DevRoeInvite: 'dev.roe.invite',
   DevRoeLocation: 'dev.roe.location',

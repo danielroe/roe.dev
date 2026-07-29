@@ -11,6 +11,7 @@ export type { $Typed, Un$Typed, OmitKey } from './util.ts'
 
 export * as ComAtprotoRepoStrongRef from './types/com/atproto/repo/strongRef.ts'
 export * as DevRoeAma from './types/dev/roe/ama.ts'
+export * as DevRoeDefs from './types/dev/roe/defs.ts'
 export * as DevRoeEntity from './types/dev/roe/entity.ts'
 export * as DevRoeInvite from './types/dev/roe/invite.ts'
 export * as DevRoeLocation from './types/dev/roe/location.ts'
