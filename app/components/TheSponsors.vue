@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const sponsors = await $fetch<string[]>('/api/sponsors')
+const sponsors = await apiFetch('/api/sponsors')
 </script>
 
 <template>

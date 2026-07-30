@@ -1,10 +1,13 @@
 import { imageMeta } from 'image-meta'
 
 import { getUpcomingTalks } from '../utils/cms/talks'
-import type { UpcomingConference } from '../utils/cms/talks'
+import type { UpcomingTalk } from '../utils/cms/talks'
+import type { UpcomingConference, UpcomingConferenceImage } from '#shared/types/api'
 
-export default defineEventHandler(async event => {
-  const upcomingConferences = await getUpcomingTalks(event)
+const OG_IMAGE_RE = /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/
+
+export default defineEventHandler(async (event): Promise<UpcomingConference[]> => {
+  const upcoming = await getUpcomingTalks(event)
 
   const formatter = new Intl.DateTimeFormat('en', {
     month: 'long',
@@ -12,47 +15,31 @@ export default defineEventHandler(async event => {
   })
 
   return Promise.all(
-    upcomingConferences.map(async conference => {
-      let dates = formatter.format(new Date(conference.dates))
-      if (conference.endDate) {
-        dates += ` - ${formatter.format(new Date(conference.endDate))}`
-        delete conference.endDate
-      }
-      conference.dates = dates
-
-      if (conference.image?.url && conference.image.width && conference.image.height) {
-        return conference as Omit<UpcomingConference, 'image'> & { image: NonNullable<UpcomingConference['image']> }
+    upcoming.map(async ({ endDate, image, ...talk }): Promise<UpcomingConference> => {
+      let dates = formatter.format(new Date(talk.dates))
+      if (endDate) {
+        dates += ` - ${formatter.format(new Date(endDate))}`
       }
 
-      const imageUrl = conference.image?.url ?? await (async () => {
-        const html = await $fetch<string>(conference.link)
-        return html.match(
-          /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/,
-        )?.[1] ?? null
-      })()
-
-      if (!imageUrl) {
-        return {
-          ...conference,
-          image: {
-            url: null,
-            width: null,
-            height: null,
-          },
-        }
-      }
-
-      const res = await $fetch<ArrayBuffer>(imageUrl, { responseType: 'arrayBuffer' })
-      const metadata = imageMeta(new Uint8Array(res))
-
-      return {
-        ...conference,
-        image: {
-          url: imageUrl,
-          width: metadata.width,
-          height: metadata.height,
-        },
-      }
+      return { ...talk, dates, image: await resolveImage(image, talk.link) }
     }),
   )
 })
+
+async function resolveImage (
+  image: UpcomingTalk['image'],
+  link: string,
+): Promise<UpcomingConferenceImage> {
+  if (image?.url && image.width && image.height) return image
+
+  const url = image?.url ?? await (async () => {
+    const html = await $fetch<string>(link)
+    return html.match(OG_IMAGE_RE)?.[1] ?? null
+  })()
+
+  if (!url) return { url: null, width: null, height: null }
+
+  const res = await $fetch<ArrayBuffer>(url, { responseType: 'arrayBuffer' })
+  const { width, height } = imageMeta(new Uint8Array(res))
+  return { url, width, height }
+}

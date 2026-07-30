@@ -6,7 +6,7 @@ export default defineEventHandler(async event => {
   const userAgent = getRequestHeader(event, 'user-agent')
   const isOpenGraphCrawler = userAgent && BOT_RE.test(userAgent)
   if (!isOpenGraphCrawler) {
-    return await sendRedirect(event, 'https://twitch.tv/danielroe')
+    return await redirect('https://twitch.tv/danielroe')
   }
 
   setHeader(event, 'content-type', 'text/html')

@@ -1,0 +1,18 @@
+diff --git a/dist/runtime/server/middleware/init.js b/dist/runtime/server/middleware/init.js
+index 401790c8f32853c63ff63525e89fb3d5f31472b1..0e8481b7b2ba77956462f0503e824c740f31823d 100644
+--- a/dist/runtime/server/middleware/init.js
++++ b/dist/runtime/server/middleware/init.js
+@@ -32,10 +32,11 @@ export default eventHandler(async (e) => {
+   });
+   const buildStack = config.stack || [];
+   buildStack.forEach((c) => siteConfig.push(c));
+-  if (e.context._nitro.routeRules.site) {
++  const routeRules = e.context._nitro?.routeRules;
++  if (routeRules?.site) {
+     siteConfig.push({
+       _context: "route-rules",
+-      ...e.context._nitro.routeRules.site
++      ...routeRules.site
+     });
+   }
+   if (config.multiTenancy) {

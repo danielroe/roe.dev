@@ -8,5 +8,5 @@ export default defineEventHandler(async event => {
     })
   }
   await clearAdminSessionCookie(event)
-  return sendRedirect(event, '/', 303)
+  return redirect('/', 303)
 })

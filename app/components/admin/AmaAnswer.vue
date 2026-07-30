@@ -248,8 +248,8 @@ async function saveDraft () {
     imageRemoved.value = false
   }
   catch (err) {
-    const data = (err as { data?: { statusMessage?: string } }).data
-    saveError.value = data?.statusMessage || (err instanceof Error ? err.message : String(err))
+    const data = (err as { data?: { message?: string } }).data
+    saveError.value = data?.message || (err instanceof Error ? err.message : String(err))
   }
   finally {
     saving.value = false
@@ -277,10 +277,10 @@ async function publishToPlatform (platform: AmaPlatform, force = false) {
     platformState[platform] = { status: 'success', url: res.url }
   }
   catch (err) {
-    const data = (err as { data?: { statusMessage?: string } }).data
+    const data = (err as { data?: { message?: string } }).data
     platformState[platform] = {
       status: 'failed',
-      error: data?.statusMessage || (err instanceof Error ? err.message : String(err)),
+      error: data?.message || (err instanceof Error ? err.message : String(err)),
     }
   }
 }

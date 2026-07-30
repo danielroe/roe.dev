@@ -58,10 +58,6 @@ export default defineNuxtModule({
     nuxt.options.nitro.virtual['#projects.json'] = () =>
       `export const projects = ${JSON.stringify(categories)}`
 
-    nuxt.options.nitro.externals ||= {}
-    nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#projects.json')
-
     addTypeTemplate({
       filename: 'types/projects.d.ts',
       getContents: () => `

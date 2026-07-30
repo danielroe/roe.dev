@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 
 import type { Talk } from '../md'
 import { listRecords, blobImage } from '../atproto'
@@ -23,7 +23,11 @@ export async function getPastTalks (event: H3Event): Promise<Talk[]> {
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 
-export interface UpcomingConference {
+/**
+ * An upcoming talk as stored, before `/api/upcoming-conferences` formats the
+ * dates and resolves a logo. `dates` is still an ISO date here.
+ */
+export interface UpcomingTalk {
   title?: string
   name: string
   dates: string
@@ -37,7 +41,7 @@ export interface UpcomingConference {
   } | null
 }
 
-export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConference[]> {
+export async function getUpcomingTalks (event: H3Event): Promise<UpcomingTalk[]> {
   const now = new Date().toISOString()
   const talks = await listRecords(event, 'dev.roe.talk')
 

@@ -7,7 +7,7 @@ export default defineEventHandler(event => {
 
   const post = slug ? rawBlogPosts.find(p => p.slug === slug) : undefined
   if (!post) {
-    throw createError({ statusCode: 404, statusMessage: 'Not found' })
+    throw createError({ status: 404, message: 'Not found' })
   }
 
   const tagStr = post.tags.length

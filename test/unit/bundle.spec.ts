@@ -8,13 +8,6 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { glob as globby } from 'tinyglobby'
 import { join } from 'pathe'
 
-/**
- * Prebuilt native binaries are resolved for whichever platform the build runs
- * on, so their names and sizes can't be snapshotted.
- */
-const NATIVE_BINARY_RE = /(?:linux|darwin|win32)-(?:arm64|x64)/
-const NATIVE_BINARY_GLOB = '!node_modules/**/*{linux,darwin,win32}-{arm64,x64}*/**'
-
 describe('project sizes', () => {
   const rootDir = fileURLToPath(new URL('../..', import.meta.url))
   const publicDir = join(rootDir, '.output/public')
@@ -62,7 +55,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"264k"`)
+      .toMatchInlineSnapshot(`"262k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -73,154 +66,60 @@ describe('project sizes', () => {
   })
 
   it('default server bundle size', async () => {
-    stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
+    stats.server = await analyzeSizes(['**/*.mjs', '!_libs/**'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1870k"`)
+      .toMatchInlineSnapshot(`"990k"`)
 
-    const modules = await analyzeSizes('node_modules/**/*', serverDir)
-    const portableModules = await analyzeSizes(
-      ['node_modules/**/*', NATIVE_BINARY_GLOB],
-      serverDir,
-    )
+    const libs = await analyzeSizes('_libs/**/*', serverDir)
     expect
-      .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"16680k"`)
+      .soft(roundToKilobytes(libs.totalBytes, 10))
+      .toMatchInlineSnapshot(`"6710k"`)
 
-    const packages = modules.files
-      .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
-      .map(m => m.replace('/package.json', '').replace('node_modules/', ''))
+    const packages = libs.files
+      .map(f => f.replace('_libs/', '').replace(/(?:\+\[\.\.\.\])?\.mjs$/, ''))
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
-        "@atcute/bluesky-richtext-segmenter",
         "@atproto-labs/did-resolver",
-        "@atproto-labs/fetch",
         "@atproto-labs/fetch-node",
-        "@atproto-labs/fetch-node/node_modules/undici",
-        "@atproto-labs/handle-resolver",
         "@atproto-labs/handle-resolver-node",
         "@atproto-labs/identity-resolver",
-        "@atproto-labs/pipe",
-        "@atproto-labs/simple-store",
-        "@atproto-labs/simple-store-memory",
-        "@atproto-labs/simple-store-memory/node_modules/lru-cache",
-        "@atproto-labs/simple-store-memory/node_modules/lru-cache/dist/esm",
         "@atproto/api",
-        "@atproto/common-web",
-        "@atproto/did",
-        "@atproto/jwk",
-        "@atproto/jwk-jose",
-        "@atproto/jwk-webcrypto",
-        "@atproto/lex-data",
-        "@atproto/lex-json",
-        "@atproto/lexicon",
         "@atproto/oauth-client",
-        "@atproto/oauth-client-node",
-        "@atproto/oauth-types",
-        "@atproto/syntax",
-        "@atproto/xrpc",
-        "@babel/parser",
-        "@fastify/accept-negotiator",
         "@formkit/drag-and-drop",
-        "@img/colour",
+        "@nuxt/image",
+        "@nuxt/nitro-server",
         "@takumi-rs/core",
-        "@takumi-rs/helpers",
-        "@vue/compiler-core",
-        "@vue/compiler-core/node_modules/entities",
-        "@vue/compiler-core/node_modules/entities/dist/commonjs",
-        "@vue/compiler-dom",
-        "@vue/compiler-ssr",
-        "@vue/reactivity",
-        "@vue/runtime-core",
-        "@vue/runtime-dom",
-        "@vue/server-renderer",
-        "@vue/shared",
-        "await-lock",
+        "atproto-labs__handle-resolver",
+        "atproto__jwk",
+        "atproto__jwk-jose+jose",
+        "atproto__jwk-webcrypto",
+        "atproto__oauth-client-node",
         "boolbase",
         "comark",
-        "comark/node_modules/entities",
         "consola",
         "cookie-es",
-        "core-js",
         "css-select",
-        "css-select/lib/esm",
-        "css-tree",
-        "css-tree/node_modules/mdn-data",
-        "css-what",
+        "css-tree+source-map-js",
         "csso",
-        "csso/node_modules/css-tree",
-        "csso/node_modules/css-tree/node_modules/mdn-data",
-        "defu",
-        "destr",
         "detect-libc",
         "devalue",
-        "dom-serializer",
-        "dom-serializer/lib/esm",
-        "dom-serializer/node_modules/entities",
-        "dom-serializer/node_modules/entities/lib/esm",
-        "domelementtype",
-        "domelementtype/lib/esm",
-        "domhandler",
-        "domhandler/lib/esm",
-        "domutils",
-        "domutils/lib/esm",
-        "entities",
-        "estree-walker",
-        "etag",
-        "events-to-async",
-        "events-to-async/module",
-        "feed",
-        "fnv1a-64",
-        "h3",
-        "hookable",
-        "image-meta",
-        "ipaddr.js",
-        "ipx",
-        "iron-webcrypto",
-        "iso-datestring-validator",
-        "jose",
-        "jose/dist/node/esm",
-        "js-yaml",
-        "lru-cache",
-        "lru-cache/dist/esm",
-        "mdn-data",
-        "mediabunny",
-        "modern-screenshot",
-        "multiformats",
+        "fastify__accept-negotiator",
+        "gsap",
+        "img__colour",
+        "klona",
+        "mocked-exports",
         "node-fetch-native",
-        "node-mock-http",
-        "nostics",
-        "nth-check",
-        "nth-check/lib/esm",
-        "nuxtseo-shared",
-        "object-identity",
-        "ofetch",
+        "nuxt-og-image",
+        "nuxt__devalue",
         "partysocket",
-        "pathe",
-        "radix3",
         "sax",
         "semver",
         "sharp",
-        "source-map-js",
         "svgo",
-        "svgo/node_modules/css-tree",
-        "svgo/node_modules/css-tree/node_modules/mdn-data",
-        "tlds",
-        "ts-custom-error",
-        "ufo",
-        "ultrahtml",
-        "uncrypto",
-        "undici",
-        "undici_v6",
-        "undici_v7",
-        "undici_v8",
+        "unctx",
         "unhead",
-        "unicode-segmenter",
-        "vue",
-        "vue-bundle-renderer",
-        "xml-js",
-        "zod",
       ]
     `)
   })

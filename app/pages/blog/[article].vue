@@ -96,7 +96,7 @@ const { data: page } = await useAsyncData(
 
 if (!page.value) {
   throw createError({
-    statusCode: 404,
+    status: 404,
     fatal: true,
   })
 }

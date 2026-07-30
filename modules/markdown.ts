@@ -222,10 +222,6 @@ export async function getBody () {
     nuxt.options.nitro.virtual['#md-raw-pages.json'] = () =>
       `export const rawPages = ${JSON.stringify(rawPageData)}`
 
-    nuxt.options.nitro.externals ||= {}
-    nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#metadata.json', '#md-raw-blog.json', '#md-raw-pages.json')
-
     addTypeTemplate({
       filename: 'types/markdown.d.ts',
       getContents: () => `

@@ -8,5 +8,5 @@ import { getClientMetadata } from '../utils/admin/oauth'
 
 export default defineEventHandler(event => {
   setHeader(event, 'Content-Type', 'application/json')
-  return getClientMetadata(event)
+  return getClientMetadata()
 })

@@ -8,8 +8,8 @@
  * use the spec's `http://127.0.0.1?…` convention so no public hosting is
  * required in dev.
  */
-import type { H3Event } from 'h3'
-import { clearSession, getSession, updateSession } from 'h3'
+import type { H3Event } from 'nitro/h3'
+import { clearSession, getSession, updateSession } from 'nitro/h3'
 import { NodeOAuthClient, requestLocalLock } from '@atproto/oauth-client-node'
 import type {
   NodeSavedSession,
@@ -55,9 +55,9 @@ interface AdminSessionData {
   }
 }
 
-function sessionConfig (event: H3Event) {
+function sessionConfig () {
   return {
-    password: useRuntimeConfig(event).sessionPassword,
+    password: useRuntimeConfig().sessionPassword,
     name: 'admin-session',
     cookie: {
       httpOnly: true,
@@ -69,15 +69,15 @@ function sessionConfig (event: H3Event) {
 }
 
 export function getAdminSessionCookie (event: H3Event) {
-  return getSession<AdminSessionData>(event, sessionConfig(event))
+  return getSession<AdminSessionData>(event, sessionConfig())
 }
 
 export async function updateAdminSessionCookie (event: H3Event, patch: Partial<AdminSessionData>): Promise<void> {
-  await updateSession<AdminSessionData>(event, sessionConfig(event), patch)
+  await updateSession<AdminSessionData>(event, sessionConfig(), patch)
 }
 
 export function clearAdminSessionCookie (event: H3Event) {
-  return clearSession(event, sessionConfig(event))
+  return clearSession(event, sessionConfig())
 }
 
 /**
@@ -126,8 +126,8 @@ const LOOPBACK_RE = /^https?:\/\/(?:127\.0\.0\.1|localhost)(?::\d+)?$/
  * (prod), or — for loopback `baseUrl`s — that the spec's inline
  * `http://localhost?…` `client_id` encodes.
  */
-export function getClientMetadata (event: H3Event): ClientMetadata {
-  const baseUrl = useRuntimeConfig(event).admin.baseUrl.replace(/\/$/, '')
+export function getClientMetadata (): ClientMetadata {
+  const baseUrl = useRuntimeConfig().admin.baseUrl.replace(/\/$/, '')
   const redirectUri = `${baseUrl}/api/admin/auth/callback`
 
   const isLoopback = LOOPBACK_RE.test(baseUrl)
@@ -162,7 +162,7 @@ export function getClientMetadata (event: H3Event): ClientMetadata {
  */
 export function getOauthClient (event: H3Event): NodeOAuthClient {
   return new NodeOAuthClient({
-    clientMetadata: getClientMetadata(event),
+    clientMetadata: getClientMetadata(),
     stateStore,
     sessionStore: cookieSessionStore(event),
     requestLock: requestLocalLock,

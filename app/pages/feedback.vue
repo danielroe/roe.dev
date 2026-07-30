@@ -71,7 +71,7 @@ async function submitFeedback () {
 
   status.value = 'pending'
   try {
-    await $fetch('/api/feedback', {
+    await apiFetch('/api/feedback', {
       method: 'POST',
       body: { feedback: feedback.value },
     })

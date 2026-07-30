@@ -3,7 +3,7 @@
  * already-resolved post text (mentions swapped, footer appended) plus an
  * optional image and the original question as alt text.
  */
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet } from '@atproto/api'
 import { AtpAgent } from '@atproto/api'
 import { BlobRef, jsonToLex } from '@atproto/lexicon'
@@ -54,7 +54,7 @@ export async function publishBlueskyThread (
   image: BlueskyImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const { identifier } = config.social.networks.bluesky
   const password = config.bluesky.accessToken
 
@@ -72,8 +72,8 @@ export async function publishBlueskyThread (
     if (i === 0 && image) {
       if (image.size != null && image.size > BLUESKY_IMAGE_MAX_BYTES) {
         throw createError({
-          statusCode: 413,
-          statusMessage: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
+          status: 413,
+          message: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
         })
       }
       const blob = jsonToLex(image.blob as never)
@@ -185,7 +185,7 @@ export async function publishMastodon (
   image: PublishImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const { identifier } = config.social.networks.mastodon
 
   const accessToken = config.mastodon.accessToken
@@ -272,7 +272,7 @@ export async function publishLinkedIn (
   image: PublishImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const accessToken = config.linkedin.accessToken
   if (!accessToken) throw new Error('LinkedIn access token not configured (NUXT_LINKEDIN_ACCESS_TOKEN).')
 

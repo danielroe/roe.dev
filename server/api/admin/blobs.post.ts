@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
   const contentType = getRequestHeader(event, 'content-type') || 'application/octet-stream'
   const buf = await readRawBody(event, false)
   if (!buf || !buf.length) {
-    throw createError({ statusCode: 400, statusMessage: 'Empty body.' })
+    throw createError({ status: 400, message: 'Empty body.' })
   }
 
   // Slice exactly what we read out of Node's shared Buffer pool, otherwise

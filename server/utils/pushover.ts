@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 
 export interface PushoverOptions {
   title: string
@@ -9,7 +9,7 @@ export interface PushoverOptions {
 }
 
 export function sendPushoverNotification (event: H3Event, options: PushoverOptions) {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 
   if (!config.pushover.token || !config.pushover.userKey) {
     console.warn('Pushover credentials not configured')

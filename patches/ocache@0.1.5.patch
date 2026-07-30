@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 7e9772e2f4d9ec106151398c8f56eb626a8b90e5..ea12bc30d8092f0b793a6bc215d444111903bbc6 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -276,6 +276,7 @@ function defineCachedHandler(handler, opts = {}) {
+ 				headers: filteredHeaders
+ 			});
+ 			if (originalReq.runtime) event.req.runtime = originalReq.runtime;
++			if (originalReq.context) event.req.context = originalReq.context;
+ 		} catch (error) {
+ 			console.error("[cache] Failed to filter headers:", error);
+ 		}

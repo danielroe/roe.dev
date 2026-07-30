@@ -11,11 +11,11 @@ interface Body extends AmaUpdate {
 
 export default defineEventHandler(async event => {
   const rkey = getRouterParam(event, 'rkey')
-  if (!rkey) throw createError({ statusCode: 400, statusMessage: 'Missing rkey.' })
+  if (!rkey) throw createError({ status: 400, message: 'Missing rkey.' })
 
-  const body = await readBody<Body>(event)
+  const body = await requireBody<Body>(event)
   if (!body.question || !body.posts?.length) {
-    throw createError({ statusCode: 422, statusMessage: 'question and at least one post are required.' })
+    throw createError({ status: 422, message: 'question and at least one post are required.' })
   }
 
   await ensureNotAlreadyPublished(event, rkey, 'mastodon', Boolean(body.force))

@@ -21,7 +21,7 @@ interface TalkEntry {
 }
 
 if (!rkey.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Missing rkey.' })
+  throw createError({ status: 404, message: 'Missing rkey.' })
 }
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request

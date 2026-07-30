@@ -7,17 +7,17 @@ export default defineEventHandler(async event => {
 
   if (error) {
     console.log(error, error_description, error_uri)
-    return sendRedirect(event, '/?auth_error=true')
+    return redirect('/?auth_error=true')
   }
 
   if (!code) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Missing authorisation code.',
+      status: 422,
+      message: 'Missing authorisation code.',
     })
   }
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const { access_token } = await $fetch<{ access_token: string }>(
     'https://github.com/login/oauth/access_token',
     {
@@ -47,7 +47,7 @@ export default defineEventHandler(async event => {
           console.error('viewer', err)
           return {}
         }),
-      getSponsors(event)
+      getSponsors()
         .then(r => r.map(s => s.id))
         .catch(err => {
           console.error('sponsor', err)
@@ -74,7 +74,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  return sendRedirect(event, '/')
+  return redirect('/')
 })
 
 const organisationQuery = `{

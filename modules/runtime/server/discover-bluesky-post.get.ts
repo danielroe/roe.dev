@@ -2,12 +2,12 @@
 import { newestPostUrl, newestPostDate } from 'bsky-runtime-discovery-server.mjs'
 import { BLUESKY_API, postLinksToUrl, type BlueskyFeedResponse } from '#shared/utils/bluesky'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   if (!newestPostUrl) {
     return { uri: null }
   }
 
-  const bskyHandle = useRuntimeConfig(event).social.networks.bluesky.identifier
+  const bskyHandle = useRuntimeConfig().social.networks.bluesky.identifier
   const searchCutoff = newestPostDate ? new Date(new Date(newestPostDate).getTime() - 24 * 60 * 60 * 1000) : null
 
   let cursor: string | undefined

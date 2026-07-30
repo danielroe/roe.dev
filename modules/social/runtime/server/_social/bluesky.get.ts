@@ -2,9 +2,9 @@ import { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet, AtpAgent } f
 import type { AppBskyFeedDefs } from '@atproto/api'
 import MagicString from 'magic-string'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   const agent = new AtpAgent({ service: 'https://public.api.bsky.app' })
-  const { identifier } = useRuntimeConfig(event).social.networks.bluesky
+  const { identifier } = useRuntimeConfig().social.networks.bluesky
 
   const feed: AppBskyFeedDefs.FeedViewPost[] = []
   let cursor: string | undefined

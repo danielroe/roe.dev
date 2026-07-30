@@ -3,7 +3,7 @@
  * entity lookup once and exposes helpers that produce the
  * platform-specific text + (for Bluesky) facets.
  */
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 
 import { listAdminRecords } from './crud'
 import { resolveForPlatform, resolveBluesky } from './ama-mentions'

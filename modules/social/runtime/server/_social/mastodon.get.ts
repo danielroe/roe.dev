@@ -3,11 +3,11 @@ import { parseURL, withProtocol } from 'ufo'
 
 import { linkifyBareUrls } from './linkify'
 
-export default defineEventHandler(async event => {
-  const acct = useRuntimeConfig(event).social.networks.mastodon.identifier
+export default defineEventHandler(async () => {
+  const acct = useRuntimeConfig().social.networks.mastodon.identifier
 
   const server = acct.split('@')[1]
-  if (!server) throw createError('Invalid Mastodon account identifier')
+  if (!server) throw createError({ status: 500, message: 'Invalid Mastodon account identifier' })
   const data = await $fetch<{ subject: string, aliases: string[] }>(
     '.well-known/webfinger',
     {

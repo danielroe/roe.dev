@@ -9,7 +9,7 @@ const rkey = computed(() => {
 })
 
 if (!rkey.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Missing rkey.' })
+  throw createError({ status: 404, message: 'Missing rkey.' })
 }
 
 interface InviteEntry {

@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import { AtpAgent } from '@atproto/api'
 
 import { lexicons } from '#shared/lex'
@@ -26,24 +26,24 @@ import type {
 let readAgent: AtpAgent | null = null
 let authedAgent: { agent: AtpAgent, did: string } | null = null
 
-function getReadAgent (event: H3Event): AtpAgent {
+function getReadAgent (): AtpAgent {
   if (readAgent) return readAgent
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   readAgent = new AtpAgent({ service: config.public.atproto.service })
   return readAgent
 }
 
-async function getAuthedAgent (event: H3Event): Promise<{ agent: AtpAgent, did: string }> {
+async function getAuthedAgent (): Promise<{ agent: AtpAgent, did: string }> {
   if (authedAgent) return authedAgent
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const service = config.public.atproto.service
   const { handle, password } = config.atproto
 
   if (!service || !handle || !password) {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'atproto credentials are not configured (NUXT_ATPROTO_*).',
+      status: 500,
+      message: 'atproto credentials are not configured (NUXT_ATPROTO_*).',
     })
   }
 
@@ -51,7 +51,7 @@ async function getAuthedAgent (event: H3Event): Promise<{ agent: AtpAgent, did: 
   await agent.login({ identifier: handle, password })
 
   if (!agent.session) {
-    throw createError({ statusCode: 500, statusMessage: 'atproto login did not return a session.' })
+    throw createError({ status: 500, message: 'atproto login did not return a session.' })
   }
 
   authedAgent = { agent, did: agent.session.did }
@@ -65,16 +65,16 @@ let didPromise: Promise<string> | null = null
  * `runtimeConfig.atproto.did` from the configured handle; if we've already
  * logged in we prefer the session DID. Cached for the lifetime of the process.
  */
-export async function resolveDid (event: H3Event): Promise<string> {
+export async function resolveDid (): Promise<string> {
   if (authedAgent) return authedAgent.did
   if (didPromise) return didPromise
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
 
   if (!config.atproto.did) {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'runtimeConfig.atproto.did is not set; the build-time atproto module did not resolve it.',
+      status: 500,
+      message: 'runtimeConfig.atproto.did is not set; the build-time atproto module did not resolve it.',
     })
   }
 
@@ -114,14 +114,14 @@ export async function putRecord<C extends Collection> (
   rkey: string,
   value: Omit<RecordTypes[C], '$type'>,
 ): Promise<{ uri: string, cid: string }> {
-  const { agent, did } = await getAuthedAgent(event)
+  const { agent, did } = await getAuthedAgent()
 
   const record = { $type: collection, ...value } as RecordTypes[C]
   const result = lexicons.validate(collection, record)
   if (!result.success) {
     throw createError({
-      statusCode: 500,
-      statusMessage: `Record failed lexicon validation for ${collection}: ${result.error.message}`,
+      status: 500,
+      message: `Record failed lexicon validation for ${collection}: ${result.error.message}`,
     })
   }
 
@@ -140,8 +140,8 @@ export async function getRecord<C extends Collection> (
   collection: C,
   rkey: string,
 ): Promise<FetchedRecord<C> | null> {
-  const did = await resolveDid(event)
-  const agent = getReadAgent(event)
+  const did = await resolveDid()
+  const agent = getReadAgent()
   try {
     const res = await agent.com.atproto.repo.getRecord({ repo: did, collection, rkey })
     return {
@@ -164,8 +164,8 @@ export async function listRecords<C extends Collection> (
   collection: C,
   options: { limit?: number, reverse?: boolean } = {},
 ): Promise<FetchedRecord<C>[]> {
-  const did = await resolveDid(event)
-  const agent = getReadAgent(event)
+  const did = await resolveDid()
+  const agent = getReadAgent()
   const pageSize = 100
   const records: FetchedRecord<C>[] = []
   let cursor: string | undefined
@@ -209,8 +209,8 @@ export async function blobImage (
   const cid = cidFromBlob(blob)
   if (!cid) return null
 
-  const did = await resolveDid(event)
-  const config = useRuntimeConfig(event)
+  const did = await resolveDid()
+  const config = useRuntimeConfig()
   return {
     url: blobUrlFor(config.public.atproto.service, did, cid),
     width: aspectRatio?.width ?? null,

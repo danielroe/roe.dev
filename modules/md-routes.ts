@@ -41,9 +41,5 @@ export default defineNuxtModule({
       nuxt.options.nitro.virtual!['#md-pages.json'] = () =>
         `export const mdPages = new Set(${JSON.stringify(mdPages)})`
     })
-
-    nuxt.options.nitro.externals ||= {}
-    nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#md-page-meta.json', '#md-pages.json')
   },
 })

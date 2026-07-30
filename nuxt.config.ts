@@ -183,7 +183,7 @@ export default defineNuxtConfig({
     '/.well-known/webfinger/**': {
       redirect: {
         to: 'https://mastodon.roe.dev/.well-known/webfinger/**',
-        statusCode: 301,
+        status: 301,
       },
     },
   },
@@ -192,12 +192,14 @@ export default defineNuxtConfig({
 
   experimental: {
     viewTransition: true,
+    // TODO: migrate server code to explicit imports from `nitro/h3`
+    nitroAutoImports: true,
   },
 
   compatibilityDate: '2025-06-09',
 
   nitro: {
-    externals: {
+    traceOpts: {
       // `@atproto-labs/fetch-node` depends on undici via npm aliases
       // (`undici_v6`, etc.), which nitro's externals tracing collapses to the
       // real package name, breaking the aliased imports at runtime.
@@ -219,7 +221,7 @@ export default defineNuxtConfig({
       ),
     },
     replace: {
-      'import.meta.test': isTest,
+      'import.meta.test': String(isTest),
     },
     typescript: {
       tsConfig: {

@@ -1,17 +1,13 @@
+import type { SessionUser } from '#shared/types/api'
+
 type UserStatus = 'pending' | 'logged-in' | 'logged-out'
-type User = {
-  avatar?: string
-  name?: string
-  sponsor?: boolean
-  authenticated?: boolean
-}
 
 export default defineNuxtPlugin(nuxtApp => {
   const auth = reactive({
-    user: {} as User,
+    user: {} as Partial<SessionUser>,
     login: async () => {
       try {
-        auth.user = await $fetch('/api/user')
+        auth.user = await apiFetch('/api/user')
       }
       catch (err: any) {
         if (err.name !== 'FetchError') {

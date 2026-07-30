@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import { TID } from '@atproto/common-web'
 import { jsonToLex } from '@atproto/lexicon'
 
@@ -21,7 +21,7 @@ function rkeyFromUri (uri: string): string {
 
 function assertRkey (rkey: string | undefined): asserts rkey is string {
   if (!rkey || rkey === 'undefined' || rkey === 'null') {
-    throw createError({ statusCode: 400, statusMessage: 'Missing or invalid rkey.' })
+    throw createError({ status: 400, message: 'Missing or invalid rkey.' })
   }
 }
 
@@ -82,7 +82,7 @@ export async function getAdminRecord<C extends Collection> (
   }
   catch (err) {
     if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 404) {
-      throw createError({ statusCode: 404, statusMessage: `${collection}/${rkey} not found.` })
+      throw createError({ status: 404, message: `${collection}/${rkey} not found.` })
     }
     throw err
   }
@@ -98,8 +98,8 @@ async function putRecord<C extends Collection> (
   const validation = lexicons.validate(collection, lexRecord)
   if (!validation.success) {
     throw createError({
-      statusCode: 422,
-      statusMessage: `Invalid ${collection}: ${validation.error.message}`,
+      status: 422,
+      message: `Invalid ${collection}: ${validation.error.message}`,
     })
   }
   const { agent, did } = await requireAdminAgent(event)

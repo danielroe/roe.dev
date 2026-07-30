@@ -13,12 +13,12 @@ export default defineEventHandler(async event => {
   if (!isAdminPage && !isAdminApi) return
   if (PUBLIC_PATHS.has(path)) return
 
-  const expectedHandle = useRuntimeConfig(event).atproto.handle
+  const expectedHandle = useRuntimeConfig().atproto.handle
   const sess = await getAdminSessionCookie(event)
   if (sess.data.handle === expectedHandle && sess.data.did) return
 
   if (isAdminApi) {
-    throw createError({ statusCode: 401, statusMessage: 'Not signed in.' })
+    throw createError({ status: 401, message: 'Not signed in.' })
   }
-  return sendRedirect(event, '/login', 303)
+  return redirect('/login', 303)
 })

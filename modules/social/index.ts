@@ -63,7 +63,6 @@ export default defineNuxtModule({
       '@jridgewell/sourcemap-codec': resolver.resolve('./mocks/sourcemap-codec'),
       'qs': 'rollup-plugin-node-polyfills/polyfills/qs',
       'change-case': 'scule',
-      'semver': resolver.resolve('./mocks/semver'),
     })
 
     for (const network in options.networks) {

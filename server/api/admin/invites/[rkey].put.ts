@@ -9,9 +9,9 @@ interface Body {
 }
 
 export default defineEventHandler(async event => {
-  const body = await readBody<Body>(event)
+  const body = await requireBody<Body>(event)
   if (!body.slug || !body.repo) {
-    throw createError({ statusCode: 422, statusMessage: 'slug and repo are required.' })
+    throw createError({ status: 422, message: 'slug and repo are required.' })
   }
   return updateAdminRecord(event, 'dev.roe.invite', getRouterParam(event, 'rkey'), {
     encrypted: encryptJSON({ slug: body.slug, repo: body.repo }),
