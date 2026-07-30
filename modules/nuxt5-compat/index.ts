@@ -1,5 +1,5 @@
 import { resolveModulePath } from 'exsolve'
-import { createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
+import { addServerPlugin, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import type { TSConfig } from 'pkg-types'
 
 /**
@@ -45,6 +45,8 @@ export default defineNuxtModule({
     // runtime pulls in `#nitro-internal-virtual/*` specifiers that nitro 3
     // does not provide, so point them at nitro 3's equivalents instead.
     nuxt.options.alias['nitropack/runtime'] = resolver.resolve('./nitropack-runtime')
+
+    addServerPlugin(resolver.resolve('./event-fetch'))
 
     // Those same modules still depend on h3 v1, so the server bundle ends up
     // with both majors and v1 utilities are handed v2 events (`getRequestHost`
