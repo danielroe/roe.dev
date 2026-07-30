@@ -1,9 +1,6 @@
-import { Buffer } from 'node:buffer'
-import { gunzipSync } from 'node:zlib'
-
 import type { CMSListFile, SourceData } from '@comark/cms'
 
-import { compressed } from '#content-manifest'
+import { getDocuments } from '#content-manifest'
 
 /** Fields `modules/markdown.ts` derives from the source text at build time. */
 interface ContentMeta {
@@ -21,17 +18,16 @@ export type ContentPage = CMSListFile<SourceData<'pages'>> & { meta: ContentMeta
  * from them, so reads here are lookups rather than parses, and the markdown
  * parser stays out of the server bundle.
  */
-const documents: Array<BlogPost | ContentPage>
-  = JSON.parse(gunzipSync(Buffer.from(compressed, 'base64')).toString('utf8'))
+const documents = () => getDocuments() as Array<BlogPost | ContentPage>
 
 /** Blog posts, newest first. */
 export function blogPosts (): BlogPost[] {
-  return documents.filter((doc): doc is BlogPost => doc.meta.source === 'blog')
+  return documents().filter((doc): doc is BlogPost => doc.meta.source === 'blog')
 }
 
 /** A single content page (`/ai`, `/bio`), or `undefined` if there is no such page. */
 export function contentPage (path: string): ContentPage | undefined {
-  return documents.find((doc): doc is ContentPage => doc.meta.source === 'pages' && doc.path === path)
+  return documents().find((doc): doc is ContentPage => doc.meta.source === 'pages' && doc.path === path)
 }
 
 /** A `- [title](url) — date` line, as used by the markdown listings and `llms.txt`. */

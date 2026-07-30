@@ -8,7 +8,6 @@ import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
 import type { ComarkTree } from 'comark'
-import type { Nitro } from 'nitropack'
 import type { ViteDevServer } from 'vite'
 
 import { contentCMS } from '../content.config'
@@ -37,6 +36,13 @@ const md = remark().use(remarkHtml)
 /** Directory each source's body templates are written to, relative to `markdown/`. */
 const templateDirs = { blog: 'blog', pages: 'page' } as const
 type ContentSource = keyof typeof templateDirs
+
+/**
+ * Server components rendering content from the templates below. Nuxt's island
+ * HMR only fires when a component's own file changes, so they have to be told
+ * when the content behind them does.
+ */
+const contentIslands = ['StaticMarkdownRender', 'TheHome', 'TheBlogIndex']
 
 function stripFrontmatter (raw: string): string {
   return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
@@ -171,20 +177,47 @@ export async function getBody () {
       })
     }
 
+    const manifestPath = join(nuxt.options.buildDir, 'markdown/manifest.json')
+
     nuxt.options.nitro.virtual ||= {}
-    // gzipped rather than inlined as JSON: nitro rewrites `import.meta.*` in
-    // module source, which corrupts posts that quote it in a code sample
-    nuxt.options.nitro.virtual['#content-manifest'] = () =>
-      `export const compressed = ${JSON.stringify(gzipSync(JSON.stringify(documents)).toString('base64'))}`
+    // in dev the manifest is read back from disk so that a content change is a
+    // template write rather than a rebuild of the server bundle; in production
+    // it is inlined, gzipped rather than as JSON because nitro rewrites
+    // `import.meta.*` in module source and posts quote it in code samples
+    nuxt.options.nitro.virtual['#content-manifest'] = () => nuxt.options.dev
+      ? `import { readFileSync, statSync } from 'node:fs'
+
+const path = ${JSON.stringify(manifestPath)}
+let documents, mtimeMs
+
+export function getDocuments () {
+  const stat = statSync(path)
+  if (!documents || stat.mtimeMs !== mtimeMs) {
+    mtimeMs = stat.mtimeMs
+    documents = JSON.parse(readFileSync(path, 'utf8'))
+  }
+  return documents
+}
+`
+      : `import { Buffer } from 'node:buffer'
+import { gunzipSync } from 'node:zlib'
+
+const documents = JSON.parse(gunzipSync(Buffer.from(${JSON.stringify(gzipSync(JSON.stringify(documents)).toString('base64'))}, 'base64')).toString('utf8'))
+
+export function getDocuments () {
+  return documents
+}
+`
 
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
     nuxt.options.nitro.externals.inline.push('#content-manifest')
 
     if (nuxt.options.dev) {
-      let nitro: Nitro | undefined
-      nuxt.hook('nitro:init', instance => {
-        nitro = instance
+      addTemplate({
+        filename: 'markdown/manifest.json',
+        getContents: () => JSON.stringify(documents),
+        write: true,
       })
 
       let vite: ViteDevServer | undefined
@@ -194,17 +227,19 @@ export async function getBody () {
 
       await cms.watch()
 
-      const refresh = async () => {
-        await collect()
-        await updateTemplates({
-          filter: template => !!template.filename?.startsWith('markdown/'),
-        })
-        // `#content-manifest` is inlined into the server build, so the server
-        // has to be rebuilt before it serves the new text
-        await nitro?.hooks.callHook('rollup:reload')
-        // content lives outside the client module graph, so nothing else would
-        // prompt the browser to pick up the re-render
-        vite?.hot.send({ type: 'full-reload' })
+      // a single save can surface as more than one watcher event
+      let pending: ReturnType<typeof setTimeout> | undefined
+      const refresh = () => {
+        clearTimeout(pending)
+        pending = setTimeout(async () => {
+          await collect()
+          await updateTemplates({
+            filter: template => !!template.filename?.startsWith('markdown/'),
+          })
+          for (const name of contentIslands) {
+            vite?.hot.send({ type: 'custom', event: `nuxt-server-component:${name}` })
+          }
+        }, 50)
       }
 
       cms.hooks.hook('watch:file:update', refresh)
@@ -250,7 +285,7 @@ declare module '#build/markdown/page/index.mjs' {
 }
 
 declare module '#content-manifest' {
-  export const compressed: string
+  export function getDocuments (): Array<Record<string, any>>
 }
 
 declare module '#md-page-meta.json' {
