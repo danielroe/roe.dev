@@ -1,33 +1,23 @@
-import { rawBlogPosts } from '#md-raw-blog.json'
-
 export default defineEventHandler(event => {
   const url = getRequestURL(event)
   const match = url.pathname.match(/\/blog\/(.+)\.md$/)
   const slug = match?.[1]
 
-  const post = slug ? rawBlogPosts.find(p => p.slug === slug) : undefined
+  const post = slug
+    ? blogPosts().find(p => p.meta.stem === slug)
+    : undefined
   if (!post) {
     throw createError({ statusCode: 404, statusMessage: 'Not found' })
   }
 
-  const tagStr = post.tags.length
-    ? `tags: [${post.tags.join(', ')}]`
-    : 'tags: []'
-
-  const esc = (s: string) => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+  const { title, date, tags, description } = post.data
 
   const md = [
-    '---',
-    `title: "${esc(post.title)}"`,
-    `date: ${post.date}`,
-    tagStr,
-    `description: "${esc(post.description)}"`,
-    `url: https://roe.dev/blog/${post.slug}`,
-    '---',
+    mdFrontmatter(post.path, { title, description, date: isoDate(date), tags }),
     '',
-    post.body,
+    post.meta.markdown,
     '',
   ].join('\n')
 
-  return mdResponse(md)
+  return mdResponse(event, md)
 })
