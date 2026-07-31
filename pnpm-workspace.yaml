@@ -4,13 +4,17 @@ savePrefix: ''
 
 shellEmulator: true
 
+minimumReleaseAgeExclude:
+  - '@nuxt/cli-nightly'
+  - '@nuxt/cli'
+
 overrides:
+  '@nuxt/cli': 'npm:@nuxt/cli-nightly@4.0.0-20260731-172704-256346c'
   rolldown: 1.2.0
 
 allowBuilds:
   '*': false
   '@parcel/watcher': false
-  better-sqlite3: true
   core-js: false
   esbuild: false
   sharp: true
