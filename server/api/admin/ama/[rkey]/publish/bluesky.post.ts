@@ -1,6 +1,7 @@
 import { ensureNotAlreadyPublished, mergePublishedLink, prepareAmaImage } from '../../../../../utils/admin/ama-record'
 import { blueskyThread, buildEntityLookup } from '../../../../../utils/admin/ama-resolve'
 import { publishBlueskyThread } from '../../../../../utils/admin/ama-publish'
+import { getImageAltText } from '#shared/cms/backgrounds'
 import type { AmaUpdate } from '../../../../../utils/admin/ama-record'
 import type { AmaPostInput } from '../../../../../utils/admin/ama-resolve'
 
@@ -22,7 +23,7 @@ export default defineEventHandler(async event => {
 
   const entities = await buildEntityLookup(event)
   const image = await prepareAmaImage(event, rkey, body)
-  const { url } = await publishBlueskyThread(event, blueskyThread(body.posts, entities), image, body.question)
+  const { url } = await publishBlueskyThread(event, blueskyThread(body.posts, entities), image, getImageAltText(body.question, body.backgroundStyle ?? undefined))
 
   await mergePublishedLink(event, rkey, 'bluesky', url, body)
   return { success: true, url }

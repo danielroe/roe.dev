@@ -1,6 +1,7 @@
 import { ensureNotAlreadyPublished, mergePublishedLink, prepareAmaImage } from '../../../../../utils/admin/ama-record'
 import { buildEntityLookup, platformText } from '../../../../../utils/admin/ama-resolve'
 import { publishMastodon } from '../../../../../utils/admin/ama-publish'
+import { getImageAltText } from '#shared/cms/backgrounds'
 import type { AmaUpdate } from '../../../../../utils/admin/ama-record'
 import type { AmaPostInput } from '../../../../../utils/admin/ama-resolve'
 
@@ -24,7 +25,7 @@ export default defineEventHandler(async event => {
     event,
     platformText(body.posts, 'mastodon', entities),
     await prepareAmaImage(event, rkey, body),
-    body.question,
+    getImageAltText(body.question, body.backgroundStyle ?? undefined),
   )
   await mergePublishedLink(event, rkey, 'mastodon', url, body)
   return { success: true, url }
