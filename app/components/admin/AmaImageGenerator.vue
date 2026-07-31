@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { domToBlob } from 'modern-screenshot'
-import { BACKGROUND_STYLES, DEFAULT_BACKGROUND_STYLE_ID, getBackgroundStyle } from '#shared/cms/backgrounds'
+import { BACKGROUND_STYLES, CUSTOM_EMOJI_PREFIX, DEFAULT_BACKGROUND_STYLE_ID, customEmojiBackgroundId, getBackgroundStyle, getForegroundStyle, getImageAltText, parseEmojiList } from '#shared/cms/backgrounds'
 import { getHumanRelativeDate } from '#shared/cms/date-formatting'
 import { ref } from 'vue'
 
@@ -57,6 +57,26 @@ async function compressUnderLimit (source: Blob, width: number, height: number, 
 
 const backgroundStyleId = ref(props.initialBackgroundStyleId ?? DEFAULT_BACKGROUND_STYLE_ID)
 const backgroundStyle = computed(() => getBackgroundStyle(backgroundStyleId.value))
+
+const isCustomEmoji = ref(backgroundStyleId.value.startsWith(CUSTOM_EMOJI_PREFIX))
+const customEmoji = ref(isCustomEmoji.value ? backgroundStyleId.value.slice(CUSTOM_EMOJI_PREFIX.length) : '🪿🦢🥚')
+
+// The select and the emoji input feed a single stored id: presets keep their
+// own id, custom emoji serialise into `emoji:…` so no extra field is needed.
+const backgroundSelection = computed({
+  get: () => isCustomEmoji.value ? CUSTOM_EMOJI_PREFIX : backgroundStyleId.value,
+  set: (value: string) => {
+    isCustomEmoji.value = value === CUSTOM_EMOJI_PREFIX
+    backgroundStyleId.value = isCustomEmoji.value ? customEmojiBackgroundId(customEmoji.value) : value
+  },
+})
+
+watch(customEmoji, value => {
+  if (!isCustomEmoji.value) return
+  if (parseEmojiList(value).length) backgroundStyleId.value = customEmojiBackgroundId(value)
+})
+const previewAltText = computed(() => getImageAltText(props.question, backgroundStyleId.value))
+const foregroundStyle = computed(() => getForegroundStyle(backgroundStyle.value))
 
 const relativeDate = computed(() => getHumanRelativeDate(props.createdAt))
 const formattedText = computed(() => props.question.trim())
@@ -213,7 +233,7 @@ function clear () {
       <label class="text-xs text-muted flex items-center gap-2">
         Background
         <select
-          v-model="backgroundStyleId"
+          v-model="backgroundSelection"
           class="bg-accent px-2 py-1"
         >
           <option
@@ -223,7 +243,22 @@ function clear () {
           >
             {{ bg.title }}
           </option>
+          <option :value="CUSTOM_EMOJI_PREFIX">
+            Custom emoji…
+          </option>
         </select>
+      </label>
+      <label
+        v-if="isCustomEmoji"
+        class="text-xs text-muted flex items-center gap-2"
+      >
+        Emoji
+        <input
+          v-model="customEmoji"
+          type="text"
+          class="bg-accent px-2 py-1 w-32"
+          placeholder="🪿🦢🥚"
+        >
       </label>
       <div class="ml-auto flex gap-2">
         <button
@@ -394,7 +429,7 @@ function clear () {
 
             <div
               :style="{
-                color: '#ffffff',
+                ...foregroundStyle,
                 fontFamily: '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif',
                 fontSize: '24px',
                 marginRight: '1rem',
@@ -440,7 +475,7 @@ function clear () {
         </figcaption>
         <img
           :src="generatedUrl"
-          alt="Generated AMA image preview"
+          :alt="previewAltText"
           class="block w-full h-auto"
         >
       </figure>

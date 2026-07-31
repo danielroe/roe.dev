@@ -7,7 +7,7 @@ import {
   stopAnimations,
   type GSAPTimeline,
 } from '#shared/cms/video-gsap-animations'
-import { getBackgroundStyle } from '#shared/cms/backgrounds'
+import { getBackgroundStyle, getForegroundStyle } from '#shared/cms/backgrounds'
 
 interface PendingVideo {
   blob: Blob
@@ -28,6 +28,7 @@ const emit = defineEmits<{
 }>()
 
 const backgroundStyle = computed(() => getBackgroundStyle(props.backgroundStyleId))
+const foregroundStyle = computed(() => getForegroundStyle(backgroundStyle.value, 'lg'))
 
 const generating = ref(false)
 const progress = ref(0)
@@ -470,11 +471,10 @@ onMounted(() => {
         >
           <div
             :style="{
-              color: '#ffffff',
+              ...foregroundStyle,
               fontFamily: '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif',
               fontSize: '48px',
               fontWeight: 'bold',
-              textShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
               marginBottom: '24px',
             }"
           >
@@ -482,11 +482,10 @@ onMounted(() => {
           </div>
           <div
             :style="{
-              color: '#ffffff',
+              ...foregroundStyle,
               fontFamily: '-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif',
               fontSize: '64px',
               fontWeight: 'bold',
-              textShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
               textDecoration: 'underline',
             }"
           >
