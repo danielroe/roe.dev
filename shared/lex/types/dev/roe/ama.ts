@@ -29,7 +29,7 @@ export interface Main {
   publishedLinks?: PublishedLinks
   image?: BlobRef
   imageDimensions?: DevRoeDefs.AspectRatio
-  /** ID of the background style used to render the image. The set of styles is internal to roe.dev. */
+  /** ID of the background style used to render the image, either a preset name or a serialised custom emoji-and-gradient id. The set of styles is internal to roe.dev. */
   backgroundStyle?: string
   createdAt: string
   answeredAt?: string

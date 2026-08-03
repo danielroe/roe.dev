@@ -23,21 +23,164 @@ export function getForegroundStyle (background: BackgroundStyle, size: 'sm' | 'l
 
 const NOISE_FILTER = 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMCI+IDxmaWx0ZXIgaWQ9Im15RmlsdGVyIj4gPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii4wMDUgLjAwMSIgbnVtT2N0YXZlcz0iMiIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIHhDaGFubmVsU2VsZWN0b3I9IlIiIHNjYWxlPSI1MDAiIGluPSJTb3VyY2VHcmFwaGljIiByZXN1bHQ9ImJhbmRzIiAvPiA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMy43MSIgLz4gPGZlRGlzcGxhY2VtZW50TWFwIGluPSJiYW5kcyIgc2NhbGU9IjMyIiB4Q2hhbm5lbFNlbGVjdG9yPSJSIiAvPiA8L2ZpbHRlcj4gPC9zdmc+#myFilter")'
 
+export interface GradientPreset {
+  id: string
+  title: string
+  /** Noun phrase describing the gradient, used to build image alt text. */
+  description: string
+  css: string
+  tone: 'light' | 'dark'
+}
+
+export const GRADIENT_PRESETS: readonly GradientPreset[] = [
+  {
+    id: 'pastel',
+    title: 'Pastel',
+    description: 'a pastel cream-to-lilac gradient',
+    css: 'linear-gradient(135deg, #fef3c7 0%, #bae6fd 55%, #c7d2fe 100%)',
+    tone: 'light',
+  },
+  {
+    id: 'sunset',
+    title: 'Sunset',
+    description: 'an amber-to-pink sunset gradient',
+    css: 'linear-gradient(135deg, #fbbf24 0%, #f97316 45%, #be185d 100%)',
+    tone: 'dark',
+  },
+  {
+    id: 'aurora',
+    title: 'Aurora',
+    description: 'a teal-to-lime aurora gradient',
+    css: 'linear-gradient(135deg, #0f4c5c 0%, #14b8a6 40%, #84cc16 100%)',
+    tone: 'dark',
+  },
+  {
+    id: 'candy',
+    title: 'Candy',
+    description: 'a pink-to-violet candy gradient',
+    css: 'linear-gradient(135deg, #fbcfe8 0%, #f0abfc 50%, #a5b4fc 100%)',
+    tone: 'light',
+  },
+  {
+    id: 'midnight',
+    title: 'Midnight',
+    description: 'a deep indigo-to-navy gradient',
+    css: 'linear-gradient(135deg, #312e81 0%, #1e293b 60%, #0f172a 100%)',
+    tone: 'dark',
+  },
+  {
+    id: 'mint',
+    title: 'Mint',
+    description: 'a mint-to-sky gradient',
+    css: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 45%, #bfdbfe 100%)',
+    tone: 'light',
+  },
+] as const
+
+export const DEFAULT_GRADIENT_ID = 'pastel'
+
+function gradientPreset (id: string): GradientPreset {
+  return GRADIENT_PRESETS.find(g => g.id === id) ?? GRADIENT_PRESETS[0]!
+}
+
+const HEX_COLOUR = /^[0-9a-f]{3}$|^[0-9a-f]{6}$/i
+
+function expandHex (hex: string): string {
+  return hex.length === 3 ? hex.replace(/./g, c => c + c) : hex
+}
+
+/** Relative luminance, used to decide whether overlaid text should be dark. */
+function luminance (hex: string): number {
+  const value = expandHex(hex)
+  const [r, g, b] = [0, 2, 4].map(i => Number.parseInt(value.slice(i, i + 2), 16) / 255) as [number, number, number]
+  const channel = (c: number) => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+}
+
+/**
+ * Serialises a custom gradient into the compact form used inside background
+ * ids: an angle in degrees, then two or more hex colours without their `#`.
+ */
+export function customGradientSpec (angle: number, colours: string[]): string {
+  const hexes = colours
+    .map(c => c.replace(/^#/, '').toLowerCase())
+    .filter(c => HEX_COLOUR.test(c))
+    .slice(0, 4)
+  if (hexes.length < 2) return DEFAULT_GRADIENT_ID
+  return `${Math.round(angle) % 360}:${hexes.join('-')}`
+}
+
+export interface ParsedGradient {
+  css: string
+  tone: 'light' | 'dark'
+  description: string
+  /** Present when the spec named a preset rather than listing colours. */
+  presetId?: string
+  angle: number
+  colours: string[]
+}
+
+/** Resolves a gradient spec: either a preset id or `<angle>:<hex>-<hex>[-…]`. */
+export function parseGradient (spec: string | undefined): ParsedGradient | undefined {
+  if (!spec) return undefined
+
+  const preset = GRADIENT_PRESETS.find(g => g.id === spec)
+  if (preset) {
+    return {
+      css: preset.css,
+      tone: preset.tone,
+      description: preset.description,
+      presetId: preset.id,
+      angle: 135,
+      colours: [...preset.css.matchAll(/#[0-9a-f]{6}/gi)].map(m => m[0]),
+    }
+  }
+
+  const [rawAngle, rawColours] = spec.split(':')
+  const angle = Number.parseInt(rawAngle ?? '', 10)
+  const hexes = (rawColours ?? '').split('-').filter(c => HEX_COLOUR.test(c))
+  if (!Number.isFinite(angle) || hexes.length < 2) return undefined
+
+  const colours = hexes.map(h => `#${expandHex(h).toLowerCase()}`)
+  const stops = colours.map((colour, i) => `${colour} ${Math.round((i / (colours.length - 1)) * 100)}%`)
+  const averageLuminance = hexes.reduce((total, hex) => total + luminance(hex), 0) / hexes.length
+
+  return {
+    css: `linear-gradient(${angle}deg, ${stops.join(', ')})`,
+    tone: averageLuminance > 0.45 ? 'light' : 'dark',
+    description: 'a custom gradient',
+    angle,
+    colours,
+  }
+}
+
 export interface EmojiBackgroundOptions {
   /** Emoji to scatter. Each tile picks from these at random. */
   emojis: string[]
   /** CSS background painted beneath the emoji layer. */
   base: string
-  /** Size of the repeating tile, in px. */
+  /**
+   * Size of the repeating tile, in px. Defaults to a tile larger than the
+   * rendered canvas so the scatter never visibly repeats within an image.
+   */
   tile?: number
-  /** How many emoji to place per tile. */
+  /** Average area, in px², given over to each emoji. Lower means denser. */
+  density?: number
+  /** How many emoji to place per tile. Derived from `density` when omitted. */
   count?: number
   /** Seed for the deterministic scatter, so a given id always renders identically. */
   seed?: number
-  /** Min/max emoji size as a fraction of the tile. */
-  scale?: [number, number]
+  /** Min/max emoji size, in px. */
+  size?: [number, number]
   opacity?: number
 }
+
+/**
+ * Wider than the 1200px capture plus its `-9em` bleed on both sides, and
+ * taller than any question we render, so one tile covers the whole image.
+ */
+const DEFAULT_TILE = 2600
+const DEFAULT_DENSITY = 8500
 
 function seededRandom (seed: number) {
   let state = seed % 233280
@@ -56,10 +199,11 @@ export function createEmojiBackground (options: EmojiBackgroundOptions): Record<
   const {
     emojis,
     base,
-    tile = 320,
-    count = 10,
+    tile = DEFAULT_TILE,
+    density = DEFAULT_DENSITY,
+    count = Math.max(1, Math.round((tile * tile) / density)),
     seed = 1,
-    scale = [0.12, 0.22],
+    size: [minSize, maxSize] = [38, 70],
     opacity = 1,
   } = options
 
@@ -68,14 +212,16 @@ export function createEmojiBackground (options: EmojiBackgroundOptions): Record<
 
   for (let i = 0; i < count; i++) {
     const emoji = emojis[Math.floor(next() * emojis.length)] ?? emojis[0]!
-    const size = Math.round((scale[0] + next() * (scale[1] - scale[0])) * tile)
+    const size = Math.round(minSize + next() * (maxSize - minSize))
     const x = Math.round(next() * tile)
     const y = Math.round(next() * tile)
     const rotation = Math.round((next() * 60) - 30)
-    // Draw each emoji four times, offset by ±tile, so glyphs that overhang an
-    // edge reappear on the opposite side and the tile stays seamless.
-    for (const dx of [0, x > tile / 2 ? -tile : tile]) {
-      for (const dy of [0, y > tile / 2 ? -tile : tile]) {
+    // Glyphs that overhang an edge are drawn again on the opposite side so the
+    // tile stays seamless; only the ones actually near an edge need the copy.
+    const xs = x < size ? [0, tile] : x > tile - size ? [0, -tile] : [0]
+    const ys = y < size ? [0, tile] : y > tile - size ? [0, -tile] : [0]
+    for (const dx of xs) {
+      for (const dy of ys) {
         nodes.push(
           `<text x="${x + dx}" y="${y + dy}" font-size="${size}" text-anchor="middle" dominant-baseline="central" transform="rotate(${rotation} ${x + dx} ${y + dy})">${emoji}</text>`,
         )
@@ -106,17 +252,17 @@ export const BACKGROUND_STYLES: readonly BackgroundStyle[] = [
   {
     id: 'aurora',
     title: 'Aurora',
-    description: 'a teal-to-lime aurora gradient',
+    description: gradientPreset('aurora').description,
     style: {
-      background: 'linear-gradient(135deg, #0f4c5c 0%, #14b8a6 40%, #84cc16 100%)',
+      background: gradientPreset('aurora').css,
     },
   },
   {
     id: 'sunset',
     title: 'Sunset',
-    description: 'an amber-to-pink sunset gradient',
+    description: gradientPreset('sunset').description,
     style: {
-      background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 45%, #be185d 100%)',
+      background: gradientPreset('sunset').css,
     },
   },
   {
@@ -140,9 +286,8 @@ export const BACKGROUND_STYLES: readonly BackgroundStyle[] = [
     tone: 'light',
     style: createEmojiBackground({
       emojis: ['🪿', '🦢', '🥚'],
-      base: 'linear-gradient(135deg, #fef3c7 0%, #bae6fd 55%, #c7d2fe 100%)',
+      base: gradientPreset(DEFAULT_GRADIENT_ID).css,
       seed: 42,
-      count: 12,
     }),
   },
   {
@@ -166,10 +311,14 @@ export const BACKGROUND_STYLES: readonly BackgroundStyle[] = [
 
 export const DEFAULT_BACKGROUND_STYLE_ID = 'noise-gradient'
 
-/** Ids of the form `emoji:🪿🦢` scatter arbitrary emoji instead of naming a preset. */
+/**
+ * Ids of the form `emoji:🪿🦢|sunset` scatter arbitrary emoji over a chosen
+ * gradient instead of naming a preset. Both halves are optional: the gradient
+ * defaults to `pastel`, and omitting the emoji gives a plain gradient.
+ */
 export const CUSTOM_EMOJI_PREFIX = 'emoji:'
 
-const CUSTOM_EMOJI_BASE = 'linear-gradient(135deg, #fef3c7 0%, #bae6fd 55%, #c7d2fe 100%)'
+const GRADIENT_SEPARATOR = '|'
 
 /** Splits a string into grapheme clusters, so multi-codepoint emoji survive intact. */
 export function parseEmojiList (input: string): string[] {
@@ -179,12 +328,33 @@ export function parseEmojiList (input: string): string[] {
   return [...segmenter.segment(trimmed)].map(s => s.segment).filter(s => s.trim())
 }
 
+/** Byte budget for the `backgroundStyle` lexicon field. */
+const MAX_ID_BYTES = 128
+
 /**
- * Serialises emoji into a background id. Capped at 8 emoji because the
- * `backgroundStyle` lexicon field allows 64 bytes and emoji cost up to 4 each.
+ * Serialises emoji and a gradient spec into a background id. Emoji are dropped
+ * from the end until the id fits the lexicon field, since a single cluster can
+ * cost 28 bytes (tag sequences like 🏴󠁧󠁢󠁳󠁣󠁴󠁿) and the gradient half a further 30.
  */
-export function customEmojiBackgroundId (emojis: string): string {
-  return `${CUSTOM_EMOJI_PREFIX}${parseEmojiList(emojis).slice(0, 8).join('')}`
+export function customEmojiBackgroundId (emojis: string, gradient: string = DEFAULT_GRADIENT_ID): string {
+  const suffix = gradient && gradient !== DEFAULT_GRADIENT_ID ? `${GRADIENT_SEPARATOR}${gradient}` : ''
+  const list = parseEmojiList(emojis).slice(0, 8)
+
+  const encoder = new TextEncoder()
+  while (list.length && encoder.encode(`${CUSTOM_EMOJI_PREFIX}${list.join('')}${suffix}`).length > MAX_ID_BYTES) {
+    list.pop()
+  }
+
+  return `${CUSTOM_EMOJI_PREFIX}${list.join('')}${suffix}`
+}
+
+/** Splits a custom background id back into its emoji and gradient halves. */
+export function parseCustomBackgroundId (id: string): { emojis: string, gradient: string } {
+  const body = id.slice(CUSTOM_EMOJI_PREFIX.length)
+  const separator = body.indexOf(GRADIENT_SEPARATOR)
+  return separator === -1
+    ? { emojis: body, gradient: DEFAULT_GRADIENT_ID }
+    : { emojis: body.slice(0, separator), gradient: body.slice(separator + 1) }
 }
 
 function listToProse (items: string[]): string {
@@ -193,21 +363,31 @@ function listToProse (items: string[]): string {
 }
 
 function customEmojiBackground (id: string): BackgroundStyle | undefined {
-  const emojis = parseEmojiList(id.slice(CUSTOM_EMOJI_PREFIX.length))
-  if (!emojis.length) return undefined
+  const parsed = parseCustomBackgroundId(id)
+  const emojis = parseEmojiList(parsed.emojis)
+  const gradient = parseGradient(parsed.gradient) ?? parseGradient(DEFAULT_GRADIENT_ID)!
+
+  if (!emojis.length) {
+    return {
+      id,
+      title: `Custom gradient`,
+      description: gradient.description,
+      tone: gradient.tone,
+      style: { background: gradient.css },
+    }
+  }
 
   return {
     id,
     title: `Custom emoji (${emojis.join('')})`,
-    description: `a pastel background scattered with ${listToProse(emojis)} emoji`,
-    tone: 'light',
+    description: `${listToProse(emojis)} emoji scattered over ${gradient.description}`,
+    tone: gradient.tone,
     style: createEmojiBackground({
       emojis,
-      base: CUSTOM_EMOJI_BASE,
-      // Seeding from the emoji themselves keeps a given id rendering identically
+      base: gradient.css,
+      // Seeding from the id keeps a given background rendering identically
       // between the editor preview and any later regeneration.
       seed: [...id].reduce((acc, ch) => acc + ch.charCodeAt(0), 0) || 1,
-      count: 12,
     }),
   }
 }

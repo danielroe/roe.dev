@@ -96,8 +96,8 @@ export const schemaDict = {
             backgroundStyle: {
               type: 'string',
               description:
-                'ID of the background style used to render the image. The set of styles is internal to roe.dev.',
-              maxLength: 64,
+                'ID of the background style used to render the image, either a preset name or a serialised custom emoji-and-gradient id. The set of styles is internal to roe.dev.',
+              maxLength: 128,
             },
             createdAt: {
               type: 'string',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { domToBlob } from 'modern-screenshot'
-import { BACKGROUND_STYLES, CUSTOM_EMOJI_PREFIX, DEFAULT_BACKGROUND_STYLE_ID, customEmojiBackgroundId, getBackgroundStyle, getForegroundStyle, getImageAltText, parseEmojiList } from '#shared/cms/backgrounds'
+import { BACKGROUND_STYLES, CUSTOM_EMOJI_PREFIX, DEFAULT_BACKGROUND_STYLE_ID, DEFAULT_GRADIENT_ID, GRADIENT_PRESETS, customEmojiBackgroundId, customGradientSpec, getBackgroundStyle, getForegroundStyle, getImageAltText, parseCustomBackgroundId, parseGradient } from '#shared/cms/backgrounds'
 import { getHumanRelativeDate } from '#shared/cms/date-formatting'
 import { ref } from 'vue'
 
@@ -55,25 +55,45 @@ async function compressUnderLimit (source: Blob, width: number, height: number, 
   throw new Error(`Could not compress the image under ${maxBytes} bytes for Bluesky. Shorten the question or pick a simpler background.`)
 }
 
+/** Sentinel for the gradient select, distinct from any preset id. */
+const CUSTOM_GRADIENT = 'custom'
+
 const backgroundStyleId = ref(props.initialBackgroundStyleId ?? DEFAULT_BACKGROUND_STYLE_ID)
 const backgroundStyle = computed(() => getBackgroundStyle(backgroundStyleId.value))
 
 const isCustomEmoji = ref(backgroundStyleId.value.startsWith(CUSTOM_EMOJI_PREFIX))
-const customEmoji = ref(isCustomEmoji.value ? backgroundStyleId.value.slice(CUSTOM_EMOJI_PREFIX.length) : '🪿🦢🥚')
+const initialCustom = isCustomEmoji.value ? parseCustomBackgroundId(backgroundStyleId.value) : undefined
+const initialGradient = parseGradient(initialCustom?.gradient)
 
-// The select and the emoji input feed a single stored id: presets keep their
-// own id, custom emoji serialise into `emoji:…` so no extra field is needed.
+const customEmoji = ref(initialCustom?.emojis || '🪿🦢🥚')
+const gradientSelection = ref(initialGradient?.presetId ?? (initialGradient ? CUSTOM_GRADIENT : DEFAULT_GRADIENT_ID))
+const gradientAngle = ref(initialGradient?.angle ?? 135)
+const gradientColours = ref<string[]>(
+  initialGradient && !initialGradient.presetId
+    ? initialGradient.colours
+    : ['#fef3c7', '#bae6fd', '#c7d2fe'],
+)
+
+const gradientSpec = computed(() => gradientSelection.value === CUSTOM_GRADIENT
+  ? customGradientSpec(gradientAngle.value, gradientColours.value)
+  : gradientSelection.value)
+
+// The select and the custom inputs feed a single stored id: presets keep their
+// own id, custom backgrounds serialise into `emoji:…|…` so no extra field is
+// needed.
 const backgroundSelection = computed({
   get: () => isCustomEmoji.value ? CUSTOM_EMOJI_PREFIX : backgroundStyleId.value,
   set: (value: string) => {
     isCustomEmoji.value = value === CUSTOM_EMOJI_PREFIX
-    backgroundStyleId.value = isCustomEmoji.value ? customEmojiBackgroundId(customEmoji.value) : value
+    backgroundStyleId.value = isCustomEmoji.value
+      ? customEmojiBackgroundId(customEmoji.value, gradientSpec.value)
+      : value
   },
 })
 
-watch(customEmoji, value => {
+watch([customEmoji, gradientSpec], ([emoji, gradient]) => {
   if (!isCustomEmoji.value) return
-  if (parseEmojiList(value).length) backgroundStyleId.value = customEmojiBackgroundId(value)
+  backgroundStyleId.value = customEmojiBackgroundId(emoji, gradient)
 })
 const previewAltText = computed(() => getImageAltText(props.question, backgroundStyleId.value))
 const foregroundStyle = computed(() => getForegroundStyle(backgroundStyle.value))
@@ -248,18 +268,78 @@ function clear () {
           </option>
         </select>
       </label>
-      <label
-        v-if="isCustomEmoji"
-        class="text-xs text-muted flex items-center gap-2"
-      >
-        Emoji
-        <input
-          v-model="customEmoji"
-          type="text"
-          class="bg-accent px-2 py-1 w-32"
-          placeholder="🪿🦢🥚"
+      <template v-if="isCustomEmoji">
+        <label class="text-xs text-muted flex items-center gap-2">
+          Emoji
+          <input
+            v-model="customEmoji"
+            type="text"
+            class="bg-accent px-2 py-1 w-32"
+            placeholder="🪿🦢🥚"
+          >
+        </label>
+        <label class="text-xs text-muted flex items-center gap-2">
+          Gradient
+          <select
+            v-model="gradientSelection"
+            class="bg-accent px-2 py-1"
+          >
+            <option
+              v-for="gradient in GRADIENT_PRESETS"
+              :key="gradient.id"
+              :value="gradient.id"
+            >
+              {{ gradient.title }}
+            </option>
+            <option :value="CUSTOM_GRADIENT">
+              Custom…
+            </option>
+          </select>
+        </label>
+        <div
+          v-if="gradientSelection === CUSTOM_GRADIENT"
+          class="text-xs text-muted flex items-center gap-2"
         >
-      </label>
+          <label class="flex items-center gap-1">
+            Angle
+            <input
+              v-model.number="gradientAngle"
+              type="number"
+              min="0"
+              max="359"
+              class="bg-accent px-2 py-1 w-16"
+            >
+          </label>
+          <label
+            v-for="(_, index) in gradientColours"
+            :key="index"
+            class="flex items-center gap-1"
+          >
+            <span class="sr-only">Colour {{ index + 1 }}</span>
+            <input
+              v-model="gradientColours[index]"
+              type="color"
+              class="bg-accent h-7 w-8"
+            >
+          </label>
+          <button
+            v-if="gradientColours.length > 2"
+            type="button"
+            class="hover:text-red-500"
+            @click="gradientColours.pop()"
+          >
+            −
+          </button>
+          <button
+            v-if="gradientColours.length < 4"
+            type="button"
+            class="hover:text-primary"
+            @click="gradientColours.push('#c7d2fe')"
+          >
+            +
+          </button>
+        </div>
+      </template>
       <div class="ml-auto flex gap-2">
         <button
           type="button"
