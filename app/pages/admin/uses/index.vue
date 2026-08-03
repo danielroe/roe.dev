@@ -18,11 +18,11 @@ interface ItemEntry {
   value: DevRoeUsesItem.Record
 }
 
-const { data: categoriesData, refresh: refreshCategories, status: categoriesStatus } = useAdminFetch<CategoryEntry[]>('/api/admin/uses-categories', { default: () => [] })
-const { data: itemsData, refresh: refreshItems, status: itemsStatus } = useAdminFetch<ItemEntry[]>('/api/admin/uses-items', { default: () => [] })
+const { data: categoriesData, refresh: refreshCategories, loading: categoriesLoading } = useAdminFetch<CategoryEntry[]>('/api/admin/uses-categories', { default: () => [] })
+const { data: itemsData, refresh: refreshItems, loading: itemsLoading } = useAdminFetch<ItemEntry[]>('/api/admin/uses-items', { default: () => [] })
 
 const showSkeleton = computed(() =>
-  (categoriesStatus.value === 'pending' || itemsStatus.value === 'pending')
+  (categoriesLoading.value || itemsLoading.value)
   && !categoriesData.value.length,
 )
 

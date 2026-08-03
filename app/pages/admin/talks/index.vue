@@ -12,11 +12,11 @@ interface TalkGroupEntry {
   value: DevRoeTalkGroup.Record
 }
 
-const { data: talksData, refresh: refreshTalks, status: talksStatus } = useAdminFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] })
-const { data: groupsData, refresh: refreshGroups, status: groupsStatus } = useAdminFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] })
+const { data: talksData, refresh: refreshTalks, loading: talksLoading } = useAdminFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] })
+const { data: groupsData, refresh: refreshGroups, loading: groupsLoading } = useAdminFetch<TalkGroupEntry[]>('/api/admin/talk-groups', { default: () => [] })
 
 const showSkeleton = computed(() =>
-  (talksStatus.value === 'pending' || groupsStatus.value === 'pending')
+  (talksLoading.value || groupsLoading.value)
   && !talksData.value.length && !groupsData.value.length,
 )
 

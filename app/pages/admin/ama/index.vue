@@ -17,9 +17,9 @@ interface AmaEntry {
   answeredAt?: string
 }
 
-const { data, refresh, status } = useAdminFetch<AmaEntry[]>('/api/admin/ama', { default: () => [] })
+const { data, refresh, loading } = useAdminFetch<AmaEntry[]>('/api/admin/ama', { default: () => [] })
 
-const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
+const showSkeleton = computed(() => loading.value && !data.value.length)
 
 function hasMissingPublishes (a: AmaEntry): boolean {
   const p = a.platforms

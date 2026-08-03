@@ -23,7 +23,7 @@ interface EntityEntry {
   value: DevRoeEntity.Record
 }
 
-const { data, status } = useAdminFetch<EntityEntry>(`/api/admin/entities/${rkey.value}`, {
+const { data, loading } = useAdminFetch<EntityEntry>(`/api/admin/entities/${rkey.value}`, {
   watch: false,
 })
 
@@ -43,7 +43,7 @@ async function save (value: EntityValue) {
       @submit="save"
     />
     <AdminSkeletonForm
-      v-else-if="status === 'pending'"
+      v-else-if="loading"
       :fields="['text', 'text', 'text', 'text', 'text']"
     />
   </AdminShell>

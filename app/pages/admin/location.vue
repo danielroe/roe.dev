@@ -13,7 +13,7 @@ interface LocationEntry {
   value: DevRoeLocation.Record
 }
 
-const { data, refresh, status } = useAdminFetch<LocationEntry | null>('/api/admin/location')
+const { data, refresh, loading } = useAdminFetch<LocationEntry | null>('/api/admin/location')
 
 async function save (value: LocationValue) {
   await $fetch('/api/admin/location', {
@@ -27,7 +27,7 @@ async function save (value: LocationValue) {
 <template>
   <AdminShell title="Location">
     <AdminSkeletonForm
-      v-if="data === undefined && status === 'pending'"
+      v-if="data === undefined && loading"
       :fields="['pair', 'pair', 'checkbox']"
     />
     <AdminLocationForm

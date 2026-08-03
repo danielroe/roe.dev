@@ -3,7 +3,7 @@ definePageMeta({ layout: false })
 
 useHead({ title: 'admin' })
 
-const { data: stats, status } = useAdminFetch<{
+const { data: stats, loading } = useAdminFetch<{
   talks: number
   talkGroups: number
   usesCategories: number
@@ -11,7 +11,7 @@ const { data: stats, status } = useAdminFetch<{
   hasLocation: boolean
 }>('/api/admin/stats')
 
-const showSkeleton = computed(() => status.value === 'pending' && !stats.value)
+const showSkeleton = computed(() => loading.value && !stats.value)
 
 const cards = computed(() => [
   { label: 'Talks', value: stats.value?.talks ?? 0, to: '/admin/talks' },

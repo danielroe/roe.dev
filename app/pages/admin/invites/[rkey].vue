@@ -29,7 +29,7 @@ interface InviteValue {
   createdAt?: string
 }
 
-const { data, status } = useAdminFetch<InviteEntry>(`/api/admin/invites/${rkey.value}`, {
+const { data, loading } = useAdminFetch<InviteEntry>(`/api/admin/invites/${rkey.value}`, {
   watch: false,
 })
 
@@ -49,7 +49,7 @@ async function save (value: InviteValue) {
       @submit="save"
     />
     <AdminSkeletonForm
-      v-else-if="status === 'pending'"
+      v-else-if="loading"
       :fields="['text', 'text', 'checkbox']"
     />
   </AdminShell>

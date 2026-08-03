@@ -12,9 +12,9 @@ interface InviteEntry {
   createdAt: string
 }
 
-const { data, refresh, status } = useAdminFetch<InviteEntry[]>('/api/admin/invites', { default: () => [] })
+const { data, refresh, loading } = useAdminFetch<InviteEntry[]>('/api/admin/invites', { default: () => [] })
 
-const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
+const showSkeleton = computed(() => loading.value && !data.value.length)
 
 async function remove (rkey: string, slug: string) {
   if (!confirm(`Delete invite "${slug}"?`)) return

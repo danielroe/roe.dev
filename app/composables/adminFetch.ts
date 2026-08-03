@@ -1,6 +1,15 @@
 import type { AsyncData, NuxtError, UseFetchOptions } from 'nuxt/app'
+import type { ComputedRef } from 'vue'
 
 type KeysOf<T> = Array<T extends T ? (keyof T extends string ? keyof T : never) : never>
+
+/**
+ * `status` is `idle` during SSR (the request is client-only) and flips to
+ * `pending` as soon as the client picks it up, which would make any
+ * `status === 'pending'` template branch mismatch on hydration. `loading`
+ * covers both so server and client agree on the first render.
+ */
+type AdminAsyncData<T> = AsyncData<T, NuxtError<unknown> | undefined> & { loading: ComputedRef<boolean> }
 
 const cache = new Map<string, unknown>()
 
@@ -17,15 +26,15 @@ const cache = new Map<string, unknown>()
 export function useAdminFetch<T> (
   url: string,
   options: UseFetchOptions<T, T, KeysOf<T>, T> & { default: () => T },
-): AsyncData<T, NuxtError<unknown> | undefined>
+): AdminAsyncData<T>
 export function useAdminFetch<T> (
   url: string,
   options?: UseFetchOptions<T, T, KeysOf<T>, undefined>,
-): AsyncData<T | undefined, NuxtError<unknown> | undefined>
+): AdminAsyncData<T | undefined>
 export function useAdminFetch<T> (
   url: string,
   options: UseFetchOptions<T> = {},
-): AsyncData<T | undefined, NuxtError<unknown> | undefined> {
+): AdminAsyncData<T | undefined> {
   const key = `admin:${url}`
   const hasCached = import.meta.client && cache.has(key)
 
@@ -51,5 +60,7 @@ export function useAdminFetch<T> (
     }
   }
 
-  return result
+  return Object.assign(result, {
+    loading: computed(() => result.status.value === 'idle' || result.status.value === 'pending'),
+  })
 }

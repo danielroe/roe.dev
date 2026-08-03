@@ -30,7 +30,7 @@ interface AmaEntry {
   answeredAt?: string
 }
 
-const { data, status } = useAdminFetch<AmaEntry>(`/api/admin/ama/${rkey.value}`, {
+const { data, loading } = useAdminFetch<AmaEntry>(`/api/admin/ama/${rkey.value}`, {
   watch: false,
 })
 
@@ -45,7 +45,7 @@ const initialImagePreviewUrl = computed(() => {
 <template>
   <AdminShell title="Answer">
     <div
-      v-if="!data && status === 'pending'"
+      v-if="!data && loading"
       class="flex flex-col gap-4"
       aria-hidden="true"
     >

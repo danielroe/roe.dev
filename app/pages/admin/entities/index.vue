@@ -11,9 +11,9 @@ interface EntityEntry {
   value: DevRoeEntity.Record
 }
 
-const { data, refresh, status } = useAdminFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
+const { data, refresh, loading } = useAdminFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })
 
-const showSkeleton = computed(() => status.value === 'pending' && !data.value.length)
+const showSkeleton = computed(() => loading.value && !data.value.length)
 
 async function remove (rkey: string, name: string) {
   if (!confirm(`Delete entity "${name}"?`)) return
