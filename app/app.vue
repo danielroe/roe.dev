@@ -42,7 +42,7 @@ function openSiteUI (e: MouseEvent | KeyboardEvent) {
 
 useHead({
   title: () => (route.meta.title as string) || '',
-  titleTemplate: title => (title ? `${title} - Daniel Roe` : 'Daniel Roe'),
+  titleTemplate: title => (title && title !== 'Daniel Roe' ? `${title} - Daniel Roe` : 'Daniel Roe'),
   bodyAttrs: {
     class: 'font-sans',
   },
