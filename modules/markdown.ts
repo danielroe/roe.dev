@@ -7,8 +7,8 @@ import { filename } from 'pathe/utils'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 import { convert as htmlToText } from 'html-to-text'
-import { createParse } from 'comark/parse'
-import highlight from 'comark/plugins/highlight'
+import { createMarkdownParser } from 'comark/parse'
+import shiki from 'comark/plugins/shiki'
 import palenight from 'shiki/themes/material-theme-palenight.mjs'
 
 import { headingIds } from './shared/comark-heading-ids'
@@ -100,11 +100,11 @@ export default defineNuxtModule({
       write: true,
     })
 
-    const parse = createParse({
+    const parse = createMarkdownParser({
       plugins: [
         headingIds(),
         // code blocks always render on a dark background, so both themes match
-        highlight({
+        shiki({
           themes: { light: palenight, dark: palenight },
         }),
       ],
@@ -244,13 +244,13 @@ declare module '#build/markdown/blog-entries.mjs' {
 }
 
 declare module '#build/markdown/blog/index.mjs' {
-  import type { ComarkTree } from 'comark'
-  export const blogBodyLoaders: Record<string, () => Promise<ComarkTree>>
+  import type { MarkdownDocument } from 'comark'
+  export const blogBodyLoaders: Record<string, () => Promise<MarkdownDocument>>
 }
 
 declare module '#build/markdown/page/index.mjs' {
-  import type { ComarkTree } from 'comark'
-  export const pageBodyLoaders: Record<string, () => Promise<ComarkTree>>
+  import type { MarkdownDocument } from 'comark'
+  export const pageBodyLoaders: Record<string, () => Promise<MarkdownDocument>>
 }
 
 declare module '#md-raw-blog.json' {

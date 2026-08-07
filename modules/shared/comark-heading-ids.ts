@@ -1,16 +1,16 @@
 import { defineComarkPlugin } from 'comark/parse'
-import type { ComarkNode } from 'comark'
+import type { Node } from 'comark'
 
 const HEADINGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
 
-function textContent (nodes: ComarkNode[]): string {
+function textContent (nodes: Node[]): string {
   let text = ''
   for (const node of nodes) {
     if (typeof node === 'string') {
       text += node
     }
     else if (Array.isArray(node)) {
-      text += textContent(node.slice(2) as ComarkNode[])
+      text += textContent(node.slice(2) as Node[])
     }
   }
   return text
@@ -40,19 +40,19 @@ export const headingIds = defineComarkPlugin(() => ({
   post (state) {
     const counts = new Map<string, number>()
 
-    const walk = (nodes: ComarkNode[]) => {
+    const walk = (nodes: Node[]) => {
       for (const node of nodes) {
         if (!Array.isArray(node)) continue
 
         const [tag, props, ...children] = node
         if (typeof tag === 'string' && HEADINGS.has(tag) && props && typeof props === 'object') {
-          const slug = slugify(textContent(children as ComarkNode[]))
+          const slug = slugify(textContent(children as Node[]))
           const count = counts.get(slug) ?? 0
           counts.set(slug, count + 1)
           ;(props as Record<string, unknown>).id = count > 0 ? `${slug}-${count}` : slug
         }
 
-        walk(children as ComarkNode[])
+        walk(children as Node[])
       }
     }
 

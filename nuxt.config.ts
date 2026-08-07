@@ -66,7 +66,7 @@ export default defineNuxtConfig({
   },
 
   components: [
-    // markdown components are passed explicitly to `<ComarkRenderer>` rather
+    // markdown components are passed explicitly to `<MarkdownDocument>` rather
     // than registered globally, so they stay out of the client bundle
     { path: '~/components/markdown', pathPrefix: false },
     '~/components',
