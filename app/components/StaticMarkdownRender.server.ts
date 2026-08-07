@@ -1,4 +1,4 @@
-import { CalSchedule, ComarkRenderer, ProseA, ProseH2, ProseH3, ProseImg, ProseTh, SocialPost } from '#components'
+import { CalSchedule, MarkdownDocument, ProseA, ProseH2, ProseH3, ProseImg, ProseTh, SocialPost } from '#components'
 import { blogBodyLoaders } from '#build/markdown/blog/index.mjs'
 import { pageBodyLoaders } from '#build/markdown/page/index.mjs'
 
@@ -18,7 +18,7 @@ export default defineComponent({
       return () => null
     }
 
-    const tree = await loader()
-    return () => h(ComarkRenderer, { tree, components })
+    const value = await loader()
+    return () => h(MarkdownDocument, { value, components })
   },
 })
