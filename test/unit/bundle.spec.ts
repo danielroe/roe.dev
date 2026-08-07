@@ -62,7 +62,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"265k"`)
+      .toMatchInlineSnapshot(`"268k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -85,7 +85,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14690k"`)
+      .toMatchInlineSnapshot(`"14730k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -140,6 +140,7 @@ describe('project sizes', () => {
         "comark/node_modules/entities",
         "consola",
         "core-js",
+        "defu",
         "detect-libc",
         "devalue",
         "entities",
