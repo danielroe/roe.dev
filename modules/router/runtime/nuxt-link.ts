@@ -263,7 +263,7 @@ export default defineComponent({
 type CallbackFn = () => void
 type ObserveFn = (element: Element, callback: CallbackFn) => () => void
 
-function useObserver (): { observe: ObserveFn } | undefined {
+export function useObserver (): { observe: ObserveFn } | undefined {
   if (import.meta.server) {
     return
   }
@@ -308,7 +308,7 @@ function useObserver (): { observe: ObserveFn } | undefined {
   return _observer
 }
 
-function isSlowConnection () {
+export function isSlowConnection () {
   if (import.meta.server) {
     return
   }

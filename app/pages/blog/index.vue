@@ -8,20 +8,8 @@
     <main
       id="main-content"
       class="text-muted text-lg"
-      @click="handleNavigationClicks"
     >
       <TheBlogIndex />
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-const nuxtApp = useNuxtApp()
-onMounted(() => {
-  nextTick(() =>
-    document.querySelectorAll('main a').forEach(a => {
-      nuxtApp.hooks.callHook('link:prefetch', a.getAttribute('href')!)
-    }),
-  )
-})
-</script>
