@@ -149,7 +149,7 @@ I then use it like this:
 </template>
 ```
 
-⚠️ For now, `<NuxtLink>` components are not interactive, meaning you might need to add some code like this in the parent page, as a 'pretend' version of client-side routing:
+✅ **Update (Nuxt v4.5.2):** links rendered inside server components now navigate client-side out of the box. Nuxt marks internal links within island HTML and registers a single delegated click handler for them, so you no longer need to do anything. The rest of this section only applies if you're on an older version, or (like this site) you've set `pages: false` and brought your own router, in which case Nuxt skips that plugin and you still need something like:
 
 ```ts
 import { parseURL } from 'ufo'
