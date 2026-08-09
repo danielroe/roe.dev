@@ -50,10 +50,7 @@ export default defineNuxtModule({
       priority: 20,
     })
 
-    addImports({
-      name: 'handleNavigationClicks',
-      from: resolver.resolve('./runtime/route-composables'),
-    })
+    addPlugin(resolver.resolve('./runtime/link-navigation.client'))
 
     addComponent({
       filePath: resolver.resolve('./runtime/nuxt-link'),

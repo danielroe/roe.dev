@@ -8,7 +8,6 @@
     <main
       id="main-content"
       class="text-muted text-lg -mx-4 max-w-[37.50rem]"
-      @click="handleNavigationClicks"
     >
       <TheSocialFeed />
     </main>

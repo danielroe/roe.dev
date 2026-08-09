@@ -15,15 +15,6 @@ img[data-image-src='${avatar || 'null'}'] {
     },
   ],
 })
-
-const nuxtApp = useNuxtApp()
-onNuxtReady(() =>
-  document.querySelectorAll('main a').forEach(a => {
-    const href = a.getAttribute('href')
-    if (href && !href.startsWith('mailto:'))
-      nuxtApp.hooks.callHook('link:prefetch', href)
-  }),
-)
 </script>
 
 <template>
@@ -36,7 +27,6 @@ onNuxtReady(() =>
     <main
       id="main-content"
       class="text-muted"
-      @click="handleNavigationClicks"
     >
       <TheHome />
     </main>
