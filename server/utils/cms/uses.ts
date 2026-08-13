@@ -1,6 +1,7 @@
 import type { H3Event } from 'h3'
 
 import { listRecords, blobImage } from '../atproto'
+import { dev } from '#shared/lex'
 import type { UsesCategory, UsesItem } from '#shared/cms/uses'
 
 export type { UsesCategory, UsesItem } from '#shared/cms/uses'
@@ -12,8 +13,8 @@ export type { UsesCategory, UsesItem } from '#shared/cms/uses'
  */
 export async function getUses (event: H3Event): Promise<UsesCategory[]> {
   const [categories, items] = await Promise.all([
-    listRecords(event, 'dev.roe.usesCategory'),
-    listRecords(event, 'dev.roe.usesItem'),
+    listRecords(event, dev.roe.usesCategory.main),
+    listRecords(event, dev.roe.usesItem.main),
   ])
 
   const itemsByCategoryUri = new Map<string, typeof items>()

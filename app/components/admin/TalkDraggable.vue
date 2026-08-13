@@ -6,13 +6,14 @@
  * the canonical date-sorted order; this component is a UI shell.
  */
 import { useDragAndDrop } from '@formkit/drag-and-drop/vue'
-import type { DevRoeTalk } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 export interface TalkEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeTalk.Record
+  value: Loose<dev.roe.talk.Main>
 }
 
 const props = defineProps<{

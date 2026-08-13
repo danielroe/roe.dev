@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { DevRoeUsesItem, DevRoeUsesCategory, ComAtprotoRepoStrongRef } from '#shared/lex'
+import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
 import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type { Strict } from '#shared/cms/strict'
+import type { Loose, Strict } from '#shared/cms/strict'
 
-type UsesItemValue = Omit<Strict<DevRoeUsesItem.Record>, '$type'>
+type UsesItemValue = Omit<Loose<Strict<dev.roe.usesItem.Main>>, '$type'>
 
 interface UsesCategoryEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeUsesCategory.Record
+  value: dev.roe.usesCategory.Main
 }
 
 const props = defineProps<{
@@ -113,7 +113,7 @@ async function onSubmit () {
       submitting.value = false
       return
     }
-    const categoryRef: ComAtprotoRepoStrongRef.Main = { uri: category.uri, cid: category.cid }
+    const categoryRef: Loose<com.atproto.repo.strongRef.Main> = { uri: category.uri, cid: category.cid }
 
     const value: UsesItemValue = {
       category: categoryRef,

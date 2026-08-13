@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { AppBskyFeedDefs, AppBskyRichtextFacet, AppBskyEmbedImages, AppBskyEmbedExternal } from '@atproto/api'
+import type { app } from '@bsky/sdk/lexicons'
 
 const props = defineProps<{
   uri: string
 }>()
 
-type Facet = AppBskyRichtextFacet.Main
-type ThreadViewPost = AppBskyFeedDefs.ThreadViewPost
+type Facet = app.bsky.richtext.facet.Main
+type ThreadViewPost = app.bsky.feed.defs.ThreadViewPost
 
 interface CommentEmbed {
   type: 'images' | 'external'
-  images?: AppBskyEmbedImages.ViewImage[]
-  external?: AppBskyEmbedExternal.ViewExternal
+  images?: app.bsky.embed.images.ViewImage[]
+  external?: app.bsky.embed.external.ViewExternal
 }
 
 interface Comment {
@@ -50,14 +50,14 @@ function parseEmbed (embed: unknown): CommentEmbed | undefined {
   if (e.$type === 'app.bsky.embed.images#view' && Array.isArray(e.images)) {
     return {
       type: 'images',
-      images: e.images as AppBskyEmbedImages.ViewImage[],
+      images: e.images as app.bsky.embed.images.ViewImage[],
     }
   }
 
   if (e.$type === 'app.bsky.embed.external#view' && e.external) {
     return {
       type: 'external',
-      external: e.external as AppBskyEmbedExternal.ViewExternal,
+      external: e.external as app.bsky.embed.external.ViewExternal,
     }
   }
 

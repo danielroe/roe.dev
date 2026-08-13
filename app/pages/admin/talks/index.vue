@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { DevRoeTalkGroup } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 import type { TalkEntry } from '~~/app/components/admin/TalkDraggable.vue'
 
 definePageMeta({ layout: false })
@@ -9,7 +10,7 @@ interface TalkGroupEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeTalkGroup.Record
+  value: Loose<dev.roe.talkGroup.Main>
 }
 
 const { data: talksData, refresh: refreshTalks, loading: talksLoading } = useAdminFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] })

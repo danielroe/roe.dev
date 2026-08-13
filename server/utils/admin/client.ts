@@ -1,20 +1,21 @@
 import type { H3Event } from 'h3'
-import { Agent } from '@atproto/api'
+import { Client } from '@atproto/lex'
+import type { DidString } from '@atproto/lex'
 
 import { clearAdminSessionCookie, getAdminSessionCookie, getOauthClient } from './oauth'
 
-/** Restore the admin's OAuth session into an `@atproto/api` Agent. */
-export async function requireAdminAgent (event: H3Event): Promise<{ agent: Agent, did: string }> {
+/** Restore the admin's OAuth session into an `@atproto/lex` Client. */
+export async function requireAdminClient (event: H3Event): Promise<{ client: Client, did: DidString }> {
   const sess = await getAdminSessionCookie(event)
   const did = sess.data.did
   if (!did) {
     throw createError({ statusCode: 401, statusMessage: 'Not signed in.' })
   }
 
-  const client = getOauthClient(event)
+  const oauthClient = getOauthClient(event)
   try {
-    const oauthSession = await client.restore(did)
-    return { agent: new Agent(oauthSession), did }
+    const oauthSession = await oauthClient.restore(did)
+    return { client: new Client(oauthSession), did: oauthSession.did }
   }
   catch (err) {
     console.warn('[admin] OAuth restore failed:', err instanceof Error ? err.message : err)

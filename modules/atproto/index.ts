@@ -6,7 +6,9 @@
  * `social.networks.bluesky.identifier`; the PDS endpoint is read from the
  * `#atproto_pds` service entry of the resolved DID document.
  */
-import { AtpAgent } from '@atproto/api'
+import { Client, asStringFormat } from '@atproto/lex'
+import { api } from '@bsky/sdk'
+import { com } from '@bsky/sdk/lexicons'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 interface DidDocument {
@@ -46,10 +48,10 @@ export default defineNuxtModule({
 
     try {
       if (!cfg.did) {
-        const agent = new AtpAgent({ service: 'https://public.api.bsky.app' })
-        const { data } = await agent.resolveHandle({ handle })
-        cfg.did = data.did
-        publicCfg.did = data.did
+        const client = new Client(api.app.urlPublic)
+        const { did } = await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle, 'handle') })
+        cfg.did = did
+        publicCfg.did = did
       }
 
       if (!publicCfg.service) {

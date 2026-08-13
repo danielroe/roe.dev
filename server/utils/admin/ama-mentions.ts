@@ -17,15 +17,16 @@
  *   - Bluesky: keeps the label visible with a facet on the label range.
  *   - Mastodon / LinkedIn: `label (url)`.
  */
-import type { AppBskyRichtextFacet } from '@atproto/api'
+import type { DidString, UriString } from '@atproto/lex'
+import type { app } from '@bsky/sdk/lexicons'
 
-import type { DevRoeEntity } from '#shared/lex'
+import type { dev } from '#shared/lex'
 
 export type Platform = 'bluesky' | 'mastodon' | 'linkedin'
 
 export interface EntityLookup {
   /** Entity rkey → record value. */
-  byRkey: Map<string, DevRoeEntity.Record>
+  byRkey: Map<string, dev.roe.entity.Main>
 }
 
 const MENTION_RE = /@([a-z0-9]{13})\b/g
@@ -89,8 +90,8 @@ export function resolveForPlatform (
 export function resolveBluesky (
   text: string,
   entities: EntityLookup,
-): { text: string, facets: AppBskyRichtextFacet.Main[] } {
-  const facets: AppBskyRichtextFacet.Main[] = []
+): { text: string, facets: app.bsky.richtext.facet.Main[] } {
+  const facets: app.bsky.richtext.facet.Main[] = []
   const tokens = tokenise(text)
   let out = ''
   let cursor = 0
@@ -107,7 +108,9 @@ export function resolveBluesky (
         const byteEnd = Buffer.byteLength(out, 'utf8')
         facets.push({
           index: { byteStart, byteEnd },
-          features: [{ $type: 'app.bsky.richtext.facet#mention', did: handle }],
+          // Placeholder: `publishBlueskyThread` swaps the handle for a DID
+          // just before posting, since handles can change in between.
+          features: [{ $type: 'app.bsky.richtext.facet#mention', did: handle as DidString }],
         })
       }
     }
@@ -117,7 +120,7 @@ export function resolveBluesky (
       const byteEnd = Buffer.byteLength(out, 'utf8')
       facets.push({
         index: { byteStart, byteEnd },
-        features: [{ $type: 'app.bsky.richtext.facet#link', uri: t.url! }],
+        features: [{ $type: 'app.bsky.richtext.facet#link', uri: t.url! as UriString }],
       })
     }
     cursor = t.end
@@ -147,7 +150,7 @@ export function resolveBluesky (
     const uri = raw.startsWith('http') ? raw : `https://${raw}`
     facets.push({
       index: { byteStart, byteEnd },
-      features: [{ $type: 'app.bsky.richtext.facet#link', uri }],
+      features: [{ $type: 'app.bsky.richtext.facet#link', uri: uri as UriString }],
     })
   }
 

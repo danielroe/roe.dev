@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import type { DevRoeLocation } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Location - admin - Daniel Roe' })
 
-type LocationValue = Omit<DevRoeLocation.Record, '$type'>
+type LocationValue = Omit<Loose<dev.roe.location.Main>, '$type'>
 
 interface LocationEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeLocation.Record
+  value: dev.roe.location.Main
 }
 
 const { data, refresh, loading } = useAdminFetch<LocationEntry | null>('/api/admin/location')

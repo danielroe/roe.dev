@@ -76,7 +76,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1890k"`)
+      .toMatchInlineSnapshot(`"1880k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -85,7 +85,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14810k"`)
+      .toMatchInlineSnapshot(`"13770k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -106,21 +106,22 @@ describe('project sizes', () => {
         "@atproto-labs/simple-store-memory",
         "@atproto-labs/simple-store-memory/node_modules/lru-cache",
         "@atproto-labs/simple-store-memory/node_modules/lru-cache/dist/esm",
-        "@atproto/api",
-        "@atproto/common-web",
         "@atproto/did",
         "@atproto/jwk",
         "@atproto/jwk-jose",
         "@atproto/jwk-webcrypto",
+        "@atproto/lex",
+        "@atproto/lex-client",
         "@atproto/lex-data",
         "@atproto/lex-json",
-        "@atproto/lexicon",
+        "@atproto/lex-password-session",
+        "@atproto/lex-schema",
         "@atproto/oauth-client",
         "@atproto/oauth-client-node",
         "@atproto/oauth-types",
         "@atproto/syntax",
-        "@atproto/xrpc",
         "@babel/parser",
+        "@bsky/sdk",
         "@formkit/drag-and-drop",
         "@img/colour",
         "@takumi-rs/core",
@@ -135,7 +136,6 @@ describe('project sizes', () => {
         "@vue/runtime-dom",
         "@vue/server-renderer",
         "@vue/shared",
-        "await-lock",
         "comark",
         "comark/node_modules/entities",
         "consola",
@@ -172,7 +172,6 @@ describe('project sizes', () => {
         "sharp",
         "source-map-js",
         "srvx",
-        "tlds",
         "ts-custom-error",
         "ufo",
         "ultrahtml",

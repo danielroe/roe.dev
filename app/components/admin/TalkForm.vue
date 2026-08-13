@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { DevRoeTalk, DevRoeTalkGroup, ComAtprotoRepoStrongRef } from '#shared/lex'
+import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
 import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type { Strict } from '#shared/cms/strict'
+import type { Loose, Strict } from '#shared/cms/strict'
 
-type TalkValue = Omit<Strict<DevRoeTalk.Record>, '$type'>
+type TalkValue = Omit<Loose<Strict<dev.roe.talk.Main>>, '$type'>
 
 interface TalkGroupEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeTalkGroup.Record
+  value: dev.roe.talkGroup.Main
 }
 
 interface GitHubRelease {
@@ -128,7 +128,7 @@ async function onSubmit () {
   submitting.value = true
   try {
     const group = (groups.value ?? []).find(g => g.uri === form.groupUri)
-    const groupRef: ComAtprotoRepoStrongRef.Main | undefined = group
+    const groupRef: Loose<com.atproto.repo.strongRef.Main> | undefined = group
       ? { uri: group.uri, cid: group.cid }
       : undefined
 

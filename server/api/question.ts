@@ -1,10 +1,9 @@
-import { TID } from '@atproto/common-web'
-import { AtpAgent } from '@atproto/api'
+import { Client, currentDatetimeString } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
 
 import { sendPushoverNotification } from '../utils/pushover'
 import { encrypt } from '../utils/admin/encryption'
-import { lexicons } from '#shared/lex'
-import type { DevRoeAma } from '#shared/lex'
+import { dev } from '#shared/lex'
 
 export default defineEventHandler(async event => {
   if (event.method === 'OPTIONS') return null
@@ -34,21 +33,14 @@ export default defineEventHandler(async event => {
 })
 
 async function persistQuestion (question: string, config: ReturnType<typeof useRuntimeConfig>) {
-  const record: DevRoeAma.Record = {
-    $type: 'dev.roe.ama',
+  const session = await PasswordSession.login({
+    service: config.public.atproto.service,
+    identifier: config.atproto.handle,
+    password: config.atproto.password,
+  })
+  await new Client(session).create(dev.roe.ama.main, {
     status: 'unanswered',
     encryptedQuestion: encrypt(question),
-    createdAt: new Date().toISOString(),
-  }
-  const validation = lexicons.validate('dev.roe.ama', record)
-  if (!validation.success) throw new Error(validation.error.message)
-
-  const agent = new AtpAgent({ service: config.public.atproto.service })
-  await agent.login({ identifier: config.atproto.handle, password: config.atproto.password })
-  await agent.com.atproto.repo.putRecord({
-    repo: agent.session!.did,
-    collection: 'dev.roe.ama',
-    rkey: TID.nextStr(),
-    record: record as Record<string, unknown>,
-  })
+    createdAt: currentDatetimeString(),
+  }, { validateRequest: true })
 }

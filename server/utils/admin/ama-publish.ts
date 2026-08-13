@@ -4,9 +4,12 @@
  * optional image and the original question as alt text.
  */
 import type { H3Event } from 'h3'
-import type { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet } from '@atproto/api'
-import { AtpAgent } from '@atproto/api'
-import { BlobRef, jsonToLex } from '@atproto/lexicon'
+import { Client, asStringFormat, isBlobRef, jsonToLex } from '@atproto/lex'
+import type { $Typed, JsonValue } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
+import { post as createPost } from '@bsky/sdk'
+import type { app } from '@bsky/sdk/lexicons'
+import { com } from '@bsky/sdk/lexicons'
 import { createRestAPIClient } from 'masto'
 import { parseURL, withProtocol } from 'ufo'
 import { BLUESKY_IMAGE_MAX_BYTES } from '#shared/cms/blob'
@@ -30,7 +33,7 @@ export interface BlueskyImage {
 export interface ResolvedPost {
   text: string
   /** Bluesky-only: facets covering mentions, hashtags, URLs. */
-  facets?: AppBskyRichtextFacet.Main[]
+  facets?: app.bsky.richtext.facet.Main[]
 }
 
 // ---------- Bluesky ----------
@@ -59,15 +62,15 @@ export async function publishBlueskyThread (
   const password = config.bluesky.accessToken
 
   const pdsUrl = await resolveBlueskyPds(identifier)
-  const agent = new AtpAgent({ service: pdsUrl })
-  await agent.login({ identifier, password })
+  const session = await PasswordSession.login({ service: pdsUrl, identifier, password })
+  const client = new Client(session)
 
-  let replyTo: Required<AppBskyFeedPost.ReplyRef> | undefined
+  let replyTo: app.bsky.feed.post.ReplyRef | undefined
   const postUrls: string[] = []
 
   for (let i = 0; i < posts.length; i++) {
     const { text, facets = [] } = posts[i]!
-    let embed: AppBskyEmbedImages.Main | undefined
+    let embed: $Typed<app.bsky.embed.images.Main> | undefined
 
     if (i === 0 && image) {
       if (image.size != null && image.size > BLUESKY_IMAGE_MAX_BYTES) {
@@ -76,13 +79,13 @@ export async function publishBlueskyThread (
           statusMessage: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
         })
       }
-      const blob = jsonToLex(image.blob as never)
-      if (!(blob instanceof BlobRef)) {
+      const blob = jsonToLex(image.blob as JsonValue)
+      if (!isBlobRef(blob)) {
         throw new Error('AMA image is not a valid blob ref; cannot embed.')
       }
 
       embed = {
-        $type: 'app.bsky.embed.images',
+        $type: 'app.bsky.embed.images' as const,
         images: [{
           alt: altText,
           image: blob,
@@ -97,28 +100,28 @@ export async function publishBlueskyThread (
 
     // Resolve handle→DID just before posting (handles can change between
     // author time and publish, and Bluesky stores the DID in the facet).
-    const resolvedFacets: AppBskyRichtextFacet.Main[] = await Promise.all(
+    const resolvedFacets: app.bsky.richtext.facet.Main[] = await Promise.all(
       facets.map(async facet => {
         const features = await Promise.all(facet.features.map(async f => {
           if (f.$type !== 'app.bsky.richtext.facet#mention') return f
           const mention = f as { $type: string, did: string }
           try {
             const handle = mention.did.replace(/^@/, '')
-            const res = await agent.resolveHandle({ handle })
-            return { ...f, did: res.data.did }
+            const { did } = await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle, 'handle') })
+            return { ...f, did }
           }
           catch (err) {
             console.warn(`Failed to resolve handle ${mention.did}:`, err)
             return f
           }
         }))
-        return { ...facet, features: features as AppBskyRichtextFacet.Main['features'] }
+        return { ...facet, features: features as app.bsky.richtext.facet.Main['features'] }
       }),
     )
 
-    const post = await agent.post({
+    const post = await client.call(createPost, {
       text,
-      embed: embed as never,
+      embed,
       reply: replyTo,
       facets: resolvedFacets.length ? resolvedFacets : undefined,
     })

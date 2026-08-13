@@ -1,19 +1,18 @@
 import type { H3Event } from 'h3'
-import { TID } from '@atproto/common-web'
-import { jsonToLex } from '@atproto/lexicon'
+import { LexValidationError, XrpcResponseError, jsonToLex } from '@atproto/lex'
+import type { AtUriString, CidString, CreateOptions, DeleteOptions, GetOptions, Infer, JsonValue, PutOptions, RecordSchema } from '@atproto/lex'
 
-import { requireAdminAgent } from './agent'
-import { lexicons } from '#shared/lex'
-import type { Collection, RecordTypes } from '../atproto'
+import { requireAdminClient } from './client'
+import type { Loose } from '#shared/cms/strict'
 
-export interface AdminRecord<C extends Collection> {
+export interface AdminRecord<T extends RecordSchema> {
   rkey: string
   uri: string
   cid: string
-  value: RecordTypes[C]
+  value: Infer<T>
 }
 
-interface PutResult { rkey: string, uri: string, cid: string }
+interface PutResult { rkey: string, uri: AtUriString, cid: CidString }
 
 function rkeyFromUri (uri: string): string {
   return uri.split('/').pop() ?? ''
@@ -25,31 +24,20 @@ function assertRkey (rkey: string | undefined): asserts rkey is string {
   }
 }
 
-export async function listAdminRecords<C extends Collection> (
+export async function listAdminRecords<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
-  options: { sortBy?: (r: AdminRecord<C>) => string | number } = {},
-): Promise<AdminRecord<C>[]> {
-  const { agent, did } = await requireAdminAgent(event)
-  const records: AdminRecord<C>[] = []
-  let cursor: string | undefined
-  while (true) {
-    const res = await agent.com.atproto.repo.listRecords({
-      repo: did,
-      collection,
-      limit: 100,
-      cursor,
+  schema: T,
+  options: { sortBy?: (r: AdminRecord<T>) => string | number } = {},
+): Promise<AdminRecord<T>[]> {
+  const { client, did } = await requireAdminClient(event)
+  const records: AdminRecord<T>[] = []
+  for await (const r of client.listAll(schema, { repo: did, limit: 100 })) {
+    records.push({
+      rkey: rkeyFromUri(r.uri),
+      uri: r.uri,
+      cid: r.cid,
+      value: r.value as Infer<T>,
     })
-    for (const r of res.data.records) {
-      records.push({
-        rkey: rkeyFromUri(r.uri),
-        uri: r.uri,
-        cid: r.cid,
-        value: r.value as RecordTypes[C],
-      })
-    }
-    if (!res.data.cursor || res.data.records.length < 100) break
-    cursor = res.data.cursor
   }
   if (options.sortBy) {
     const { sortBy } = options
@@ -64,90 +52,93 @@ export async function listAdminRecords<C extends Collection> (
   return records
 }
 
-export async function getAdminRecord<C extends Collection> (
+/**
+ * `rkey` is typed conditionally on the concrete schema's key type, which TS
+ * can't resolve while `T` is still generic; the casts on the option objects
+ * throughout this file are safe because every `dev.roe.*` record takes a plain
+ * string key.
+ */
+export async function getAdminRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
+  schema: T,
   rkey: string | undefined,
-): Promise<AdminRecord<C>> {
+): Promise<AdminRecord<T>> {
   assertRkey(rkey)
-  const { agent, did } = await requireAdminAgent(event)
+  const { client, did } = await requireAdminClient(event)
   try {
-    const res = await agent.com.atproto.repo.getRecord({ repo: did, collection, rkey })
-    return {
-      rkey,
-      uri: res.data.uri,
-      cid: res.data.cid ?? '',
-      value: res.data.value as RecordTypes[C],
-    }
+    const res = await client.get(schema, { repo: did, rkey } as unknown as GetOptions<T>)
+    return { rkey, uri: res.uri, cid: res.cid ?? '', value: res.value }
   }
   catch (err) {
-    if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 404) {
-      throw createError({ statusCode: 404, statusMessage: `${collection}/${rkey} not found.` })
+    if (err instanceof XrpcResponseError && err.status === 404) {
+      throw createError({ statusCode: 404, statusMessage: `${schema.$type}/${rkey} not found.` })
     }
     throw err
   }
 }
 
-async function putRecord<C extends Collection> (
+/**
+ * Blob refs arrive from the admin UI in their JSON encoding
+ * (`{ $type: 'blob', ref: { $link } }`); `jsonToLex` turns those back into
+ * the lex representation the record schema expects.
+ */
+async function writeRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
-  rkey: string,
-  record: RecordTypes[C],
+  schema: T,
+  rkey: string | undefined,
+  value: Loose<Omit<Infer<T>, '$type'>>,
 ): Promise<PutResult> {
-  const lexRecord = jsonToLex(record as unknown as Parameters<typeof jsonToLex>[0]) as RecordTypes[C]
-  const validation = lexicons.validate(collection, lexRecord)
-  if (!validation.success) {
-    throw createError({
-      statusCode: 422,
-      statusMessage: `Invalid ${collection}: ${validation.error.message}`,
-    })
+  const { client, did } = await requireAdminClient(event)
+  const input = jsonToLex(value as JsonValue) as Omit<Infer<T>, '$type'>
+
+  try {
+    const res = rkey === undefined
+      ? await client.create(schema, input, { repo: did, validateRequest: true } as unknown as CreateOptions<T>)
+      : await client.put(schema, input, { repo: did, rkey, validateRequest: true } as unknown as PutOptions<T>)
+    return { rkey: rkey ?? rkeyFromUri(res.uri), uri: res.uri, cid: res.cid }
   }
-  const { agent, did } = await requireAdminAgent(event)
-  const res = await agent.com.atproto.repo.putRecord({
-    repo: did,
-    collection,
-    rkey,
-    record: lexRecord as Record<string, unknown>,
-  })
-  return { rkey, uri: res.data.uri, cid: res.data.cid }
+  catch (err) {
+    if (err instanceof LexValidationError) {
+      throw createError({ statusCode: 422, statusMessage: `Invalid ${schema.$type}: ${err.message}` })
+    }
+    throw err
+  }
 }
 
-/** Create a record with a new TID rkey, or put one at a caller-supplied rkey (typically `self` for singletons). */
-export function createAdminRecord<C extends Collection> (
+/** Create a record with a server-generated TID rkey, or put one at a caller-supplied rkey (typically `self` for singletons). */
+export function createAdminRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
-  body: Omit<RecordTypes[C], '$type' | 'createdAt'>,
-  rkey: string = TID.nextStr(),
+  schema: T,
+  body: Loose<Omit<Infer<T>, '$type' | 'createdAt'>>,
+  rkey?: string,
 ): Promise<PutResult> {
-  return putRecord(event, collection, rkey, {
-    $type: collection,
-    ...body,
+  return writeRecord(event, schema, rkey, {
+    ...(body as Record<string, unknown>),
     createdAt: new Date().toISOString(),
-  } as RecordTypes[C])
+  } as unknown as Loose<Omit<Infer<T>, '$type'>>)
 }
 
 /** Overwrite an existing record. */
-export function updateAdminRecord<C extends Collection> (
+export function updateAdminRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
+  schema: T,
   rkey: string | undefined,
-  body: Omit<RecordTypes[C], '$type'>,
+  body: Loose<Omit<Infer<T>, '$type' | 'createdAt'>> & { createdAt?: string },
 ): Promise<PutResult> {
   assertRkey(rkey)
-  return putRecord(event, collection, rkey, {
-    $type: collection,
-    ...body,
+  return writeRecord(event, schema, rkey, {
+    ...(body as Record<string, unknown>),
     createdAt: body.createdAt ?? new Date().toISOString(),
-  } as RecordTypes[C])
+  } as unknown as Loose<Omit<Infer<T>, '$type'>>)
 }
 
-export async function deleteAdminRecord (
+export async function deleteAdminRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: Collection,
+  schema: T,
   rkey: string | undefined,
 ): Promise<{ rkey: string, deleted: true }> {
   assertRkey(rkey)
-  const { agent, did } = await requireAdminAgent(event)
-  await agent.com.atproto.repo.deleteRecord({ repo: did, collection, rkey })
+  const { client, did } = await requireAdminClient(event)
+  await client.delete(schema, { repo: did, rkey } as unknown as DeleteOptions<T>)
   return { rkey, deleted: true }
 }

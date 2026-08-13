@@ -9,7 +9,7 @@ import { listAdminRecords } from './crud'
 import { resolveForPlatform, resolveBluesky } from './ama-mentions'
 import type { EntityLookup } from './ama-mentions'
 import type { ResolvedPost } from './ama-publish'
-import type { DevRoeEntity } from '#shared/lex'
+import { dev } from '#shared/lex'
 
 export const FOOTER = '\n\nroe.dev/ama\n\n#ama'
 
@@ -19,8 +19,8 @@ export interface AmaPostInput {
 }
 
 export async function buildEntityLookup (event: H3Event): Promise<EntityLookup> {
-  const records = await listAdminRecords(event, 'dev.roe.entity')
-  const byRkey = new Map<string, DevRoeEntity.Record>()
+  const records = await listAdminRecords(event, dev.roe.entity.main)
+  const byRkey = new Map<string, dev.roe.entity.Main>()
   for (const r of records) byRkey.set(r.rkey, r.value)
   return { byRkey }
 }

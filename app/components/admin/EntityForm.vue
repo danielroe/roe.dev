@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { DevRoeEntity } from '#shared/lex'
-import type { Strict } from '#shared/cms/strict'
+import type { dev } from '#shared/lex'
+import type { Loose, Strict } from '#shared/cms/strict'
 
-type EntityValue = Omit<Strict<DevRoeEntity.Record>, '$type'>
+type EntityValue = Omit<Loose<Strict<dev.roe.entity.Main>>, '$type'>
 
 const props = defineProps<{
   initial?: Partial<EntityValue>

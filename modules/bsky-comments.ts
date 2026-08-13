@@ -4,7 +4,9 @@ import { existsSync } from 'node:fs'
 import { addServerHandler, addServerTemplate, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { joinURL, withoutTrailingSlash } from 'ufo'
 import { join } from 'pathe'
-import { AtpAgent, AppBskyFeedPost } from '@atproto/api'
+import { Client, asStringFormat } from '@atproto/lex'
+import { api } from '@bsky/sdk'
+import { app, com } from '@bsky/sdk/lexicons'
 import { toValue } from 'vue'
 
 // when I created my Bluesky account - don't judge me for hard coding it!
@@ -46,7 +48,7 @@ declare module '#build/bsky-runtime-discovery.mjs' {
     }
 
     const resolver = createResolver(import.meta.url)
-    const agent = new AtpAgent({ service: 'https://public.api.bsky.app' })
+    const client = new Client(api.app.urlPublic)
 
     const cacheDir = join(nuxt.options.rootDir, 'node_modules', '.cache', 'bluesky-comments')
     if (!existsSync(cacheDir)) {
@@ -66,7 +68,7 @@ declare module '#build/bsky-runtime-discovery.mjs' {
       if (!siteURL) {
         return
       }
-      const feedIterator = createFeedIterator(agent, blueskyHandle)
+      const feedIterator = createFeedIterator(client, blueskyHandle)
 
       for (const entry of entries) {
         if (!entry.date) continue
@@ -102,8 +104,8 @@ declare module '#build/bsky-runtime-discovery.mjs' {
             if (match) {
               const [, handle, rkey] = match
               try {
-                const { data: resolved } = await agent.resolveHandle({ handle: handle! })
-                const uri = `at://${resolved.did}/app.bsky.feed.post/${rkey}`
+                const { did } = await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle!, 'handle') })
+                const uri = `at://${did}/app.bsky.feed.post/${rkey}`
                 await saveCache(cacheFile, uri)
                 return uri
               }
@@ -190,7 +192,7 @@ async function saveCache (cacheFile: string, uri: string | null) {
   }
 }
 
-function createFeedIterator (agent: AtpAgent, actor: string) {
+function createFeedIterator (client: Client, actor: string) {
   const posts: ParsedPost[] = []
   let cursor: string | undefined
   let exhausted = false
@@ -200,8 +202,8 @@ function createFeedIterator (agent: AtpAgent, actor: string) {
     if (exhausted) return false
 
     try {
-      const { data } = await agent.getAuthorFeed({
-        actor,
+      const data = await client.call(app.bsky.feed.getAuthorFeed, {
+        actor: asStringFormat(actor, 'at-identifier'),
         limit: 100,
         cursor,
       })
@@ -211,7 +213,7 @@ function createFeedIterator (agent: AtpAgent, actor: string) {
         if (item.reason) continue
 
         const post = item.post
-        if (!AppBskyFeedPost.isRecord(post.record)) continue
+        if (!app.bsky.feed.post.$matches(post.record)) continue
 
         const record = post.record
         const postDate = new Date(record.createdAt as string)

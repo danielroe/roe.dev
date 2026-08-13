@@ -28,7 +28,9 @@ import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import { AtpAgent } from '@atproto/api'
+import { Client, asStringFormat } from '@atproto/lex'
+import type { LexMap } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
 import { defineCommand, runMain } from 'citty'
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
@@ -107,11 +109,11 @@ async function resolvePdsEndpoint (did: string): Promise<string> {
  */
 function toSchemaRecord (doc: Record<string, unknown>) {
   return {
-    $type: 'com.atproto.lexicon.schema',
+    $type: 'com.atproto.lexicon.schema' as const,
     lexicon: doc.lexicon,
     id: doc.id,
     defs: doc.defs,
-  }
+  } as LexMap & { $type: 'com.atproto.lexicon.schema' }
 }
 
 function isEqual (a: unknown, b: unknown): boolean {
@@ -150,24 +152,20 @@ const main = defineCommand({
     }
 
     const domain = authorityDomain(OWNED_AUTHORITIES[0]!)
-    const did = args.did || process.env.NUXT_ATPROTO_DID || await resolveDid(domain)
+    const did = asStringFormat(args.did || process.env.NUXT_ATPROTO_DID || await resolveDid(domain), 'did')
     const service = process.env.NUXT_PUBLIC_ATPROTO_SERVICE || await resolvePdsEndpoint(did)
     console.log(`${did} @ ${service}\n`)
 
-    const agent = new AtpAgent({ service })
-    await agent.login({ identifier: did, password })
+    const session = await PasswordSession.login({ service, identifier: did, password })
+    const client = new Client(session)
 
     for (const { nsid, doc } of lexicons.sort((a, b) => a.nsid.localeCompare(b.nsid))) {
       const record = toSchemaRecord(doc)
 
       let existing: unknown
       try {
-        const res = await agent.com.atproto.repo.getRecord({
-          repo: did,
-          collection: 'com.atproto.lexicon.schema',
-          rkey: nsid,
-        })
-        existing = res.data.value
+        const res = await client.getRecord('com.atproto.lexicon.schema', nsid, { repo: did })
+        existing = res.body.value
       }
       catch {
         existing = undefined
@@ -184,13 +182,7 @@ const main = defineCommand({
         continue
       }
 
-      await agent.com.atproto.repo.putRecord({
-        repo: did,
-        collection: 'com.atproto.lexicon.schema',
-        rkey: nsid,
-        record,
-        validate: false,
-      })
+      await client.putRecord(record, nsid, { repo: did, validate: false })
       console.log(`🟢 ${verb}d  ${nsid}`)
     }
 

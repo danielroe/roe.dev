@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import type {
-  AppBskyEmbedImages,
-  AppBskyEmbedExternal,
-} from '@atproto/api'
+import type { app } from '@bsky/sdk/lexicons'
 import type { Facet, BlueskyFacetFeature } from '#shared/utils/bluesky'
 import { segmentize, atUriToWebUrl } from '#shared/utils/bluesky'
 
 interface CommentEmbed {
   type: 'images' | 'external'
-  images?: AppBskyEmbedImages.ViewImage[]
-  external?: AppBskyEmbedExternal.ViewExternal
+  images?: app.bsky.embed.images.ViewImage[]
+  external?: app.bsky.embed.external.ViewExternal
 }
 
 interface Comment {
