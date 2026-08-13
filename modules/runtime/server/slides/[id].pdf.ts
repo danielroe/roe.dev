@@ -2,6 +2,7 @@
  * Dev-only handler for `/slides/:id.pdf`.
  */
 import { listRecords } from '#server/utils/atproto'
+import { dev } from '#shared/lex'
 
 interface GitHubReleaseAsset {
   id: number
@@ -16,7 +17,7 @@ let knownIds: Set<string> | null = null
 
 async function getKnownSlideIds (event: Parameters<typeof listRecords>[0]): Promise<Set<string>> {
   if (knownIds) return knownIds
-  const records = await listRecords(event, 'dev.roe.talk')
+  const records = await listRecords(event, dev.roe.talk.main)
   knownIds = new Set(
     records
       .map(r => r.value.slides)

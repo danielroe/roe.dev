@@ -1,7 +1,8 @@
 import type { H3Event } from 'h3'
 
 import { getRecord, putRecord } from '../atproto'
-import type { DevRoeLocation } from '#shared/lex'
+import { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 export interface Location {
   city: string
@@ -12,7 +13,7 @@ export interface Location {
 }
 
 export async function getCurrentLocation (event: H3Event): Promise<Location | null> {
-  const rec = await getRecord(event, 'dev.roe.location', 'self')
+  const rec = await getRecord(event, dev.roe.location.main, 'self')
   if (!rec) return null
   const v = rec.value
   return {
@@ -20,12 +21,12 @@ export async function getCurrentLocation (event: H3Event): Promise<Location | nu
     region: v.region,
     country: v.country,
     countryCode: v.countryCode,
-    meetupAvailable: v.meetupAvailable,
+    meetupAvailable: v.meetupAvailable ?? false,
   }
 }
 
 export async function setCurrentLocation (event: H3Event, loc: Location): Promise<void> {
-  const value: Omit<DevRoeLocation.Record, '$type'> = {
+  const value: Loose<Omit<dev.roe.location.Main, '$type'>> = {
     city: loc.city,
     ...(loc.region ? { region: loc.region } : {}),
     country: loc.country,
@@ -33,5 +34,5 @@ export async function setCurrentLocation (event: H3Event, loc: Location): Promis
     meetupAvailable: loc.meetupAvailable,
     createdAt: new Date().toISOString(),
   }
-  await putRecord(event, 'dev.roe.location', 'self', value)
+  await putRecord(event, dev.roe.location.main, 'self', value)
 }

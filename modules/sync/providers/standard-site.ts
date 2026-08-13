@@ -1,4 +1,6 @@
-import { AtpAgent } from '@atproto/api'
+import { Client } from '@atproto/lex'
+import type { LexMap } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
 import { useNuxt } from 'nuxt/kit'
 
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
@@ -31,31 +33,22 @@ export class StandardSiteProvider implements SyncProvider {
       throw new Error('atproto identity / credentials not configured (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
     }
 
-    const agent = new AtpAgent({ service: pdsUrl })
-    await agent.login({ identifier: handle, password })
+    const session = await PasswordSession.login({ service: pdsUrl, identifier: handle, password })
+    const client = new Client(session)
 
-    const did = agent.session!.did
+    const did = client.assertDid
 
-    await agent.com.atproto.repo.putRecord({
-      repo: did,
-      collection: 'site.standard.publication',
-      rkey: publicationRkey,
-      record: {
-        $type: 'site.standard.publication',
-        url: 'https://roe.dev',
-        name: 'Daniel Roe',
-        description: 'The personal website of Daniel Roe',
-        preferences: { showInDiscover: true },
-      },
-    })
+    await client.putRecord({
+      $type: 'site.standard.publication',
+      url: 'https://roe.dev',
+      name: 'Daniel Roe',
+      description: 'The personal website of Daniel Roe',
+      preferences: { showInDiscover: true },
+    }, publicationRkey)
 
     // Delete legacy 'self' rkey publication record if it exists
     try {
-      await agent.com.atproto.repo.deleteRecord({
-        repo: did,
-        collection: 'site.standard.publication',
-        rkey: 'self',
-      })
+      await client.deleteRecord('site.standard.publication', 'self')
       console.info('[sync:standard-site] Deleted legacy publication record with rkey: self')
     }
     catch {
@@ -71,20 +64,12 @@ export class StandardSiteProvider implements SyncProvider {
 
     // Delete any existing records that don't match a current blog post's TID
     try {
-      const existing = await agent.com.atproto.repo.listRecords({
-        repo: did,
-        collection: 'site.standard.document',
-        limit: 100,
-      })
-      for (const record of existing.data.records) {
+      const existing = await client.listRecords('site.standard.document', { repo: did, limit: 100 })
+      for (const record of existing.body.records) {
         const rkey = record.uri.split('/').pop()!
         if (!expectedRkeys.has(rkey)) {
           console.info(`[sync:standard-site] Deleting stale record with rkey: ${rkey}`)
-          await agent.com.atproto.repo.deleteRecord({
-            repo: did,
-            collection: 'site.standard.document',
-            rkey,
-          })
+          await client.deleteRecord('site.standard.document', rkey)
         }
       }
     }
@@ -100,7 +85,7 @@ export class StandardSiteProvider implements SyncProvider {
 
       const rkey = tidFromDate(item.date)
 
-      const record: Record<string, unknown> = {
+      const record: LexMap = {
         $type: 'site.standard.document',
         site: `at://${did}/site.standard.publication/${publicationRkey}`,
         path: `/blog/${slug}`,
@@ -113,12 +98,7 @@ export class StandardSiteProvider implements SyncProvider {
       if (item.tags?.length) record.tags = item.tags
       if (item.text_content) record.textContent = item.text_content
 
-      await agent.com.atproto.repo.putRecord({
-        repo: did,
-        collection: 'site.standard.document',
-        rkey,
-        record,
-      })
+      await client.putRecord(record as LexMap & { $type: 'site.standard.document' }, rkey)
 
       updated++
     }

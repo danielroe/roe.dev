@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DevRoeEntity } from '#shared/lex'
+import type { dev } from '#shared/lex'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Entities - admin - Daniel Roe' })
@@ -8,7 +8,7 @@ interface EntityEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeEntity.Record
+  value: dev.roe.entity.Main
 }
 
 const { data, refresh, loading } = useAdminFetch<EntityEntry[]>('/api/admin/entities', { default: () => [] })

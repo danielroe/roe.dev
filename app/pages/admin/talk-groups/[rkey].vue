@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { DevRoeTalkGroup } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Edit talk group - admin - Daniel Roe' })
@@ -14,13 +15,13 @@ if (!rkey.value) {
   throw createError({ statusCode: 404, statusMessage: 'Missing rkey.' })
 }
 
-type TalkGroupValue = Omit<DevRoeTalkGroup.Record, '$type'>
+type TalkGroupValue = Omit<Loose<dev.roe.talkGroup.Main>, '$type'>
 
 interface TalkGroupEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeTalkGroup.Record
+  value: dev.roe.talkGroup.Main
 }
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request

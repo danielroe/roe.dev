@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { DevRoeTalkGroup } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 definePageMeta({ layout: false })
 useHead({ title: 'New talk group - admin - Daniel Roe' })
 
-type TalkGroupValue = Omit<DevRoeTalkGroup.Record, '$type'>
+type TalkGroupValue = Omit<Loose<dev.roe.talkGroup.Main>, '$type'>
 
 async function save (value: TalkGroupValue) {
   await $fetch('/api/admin/talk-groups', { method: 'POST', body: value })

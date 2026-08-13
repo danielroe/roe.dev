@@ -1,26 +1,27 @@
-import { AppBskyEmbedImages, AppBskyFeedPost, AppBskyRichtextFacet, AtpAgent } from '@atproto/api'
-import type { AppBskyFeedDefs } from '@atproto/api'
+import { Client, asStringFormat } from '@atproto/lex'
+import { api } from '@bsky/sdk'
+import { app } from '@bsky/sdk/lexicons'
 import MagicString from 'magic-string'
 
 export default defineEventHandler(async event => {
-  const agent = new AtpAgent({ service: 'https://public.api.bsky.app' })
+  const client = new Client(api.app.urlPublic)
   const { identifier } = useRuntimeConfig(event).social.networks.bluesky
 
-  const feed: AppBskyFeedDefs.FeedViewPost[] = []
+  const feed: app.bsky.feed.defs.FeedViewPost[] = []
   let cursor: string | undefined
   do {
-    const result = await agent.getAuthorFeed({ actor: identifier, limit: 100, cursor })
-    for (const p of result.data.feed) {
-      if (AppBskyFeedPost.isRecord(p.post.record) && p.post.author.handle === identifier && !p.reply && (!p.post.embed || AppBskyEmbedImages.isMain(p.post.embed))) {
+    const result = await client.call(app.bsky.feed.getAuthorFeed, { actor: asStringFormat(identifier, 'at-identifier'), limit: 100, cursor })
+    for (const p of result.feed) {
+      if (app.bsky.feed.post.$matches(p.post.record) && p.post.author.handle === identifier && !p.reply && (!p.post.embed || app.bsky.embed.images.view.$matches(p.post.embed))) {
         feed.push(p)
       }
-      cursor = result.data.cursor
+      cursor = result.cursor
     }
   } while (cursor && feed.length < 20)
 
   return Promise.all(feed.map((p): BlueskyFeedItem => {
-    const post = p.post.record as AppBskyFeedPost.Record
-    const embed = AppBskyEmbedImages.isMain(p.post.embed) ? p.post.embed : undefined
+    const post = p.post.record as app.bsky.feed.post.Main
+    const embed = app.bsky.embed.images.view.$matches(p.post.embed) ? p.post.embed : undefined
     const text = new MagicString(post.text)
     for (const facet of post.facets || []) {
       const startIndex = [...post.text].findIndex(
@@ -34,7 +35,7 @@ export default defineEventHandler(async event => {
           >= facet.index.byteEnd,
       )
       for (const feature of facet.features) {
-        if (AppBskyRichtextFacet.isLink(feature)) {
+        if (app.bsky.richtext.facet.link.$matches(feature)) {
           text.appendRight(startIndex, `<a href="${feature.uri}">`)
           text.appendLeft(endIndex === -1 ? post.text.length : endIndex + 1, '</a>')
           continue
@@ -65,7 +66,6 @@ export default defineEventHandler(async event => {
               `https://bsky.app/profile/${p.post.author.handle}/post`
               + p.post.uri.match(/(\/[^/]+)$/)?.[1],
       html: text.toString().replace(/\n/g, '<br>'),
-      // @ts-expect-error TODO: fix typings
       media: embed?.images?.map(i => ({
         url: i.fullsize,
         alt: i.alt,

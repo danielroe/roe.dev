@@ -1,40 +1,31 @@
 import type { H3Event } from 'h3'
-import { AtpAgent } from '@atproto/api'
+import { Client, XrpcResponseError } from '@atproto/lex'
+import type { AtUriString, CidString, DidString, GetOptions, Infer, PutOptions, RecordSchema } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
 
-import { lexicons } from '#shared/lex'
 import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type {
-  DevRoeAma,
-  DevRoeEntity,
-  DevRoeInvite,
-  DevRoeLocation,
-  DevRoeSync,
-  DevRoeTalk,
-  DevRoeTalkGroup,
-  DevRoeUsesCategory,
-  DevRoeUsesItem,
-} from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 /**
  * Reads against our own PDS don't need auth - `com.atproto.repo.listRecords`
  * and `getRecord` are open against any public repo. We use an unauthed
- * agent for reads to dodge the PDS's per-account login rate limit, and only
- * `login()` on write paths.
+ * client for reads to dodge the PDS's per-account login rate limit, and only
+ * log in on write paths.
  *
- * Both agents are cached per Nitro process.
+ * Both clients are cached per Nitro process.
  */
-let readAgent: AtpAgent | null = null
-let authedAgent: { agent: AtpAgent, did: string } | null = null
+let readClient: Client | null = null
+let authedClient: { client: Client, did: DidString } | null = null
 
-function getReadAgent (event: H3Event): AtpAgent {
-  if (readAgent) return readAgent
+function getReadClient (event: H3Event): Client {
+  if (readClient) return readClient
   const config = useRuntimeConfig(event)
-  readAgent = new AtpAgent({ service: config.public.atproto.service })
-  return readAgent
+  readClient = new Client(config.public.atproto.service)
+  return readClient
 }
 
-async function getAuthedAgent (event: H3Event): Promise<{ agent: AtpAgent, did: string }> {
-  if (authedAgent) return authedAgent
+async function getAuthedClient (event: H3Event): Promise<{ client: Client, did: DidString }> {
+  if (authedClient) return authedClient
 
   const config = useRuntimeConfig(event)
   const service = config.public.atproto.service
@@ -47,26 +38,22 @@ async function getAuthedAgent (event: H3Event): Promise<{ agent: AtpAgent, did: 
     })
   }
 
-  const agent = new AtpAgent({ service })
-  await agent.login({ identifier: handle, password })
+  const session = await PasswordSession.login({ service, identifier: handle, password })
+  const client = new Client(session)
 
-  if (!agent.session) {
-    throw createError({ statusCode: 500, statusMessage: 'atproto login did not return a session.' })
-  }
-
-  authedAgent = { agent, did: agent.session.did }
-  return authedAgent
+  authedClient = { client, did: client.assertDid }
+  return authedClient
 }
 
-let didPromise: Promise<string> | null = null
+let didPromise: Promise<DidString> | null = null
 
 /**
  * Resolve our PDS DID. The build-time `modules/atproto` module populates
  * `runtimeConfig.atproto.did` from the configured handle; if we've already
  * logged in we prefer the session DID. Cached for the lifetime of the process.
  */
-export async function resolveDid (event: H3Event): Promise<string> {
-  if (authedAgent) return authedAgent.did
+export async function resolveDid (event: H3Event): Promise<DidString> {
+  if (authedClient) return authedClient.did
   if (didPromise) return didPromise
 
   const config = useRuntimeConfig(event)
@@ -78,112 +65,70 @@ export async function resolveDid (event: H3Event): Promise<string> {
     })
   }
 
-  didPromise = Promise.resolve(config.atproto.did)
+  didPromise = Promise.resolve(config.atproto.did as DidString)
   return didPromise
 }
 
-/** Map from NSID to its record interface. Extend as new lexicons are added. */
-export interface RecordTypes {
-  'dev.roe.talk': DevRoeTalk.Record
-  'dev.roe.talkGroup': DevRoeTalkGroup.Record
-  'dev.roe.usesCategory': DevRoeUsesCategory.Record
-  'dev.roe.usesItem': DevRoeUsesItem.Record
-  'dev.roe.location': DevRoeLocation.Record
-  'dev.roe.entity': DevRoeEntity.Record
-  'dev.roe.invite': DevRoeInvite.Record
-  'dev.roe.ama': DevRoeAma.Record
-  'dev.roe.sync': DevRoeSync.Record
-}
-
-export type Collection = keyof RecordTypes
-
 /** A record as returned by listRecords, with strongly typed `value`. */
-export interface FetchedRecord<C extends Collection> {
-  uri: string
-  cid: string
-  value: RecordTypes[C]
+export interface FetchedRecord<T extends RecordSchema> {
+  uri: AtUriString
+  cid: CidString
+  value: Infer<T>
 }
 
 /**
- * Put (create or overwrite) a record at a known rkey. Validates against the
- * lexicon before sending, so we fail fast on schema drift in dev.
+ * Put (create or overwrite) a record at a known rkey. The client validates
+ * against the lexicon before sending, so we fail fast on schema drift in dev.
  */
-export async function putRecord<C extends Collection> (
+export async function putRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
+  schema: T,
   rkey: string,
-  value: Omit<RecordTypes[C], '$type'>,
-): Promise<{ uri: string, cid: string }> {
-  const { agent, did } = await getAuthedAgent(event)
-
-  const record = { $type: collection, ...value } as RecordTypes[C]
-  const result = lexicons.validate(collection, record)
-  if (!result.success) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: `Record failed lexicon validation for ${collection}: ${result.error.message}`,
-    })
-  }
-
-  const res = await agent.com.atproto.repo.putRecord({
-    repo: did,
-    collection,
-    rkey,
-    record,
-  })
-  return { uri: res.data.uri, cid: res.data.cid }
+  value: Loose<Omit<Infer<T>, '$type'>>,
+): Promise<{ uri: AtUriString, cid: CidString }> {
+  const { client } = await getAuthedClient(event)
+  const res = await client.put(schema, value as Omit<Infer<T>, '$type'>, { rkey } as unknown as PutOptions<T>)
+  return { uri: res.uri, cid: res.cid }
 }
 
-/** Get a single record by rkey. Returns null if it doesn't exist. */
-export async function getRecord<C extends Collection> (
+/**
+ * Get a single record by rkey. Returns null if it doesn't exist.
+ *
+ * `rkey` is typed conditionally on the concrete schema's key type, which TS
+ * can't resolve while `T` is still generic; the casts on the option objects
+ * here and in `putRecord` are safe because every `dev.roe.*` record takes a
+ * plain string key.
+ */
+export async function getRecord<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
+  schema: T,
   rkey: string,
-): Promise<FetchedRecord<C> | null> {
+): Promise<FetchedRecord<T> | null> {
   const did = await resolveDid(event)
-  const agent = getReadAgent(event)
+  const client = getReadClient(event)
   try {
-    const res = await agent.com.atproto.repo.getRecord({ repo: did, collection, rkey })
-    return {
-      uri: res.data.uri,
-      cid: res.data.cid ?? '',
-      value: res.data.value as RecordTypes[C],
-    }
+    const res = await client.get(schema, { repo: did, rkey } as unknown as GetOptions<T>)
+    return { uri: res.uri, cid: res.cid ?? '' as CidString, value: res.value }
   }
   catch (err: unknown) {
-    if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 404) {
-      return null
-    }
+    if (err instanceof XrpcResponseError && err.status === 404) return null
     throw err
   }
 }
 
 /** List all records in a collection, paginating until exhausted. */
-export async function listRecords<C extends Collection> (
+export async function listRecords<T extends RecordSchema> (
   event: H3Event,
-  collection: C,
+  schema: T,
   options: { limit?: number, reverse?: boolean } = {},
-): Promise<FetchedRecord<C>[]> {
+): Promise<FetchedRecord<T>[]> {
   const did = await resolveDid(event)
-  const agent = getReadAgent(event)
-  const pageSize = 100
-  const records: FetchedRecord<C>[] = []
-  let cursor: string | undefined
+  const client = getReadClient(event)
+  const records: FetchedRecord<T>[] = []
 
-  while (true) {
-    const res = await agent.com.atproto.repo.listRecords({
-      repo: did,
-      collection,
-      limit: pageSize,
-      cursor,
-      reverse: options.reverse,
-    })
-    for (const r of res.data.records) {
-      records.push({ uri: r.uri, cid: r.cid, value: r.value as RecordTypes[C] })
-      if (options.limit && records.length >= options.limit) return records
-    }
-    if (!res.data.cursor || res.data.records.length < pageSize) break
-    cursor = res.data.cursor
+  for await (const r of client.listAll(schema, { repo: did, limit: 100, reverse: options.reverse })) {
+    records.push({ uri: r.uri, cid: r.cid, value: r.value as Infer<T> })
+    if (options.limit && records.length >= options.limit) break
   }
 
   return records

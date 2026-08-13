@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { DevRoeEntity } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Edit entity - admin - Daniel Roe' })
@@ -14,13 +15,13 @@ if (!rkey.value) {
   throw createError({ statusCode: 404, statusMessage: 'Missing rkey.' })
 }
 
-type EntityValue = Omit<DevRoeEntity.Record, '$type'>
+type EntityValue = Omit<Loose<dev.roe.entity.Main>, '$type'>
 
 interface EntityEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeEntity.Record
+  value: dev.roe.entity.Main
 }
 
 const { data, loading } = useAdminFetch<EntityEntry>(`/api/admin/entities/${rkey.value}`, {

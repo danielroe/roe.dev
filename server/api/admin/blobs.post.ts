@@ -1,4 +1,4 @@
-import { requireAdminAgent } from '../../utils/admin/agent'
+import { requireAdminClient } from '../../utils/admin/client'
 
 /**
  * Upload bytes to the PDS and return `{ blob, aspectRatio? }`. The server
@@ -20,13 +20,13 @@ export default defineEventHandler(async event => {
     ? new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength)
     : new Uint8Array(buf)
 
-  const { agent } = await requireAdminAgent(event)
+  const { client } = await requireAdminClient(event)
   const [res, aspectRatio] = await Promise.all([
-    agent.com.atproto.repo.uploadBlob(bytes, { encoding: contentType }),
+    client.uploadBlob(bytes, { encoding: contentType as `${string}/${string}` }),
     probeAspectRatio(bytes, contentType),
   ])
   return {
-    blob: res.data.blob,
+    blob: res.body.blob,
     ...(aspectRatio ? { aspectRatio } : {}),
   }
 })

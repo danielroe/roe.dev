@@ -3,7 +3,7 @@ import { $fetch } from 'ofetch'
 import { put, head } from '@vercel/blob'
 
 import { listAllRecords } from './shared/atproto-read'
-import type { DevRoeTalk } from '../shared/lex'
+import { dev } from '../shared/lex/index.ts'
 
 export default defineNuxtModule({
   meta: {
@@ -74,7 +74,7 @@ export default defineNuxtModule({
 })
 
 async function fetchSlideReleases (): Promise<string[]> {
-  const records = await listAllRecords<DevRoeTalk.Record>('dev.roe.talk')
+  const records = await listAllRecords(dev.roe.talk.main)
   return records
     .map(r => r.value.slides)
     .filter((s): s is string => Boolean(s))

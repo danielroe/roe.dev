@@ -1,10 +1,12 @@
 import type { H3Event } from 'h3'
 
-import { requireAdminAgent } from './agent'
-import type { DevRoeAma } from '#shared/lex'
-import { lexicons } from '#shared/lex'
-import { jsonToLex } from '@atproto/lexicon'
+import { jsonToLex } from '@atproto/lex'
+import type { JsonValue } from '@atproto/lex'
+
+import { requireAdminClient } from './client'
+import { dev } from '#shared/lex'
 import { blobSize, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
+import type { Loose } from '#shared/cms/strict'
 import type { AdminRecord } from './crud'
 import { decrypt } from './encryption'
 
@@ -12,8 +14,8 @@ export type AmaPlatform = 'bluesky' | 'mastodon' | 'linkedin' | 'youtubeShorts'
 
 export interface AmaUpdate {
   question?: string
-  posts?: DevRoeAma.Post[] | null
-  platforms?: Partial<DevRoeAma.Platforms> | null
+  posts?: Loose<dev.roe.ama.Post>[] | null
+  platforms?: Partial<dev.roe.ama.Platforms> | null
   image?: unknown | null
   imageDimensions?: { width: number, height: number } | null
   backgroundStyle?: string | null
@@ -25,9 +27,9 @@ export interface AmaView {
   cid: string
   status: 'unanswered' | 'answered'
   question: string
-  posts: DevRoeAma.Post[]
-  platforms?: DevRoeAma.Platforms
-  publishedLinks?: DevRoeAma.PublishedLinks
+  posts: Loose<dev.roe.ama.Post>[]
+  platforms?: dev.roe.ama.Platforms
+  publishedLinks?: dev.roe.ama.PublishedLinks
   image?: unknown
   imageDimensions?: { width: number, height: number }
   backgroundStyle?: string
@@ -35,7 +37,7 @@ export interface AmaView {
   answeredAt?: string
 }
 
-const DEFAULT_PLATFORMS: DevRoeAma.Platforms = {
+const DEFAULT_PLATFORMS: dev.roe.ama.Platforms = {
   bluesky: true,
   mastodon: true,
   linkedin: true,
@@ -52,14 +54,14 @@ function isImageDimensions (value: unknown): value is { width: number, height: n
   return Number.isInteger(v.width) && Number.isInteger(v.height) && Number(v.width) > 0 && Number(v.height) > 0
 }
 
-function normalisePlatforms (platforms?: Partial<DevRoeAma.Platforms> | null): DevRoeAma.Platforms {
+function normalisePlatforms (platforms?: Partial<dev.roe.ama.Platforms> | null): dev.roe.ama.Platforms {
   return {
     ...DEFAULT_PLATFORMS,
     ...(platforms ?? {}),
   }
 }
 
-function cleanPosts (posts: DevRoeAma.Post[] | null | undefined): DevRoeAma.Post[] {
+function cleanPosts (posts: Loose<dev.roe.ama.Post>[] | null | undefined): Loose<dev.roe.ama.Post>[] {
   if (!Array.isArray(posts)) return []
   return posts
     .filter(post => typeof post?.text === 'string' && post.text.trim())
@@ -76,7 +78,7 @@ function cleanPosts (posts: DevRoeAma.Post[] | null | undefined): DevRoeAma.Post
     })
 }
 
-function imageFields (current: DevRoeAma.Record, update: AmaUpdate): Partial<DevRoeAma.Record> {
+function imageFields (current: dev.roe.ama.Main, update: AmaUpdate): Partial<Loose<dev.roe.ama.Main>> {
   const image = hasOwn(update, 'image') ? update.image : current.image
   if (!image) return {}
 
@@ -84,23 +86,23 @@ function imageFields (current: DevRoeAma.Record, update: AmaUpdate): Partial<Dev
   const backgroundStyle = hasOwn(update, 'backgroundStyle') ? update.backgroundStyle : current.backgroundStyle
 
   return {
-    image: image as DevRoeAma.Record['image'],
+    image: image as Loose<dev.roe.ama.Main>['image'],
     ...(isImageDimensions(dimensions) ? { imageDimensions: dimensions } : {}),
     ...(typeof backgroundStyle === 'string' && backgroundStyle ? { backgroundStyle } : {}),
   }
 }
 
-function hasPublishedLinks (links: DevRoeAma.PublishedLinks | undefined): links is DevRoeAma.PublishedLinks {
+function hasPublishedLinks (links: dev.roe.ama.PublishedLinks | undefined): links is dev.roe.ama.PublishedLinks {
   return Boolean(links && Object.values(links).some(Boolean))
 }
 
 function buildRecord (
-  current: DevRoeAma.Record,
+  current: dev.roe.ama.Main,
   update: AmaUpdate,
   published?: { platform: AmaPlatform, url: string },
-): DevRoeAma.Record {
+): Loose<dev.roe.ama.Main> {
   const status = published || current.status === 'answered' ? 'answered' : 'unanswered'
-  const posts = hasOwn(update, 'posts') ? cleanPosts(update.posts as DevRoeAma.Post[] | null | undefined) : cleanPosts(current.posts)
+  const posts = hasOwn(update, 'posts') ? cleanPosts(update.posts) : cleanPosts(current.posts)
   const platforms = hasOwn(update, 'platforms')
     ? (update.platforms ? normalisePlatforms(update.platforms) : undefined)
     : current.platforms
@@ -108,7 +110,7 @@ function buildRecord (
     ? { ...(current.publishedLinks ?? {}), [published.platform]: published.url }
     : current.publishedLinks
 
-  const next: DevRoeAma.Record = {
+  const next: Loose<dev.roe.ama.Main> = {
     $type: 'dev.roe.ama',
     status,
     ...(status === 'answered'
@@ -129,16 +131,19 @@ function buildRecord (
   return next
 }
 
-function toLexRecord (record: DevRoeAma.Record, action: string): DevRoeAma.Record {
-  const lexRecord = jsonToLex(record as never) as DevRoeAma.Record
-  const validation = lexicons.validate('dev.roe.ama', lexRecord)
-  if (!validation.success) {
+/**
+ * Blob refs round-trip through the admin UI in their JSON encoding, so the
+ * record has to be decoded back to lex before it can be validated or written.
+ */
+function toLexRecord (record: Loose<dev.roe.ama.Main>, action: string): dev.roe.ama.Main {
+  const result = dev.roe.ama.main.safeValidate(jsonToLex(record as unknown as JsonValue))
+  if (!result.success) {
     throw createError({
       statusCode: 422,
-      statusMessage: `Invalid AMA ${action}: ${validation.error.message}`,
+      statusMessage: `Invalid AMA ${action}: ${result.reason.message}`,
     })
   }
-  return lexRecord
+  return result.value
 }
 
 function looksLikeSwapMiss (err: unknown): boolean {
@@ -154,32 +159,24 @@ async function mutateAmaRecord (
   update: AmaUpdate,
   action: string,
   published?: { platform: AmaPlatform, url: string },
-): Promise<AdminRecord<'dev.roe.ama'>> {
-  const { agent, did } = await requireAdminAgent(event)
+): Promise<AdminRecord<typeof dev.roe.ama.main>> {
+  const { client, did } = await requireAdminClient(event)
   const MAX_ATTEMPTS = 5
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const existing = await agent.com.atproto.repo.getRecord({
-      repo: did,
-      collection: 'dev.roe.ama',
-      rkey,
-    })
-    const current = existing.data.value as DevRoeAma.Record
-    const currentCid = existing.data.cid
-    const lexRecord = toLexRecord(buildRecord(current, update, published), action)
+    const existing = await client.get(dev.roe.ama.main, { repo: did, rkey })
+    const lexRecord = toLexRecord(buildRecord(existing.value, update, published), action)
 
     try {
-      const res = await agent.com.atproto.repo.putRecord({
+      const res = await client.put(dev.roe.ama.main, lexRecord, {
         repo: did,
-        collection: 'dev.roe.ama',
         rkey,
-        record: lexRecord as Record<string, unknown>,
-        swapRecord: currentCid,
+        swapRecord: existing.cid,
       })
       return {
         rkey,
-        uri: res.data.uri,
-        cid: res.data.cid,
+        uri: res.uri,
+        cid: res.cid,
         value: lexRecord,
       }
     }
@@ -195,7 +192,7 @@ async function mutateAmaRecord (
   })
 }
 
-export function viewAma (r: AdminRecord<'dev.roe.ama'>): AmaView {
+export function viewAma (r: AdminRecord<typeof dev.roe.ama.main>): AmaView {
   const v = r.value
   let question = v.question ?? ''
   if (v.status === 'unanswered' && v.encryptedQuestion) {
@@ -248,13 +245,9 @@ export async function ensureNotAlreadyPublished (
   force: boolean,
 ): Promise<void> {
   if (force) return
-  const { agent, did } = await requireAdminAgent(event)
-  const res = await agent.com.atproto.repo.getRecord({
-    repo: did,
-    collection: 'dev.roe.ama',
-    rkey,
-  })
-  const existing = (res.data.value as DevRoeAma.Record).publishedLinks?.[platform]
+  const { client, did } = await requireAdminClient(event)
+  const res = await client.get(dev.roe.ama.main, { repo: did, rkey })
+  const existing = res.value.publishedLinks?.[platform]
   if (existing) {
     throw createError({
       statusCode: 409,
@@ -289,7 +282,7 @@ export async function prepareAmaImage (
     throw createError({ statusCode: 500, statusMessage: 'PDS service is not configured.' })
   }
 
-  const { did } = await requireAdminAgent(event)
+  const { did } = await requireAdminClient(event)
   await saveAmaDraft(event, rkey, body)
 
   const mimeType = (body.image as { mimeType?: string } | undefined)?.mimeType

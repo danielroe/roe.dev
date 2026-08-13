@@ -1,5 +1,6 @@
 import type { AdminRecord } from './crud'
 import { decryptJSON } from './encryption'
+import type { dev } from '#shared/lex'
 
 export interface InviteView {
   rkey: string
@@ -12,7 +13,7 @@ export interface InviteView {
 }
 
 /** Decrypt an invite record into the shape exposed to the editor. */
-export function decryptInvite (r: AdminRecord<'dev.roe.invite'>): InviteView {
+export function decryptInvite (r: AdminRecord<typeof dev.roe.invite.main>): InviteView {
   let slug = ''
   let repo = ''
   try {

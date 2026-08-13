@@ -1,8 +1,9 @@
 import { getAdminRecord } from '../../utils/admin/crud'
+import { dev } from '#shared/lex'
 
 export default defineEventHandler(async event => {
   try {
-    return await getAdminRecord(event, 'dev.roe.location', 'self')
+    return await getAdminRecord(event, dev.roe.location.main, 'self')
   }
   catch (err) {
     if (err && typeof err === 'object' && 'statusCode' in err && (err as { statusCode: number }).statusCode === 404) {

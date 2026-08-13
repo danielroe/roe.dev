@@ -1,38 +1,28 @@
-import { requireAdminAgent } from '../../utils/admin/agent'
+import type { Client, RecordSchema } from '@atproto/lex'
+
+import { requireAdminClient } from '../../utils/admin/client'
+import { dev } from '#shared/lex'
 
 export default defineEventHandler(async event => {
-  const { agent, did } = await requireAdminAgent(event)
+  const { client, did } = await requireAdminClient(event)
 
-  const count = async (collection: string): Promise<number> => {
-    // Cheapest path: list with limit=1 and rely on cursor to know whether
-    // more exist. For accurate counts (small collections) we paginate.
+  const count = async (schema: RecordSchema): Promise<number> => {
     let total = 0
-    let cursor: string | undefined
-    while (true) {
-      const res = await agent.com.atproto.repo.listRecords({
-        repo: did,
-        collection,
-        limit: 100,
-        cursor,
-      })
-      total += res.data.records.length
-      if (!res.data.cursor || res.data.records.length < 100) break
-      cursor = res.data.cursor
-    }
+    for await (const _ of (client as Client).listAll(schema, { repo: did, limit: 100 })) total++
     return total
   }
 
   const [talks, talkGroups, usesCategories, usesItems] = await Promise.all([
-    count('dev.roe.talk'),
-    count('dev.roe.talkGroup'),
-    count('dev.roe.usesCategory'),
-    count('dev.roe.usesItem'),
+    count(dev.roe.talk.main),
+    count(dev.roe.talkGroup.main),
+    count(dev.roe.usesCategory.main),
+    count(dev.roe.usesItem.main),
   ])
 
   // Location is a singleton; check by attempting to fetch `self`.
   let hasLocation = false
   try {
-    await agent.com.atproto.repo.getRecord({ repo: did, collection: 'dev.roe.location', rkey: 'self' })
+    await client.getRecord('dev.roe.location', 'self', { repo: did })
     hasLocation = true
   }
   catch { /* missing record → false */ }

@@ -1,4 +1,5 @@
-import { Agent } from '@atproto/api'
+import { Client } from '@atproto/lex'
+import { com } from '@bsky/sdk/lexicons'
 
 import {
   clearAdminSessionCookie,
@@ -20,8 +21,7 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 401, statusMessage: 'OAuth callback failed.' })
   }
 
-  const profile = await new Agent(session).com.atproto.repo.describeRepo({ repo: session.did })
-  const handle = profile.data.handle
+  const { handle } = await new Client(session).call(com.atproto.repo.describeRepo, { repo: session.did })
 
   if (handle !== expectedHandle) {
     await client.revoke(session.did).catch(() => {})

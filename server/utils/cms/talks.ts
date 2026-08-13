@@ -2,14 +2,15 @@ import type { H3Event } from 'h3'
 
 import type { Talk } from '../md'
 import { listRecords, blobImage } from '../atproto'
+import { dev } from '#shared/lex'
 
 import { toTalk, rkeyFromUri } from '#shared/cms/talk-mapper'
 
 export async function getPastTalks (event: H3Event): Promise<Talk[]> {
   const now = new Date().toISOString()
   const [talks, groups] = await Promise.all([
-    listRecords(event, 'dev.roe.talk'),
-    listRecords(event, 'dev.roe.talkGroup'),
+    listRecords(event, dev.roe.talk.main),
+    listRecords(event, dev.roe.talkGroup.main),
   ])
 
   const groupByUri = new Map(groups.map(g => [g.uri, g]))
@@ -39,7 +40,7 @@ export interface UpcomingConference {
 
 export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConference[]> {
   const now = new Date().toISOString()
-  const talks = await listRecords(event, 'dev.roe.talk')
+  const talks = await listRecords(event, dev.roe.talk.main)
 
   const upcoming = talks
     .filter(t => t.value.date >= now)

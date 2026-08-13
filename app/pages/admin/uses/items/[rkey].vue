@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { DevRoeUsesItem } from '#shared/lex'
+import type { dev } from '#shared/lex'
+import type { Loose } from '#shared/cms/strict'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Edit uses item - admin - Daniel Roe' })
@@ -14,13 +15,13 @@ if (!rkey.value) {
   throw createError({ statusCode: 404, statusMessage: 'Missing rkey.' })
 }
 
-type UsesItemValue = Omit<DevRoeUsesItem.Record, '$type'>
+type UsesItemValue = Omit<Loose<dev.roe.usesItem.Main>, '$type'>
 
 interface ItemEntry {
   rkey: string
   uri: string
   cid: string
-  value: DevRoeUsesItem.Record
+  value: dev.roe.usesItem.Main
 }
 
 // `watch: false` stops useFetch firing one last `/.../undefined` request

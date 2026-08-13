@@ -12,7 +12,7 @@ import { defu } from 'defu'
 
 import { listAllRecords } from '../shared/atproto-read'
 import { decryptJSON } from '../../server/utils/admin/encryption'
-import type { DevRoeInvite } from '../../shared/lex'
+import { dev } from '../../shared/lex/index.ts'
 
 export default defineNuxtModule({
   meta: {
@@ -35,7 +35,7 @@ export default defineNuxtModule({
 
     if (process.env.NUXT_PDS_ENCRYPTION_KEY) {
       try {
-        const records = await listAllRecords<DevRoeInvite.Record>('dev.roe.invite')
+        const records = await listAllRecords(dev.roe.invite.main)
         for (const r of records) {
           if (!r.value.isActive) continue
           try {

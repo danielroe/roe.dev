@@ -1,10 +1,10 @@
 import { $fetch } from 'ofetch'
-import { AtpAgent } from '@atproto/api'
-import { TID } from '@atproto/common-web'
+import { Client, asStringFormat, currentDatetimeString } from '@atproto/lex'
+import { PasswordSession } from '@atproto/lex-password-session'
 import { useNuxt } from 'nuxt/kit'
 
 import { listAllRecords } from '../../shared/atproto-read'
-import type { DevRoeSync } from '../../../shared/lex'
+import { dev } from '../../../shared/lex/index.ts'
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
 
 const PROVIDER = 'gde-advocu'
@@ -49,15 +49,14 @@ export class GdeAdvocuProvider implements SyncProvider {
       throw new Error('atproto identity / credentials not configured for Advocu dedupe tracking (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
     }
 
-    const synced = new Set(
-      (await listAllRecords<DevRoeSync.Record>('dev.roe.sync'))
+    const synced = new Set<string>(
+      (await listAllRecords(dev.roe.sync.main))
         .filter(r => r.value.provider === PROVIDER)
         .map(r => r.value.canonicalUrl),
     )
 
-    const agent = new AtpAgent({ service: pdsUrl })
-    await agent.login({ identifier: handle, password })
-    const did = agent.session!.did
+    const session = await PasswordSession.login({ service: pdsUrl, identifier: handle, password })
+    const client = new Client(session)
 
     const $advocu = $fetch.create({
       baseURL: 'https://api.advocu.com/personal-api/v1/gde',
@@ -107,17 +106,11 @@ export class GdeAdvocuProvider implements SyncProvider {
         continue
       }
 
-      await agent.com.atproto.repo.putRecord({
-        repo: did,
-        collection: 'dev.roe.sync',
-        rkey: TID.nextStr(),
-        record: {
-          $type: 'dev.roe.sync',
-          provider: PROVIDER,
-          canonicalUrl: item.canonical_url,
-          syncedAt: new Date().toISOString(),
-        } satisfies DevRoeSync.Record,
-      })
+      await client.create(dev.roe.sync.main, {
+        provider: PROVIDER,
+        canonicalUrl: asStringFormat(item.canonical_url, 'uri'),
+        syncedAt: currentDatetimeString(),
+      }, { validateRequest: true })
       count++
     }
 
