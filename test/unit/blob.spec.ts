@@ -6,6 +6,14 @@ describe('cidFromBlob', () => {
     expect(cidFromBlob({ $type: 'blob', ref: { $link: 'bafyabc' }, mimeType: 'image/png', size: 10 })).toBe('bafyabc')
   })
 
+  it('reads the DAG-JSON blob shape', () => {
+    expect(cidFromBlob({ $type: 'blob', ref: { '/': 'bafyabc' }, mimeType: 'image/png', size: 10 })).toBe('bafyabc')
+  })
+
+  it('reads the legacy untyped blob shape', () => {
+    expect(cidFromBlob({ cid: 'bafyabc', mimeType: 'image/png' })).toBe('bafyabc')
+  })
+
   it('returns null for non-blob input', () => {
     expect(cidFromBlob(null)).toBeNull()
     expect(cidFromBlob('nope')).toBeNull()

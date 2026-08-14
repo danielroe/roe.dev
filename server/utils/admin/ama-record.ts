@@ -274,7 +274,10 @@ export async function prepareAmaImage (
 
   const cid = cidFromBlob(body.image)
   if (!cid) {
-    throw createError({ statusCode: 422, statusMessage: 'Invalid AMA image blob.' })
+    throw createError({
+      statusCode: 422,
+      statusMessage: `Invalid AMA image blob: ${JSON.stringify(body.image)}`,
+    })
   }
 
   const service = useRuntimeConfig(event).public.atproto.service

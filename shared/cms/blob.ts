@@ -1,18 +1,20 @@
 /**
- * Extract the base32 CID string from a blob ref. Accepts the IPLD-JSON
- * form (`{ ref: { $link: cid } }`) and a `BlobRef` instance with a `CID`
- * `ref`.
+ * Extract the base32 CID string from a blob ref. Accepts the IPLD-JSON form
+ * (`{ ref: { $link: cid } }`), the DAG-JSON form (`{ ref: { '/': cid } }`)
+ * produced when a `CID` instance is serialised with `JSON.stringify`, the
+ * legacy untyped form (`{ cid }`), and a `BlobRef` instance with a `CID` `ref`.
  */
 export function cidFromBlob (blob: unknown): string | null {
   if (!blob || typeof blob !== 'object') return null
   const b = blob as Record<string, unknown>
 
-  const ref = b.ref
+  const ref = b.ref ?? b.cid
   if (!ref) return null
   if (typeof ref === 'string') return ref
   if (typeof ref === 'object') {
     const r = ref as Record<string, unknown>
     if (typeof r.$link === 'string') return r.$link
+    if (typeof r['/'] === 'string') return r['/']
     const s = String(ref)
     if (s && s !== '[object Object]') return s
   }

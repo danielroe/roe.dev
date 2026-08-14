@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { LexValidationError, XrpcResponseError, jsonToLex } from '@atproto/lex'
+import { LexValidationError, XrpcResponseError, jsonToLex, lexToJson } from '@atproto/lex'
 import type { AtUriString, CidString, CreateOptions, DeleteOptions, GetOptions, Infer, JsonValue, PutOptions, RecordSchema } from '@atproto/lex'
 
 import { requireAdminClient } from './client'
@@ -16,6 +16,16 @@ interface PutResult { rkey: string, uri: AtUriString, cid: CidString }
 
 function rkeyFromUri (uri: string): string {
   return uri.split('/').pop() ?? ''
+}
+
+/**
+ * Record values hold lex representations (a blob ref's `ref` is a `Cid`
+ * instance), which `JSON.stringify` would emit as DAG-JSON (`{ '/': cid }`).
+ * The admin UI posts values straight back to us, and `writeRecord` decodes
+ * them with `jsonToLex`, which only accepts the `{ $link: cid }` form.
+ */
+function toJsonValue<T extends RecordSchema> (value: Infer<T>): Infer<T> {
+  return lexToJson(value) as Infer<T>
 }
 
 function assertRkey (rkey: string | undefined): asserts rkey is string {
@@ -36,7 +46,7 @@ export async function listAdminRecords<T extends RecordSchema> (
       rkey: rkeyFromUri(r.uri),
       uri: r.uri,
       cid: r.cid,
-      value: r.value as Infer<T>,
+      value: toJsonValue<T>(r.value as Infer<T>),
     })
   }
   if (options.sortBy) {
@@ -67,7 +77,7 @@ export async function getAdminRecord<T extends RecordSchema> (
   const { client, did } = await requireAdminClient(event)
   try {
     const res = await client.get(schema, { repo: did, rkey } as unknown as GetOptions<T>)
-    return { rkey, uri: res.uri, cid: res.cid ?? '', value: res.value }
+    return { rkey, uri: res.uri, cid: res.cid ?? '', value: toJsonValue<T>(res.value) }
   }
   catch (err) {
     if (err instanceof XrpcResponseError && err.status === 404) {

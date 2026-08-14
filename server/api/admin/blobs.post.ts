@@ -1,3 +1,5 @@
+import { lexToJson } from '@atproto/lex'
+
 import { requireAdminClient } from '../../utils/admin/client'
 
 /**
@@ -26,7 +28,7 @@ export default defineEventHandler(async event => {
     probeAspectRatio(bytes, contentType),
   ])
   return {
-    blob: res.body.blob,
+    blob: lexToJson(res.body.blob),
     ...(aspectRatio ? { aspectRatio } : {}),
   }
 })
