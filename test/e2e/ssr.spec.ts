@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { Locator, Page } from '@playwright/test'
 import { test, expect } from '@playwright/test'
 import { joinURL, withTrailingSlash } from 'ufo'
