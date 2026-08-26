@@ -1,8 +1,9 @@
 /** @vitest-environment node */
 
-import { fileURLToPath } from 'node:url'
-import fsp from 'node:fs/promises'
 import { execSync } from 'node:child_process'
+import fsp from 'node:fs/promises'
+import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { glob as globby } from 'tinyglobby'
