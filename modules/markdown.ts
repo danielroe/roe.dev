@@ -7,13 +7,20 @@ import type { ContentListFile } from 'comark-content'
 import type { MarkdownDocument } from 'comark'
 import type { ViteDevServer } from 'vite'
 
-import { content } from '../content.config'
+import { blogDir, content } from '../content.config'
+import type { ContentMeta } from '../content.config'
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
 import { tidFromDate } from './shared/tid'
 
-type ContentDocument = ContentListFile<Record<string, any>> & {
-  meta: { markdown: string, html?: string }
+type ContentDocument = ContentListFile<Record<string, any>, ContentMeta>
+
+/**
+ * `list()` types `meta` from the source, which knows nothing of the fields the
+ * `file:parsed` hook below adds to it.
+ */
+function withDerivedMeta (files: Array<ContentListFile<any>>): ContentDocument[] {
+  return files as unknown as ContentDocument[]
 }
 
 interface BlogEntry {
@@ -29,9 +36,9 @@ interface BlogEntry {
   bluesky?: string
 }
 
-/** Directory each source's body templates are written to, relative to `markdown/`. */
-const templateDirs = { blog: 'blog', pages: 'page' } as const
-type ContentSource = keyof typeof templateDirs
+/** Content sources, named for the directory their body templates are written to. */
+const contentSources = ['blog', 'page'] as const
+type ContentSource = typeof contentSources[number]
 
 // `remark`/`html-to-text` are only needed to render the feed and to feed the
 // (production-only) sync providers, so both are loaded on demand
@@ -51,12 +58,54 @@ async function toHtml (markdown: string) {
 /**
  * Server components rendering content from the templates below. Nuxt's island
  * HMR only fires when a component's own file changes, so they have to be told
- * when the content behind them does.
+ * when the content behind them does. A component that renders content and is
+ * missing from this list will serve the previous body until the next reload.
  */
 const contentIslands = ['StaticMarkdownRender', 'TheHome', 'TheBlogIndex']
 
 function stripFrontmatter (raw: string): string {
   return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
+}
+
+/** Frontmatter dates should be quoted, but an unquoted YAML date parses to a `Date`. */
+function isoString (value: string | Date): string {
+  return typeof value === 'string' ? value : value.toISOString()
+}
+
+/** The dev-time `#content-manifest`, re-reading the manifest template as it changes. */
+function devManifestModule (path: string) {
+  return `import { readFileSync, statSync } from 'node:fs'
+
+const path = ${JSON.stringify(path)}
+let documents, mtimeMs
+
+export function getDocuments () {
+  const stat = statSync(path)
+  if (!documents || stat.mtimeMs !== mtimeMs) {
+    mtimeMs = stat.mtimeMs
+    documents = JSON.parse(readFileSync(path, 'utf8'))
+  }
+  return documents
+}
+`
+}
+
+/**
+ * The built `#content-manifest`, with the documents inlined. They are gzipped
+ * rather than embedded as JSON because nitro rewrites `import.meta.*` in module
+ * source and posts quote it in code samples.
+ */
+function inlineManifestModule (documents: ContentDocument[]) {
+  const encoded = gzipSync(JSON.stringify(documents)).toString('base64')
+  return `import { Buffer } from 'node:buffer'
+import { gunzipSync } from 'node:zlib'
+
+const documents = JSON.parse(gunzipSync(Buffer.from(${JSON.stringify(encoded)}, 'base64')).toString('utf8'))
+
+export function getDocuments () {
+  return documents
+}
+`
 }
 
 export default defineNuxtModule({
@@ -102,8 +151,9 @@ export default defineNuxtModule({
     await content.init({ partial: true })
 
     let blogEntries: BlogEntry[] = []
-    const trees: Record<string, MarkdownDocument> = {}
     let documents: ContentDocument[] = []
+    /** Parsed body nodes, keyed by `<source>/<stem>`. Rebuilt on every collect. */
+    const nodes = new Map<string, MarkdownDocument['nodes']>()
 
     const slugsFor = (source: ContentSource) =>
       documents.filter(doc => doc.meta.source === source).map(doc => doc.meta.stem)
@@ -111,33 +161,41 @@ export default defineNuxtModule({
     async function collect () {
       const [blog, pages] = await Promise.all([
         content.list(['blog']),
-        content.list(['pages']),
+        content.list(['page']),
       ])
 
       blog.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
 
-      blogEntries = blog.map(entry => ({
-        slug: entry.meta.stem,
-        file: join(nuxt.options.rootDir, 'content/blog', `${entry.meta.stem}${entry.meta.extension}`),
-        title: entry.data.title,
-        date: entry.data.date,
-        tid: tidFromDate(entry.data.date),
-        tags: entry.data.tags,
-        description: entry.data.description,
-        path: entry.path,
-        skip_dev: entry.data.skip_dev,
-        bluesky: entry.data.bluesky,
-      }))
+      blogEntries = blog.map(entry => {
+        const date = isoString(entry.data.date)
+        return {
+          slug: entry.meta.stem,
+          file: join(blogDir, `${entry.meta.stem}${entry.meta.extension}`),
+          title: entry.data.title,
+          date,
+          tid: tidFromDate(date),
+          tags: entry.data.tags,
+          description: entry.data.description,
+          path: entry.path,
+          skip_dev: entry.data.skip_dev,
+          bluesky: entry.data.bluesky,
+        }
+      })
 
-      documents = [...blog, ...pages] as ContentDocument[]
+      documents = withDerivedMeta([...blog, ...pages])
 
+      const live = new Set(documents.map(doc => doc.path))
+      for (const path of derived.keys()) {
+        if (!live.has(path)) {
+          derived.delete(path)
+          bodies.delete(path)
+        }
+      }
+
+      nodes.clear()
       await Promise.all(documents.map(async entry => {
         const file = await content.get(entry.path)
-        trees[`${entry.meta.source}/${entry.meta.stem}`] = {
-          frontmatter: {},
-          meta: {},
-          nodes: file?.nodes ?? [],
-        } as MarkdownDocument
+        nodes.set(`${entry.meta.source}/${entry.meta.stem}`, file?.nodes ?? [])
       }))
     }
 
@@ -147,16 +205,22 @@ export default defineNuxtModule({
       const { convert: htmlToText } = await import('html-to-text')
       return documents
         .filter(doc => doc.meta.source === 'blog' && !doc.data.skip_dev)
-        .map(post => ({
-          type: 'blog' as const,
-          title: post.data.title,
-          date: post.data.date,
-          description: post.data.description || '',
-          body_markdown: bodies.get(post.path)!,
-          text_content: htmlToText(post.meta.html!, { wordwrap: false }),
-          canonical_url: `https://roe.dev${post.path}/`,
-          tags: post.data.tags.length ? post.data.tags : undefined,
-        }))
+        .map(post => {
+          const body = bodies.get(post.path)
+          if (!body || !post.meta.html) {
+            throw new Error(`Refusing to sync \`${post.path}\`: no body was captured for it at build time.`)
+          }
+          return {
+            type: 'blog' as const,
+            title: post.data.title,
+            date: isoString(post.data.date),
+            description: post.data.description || '',
+            body_markdown: body,
+            text_content: htmlToText(post.meta.html, { wordwrap: false }),
+            canonical_url: `https://roe.dev${post.path}/`,
+            tags: post.data.tags.length ? post.data.tags : undefined,
+          }
+        })
     }
 
     nuxt.hook('modules:done', async () => {
@@ -175,28 +239,42 @@ export default defineNuxtModule({
       write: true,
     })
 
-    for (const source of Object.keys(templateDirs) as ContentSource[]) {
-      const dir = templateDirs[source]
+    /**
+     * One template per document body, plus an index mapping slugs to their
+     * loaders. Templates are registered for documents that appear after setup
+     * too, or the regenerated index would import a file that was never written.
+     */
+    const registeredBodies = new Set<string>()
+    function registerBodyTemplates () {
+      for (const source of contentSources) {
+        for (const slug of slugsFor(source)) {
+          const filename = `markdown/${source}/${slug}.mjs`
+          if (registeredBodies.has(filename)) continue
+          registeredBodies.add(filename)
 
-      for (const slug of slugsFor(source)) {
-        addTemplate({
-          filename: `markdown/${dir}/${slug}.mjs`,
-          getContents: () => `const tree = ${JSON.stringify(trees[`${source}/${slug}`])}
+          addTemplate({
+            filename,
+            getContents: () => `const nodes = ${JSON.stringify(nodes.get(`${source}/${slug}`) ?? [])}
 export async function getBody () {
-  return tree
+  return { nodes }
 }
 `,
-          write: true,
-        })
+            write: true,
+          })
+        }
       }
+    }
 
+    registerBodyTemplates()
+
+    for (const source of contentSources) {
       addTemplate({
-        filename: `markdown/${dir}/index.mjs`,
+        filename: `markdown/${source}/index.mjs`,
         getContents: () => {
-          const entries = slugsFor(source)
-          const imports = entries.map((slug, i) => `import { getBody as getBody${i} } from './${slug}.mjs'`)
-          const loaders = entries.map((slug, i) => `  '${slug}': getBody${i},`)
-          return `${imports.join('\n')}\n\nexport const ${dir}BodyLoaders = {\n${loaders.join('\n')}\n}\n`
+          const slugs = slugsFor(source)
+          const imports = slugs.map((slug, i) => `import { getBody as getBody${i} } from './${slug}.mjs'`)
+          const loaders = slugs.map((slug, i) => `  '${slug}': getBody${i},`)
+          return `${imports.join('\n')}\n\nexport const ${source}BodyLoaders = {\n${loaders.join('\n')}\n}\n`
         },
         write: true,
       })
@@ -206,33 +284,10 @@ export async function getBody () {
 
     nuxt.options.nitro.virtual ||= {}
     // in dev the manifest is read back from disk so that a content change is a
-    // template write rather than a rebuild of the server bundle; in production
-    // it is inlined, gzipped rather than as JSON because nitro rewrites
-    // `import.meta.*` in module source and posts quote it in code samples
+    // template write rather than a rebuild of the server bundle
     nuxt.options.nitro.virtual['#content-manifest'] = () => nuxt.options.dev
-      ? `import { readFileSync, statSync } from 'node:fs'
-
-const path = ${JSON.stringify(manifestPath)}
-let documents, mtimeMs
-
-export function getDocuments () {
-  const stat = statSync(path)
-  if (!documents || stat.mtimeMs !== mtimeMs) {
-    mtimeMs = stat.mtimeMs
-    documents = JSON.parse(readFileSync(path, 'utf8'))
-  }
-  return documents
-}
-`
-      : `import { Buffer } from 'node:buffer'
-import { gunzipSync } from 'node:zlib'
-
-const documents = JSON.parse(gunzipSync(Buffer.from(${JSON.stringify(gzipSync(JSON.stringify(documents)).toString('base64'))}, 'base64')).toString('utf8'))
-
-export function getDocuments () {
-  return documents
-}
-`
+      ? devManifestModule(manifestPath)
+      : inlineManifestModule(documents)
 
     nuxt.options.nitro.externals ||= {}
     nuxt.options.nitro.externals.inline ||= []
@@ -250,25 +305,38 @@ export function getDocuments () {
         if (env.isClient) vite = server
       })
 
-      await content.watch()
+      const unwatch = await content.watch()
 
       // a single save can surface as more than one watcher event
       let pending: ReturnType<typeof setTimeout> | undefined
       const refresh = () => {
         clearTimeout(pending)
         pending = setTimeout(async () => {
-          await collect()
-          await updateTemplates({
-            filter: template => !!template.filename?.startsWith('markdown/'),
-          })
-          for (const name of contentIslands) {
-            vite?.hot.send({ type: 'custom', event: `nuxt-server-component:${name}` })
+          try {
+            await collect()
+            registerBodyTemplates()
+            await updateTemplates({
+              filter: template => !!template.filename?.startsWith('markdown/'),
+            })
+            for (const name of contentIslands) {
+              vite?.hot.send({ type: 'custom', event: `nuxt-server-component:${name}` })
+            }
+          }
+          catch (error) {
+            // a throw here would take the dev server down with an unhandled
+            // rejection, and the next save may well fix whatever it was
+            console.error('[markdown] could not reload content', error)
           }
         }, 50)
       }
 
       content.hooks.hook('watch:file:update', refresh)
       content.hooks.hook('watch:file:remove', refresh)
+
+      nuxt.hook('close', async () => {
+        clearTimeout(pending)
+        await unwatch()
+      })
     }
 
     addTypeTemplate({
@@ -301,12 +369,12 @@ declare module '#build/markdown/blog-entries.mjs' {
 
 declare module '#build/markdown/blog/index.mjs' {
   import type { MarkdownDocument } from 'comark'
-  export const blogBodyLoaders: Record<string, () => Promise<MarkdownDocument>>
+  export const blogBodyLoaders: Record<string, () => Promise<Pick<MarkdownDocument, 'nodes'>>>
 }
 
 declare module '#build/markdown/page/index.mjs' {
   import type { MarkdownDocument } from 'comark'
-  export const pageBodyLoaders: Record<string, () => Promise<MarkdownDocument>>
+  export const pageBodyLoaders: Record<string, () => Promise<Pick<MarkdownDocument, 'nodes'>>>
 }
 
 declare module '#content-manifest' {

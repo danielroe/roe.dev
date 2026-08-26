@@ -27,11 +27,15 @@ export default defineEventHandler(async () => {
   for (const post of blogPosts()) {
     const published = new Date(post.data.date)
 
+    if (!post.meta.html) {
+      throw createError(`Cannot render the feed: no HTML body was built for \`${post.path}\`.`)
+    }
+
     feed.addItem({
       title: post.data.title,
       link: `https://roe.dev${post.path}`,
       description: post.data.description,
-      content: post.meta.html?.replace(/<img src="\//g, '<img src="https://roe.dev/'),
+      content: post.meta.html.replace(/<img src="\//g, '<img src="https://roe.dev/'),
       category: post.data.tags.map(tag => ({ name: tag })),
       author: [
         {

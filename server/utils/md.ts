@@ -2,8 +2,6 @@ import type { H3Event } from 'h3'
 
 import { pageMeta } from '#md-page-meta.json'
 
-export const SITE_URL = 'https://roe.dev'
-
 function yamlEscape (str: string): string {
   return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
 }
@@ -15,7 +13,7 @@ export function mdFrontmatter (path: string, meta: { title: string, description?
     lines.push(`date: ${meta.date}`)
   }
   if (meta.tags) {
-    lines.push(`tags: [${meta.tags.join(', ')}]`)
+    lines.push(`tags: [${meta.tags.map(tag => `"${yamlEscape(tag)}"`).join(', ')}]`)
   }
   if (meta.description) {
     lines.push(`description: "${yamlEscape(meta.description)}"`)
@@ -39,17 +37,17 @@ export function mdResponse (event: H3Event, content: string): string {
 
 /** Serve a content page (`/ai`, `/bio`) as plain markdown. */
 export function contentPageResponse (event: H3Event, path: string): string {
+  const page = contentPage(path)
+  if (!page) {
+    throw createError({ statusCode: 404, statusMessage: 'Not found' })
+  }
+
   return mdResponse(event, [
     mdFrontmatter(path, pageMeta[path]!),
     '',
-    contentPage(path)?.meta.markdown || '',
+    page.meta.markdown,
     '',
   ].join('\n'))
-}
-
-/** The `YYYY-MM-DD` portion of an ISO date, as used in markdown frontmatter and listings. */
-export function isoDate (value: string): string {
-  return value.slice(0, 10)
 }
 
 export function formatDate (dateStr: string): string {

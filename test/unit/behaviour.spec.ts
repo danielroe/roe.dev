@@ -69,11 +69,18 @@ describe('site behaviour', { timeout: 10000 }, () => {
   })
 
   it('serves the same markdown on a cached second request', async () => {
-    for (const route of ['/bio.md', '/blog.md', '/blog/little-oak.md']) {
+    const expectations = {
+      '/bio.md': 'Daniel leads the [Nuxt core team](https://nuxt.com)',
+      '/blog.md': '- [Little oak](https://roe.dev/blog/little-oak.md) — 2024-04-26',
+      '/blog/little-oak.md': 'a little twig poked out of the ground',
+    }
+
+    for (const [route, body] of Object.entries(expectations)) {
       const first = await $fetch<string>(route)
       const second = await $fetch<string>(route)
 
-      expect(first).toContain('---')
+      expect(first).toContain('title: "')
+      expect(first).toContain(body)
       expect(second).toBe(first)
     }
   })
