@@ -63,7 +63,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"269k"`)
+      .toMatchInlineSnapshot(`"270k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1940k"`)
+      .toMatchInlineSnapshot(`"1950k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"13770k"`)
+      .toMatchInlineSnapshot(`"13820k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -141,7 +141,6 @@ describe('project sizes', () => {
         "comark/node_modules/entities",
         "consola",
         "core-js",
-        "defu",
         "detect-libc",
         "devalue",
         "entities",
@@ -164,10 +163,8 @@ describe('project sizes', () => {
         "modern-screenshot",
         "multiformats",
         "nostics",
-        "nuxtseo-shared",
         "object-identity",
         "partysocket",
-        "radix3",
         "sax",
         "semver",
         "sharp",
