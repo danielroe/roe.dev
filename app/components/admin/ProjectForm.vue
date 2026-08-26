@@ -2,7 +2,7 @@
 import { community } from '#shared/lex'
 import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
-import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
+import { COMMUNITY_IMAGE_MAX_BYTES, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
 import { projectIcons } from '#shared/project-icons'
 import type { Loose, Strict } from '#shared/cms/strict'
 
@@ -102,6 +102,11 @@ const imageUrl = computed(() => {
 async function onImageChange (e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
+
+  if (file.size > COMMUNITY_IMAGE_MAX_BYTES) {
+    error.value = `That screenshot is ${(file.size / 1_000_000).toFixed(1)} MB; the record format allows 2 MB.`
+    return
+  }
 
   if (localPreviewUrl.value) URL.revokeObjectURL(localPreviewUrl.value)
   localPreviewUrl.value = URL.createObjectURL(file)
@@ -381,7 +386,15 @@ async function onSubmit () {
     </label>
 
     <div class="flex flex-col gap-2 text-sm">
-      <span class="text-muted">Screenshot</span>
+      <label class="flex flex-col gap-2">
+        <span class="text-muted">Screenshot</span>
+        <input
+          type="file"
+          accept="image/*"
+          class="text-sm"
+          @change="onImageChange"
+        >
+      </label>
       <div
         v-if="imageUrl"
         class="flex items-start gap-3"
@@ -399,12 +412,6 @@ async function onSubmit () {
           Remove
         </button>
       </div>
-      <input
-        type="file"
-        accept="image/*"
-        class="text-sm"
-        @change="onImageChange"
-      >
       <label
         v-if="form.image"
         class="flex flex-col gap-1"

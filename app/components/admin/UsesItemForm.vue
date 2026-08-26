@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { community } from '#shared/lex'
 import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
-import { blobUrlFor, cidFromBlob } from '#shared/cms/blob'
+import { COMMUNITY_IMAGE_MAX_BYTES, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
 import type { Loose, Strict } from '#shared/cms/strict'
 
 type UsesItemValue = Omit<Loose<Strict<dev.roe.usesItem.Main>>, '$type'>
@@ -24,6 +25,16 @@ const emit = defineEmits<{
 
 const { data: categories } = useAdminFetch<UsesCategoryEntry[]>('/api/admin/uses-categories', { default: () => [] })
 
+const { defs } = community.lexicon.app
+
+const LINK_ROLES = [
+  { value: '', label: 'No role' },
+  { value: defs.linkRoleWebsite.value, label: 'Website' },
+  { value: defs.linkRoleSourceCode.value, label: 'Source code' },
+  { value: defs.linkRoleDocs.value, label: 'Docs' },
+  { value: defs.linkRoleSupport.value, label: 'Support' },
+]
+
 const { public: publicConfig } = useRuntimeConfig()
 const pdsService = publicConfig.atproto?.service || null
 const pdsDid = publicConfig.atproto?.did || null
@@ -33,9 +44,10 @@ const form = reactive({
   name: props.initial?.name ?? '',
   description: props.initial?.description ?? '',
   order: props.initial?.order ?? 100,
-  image: props.initial?.image,
-  aspectRatio: props.initial?.aspectRatio,
-  links: (props.initial?.links ?? []).map(l => ({ url: l.url, label: l.label ?? '' })),
+  image: props.initial?.image?.image,
+  imageAlt: props.initial?.image?.alt ?? '',
+  aspectRatio: props.initial?.image?.aspectRatio,
+  links: (props.initial?.links ?? []).map(l => ({ uri: l.uri, label: l.label ?? '', role: l.role ?? '' })),
 })
 
 const localPreviewUrl = ref<string | null>(null)
@@ -58,6 +70,11 @@ async function onImageChange (e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
 
+  if (file.size > COMMUNITY_IMAGE_MAX_BYTES) {
+    error.value = `That image is ${(file.size / 1_000_000).toFixed(1)} MB; the record format allows 2 MB.`
+    return
+  }
+
   if (localPreviewUrl.value) URL.revokeObjectURL(localPreviewUrl.value)
   localPreviewUrl.value = URL.createObjectURL(file)
 
@@ -65,7 +82,7 @@ async function onImageChange (e: Event) {
   try {
     const [uploaded, clientAspectRatio] = await Promise.all([
       $fetch<{
-        blob: NonNullable<UsesItemValue['image']>
+        blob: NonNullable<NonNullable<UsesItemValue['image']>['image']>
         aspectRatio?: { width: number, height: number }
       }>('/api/admin/blobs', {
         method: 'POST',
@@ -76,6 +93,7 @@ async function onImageChange (e: Event) {
     ])
     form.image = uploaded.blob
     form.aspectRatio = clientAspectRatio ?? uploaded.aspectRatio
+    if (!form.imageAlt && form.name) form.imageAlt = form.name
   }
   catch (err) {
     error.value = err instanceof Error ? err.message : String(err)
@@ -89,6 +107,7 @@ async function onImageChange (e: Event) {
 function clearImage () {
   form.image = undefined
   form.aspectRatio = undefined
+  form.imageAlt = ''
   if (localPreviewUrl.value) {
     URL.revokeObjectURL(localPreviewUrl.value)
     localPreviewUrl.value = null
@@ -96,7 +115,7 @@ function clearImage () {
 }
 
 function addLink () {
-  form.links.push({ url: '', label: '' })
+  form.links.push({ uri: '', label: '', role: '' })
 }
 
 function removeLink (i: number) {
@@ -115,24 +134,37 @@ async function onSubmit () {
     }
     const categoryRef: Loose<com.atproto.repo.strongRef.Main> = { uri: category.uri, cid: category.cid }
 
+    if (form.image && !form.imageAlt) {
+      error.value = 'Please describe the image for screen reader users.'
+      submitting.value = false
+      return
+    }
+
+    const links = form.links
+      .filter(l => l.uri)
+      .map(l => ({
+        $type: 'community.lexicon.app.defs#link' as const,
+        uri: l.uri,
+        ...(l.label ? { label: l.label } : {}),
+        ...(l.role ? { role: l.role } : {}),
+      }))
+
     const value: UsesItemValue = {
       category: categoryRef,
       name: form.name,
       ...(form.description ? { description: form.description } : {}),
       order: form.order,
-      ...(form.image ? { image: form.image } : {}),
-      ...(form.image && form.aspectRatio ? { aspectRatio: form.aspectRatio } : {}),
-      ...(form.links.filter(l => l.url).length
+      ...(form.image
         ? {
-            links: form.links
-              .filter(l => l.url)
-              .map(l => ({
-                $type: 'dev.roe.usesItem#link' as const,
-                url: l.url,
-                ...(l.label ? { label: l.label } : {}),
-              })),
+            image: {
+              $type: 'community.lexicon.app.defs#image' as const,
+              image: form.image,
+              alt: form.imageAlt,
+              ...(form.aspectRatio ? { aspectRatio: form.aspectRatio } : {}),
+            },
           }
         : {}),
+      ...(links.length ? { links } : {}),
       ...(props.initial?.createdAt ? { createdAt: props.initial.createdAt } : { createdAt: new Date().toISOString() }),
     }
     emit('submit', value)
@@ -215,7 +247,7 @@ async function onSubmit () {
         class="flex gap-2 items-center"
       >
         <input
-          v-model="form.links[i]!.url"
+          v-model="form.links[i]!.uri"
           type="url"
           placeholder="https://…"
           class="bg-accent px-3 py-2 flex-grow"
@@ -225,9 +257,22 @@ async function onSubmit () {
           v-model="form.links[i]!.label"
           type="text"
           placeholder="Label (optional)"
-          class="bg-accent px-3 py-2 w-40"
+          class="bg-accent px-3 py-2 w-32"
           :aria-label="`Link ${i + 1} label`"
         >
+        <select
+          v-model="form.links[i]!.role"
+          class="bg-accent px-3 py-2 w-32"
+          :aria-label="`Link ${i + 1} role`"
+        >
+          <option
+            v-for="role in LINK_ROLES"
+            :key="role.value"
+            :value="role.value"
+          >
+            {{ role.label }}
+          </option>
+        </select>
         <button
           type="button"
           class="text-xs text-muted hover:text-red-500"
@@ -245,8 +290,16 @@ async function onSubmit () {
       </button>
     </div>
 
-    <label class="flex flex-col gap-2 text-sm">
-      <span class="text-muted">Image</span>
+    <div class="flex flex-col gap-2 text-sm">
+      <label class="flex flex-col gap-2">
+        <span class="text-muted">Image</span>
+        <input
+          type="file"
+          accept="image/*"
+          class="text-sm"
+          @change="onImageChange"
+        >
+      </label>
       <div
         v-if="imageUrl"
         class="flex items-start gap-3"
@@ -264,13 +317,19 @@ async function onSubmit () {
           Remove
         </button>
       </div>
-      <input
-        type="file"
-        accept="image/*"
-        class="text-sm"
-        @change="onImageChange"
+      <label
+        v-if="form.image"
+        class="flex flex-col gap-1"
       >
-    </label>
+        <span class="text-muted">Alt text <span class="text-red-500">*</span></span>
+        <input
+          v-model="form.imageAlt"
+          type="text"
+          required
+          class="bg-accent px-3 py-2"
+        >
+      </label>
+    </div>
 
     <div class="flex gap-3">
       <button

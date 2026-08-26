@@ -4,7 +4,7 @@
 
 import { l } from '@atproto/lex'
 import * as RepoStrongRef from '../../com/atproto/repo/strongRef.defs.ts'
-import * as RoeDefs from './defs.defs.ts'
+import * as AppDefs from '../../community/lexicon/app/defs.defs.ts'
 
 const $nsid = 'dev.roe.talk'
 
@@ -68,12 +68,11 @@ type Main = {
    * Strong-ref to a dev.roe.talkGroup record.
    */
   group?: RepoStrongRef.Main
-  image?: l.BlobRef
 
   /**
-   * Intrinsic pixel dimensions of `image`.
+   * Event or conference logo, shown on the home page carousel.
    */
-  aspectRatio?: RoeDefs.AspectRatio
+  image?: AppDefs.Image
   createdAt: l.DatetimeString
 }
 
@@ -127,12 +126,7 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
       ),
     ),
     image: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 5000000 }),
-    ),
-    aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RoeDefs.AspectRatio>(
-        (() => RoeDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<AppDefs.Image>((() => AppDefs.image) as any),
     ),
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),

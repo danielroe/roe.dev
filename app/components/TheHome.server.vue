@@ -221,7 +221,7 @@ const [{ data: currentLocation }, { data: upcomingConferences }, { data: streams
                     :src="conference.image.url"
                     width="320"
                     height="128"
-                    :alt="`Logo for ${conference.name}`"
+                    :alt="conference.image.alt"
                     class="w-full h-full object-cover object-center"
                   />
                 </div>

@@ -36,6 +36,7 @@ export default defineEventHandler(async event => {
           ...conference,
           image: {
             url: null,
+            alt: '',
             width: null,
             height: null,
           },
@@ -49,6 +50,7 @@ export default defineEventHandler(async event => {
         ...conference,
         image: {
           url: imageUrl,
+          alt: conference.image?.alt || `Logo for ${conference.name}`,
           width: metadata.width,
           height: metadata.height,
         },

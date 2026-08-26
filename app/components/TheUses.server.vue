@@ -27,7 +27,7 @@
               >
                 <img
                   :src="item.image.url"
-                  :alt="item.name"
+                  :alt="item.image.alt"
                   :width="item.image.width ?? 400"
                   :height="item.image.height ?? 225"
                   class="w-full h-full object-cover"
@@ -57,13 +57,13 @@
                     <a
                       v-for="(link, i) in item.links"
                       :key="i"
-                      :href="link.url"
+                      :href="link.uri"
                       target="_blank"
                       rel="noopener noreferrer"
                       class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center gap-2 f-ring hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                     >
                       <img
-                        :src="`https://www.google.com/s2/favicons?domain=${getHost(link.url)}&sz=256`"
+                        :src="`https://www.google.com/s2/favicons?domain=${getHost(link.uri)}&sz=256`"
                         height="16"
                         width="16"
                         class="rounded-full"
@@ -92,7 +92,7 @@
           <div class="flex items-center gap-1">
             <span v-if="item.links && item.links.length">
               <a
-                :href="item.links?.[0]?.url"
+                :href="item.links?.[0]?.uri"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="underlined-link"
@@ -115,7 +115,7 @@
             <a
               v-for="(link, i) in item.links.slice(1)"
               :key="i"
-              :href="link.url"
+              :href="link.uri"
               target="_blank"
               rel="noopener noreferrer"
               class="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded f-ring hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"

@@ -36,7 +36,6 @@ export default defineEventHandler(async event => {
   const locationData = {
     city: response.city || response.locality || 'Unknown',
     region: response.principalSubdivision || response.localityInfo?.administrative?.[1]?.name || '',
-    country: response.countryName || 'Unknown',
     countryCode: response.countryCode || 'XX',
     meetupAvailable: meetupAvailable !== undefined ? meetupAvailable : true,
   }
@@ -71,7 +70,6 @@ type BigDataResponse = {
   city: string
   locality?: string
   principalSubdivision?: string
-  countryName: string
   countryCode: string
   localityInfo?: {
     administrative?: Array<{

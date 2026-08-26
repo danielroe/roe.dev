@@ -13,10 +13,9 @@ const emit = defineEmits<{
 }>()
 
 const form = reactive({
-  city: props.initial?.city ?? '',
-  region: props.initial?.region ?? '',
-  country: props.initial?.country ?? '',
-  countryCode: props.initial?.countryCode ?? '',
+  city: props.initial?.address?.locality ?? '',
+  region: props.initial?.address?.region ?? '',
+  countryCode: props.initial?.address?.country ?? '',
   meetupAvailable: props.initial?.meetupAvailable ?? true,
 })
 
@@ -28,10 +27,12 @@ async function onSubmit () {
   submitting.value = true
   try {
     const value: LocationValue = {
-      city: form.city,
-      ...(form.region ? { region: form.region } : {}),
-      country: form.country,
-      countryCode: form.countryCode.toUpperCase(),
+      address: {
+        $type: 'community.lexicon.location.address',
+        country: form.countryCode.toUpperCase(),
+        ...(form.region ? { region: form.region } : {}),
+        locality: form.city,
+      },
       meetupAvailable: form.meetupAvailable,
       ...(props.initial?.createdAt ? { createdAt: props.initial.createdAt } : { createdAt: new Date().toISOString() }),
     }
@@ -78,29 +79,19 @@ async function onSubmit () {
       </label>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <label class="flex flex-col gap-1 text-sm">
-        <span class="text-muted">Country <span class="text-red-500">*</span></span>
-        <input
-          v-model="form.country"
-          required
-          type="text"
-          class="bg-accent px-3 py-2"
-        >
-      </label>
-      <label class="flex flex-col gap-1 text-sm">
-        <span class="text-muted">Country code (ISO 2-letter) <span class="text-red-500">*</span></span>
-        <input
-          v-model="form.countryCode"
-          required
-          type="text"
-          minlength="2"
-          maxlength="2"
-          pattern="[A-Za-z]{2}"
-          class="bg-accent px-3 py-2 uppercase"
-        >
-      </label>
-    </div>
+    <label class="flex flex-col gap-1 text-sm">
+      <span class="text-muted">Country code (ISO 3166-1 alpha-2) <span class="text-red-500">*</span></span>
+      <input
+        v-model="form.countryCode"
+        required
+        type="text"
+        minlength="2"
+        maxlength="2"
+        pattern="[A-Za-z]{2}"
+        class="bg-accent px-3 py-2 uppercase"
+      >
+      <span class="text-xs text-muted">The country name shown on the site is derived from this code.</span>
+    </label>
 
     <label class="flex items-center gap-2 text-sm">
       <input

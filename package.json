@@ -21,7 +21,8 @@
     "auth:youtube:refresh": "node --env-file=.env scripts/youtube-auth.ts refresh",
     "lex:gen": "lex build --lexicons ./lexicons --out ./shared/lex --clear --index-file --import-ext .ts",
     "lex:publish": "node --env-file=.env scripts/publish-lex.ts",
-    "migrate:projects": "node --env-file=.env scripts/migrate-projects-to-atproto.ts"
+    "migrate:projects": "node --env-file=.env scripts/migrate-projects-to-atproto.ts",
+    "migrate:community-lexicons": "node --env-file=.env scripts/migrate-records-to-community-lexicons.ts"
   },
   "nano-staged": {
     "*.{js,ts,mjs,vue}": [

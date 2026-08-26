@@ -1,28 +1,31 @@
 import { getCurrentLocation } from '../utils/cms/location'
 
+const regionalFlags: Record<string, string> = {
+  Scotland: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+}
+
+const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
+
 export default defineEventHandler(async event => {
   const location = await getCurrentLocation(event)
   if (!location) return null
 
-  const flagEmoji = location.region === 'Scotland'
-    ? '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
-    : location.countryCode
-      ? String.fromCodePoint(...[...location.countryCode.toUpperCase()].map(char =>
-          char.charCodeAt(0) + 127397))
-      : '🌍'
+  const countryCode = location.countryCode.toUpperCase()
 
-  // Some geocoders return verbose ISO 3166 country names (e.g. "United
-  // Kingdom of Great Britain and Northern Ireland (the)"); prefer the
-  // sub-region for those countries when we have one.
-  const locationMaps: Record<string, string | undefined> = {
-    'United Kingdom of Great Britain and Northern Ireland (the)': location.region,
-    'United States of America (the)': location.region,
-  }
+  const flagEmoji = (location.region && regionalFlags[location.region])
+    || (countryCode
+      ? String.fromCodePoint(...[...countryCode].map(char => char.charCodeAt(0) + 127397))
+      : '🌍')
+
+  // The UK and the US are big enough that the subdivision is the more useful
+  // label; elsewhere the country reads better.
+  const area = (['GB', 'US'].includes(countryCode) && location.region)
+    || (countryCode ? countryNames.of(countryCode) : undefined)
 
   return {
     meetupAvailable: location.meetupAvailable,
-    city: locationMaps[location.city] || location.city,
-    area: location.region === 'Scotland' ? 'Scotland' : locationMaps[location.country] || location.country,
+    city: location.city,
+    area: area ?? '',
     flagEmoji,
   }
 })

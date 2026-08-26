@@ -18,7 +18,8 @@ export interface PdsTalkGroupInput {
 }
 
 export function toTalk (input: PdsTalkInput, group?: PdsTalkGroupInput): Talk {
-  const { $type, createdAt, endDate, location, image, title, group: _strongRef, ...passthrough } = input.value
+  const value = input.value as dev.roe.talk.Main & { aspectRatio?: unknown }
+  const { $type, createdAt, endDate, location, image, aspectRatio, title, group: _strongRef, ...passthrough } = value
   return {
     ...passthrough,
     _id: rkeyFromUri(input.uri),

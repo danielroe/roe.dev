@@ -21,14 +21,14 @@ export default defineEventHandler(async event => {
 
     const items = [...(category.items || [])].sort((a, b) => (a.order || 100) - (b.order || 100))
     for (const item of items) {
-      const primaryLink = item.links?.[0]?.url
+      const primaryLink = item.links?.[0]?.uri
       const name = primaryLink ? `[${item.name}](${primaryLink})` : item.name
       const desc = item.description ? ` — ${item.description}` : ''
       lines.push(`- **${name}**${desc}`)
 
       const extraLinks = item.links?.slice(1)
       if (extraLinks?.length) {
-        const linkStr = extraLinks.map(l => `[${l.label || 'Link'}](${l.url})`).join(', ')
+        const linkStr = extraLinks.map(l => `[${l.label || 'Link'}](${l.uri})`).join(', ')
         lines.push(`  ${linkStr}`)
       }
     }

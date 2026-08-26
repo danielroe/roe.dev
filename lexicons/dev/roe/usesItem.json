@@ -8,7 +8,11 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["category", "name", "createdAt"],
+        "required": [
+          "category",
+          "name",
+          "createdAt"
+        ],
         "properties": {
           "category": {
             "type": "ref",
@@ -31,20 +35,15 @@
             "default": 100
           },
           "image": {
-            "type": "blob",
-            "accept": ["image/*"],
-            "maxSize": 5000000
-          },
-          "aspectRatio": {
             "type": "ref",
-            "ref": "dev.roe.defs#aspectRatio",
-            "description": "Intrinsic pixel dimensions of `image`."
+            "ref": "community.lexicon.app.defs#image",
+            "description": "Product shot or screenshot. Grid categories render it; list categories ignore it."
           },
           "links": {
             "type": "array",
             "items": {
               "type": "ref",
-              "ref": "#link"
+              "ref": "community.lexicon.app.defs#link"
             },
             "maxLength": 32
           },
@@ -52,21 +51,6 @@
             "type": "string",
             "format": "datetime"
           }
-        }
-      }
-    },
-    "link": {
-      "type": "object",
-      "required": ["url"],
-      "properties": {
-        "url": {
-          "type": "string",
-          "format": "uri"
-        },
-        "label": {
-          "type": "string",
-          "maxLength": 640,
-          "maxGraphemes": 64
         }
       }
     }

@@ -33,6 +33,7 @@ export interface UpcomingConference {
   location: string
   image?: {
     url: string
+    alt: string
     width: number
     height: number
   } | null
@@ -48,7 +49,7 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
 
   return Promise.all(upcoming.map(async t => {
     const v = t.value
-    const image = v.image ? await blobImage(event, v.image, v.aspectRatio) : null
+    const image = await talkImage(event, v)
     return {
       ...(v.title ? { title: v.title } : {}),
       name: v.source || v.title || '',
@@ -56,11 +57,39 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
       ...(v.endDate ? { endDate: v.endDate } : {}),
       link: v.link ?? '',
       location: v.location ?? '',
-      image: image
-        ? { url: image.url, width: image.width ?? 0, height: image.height ?? 0 }
-        : null,
+      image,
     }
   }))
+}
+
+/**
+ * `image` used to be a bare blob with dimensions in a sibling `aspectRatio`
+ * field; it is now a `community.lexicon.app.defs#image` carrying its own
+ * dimensions and alt text. Records written before the switch still have the old
+ * shape, so handle both until they have all been rewritten.
+ */
+async function talkImage (event: H3Event, value: dev.roe.talk.Main): Promise<UpcomingConference['image']> {
+  const image = value.image
+  if (!image) return null
+
+  if (!('alt' in image)) {
+    const legacy = value as { aspectRatio?: { width?: number, height?: number } }
+    const blob = await blobImage(event, image, legacy.aspectRatio)
+    return blob ? { url: blob.url, alt: value.source, width: blob.width ?? 0, height: blob.height ?? 0 } : null
+  }
+
+  if (image.image) {
+    const blob = await blobImage(event, image.image, image.aspectRatio)
+    return blob ? { url: blob.url, alt: image.alt, width: blob.width ?? 0, height: blob.height ?? 0 } : null
+  }
+
+  if (!image.uri) return null
+  return {
+    url: image.uri,
+    alt: image.alt,
+    width: image.aspectRatio?.width ?? 0,
+    height: image.aspectRatio?.height ?? 0,
+  }
 }
 
 export { rkeyFromUri }

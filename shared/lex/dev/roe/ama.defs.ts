@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as RoeDefs from './defs.defs.ts'
+import * as AppDefs from '../../community/lexicon/app/defs.defs.ts'
 import * as RepoStrongRef from '../../com/atproto/repo/strongRef.defs.ts'
 
 const $nsid = 'dev.roe.ama'
@@ -46,7 +46,7 @@ type Main = {
   /**
    * Pixel dimensions of `image`. Stored alongside because PDS blobs don't carry intrinsic dimensions and Bluesky's image embed needs `aspectRatio`.
    */
-  imageDimensions?: RoeDefs.AspectRatio
+  imageDimensions?: AppDefs.AspectRatio
 
   /**
    * ID of the background style used to render the image, either a preset name or a serialised custom emoji-and-gradient id. The set of styles is internal to roe.dev.
@@ -87,8 +87,8 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
       /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 5000000 }),
     ),
     imageDimensions: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RoeDefs.AspectRatio>(
-        (() => RoeDefs.aspectRatio) as any,
+      /*#__PURE__*/ l.ref<AppDefs.AspectRatio>(
+        (() => AppDefs.aspectRatio) as any,
       ),
     ),
     backgroundStyle: /*#__PURE__*/ l.optional(

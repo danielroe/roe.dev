@@ -8,7 +8,12 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["source", "date", "type", "createdAt"],
+        "required": [
+          "source",
+          "date",
+          "type",
+          "createdAt"
+        ],
         "properties": {
           "title": {
             "type": "string",
@@ -45,7 +50,14 @@
           },
           "type": {
             "type": "string",
-            "knownValues": ["conference", "meetup", "podcast", "workshop", "stream", "talk"]
+            "knownValues": [
+              "conference",
+              "meetup",
+              "podcast",
+              "workshop",
+              "stream",
+              "talk"
+            ]
           },
           "tags": {
             "type": "array",
@@ -84,14 +96,9 @@
             "description": "Strong-ref to a dev.roe.talkGroup record."
           },
           "image": {
-            "type": "blob",
-            "accept": ["image/*"],
-            "maxSize": 5000000
-          },
-          "aspectRatio": {
             "type": "ref",
-            "ref": "dev.roe.defs#aspectRatio",
-            "description": "Intrinsic pixel dimensions of `image`."
+            "ref": "community.lexicon.app.defs#image",
+            "description": "Event or conference logo, shown on the home page carousel."
           },
           "createdAt": {
             "type": "string",

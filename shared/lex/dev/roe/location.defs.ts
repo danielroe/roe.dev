@@ -3,6 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
+import * as LocationAddress from '../../community/lexicon/location/address.defs.ts'
 
 const $nsid = 'dev.roe.location'
 
@@ -13,18 +14,11 @@ export { $nsid }
 /** Current location (singleton; rkey is always 'self'). */
 type Main = {
   $type: 'dev.roe.location'
-  city: string
 
   /**
-   * Region/state. Used to special-case Scotland and US/UK subdivisions on the public site.
+   * Where I am: `locality` is the city, `region` the state/subdivision (used to special-case Scotland), `country` the ISO 3166-1 alpha-2 code (used to compute a flag emoji).
    */
-  region?: string
-  country: string
-
-  /**
-   * ISO 3166-1 alpha-2 country code, uppercase. Used to compute a flag emoji.
-   */
-  countryCode: string
+  address: LocationAddress.Main
   meetupAvailable?: boolean
   createdAt: l.DatetimeString
 }
@@ -36,12 +30,9 @@ const main = /*#__PURE__*/ l.record<'literal:self', Main>(
   'literal:self',
   $nsid,
   /*#__PURE__*/ l.object({
-    city: /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
-    region: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
+    address: /*#__PURE__*/ l.ref<LocationAddress.Main>(
+      (() => LocationAddress.main) as any,
     ),
-    country: /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
-    countryCode: /*#__PURE__*/ l.string({ minLength: 2, maxLength: 2 }),
     meetupAvailable: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), true),
     ),

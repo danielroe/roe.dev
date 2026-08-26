@@ -4,7 +4,7 @@
 
 import { l } from '@atproto/lex'
 import * as RepoStrongRef from '../../com/atproto/repo/strongRef.defs.ts'
-import * as RoeDefs from './defs.defs.ts'
+import * as AppDefs from '../../community/lexicon/app/defs.defs.ts'
 
 const $nsid = 'dev.roe.usesItem'
 
@@ -27,13 +27,12 @@ type Main = {
    * Lower values render first within the category. Defaults to 100 in the editor.
    */
   order?: number
-  image?: l.BlobRef
 
   /**
-   * Intrinsic pixel dimensions of `image`.
+   * Product shot or screenshot. Grid categories render it; list categories ignore it.
    */
-  aspectRatio?: RoeDefs.AspectRatio
-  links?: Link[]
+  image?: AppDefs.Image
+  links?: AppDefs.Link[]
   createdAt: l.DatetimeString
 }
 
@@ -55,17 +54,13 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
       /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.integer(), 100),
     ),
     image: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 5000000 }),
-    ),
-    aspectRatio: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.ref<RoeDefs.AspectRatio>(
-        (() => RoeDefs.aspectRatio) as any,
-      ),
+      /*#__PURE__*/ l.ref<AppDefs.Image>((() => AppDefs.image) as any),
     ),
     links: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Link>((() => link) as any), {
-        maxLength: 32,
-      }),
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<AppDefs.Link>((() => AppDefs.link) as any),
+        { maxLength: 32 },
+      ),
     ),
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),
@@ -90,24 +85,3 @@ export const $parse = /*#__PURE__*/ main.parse.bind(main)
 export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
 export const $validate = /*#__PURE__*/ main.validate.bind(main)
 export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
-
-type Link = {
-  $type?: 'dev.roe.usesItem#link'
-  url: l.UriString
-  label?: string
-}
-
-export type { Link }
-
-const link = /*#__PURE__*/ l.typedObject<Link>(
-  $nsid,
-  'link',
-  /*#__PURE__*/ l.object({
-    url: /*#__PURE__*/ l.string({ format: 'uri' }),
-    label: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
-    ),
-  }),
-)
-
-export { link }

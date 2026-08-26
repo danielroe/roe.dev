@@ -29,6 +29,9 @@ export function blobUrlFor (service: string, did: string, cid: string): string {
 
 export const BLUESKY_IMAGE_MAX_BYTES = 1_000_000
 
+/** `community.lexicon.app.defs#image` rejects blobs larger than this. */
+export const COMMUNITY_IMAGE_MAX_BYTES = 2_000_000
+
 export function blobSize (blob: unknown): number | null {
   if (!blob || typeof blob !== 'object') return null
   const size = (blob as { size?: unknown }).size

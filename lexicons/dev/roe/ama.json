@@ -8,11 +8,17 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["status", "createdAt"],
+        "required": [
+          "status",
+          "createdAt"
+        ],
         "properties": {
           "status": {
             "type": "string",
-            "knownValues": ["unanswered", "answered"]
+            "knownValues": [
+              "unanswered",
+              "answered"
+            ]
           },
           "encryptedQuestion": {
             "type": "string",
@@ -46,12 +52,14 @@
           },
           "image": {
             "type": "blob",
-            "accept": ["image/*"],
+            "accept": [
+              "image/*"
+            ],
             "maxSize": 5000000
           },
           "imageDimensions": {
             "type": "ref",
-            "ref": "dev.roe.defs#aspectRatio",
+            "ref": "community.lexicon.app.defs#aspectRatio",
             "description": "Pixel dimensions of `image`. Stored alongside because PDS blobs don't carry intrinsic dimensions and Bluesky's image embed needs `aspectRatio`."
           },
           "backgroundStyle": {
@@ -73,7 +81,9 @@
     "post": {
       "type": "object",
       "description": "One post in the response thread. Mentions reference dev.roe.entity records by AT URI so the publisher can rewrite per-platform handles at publish time.",
-      "required": ["text"],
+      "required": [
+        "text"
+      ],
       "properties": {
         "text": {
           "type": "string",
@@ -95,21 +105,44 @@
     "platforms": {
       "type": "object",
       "properties": {
-        "bluesky": { "type": "boolean", "default": true },
-        "mastodon": { "type": "boolean", "default": true },
-        "linkedin": { "type": "boolean", "default": true },
-        "youtubeShorts": { "type": "boolean", "default": false }
+        "bluesky": {
+          "type": "boolean",
+          "default": true
+        },
+        "mastodon": {
+          "type": "boolean",
+          "default": true
+        },
+        "linkedin": {
+          "type": "boolean",
+          "default": true
+        },
+        "youtubeShorts": {
+          "type": "boolean",
+          "default": false
+        }
       }
     },
     "publishedLinks": {
       "type": "object",
       "properties": {
-        "bluesky": { "type": "string", "format": "uri" },
-        "mastodon": { "type": "string", "format": "uri" },
-        "linkedin": { "type": "string", "format": "uri" },
-        "youtubeShorts": { "type": "string", "format": "uri" }
+        "bluesky": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mastodon": {
+          "type": "string",
+          "format": "uri"
+        },
+        "linkedin": {
+          "type": "string",
+          "format": "uri"
+        },
+        "youtubeShorts": {
+          "type": "string",
+          "format": "uri"
+        }
       }
     }
   }
 }
-

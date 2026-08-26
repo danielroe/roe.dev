@@ -3,3 +3,4 @@
  */
 
 export * as app from './lexicon/app.ts'
+export * as location from './lexicon/location.ts'
