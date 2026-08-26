@@ -17,6 +17,7 @@
  * Usage:
  *   node --env-file=.env scripts/publish-lex.ts
  *   node --env-file=.env scripts/publish-lex.ts --dry-run
+ *   node --env-file=.env scripts/publish-lex.ts --prune
  *
  * Environment variables:
  *   NUXT_ATPROTO_PASSWORD  app password (required)
@@ -29,7 +30,7 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 import { Client, asStringFormat } from '@atproto/lex'
-import type { LexMap } from '@atproto/lex'
+import type { DidString, LexMap } from '@atproto/lex'
 import { PasswordSession } from '@atproto/lex-password-session'
 import { defineCommand, runMain } from 'citty'
 
@@ -120,6 +121,19 @@ function isEqual (a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b)
 }
 
+/**
+ * The NSIDs we have published, which is not the same as the files here: a
+ * lexicon that has been deleted or renamed leaves its record behind.
+ */
+async function* listPublishedSchemas (client: Client, did: DidString): AsyncGenerator<string> {
+  let cursor: string | undefined
+  do {
+    const res = await client.listRecords('com.atproto.lexicon.schema', { repo: did, limit: 100, cursor })
+    for (const record of res.body.records) yield record.uri.split('/').pop()!
+    cursor = res.body.cursor
+  } while (cursor)
+}
+
 const main = defineCommand({
   meta: {
     name: 'publish-lex',
@@ -129,6 +143,11 @@ const main = defineCommand({
     'dry-run': {
       type: 'boolean',
       description: 'Print what would change without writing to the PDS',
+      default: false,
+    },
+    'prune': {
+      type: 'boolean',
+      description: 'Delete published schemas that no longer have a file here',
       default: false,
     },
     'did': {
@@ -184,6 +203,21 @@ const main = defineCommand({
 
       await client.putRecord(record, nsid, { repo: did, validate: false })
       console.log(`🟢 ${verb}d  ${nsid}`)
+    }
+
+    if (args.prune) {
+      const published = new Set(lexicons.map(l => l.nsid))
+      for await (const nsid of listPublishedSchemas(client, did)) {
+        if (!isOwned(nsid) || published.has(nsid)) continue
+
+        if (args['dry-run']) {
+          console.log(`   delete (dry run)  ${nsid}`)
+          continue
+        }
+
+        await client.deleteRecord('com.atproto.lexicon.schema', nsid, { repo: did })
+        console.log(`🗑  deleted  ${nsid}`)
+      }
     }
 
     console.log(`\nat://${did}/com.atproto.lexicon.schema/<nsid>`)
