@@ -63,20 +63,12 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
 }
 
 /**
- * `image` used to be a bare blob with dimensions in a sibling `aspectRatio`
- * field; it is now a `community.lexicon.app.defs#image` carrying its own
- * dimensions and alt text. Records written before the switch still have the old
- * shape, so handle both until they have all been rewritten.
+ * `community.lexicon.app.defs#image` allows either an uploaded blob or a remote
+ * `uri`; render whichever the record carries.
  */
 async function talkImage (event: H3Event, value: dev.roe.talk.Main): Promise<UpcomingConference['image']> {
   const image = value.image
   if (!image) return null
-
-  if (!('alt' in image)) {
-    const legacy = value as { aspectRatio?: { width?: number, height?: number } }
-    const blob = await blobImage(event, image, legacy.aspectRatio)
-    return blob ? { url: blob.url, alt: value.source, width: blob.width ?? 0, height: blob.height ?? 0 } : null
-  }
 
   if (image.image) {
     const blob = await blobImage(event, image.image, image.aspectRatio)

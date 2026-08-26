@@ -116,27 +116,6 @@ export async function getRecord<T extends RecordSchema> (
   }
 }
 
-/**
- * Get a single record without validating it against a schema, for reading
- * records written before a lexicon change. Returns null if it doesn't exist.
- */
-export async function getRawRecord (
-  event: H3Event,
-  collection: `${string}.${string}.${string}`,
-  rkey: string,
-): Promise<Record<string, unknown> | null> {
-  const did = await resolveDid(event)
-  const client = getReadClient(event)
-  try {
-    const res = await client.getRecord(collection, rkey, { repo: did })
-    return res.body.value as Record<string, unknown>
-  }
-  catch (err: unknown) {
-    if (err instanceof XrpcResponseError && err.status === 404) return null
-    throw err
-  }
-}
-
 /** List all records in a collection, paginating until exhausted. */
 export async function listRecords<T extends RecordSchema> (
   event: H3Event,
