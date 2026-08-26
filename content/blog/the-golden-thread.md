@@ -5,6 +5,7 @@ tags:
   - ai
   - life
 description: "AI can serve us as a force multiplier, augmenting our own agency and making the most of our own effort, hard work and value. Not by replacing it."
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3mcg6svsgsm2k'
 ---
 
 There is a story I read as a child, in [_The Book of Virtues_](https://en.wikipedia.org/wiki/The_Book_of_Virtues).

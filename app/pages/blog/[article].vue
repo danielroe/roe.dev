@@ -61,7 +61,7 @@
 <script lang="ts" setup>
 import { defineLink } from '@unhead/vue'
 
-import { needsRuntimeDiscovery, newestPostPath } from '#build/bsky-runtime-discovery.mjs'
+import { needsRuntimeDiscovery, pendingDiscovery } from '#build/bsky-runtime-discovery.mjs'
 
 const standardSiteDid = useRuntimeConfig().public.atproto?.did || null
 
@@ -158,9 +158,11 @@ if (import.meta.server) {
 
 const blueskyUri = shallowRef(page.value.bluesky)
 
-if (import.meta.client && needsRuntimeDiscovery && !blueskyUri.value && newestPostPath === path.value) {
+if (import.meta.client && needsRuntimeDiscovery && !blueskyUri.value && pendingDiscovery.has(path.value)) {
   onMounted(async () => {
-    const { uri } = await $fetch<{ uri: string | null }>('/api/discover-bluesky-post').catch(() => ({ uri: null }))
+    const { uri } = await $fetch<{ uri: string | null }>('/api/discover-bluesky-post', {
+      query: { path: path.value },
+    }).catch(() => ({ uri: null }))
     if (uri) {
       blueskyUri.value = uri
     }

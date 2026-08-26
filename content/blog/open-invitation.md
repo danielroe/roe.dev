@@ -5,6 +5,7 @@ tags:
   - communication
   - contact
 description: If you want to have a 10-minute chat about anything, then I would love to talk to you.
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3jxw4by5jj42u'
 ---
 
 A few months ago I tweeted out an open invitation for anyone new to contributing to open source.

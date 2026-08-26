@@ -1,29 +1,47 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
+import process from 'node:process'
 
 import { addServerHandler, addServerTemplate, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { joinURL, withoutTrailingSlash } from 'ufo'
-import { join } from 'pathe'
 import { Client, asStringFormat } from '@atproto/lex'
 import { api } from '@bsky/sdk'
 import { app, com } from '@bsky/sdk/lexicons'
 import { toValue } from 'vue'
 
+import { createBuildCache, hashKey } from './shared/build-cache'
+
 // when I created my Bluesky account - don't judge me for hard coding it!
 const BLUESKY_ACCOUNT_CREATED = new Date('2023-04-26T05:22:14.855Z')
+
+/**
+ * A discovered `at://` URI is written back into the post's frontmatter, so
+ * discovery only ever has to run for posts published (or shared) since the
+ * last time it ran. Anything older than this window without a `bluesky` key in
+ * frontmatter is taken to have no Bluesky thread: walking the author feed back
+ * to a post's publication date costs a request per 100 posts, and the answer
+ * for old posts is already committed.
+ *
+ * Set `BSKY_DISCOVERY_WINDOW_DAYS=0` to ignore the window and backfill every
+ * post - slow, but it only needs doing once per post.
+ */
+const DISCOVERY_WINDOW_DAYS = Number(process.env.BSKY_DISCOVERY_WINDOW_DAYS ?? 30)
+
+/**
+ * How long after publication a post is still plausibly *the* announcement of an
+ * article. Without an upper bound, an article that was never announced matches
+ * whichever later post happens to cite it - which is a real post, but its
+ * replies are a conversation about something else.
+ */
+const ANNOUNCEMENT_WINDOW_DAYS = 7
+
+/** How long a fruitless search is trusted before it is worth retrying. */
+const NEGATIVE_MAX_AGE = 1000 * 60 * 60
 
 interface ParsedPost {
   uri: string
   createdAt: string
+  isReply: boolean
   links: string[] // URLs found in facets and embeds
-}
-
-interface BlogPost {
-  slug: string
-  path: string
-  url: string
-  date: Date
-  blueskyUri: string | null
 }
 
 export default defineNuxtModule({
@@ -38,7 +56,7 @@ export default defineNuxtModule({
       getContents: () => `
 declare module '#build/bsky-runtime-discovery.mjs' {
   export const needsRuntimeDiscovery: boolean
-  export const newestPostPath: string | null
+  export const pendingDiscovery: Set<string>
 }
 `,
     }, { nuxt: true })
@@ -49,146 +67,149 @@ declare module '#build/bsky-runtime-discovery.mjs' {
 
     const resolver = createResolver(import.meta.url)
     const client = new Client(api.app.urlPublic)
+    const cache = createBuildCache('bluesky-comments')
 
-    const cacheDir = join(nuxt.options.rootDir, 'node_modules', '.cache', 'bluesky-comments')
-    if (!existsSync(cacheDir)) {
-      await mkdir(cacheDir, { recursive: true })
-    }
     const blueskyHandle = nuxt.options.runtimeConfig.atproto?.handle || null
     if (!blueskyHandle) {
       console.warn('Bluesky handle not configured (no runtimeConfig.atproto.handle). Skipping Bluesky URI discovery.')
       return
     }
 
-    // Receive blog data from the markdown module hook and discover Bluesky URIs
-    const blogPosts: BlogPost[] = []
-
     nuxt.hook('markdown:blog-entries', async entries => {
       const siteURL = nuxt.options.site && toValue(nuxt.options.site?.url)
       if (!siteURL) {
         return
       }
-      const feedIterator = createFeedIterator(client, blueskyHandle)
+
+      const feed = createFeedIterator(client, blueskyHandle)
+      const windowStart = DISCOVERY_WINDOW_DAYS > 0
+        ? new Date(Date.now() - DISCOVERY_WINDOW_DAYS * 24 * 60 * 60 * 1000)
+        : null
+      const pending: Record<string, { url: string, date: string }> = {}
 
       for (const entry of entries) {
         if (!entry.date) continue
 
-        const blogPath = entry.path
-        const blogUrl = withoutTrailingSlash(joinURL(siteURL, blogPath))
-        const blogDate = new Date(entry.date)
-        const cacheFile = join(cacheDir, `${entry.slug}.json`)
+        const url = withoutTrailingSlash(joinURL(siteURL, entry.path))
+        const date = new Date(entry.date)
 
-        const blueskyUri = await discoverBlueskyUri()
-        blogPosts.push({ slug: entry.slug, path: blogPath, url: blogUrl, date: blogDate, blueskyUri })
+        if (entry.bluesky?.startsWith('at://')) continue
 
-        // Inject the discovered URI back into the entry
-        if (blueskyUri) {
-          entry.bluesky = blueskyUri
+        // an explicit web URL in frontmatter needs no search, just a handle to
+        // resolve - and that is usually the site's own, already-resolved handle
+        if (entry.bluesky?.startsWith('https://bsky.app/')) {
+          const uri = await resolveWebUrl(entry.bluesky, entry.path)
+          entry.bluesky = uri ?? undefined
+          if (uri) await persist(entry.file, uri)
+          continue
         }
 
-        async function discoverBlueskyUri (): Promise<string | null> {
-          // Check cache first
-          if (existsSync(cacheFile)) {
-            try {
-              const cacheData = JSON.parse(await readFile(cacheFile, 'utf-8')) as { uri: string | null }
-              return cacheData.uri
-            }
-            catch {
-              // Continue to discover
-            }
-          }
+        if (date < BLUESKY_ACCOUNT_CREATED) continue
+        if (windowStart && date < windowStart) continue
 
-          // 1. explicit bluesky URL in frontmatter
-          if (entry.bluesky?.startsWith('https://bsky.app/')) {
-            const match = entry.bluesky.match(/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)/)
-            if (match) {
-              const [, handle, rkey] = match
-              try {
-                const { did } = await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle!, 'handle') })
-                const uri = `at://${did}/app.bsky.feed.post/${rkey}`
-                await saveCache(cacheFile, uri)
-                return uri
-              }
-              catch (error) {
-                console.warn(`Failed to resolve Bluesky handle for ${blogPath}:`, error)
-              }
-            }
-            await saveCache(cacheFile, null)
-            return null
-          }
+        const key = hashKey(entry.slug, url)
+        const miss = await cache.get<null>(key)
+        if (miss && Date.now() - miss.mtime < NEGATIVE_MAX_AGE) {
+          pending[entry.path] = { url, date: date.toISOString() }
+          continue
+        }
 
-          // 2. blog post date is before Bluesky account creation
-          if (blogDate < BLUESKY_ACCOUNT_CREATED) {
-            await saveCache(cacheFile, null)
-            return null
-          }
-
-          // 3. auto-discover posts linking to this blog URL
-          const searchCutoff = new Date(blogDate.getTime() - 24 * 60 * 60 * 1000)
-
-          while (!feedIterator.isExhausted()) {
-            const oldestFetchedDate = feedIterator.getOldestPostDate()
-            if (oldestFetchedDate && oldestFetchedDate < searchCutoff) {
-              break
-            }
-            await feedIterator.fetchMore()
-          }
-
-          const matchingPosts = feedIterator.posts
-            .filter(post => {
-              const postDate = new Date(post.createdAt)
-              if (postDate < searchCutoff) return false
-              return post.links.some(link => withoutTrailingSlash(link) === blogUrl)
-            })
-            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-
-          const uri = matchingPosts[0]?.uri ?? null
-          if (uri) {
-            console.log(`Auto-discovered Bluesky post for ${blogPath}`)
-          }
-          await saveCache(cacheFile, uri)
-          return uri
+        const uri = await discoverInFeed(url, date)
+        if (uri) {
+          console.log(`Auto-discovered Bluesky post for ${entry.path}`)
+          entry.bluesky = uri
+          await persist(entry.file, uri)
+        }
+        else {
+          await cache.set(key, null)
+          pending[entry.path] = { url, date: date.toISOString() }
         }
       }
 
-      // Sort by date descending to find newest
-      blogPosts.sort((a, b) => b.date.getTime() - a.date.getTime())
-      const newestPost = blogPosts[0]
-      const needsRuntimeDiscovery = newestPost && !newestPost.blueskyUri
-
-      // Add virtual file for runtime discovery flag (client-side)
       addTemplate({
         filename: 'bsky-runtime-discovery.mjs',
-        getContents: () => `export const needsRuntimeDiscovery = ${!!needsRuntimeDiscovery}
-export const newestPostPath = ${newestPost ? JSON.stringify(newestPost.path) : 'null'}`,
+        // the boolean lets the client-side discovery in `blog/[article].vue`
+        // be tree-shaken away entirely when nothing is pending
+        getContents: () => [
+          `export const needsRuntimeDiscovery = ${Object.keys(pending).length > 0}`,
+          `export const pendingDiscovery = new Set(${JSON.stringify(Object.keys(pending))})`,
+        ].join('\n'),
         write: true,
       })
 
-      // Add server template with the blog URL and date
       addServerTemplate({
         filename: 'bsky-runtime-discovery-server.mjs',
-        getContents: () => `
-export const newestPostUrl = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.url) : 'null'}
-export const newestPostDate = ${needsRuntimeDiscovery ? JSON.stringify(newestPost.date.toISOString()) : 'null'}`,
+        getContents: () => `export const pendingPosts = ${JSON.stringify(pending)}`,
       })
 
-      // Conditionally add the server endpoint only when needed
-      if (needsRuntimeDiscovery) {
+      if (Object.keys(pending).length > 0) {
         addServerHandler({
           route: '/api/discover-bluesky-post',
           handler: resolver.resolve('./runtime/server/discover-bluesky-post.get'),
         })
       }
+
+      async function resolveWebUrl (webUrl: string, path: string): Promise<string | null> {
+        const match = webUrl.match(/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)/)
+        if (!match) return null
+        const [, actor, rkey] = match
+        try {
+          const did = actor!.startsWith('did:')
+            ? actor!
+            : actor === blueskyHandle && nuxt.options.runtimeConfig.atproto?.did
+              ? nuxt.options.runtimeConfig.atproto.did
+              : (await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(actor!, 'handle') })).did
+          return `at://${did}/app.bsky.feed.post/${rkey}`
+        }
+        catch (error) {
+          console.warn(`Failed to resolve Bluesky handle for ${path}:`, error)
+          return null
+        }
+      }
+
+      async function discoverInFeed (url: string, date: Date): Promise<string | null> {
+        const searchStart = new Date(date.getTime() - 24 * 60 * 60 * 1000)
+        const searchEnd = new Date(date.getTime() + ANNOUNCEMENT_WINDOW_DAYS * 24 * 60 * 60 * 1000)
+
+        while (!feed.isExhausted()) {
+          const oldestFetchedDate = feed.getOldestPostDate()
+          if (oldestFetchedDate && oldestFetchedDate < searchStart) {
+            break
+          }
+          await feed.fetchMore()
+        }
+
+        return feed.posts
+          .filter(post => {
+            // a reply cites an article in someone else's thread; it is never
+            // the thread the article's own comments belong in
+            if (post.isReply) return false
+            const postDate = new Date(post.createdAt)
+            if (postDate < searchStart || postDate > searchEnd) return false
+            return post.links.some(link => withoutTrailingSlash(link) === url)
+          })
+          .sort((a, b) => +new Date(a.createdAt) - +new Date(b.createdAt))[0]?.uri ?? null
+      }
     })
   },
 })
 
-async function saveCache (cacheFile: string, uri: string | null) {
+/** Record `uri` as the `bluesky` frontmatter key of the post at `file`. */
+async function persist (file: string, uri: string) {
   try {
-    await writeFile(cacheFile, JSON.stringify({ uri }))
+    const source = await readFile(file, 'utf8')
+    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+    if (!frontmatter) return
+
+    const line = `bluesky: '${uri}'`
+    const updated = /^bluesky:.*$/m.test(frontmatter[1]!)
+      ? frontmatter[1]!.replace(/^bluesky:.*$/m, line)
+      : `${frontmatter[1]}\n${line}`
+
+    await writeFile(file, source.replace(frontmatter[0], `---\n${updated}\n---`))
   }
-  catch {
-    // Ignore cache write errors
+  catch (error) {
+    console.warn(`Failed to record Bluesky URI in ${file}:`, error)
   }
 }
 
@@ -252,6 +273,7 @@ function createFeedIterator (client: Client, actor: string) {
           posts.push({
             uri: post.uri,
             createdAt: record.createdAt as string,
+            isReply: !!record.reply,
             links,
           })
         }

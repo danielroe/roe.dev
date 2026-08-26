@@ -5,6 +5,7 @@ tags:
   - profit
   - open source
 description: "Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product on top of an open source project?"
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3lgoas7uqvc2m'
 ---
 
 Open source is about mutual giving. So how does that square with commercial open source? Or building a for-profit product _on top_ of an open source project?

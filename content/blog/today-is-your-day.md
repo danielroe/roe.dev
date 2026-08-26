@@ -5,6 +5,7 @@ tags:
   - new year
   - resolutions
 description: "Reflection isn't my strong suit. I think. But I wish it were more part of my life. So I thought I'd try to piece together ... part of ...  my story in 2024."
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3lemgiwuyby2r'
 ---
 
 What a year.

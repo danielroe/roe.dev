@@ -31,8 +31,8 @@ export default defineNuxtModule({
       return
     }
 
-    nuxt.hook('markdown:sync-articles', async articles => {
-      const talks = await fetchTalks()
+    nuxt.hook('markdown:sync-articles', async getArticles => {
+      const [articles, talks] = await Promise.all([getArticles(), fetchTalks()])
       const items: SyncItem[] = [...articles, ...talks]
 
       console.info(`[sync] ${dryRun ? 'Dry run' : 'Syncing'}: ${items.length} items (${articles.length} articles, ${talks.length} talks)`)

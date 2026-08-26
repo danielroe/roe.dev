@@ -12,7 +12,11 @@ import { defu } from 'defu'
 
 import { listAllRecords } from '../shared/atproto-read'
 import { decryptJSON } from '../../server/utils/admin/encryption'
+import { withCache } from '../shared/build-cache'
 import { dev } from '../../shared/lex/index.ts'
+
+/** In dev the (encrypted) invite records are re-read at most hourly. */
+const DEV_MAX_AGE = 1000 * 60 * 60
 
 export default defineNuxtModule({
   meta: {
@@ -35,11 +39,18 @@ export default defineNuxtModule({
 
     if (process.env.NUXT_PDS_ENCRYPTION_KEY) {
       try {
-        const records = await listAllRecords(dev.roe.invite.main)
+        const records = await withCache({
+          namespace: 'invites',
+          key: 'records',
+          maxAge: nuxt.options.dev ? DEV_MAX_AGE : 0,
+          stale: nuxt.options.dev,
+          fetch: async () => (await listAllRecords(dev.roe.invite.main))
+            .map(r => ({ uri: r.uri, isActive: r.value.isActive, encrypted: r.value.encrypted })),
+        }) ?? []
         for (const r of records) {
-          if (!r.value.isActive) continue
+          if (!r.isActive) continue
           try {
-            const { slug, repo } = decryptJSON<{ slug: string, repo: string }>(r.value.encrypted)
+            const { slug, repo } = decryptJSON<{ slug: string, repo: string }>(r.encrypted)
             map[slug] = repo
           }
           catch (err) {

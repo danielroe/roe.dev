@@ -1,20 +1,36 @@
 import { readFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 
 import { addTemplate, addTypeTemplate, defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { glob } from 'tinyglobby'
 import grayMatter from 'gray-matter'
 import { filename } from 'pathe/utils'
-import { remark } from 'remark'
-import remarkHtml from 'remark-html'
-import { convert as htmlToText } from 'html-to-text'
 import { createMarkdownParser } from 'comark/parse'
 import shiki from 'comark/plugins/shiki'
 import palenight from 'shiki/themes/material-theme-palenight.mjs'
 
+import { createBuildCache, hashKey } from './shared/build-cache'
 import { headingIds } from './shared/comark-heading-ids'
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
 import { tidFromDate } from './shared/tid'
+
+/**
+ * Bumped whenever the shape of a cached syntax-highlighted tree changes; the
+ * resolved `comark`/`shiki` versions are folded in so a dependency bump
+ * invalidates the cache without needing to remember to touch this.
+ */
+const TREE_CACHE_VERSION = [
+  '1',
+  ...['comark', 'shiki'].map(name => {
+    try {
+      return createRequire(import.meta.url)(`${name}/package.json`).version as string
+    }
+    catch {
+      return name
+    }
+  }),
+].join('-')
 
 interface BlogFrontmatter {
   title: string
@@ -27,6 +43,7 @@ interface BlogFrontmatter {
 
 interface ParsedBlogPost {
   slug: string
+  file: string
   title: string
   date: string
   tid: string
@@ -63,6 +80,7 @@ export default defineNuxtModule({
 
       blogPosts.push({
         slug,
+        file: filePath,
         title: fm.title,
         date,
         tid: tidFromDate(date),
@@ -87,14 +105,14 @@ export default defineNuxtModule({
     nuxt.hook('modules:done', async () => {
       await Promise.all([
         nuxt.callHook('markdown:blog-entries', blogPosts),
-        nuxt.callHook('markdown:sync-articles', syncArticles),
+        nuxt.callHook('markdown:sync-articles', getSyncArticles),
       ])
     })
 
     addTemplate({
       filename: 'markdown/blog-entries.mjs',
       getContents: () => {
-        const entries = blogPosts.map(({ slug: _, body: __, ...entry }) => entry)
+        const entries = blogPosts.map(({ slug: _, file: __, body: ___, ...entry }) => entry)
         return `export const blogEntries = ${JSON.stringify(entries)}`
       },
       write: true,
@@ -110,10 +128,19 @@ export default defineNuxtModule({
       ],
     })
 
-    for (const post of blogPosts) {
-      const tree = await parse(post.body)
+    const treeCache = createBuildCache('markdown-trees')
+    async function parseCached (body: string) {
+      const key = hashKey(TREE_CACHE_VERSION, body)
+      const cached = await treeCache.get<unknown>(key)
+      if (cached) return cached.value
+      const tree = await parse(body)
+      await treeCache.set(key, tree)
+      return tree
+    }
+
+    function addBodyTemplate (filename: string, tree: unknown) {
       addTemplate({
-        filename: `markdown/blog/${post.slug}.mjs`,
+        filename,
         getContents: () => `const tree = ${JSON.stringify(tree)}
 export async function getBody () {
   return tree
@@ -123,18 +150,14 @@ export async function getBody () {
       })
     }
 
-    for (const slug of Object.keys(pageBodies)) {
-      const tree = await parse(pageBodies[slug]!)
-      addTemplate({
-        filename: `markdown/page/${slug}.mjs`,
-        getContents: () => `const tree = ${JSON.stringify(tree)}
-export async function getBody () {
-  return tree
-}
-`,
-        write: true,
-      })
-    }
+    await Promise.all([
+      ...blogPosts.map(async post => {
+        addBodyTemplate(`markdown/blog/${post.slug}.mjs`, await parseCached(post.body))
+      }),
+      ...Object.entries(pageBodies).map(async ([slug, body]) => {
+        addBodyTemplate(`markdown/page/${slug}.mjs`, await parseCached(body))
+      }),
+    ])
 
     addTemplate({
       filename: 'markdown/blog/index.mjs',
@@ -165,42 +188,56 @@ export async function getBody () {
       write: true,
     })
 
-    const md = remark().use(remarkHtml)
-    const rssMetadata: Record<string, any> = {}
-
-    for (const post of blogPosts) {
-      const contents = serialize(post.body)
-      const date = new Date(post.date)
-      rssMetadata[post.slug] = {
-        title: post.title,
-        description: post.description,
-        tags: post.tags,
-        html: await md.process(contents).then(r => r.value),
-        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    // `remark`/`html-to-text` are only needed to render the feed and to feed
+    // the (production-only) sync providers, so both are loaded on demand
+    let markdownToHtml: ((markdown: string) => Promise<string>) | undefined
+    async function toHtml (markdown: string) {
+      if (!markdownToHtml) {
+        const [{ remark }, { default: remarkHtml }] = await Promise.all([
+          import('remark'),
+          import('remark-html'),
+        ])
+        const md = remark().use(remarkHtml)
+        markdownToHtml = async source => String(await md.process(source))
       }
+      return markdownToHtml(markdown)
     }
 
     nuxt.options.nitro.virtual ||= {}
-    nuxt.options.nitro.virtual['#metadata.json'] = () =>
-      `export const metadata = ${JSON.stringify(rssMetadata)}`
-
-    const syncArticles = await Promise.all(blogPosts
-      .filter(p => !p.skip_dev)
-      .map(async post => {
-        const body = serialize(post.body)
-        const html = String(await md.process(body))
-        const textContent = htmlToText(html, { wordwrap: false })
-        return {
-          type: 'blog' as const,
+    nuxt.options.nitro.virtual['#metadata.json'] = async () => {
+      const rssMetadata: Record<string, unknown> = {}
+      for (const post of blogPosts) {
+        const date = new Date(post.date)
+        rssMetadata[post.slug] = {
           title: post.title,
-          date: post.date,
-          description: post.description || '',
-          body_markdown: body,
-          text_content: textContent,
-          canonical_url: `https://roe.dev/blog/${post.slug}/`,
-          tags: post.tags.length ? post.tags : undefined,
+          description: post.description,
+          tags: post.tags,
+          html: await toHtml(serialize(post.body)),
+          date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
         }
-      }))
+      }
+      return `export const metadata = ${JSON.stringify(rssMetadata)}`
+    }
+
+    async function getSyncArticles () {
+      const { convert: htmlToText } = await import('html-to-text')
+      return Promise.all(blogPosts
+        .filter(p => !p.skip_dev)
+        .map(async post => {
+          const body = serialize(post.body)
+          const html = await toHtml(body)
+          return {
+            type: 'blog' as const,
+            title: post.title,
+            date: post.date,
+            description: post.description || '',
+            body_markdown: body,
+            text_content: htmlToText(html, { wordwrap: false }),
+            canonical_url: `https://roe.dev/blog/${post.slug}/`,
+            tags: post.tags.length ? post.tags : undefined,
+          }
+        }))
+    }
 
     const rawBlogData = blogPosts.map(post => ({
       slug: post.slug,
@@ -288,8 +325,13 @@ declare module '#md-pages.json' {
 
 declare module '@nuxt/schema' {
   interface NuxtHooks {
-    'markdown:blog-entries': (entries: Array<{ path: string, slug: string, date: string, bluesky?: string }>) => void
-    'markdown:sync-articles': (articles: Array<{
+    'markdown:blog-entries': (entries: Array<{ path: string, slug: string, file: string, date: string, bluesky?: string }>) => void
+    /**
+     * Receives a lazy getter rather than the articles themselves: rendering
+     * them costs markdown -> HTML -> text for every post, and only the
+     * (production-only) sync module ever asks for them.
+     */
+    'markdown:sync-articles': (getArticles: () => Promise<Array<{
       type: 'blog'
       title: string
       date: string
@@ -298,6 +340,6 @@ declare module '@nuxt/schema' {
       text_content: string
       canonical_url: string
       tags?: string[]
-    }>) => void
+    }>>) => void
   }
 }

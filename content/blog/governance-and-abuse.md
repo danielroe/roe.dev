@@ -5,6 +5,7 @@ tags:
   - governance
   - open source
 description: Whenever you have people working together, there's potential for great things. There's also potential for harm - and sadly that's something we need to think about too.
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3k3jenwgxom2l'
 ---
 
 Whenever you have people working together, there's potential for great things. There's also potential for harm - and sadly that's something we need to think about too.

@@ -6,6 +6,7 @@ tags:
   - diversity
   - inclusion
 description: "I'm in favour of diversity, equity and inclusion in open source communities, and here's why I think it matters."
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3ljv2bmp4y62s'
 ---
 
 This really shouldn't need to be written:

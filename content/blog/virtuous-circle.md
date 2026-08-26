@@ -4,6 +4,7 @@ date: '2026-03-03T10:30:00.000Z'
 tags:
   - open source
 description: "The virtuous circle is the most powerful pattern in developer tooling. And it's the myth of the 10x developer that makes it hard to see."
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3mg5td2ny7s2l'
 ---
 
 The virtuous circle is the most powerful pattern in developer tooling. And it's the myth of the 10x developer that makes it hard to see.

@@ -11,6 +11,15 @@ import { api } from '@bsky/sdk'
 import { com } from '@bsky/sdk/lexicons'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
+import { hashKey, withCache } from '../shared/build-cache'
+
+/**
+ * Resolving `handle -> did -> PDS` costs two sequential round-trips before any
+ * other module can run, and the answer changes approximately never. In dev the
+ * cached value is used immediately and refreshed in the background.
+ */
+const IDENTITY_MAX_AGE = 1000 * 60 * 60 * 24 * 7
+
 interface DidDocument {
   service?: Array<{ id: string, type: string, serviceEndpoint: string }>
 }
@@ -25,6 +34,15 @@ async function resolvePdsEndpoint (did: string): Promise<string | null> {
   const doc = await res.json() as DidDocument
   const pds = doc.service?.find(s => s.id === '#atproto_pds' || s.id.endsWith('#atproto_pds'))
   return pds?.serviceEndpoint ?? null
+}
+
+async function resolveIdentity (handle: string, knownDid?: string) {
+  let did = knownDid
+  if (!did) {
+    const client = new Client(api.app.urlPublic)
+    did = (await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle, 'handle') })).did
+  }
+  return { did, service: await resolvePdsEndpoint(did) }
 }
 
 export default defineNuxtModule({
@@ -47,21 +65,23 @@ export default defineNuxtModule({
     if (cfg.did && publicCfg.service) return
 
     try {
-      if (!cfg.did) {
-        const client = new Client(api.app.urlPublic)
-        const { did } = await client.call(com.atproto.identity.resolveHandle, { handle: asStringFormat(handle, 'handle') })
-        cfg.did = did
-        publicCfg.did = did
-      }
+      const identity = await withCache({
+        namespace: 'atproto-identity',
+        key: hashKey(handle, cfg.did),
+        maxAge: IDENTITY_MAX_AGE,
+        stale: nuxt.options.dev,
+        fetch: () => resolveIdentity(handle, cfg.did),
+      })
 
-      if (!publicCfg.service) {
-        const endpoint = await resolvePdsEndpoint(cfg.did)
-        if (!endpoint) {
-          console.warn(`[atproto] DID doc for ${cfg.did} has no #atproto_pds service entry.`)
-        }
-        else {
-          publicCfg.service = endpoint
-        }
+      if (!identity?.did) throw new Error(`could not resolve a DID for ${handle}`)
+
+      cfg.did = identity.did
+      publicCfg.did = identity.did
+      if (identity.service) {
+        publicCfg.service ||= identity.service
+      }
+      else {
+        console.warn(`[atproto] DID doc for ${identity.did} has no #atproto_pds service entry.`)
       }
 
       console.info(`[atproto] Resolved ${handle} -> ${cfg.did} @ ${publicCfg.service || '(no PDS)'}`)
