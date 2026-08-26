@@ -1,0 +1,70 @@
+{
+  "lexicon": 1,
+  "id": "dev.roe.project",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A project on the /projects page, belonging to a dev.roe.projectCategory.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["category", "name", "createdAt"],
+        "properties": {
+          "category": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong-ref to the parent dev.roe.projectCategory record."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 2560,
+            "maxGraphemes": 256
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 25000,
+            "maxGraphemes": 2500
+          },
+          "links": {
+            "type": "array",
+            "description": "Relevant destinations for the project. The site links the card at the first `linkRoleWebsite`, falling back to the first link of any role.",
+            "items": {
+              "type": "ref",
+              "ref": "community.lexicon.app.defs#link"
+            },
+            "maxLength": 12
+          },
+          "images": {
+            "type": "array",
+            "description": "Visual assets for the project. The site renders the first `purposeScreenshot`, falling back to the first image of any purpose.",
+            "items": {
+              "type": "ref",
+              "ref": "community.lexicon.app.defs#image"
+            },
+            "maxLength": 8
+          },
+          "status": {
+            "type": "ref",
+            "ref": "community.lexicon.app.defs#status",
+            "description": "Release or maintenance status. `unmaintained` and `discontinued` render the card as archived."
+          },
+          "icon": {
+            "type": "string",
+            "maxLength": 640,
+            "maxGraphemes": 64,
+            "description": "UnoCSS icon class, e.g. `i-ri:rocket-line`. Used when there is no image."
+          },
+          "order": {
+            "type": "integer",
+            "description": "Lower values render first within the category. Defaults to 100 in the editor.",
+            "default": 100
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

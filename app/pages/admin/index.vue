@@ -8,6 +8,8 @@ const { data: stats, loading } = useAdminFetch<{
   talkGroups: number
   usesCategories: number
   usesItems: number
+  projectCategories: number
+  projects: number
   hasLocation: boolean
 }>('/api/admin/stats')
 
@@ -18,6 +20,8 @@ const cards = computed(() => [
   { label: 'Talk groups', value: stats.value?.talkGroups ?? 0, to: '/admin/talks' },
   { label: 'Uses categories', value: stats.value?.usesCategories ?? 0, to: '/admin/uses' },
   { label: 'Uses items', value: stats.value?.usesItems ?? 0, to: '/admin/uses' },
+  { label: 'Project categories', value: stats.value?.projectCategories ?? 0, to: '/admin/projects' },
+  { label: 'Projects', value: stats.value?.projects ?? 0, to: '/admin/projects' },
   { label: 'Location', value: stats.value?.hasLocation ? 'set' : 'not set', to: '/admin/location' },
 ])
 </script>
@@ -30,7 +34,7 @@ const cards = computed(() => [
       aria-hidden="true"
     >
       <li
-        v-for="i in 5"
+        v-for="i in 7"
         :key="i"
       >
         <div class="block bg-accent p-6">

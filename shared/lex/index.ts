@@ -3,4 +3,5 @@
  */
 
 export * as com from './com.ts'
+export * as community from './community.ts'
 export * as dev from './dev.ts'

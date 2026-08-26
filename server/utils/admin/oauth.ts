@@ -24,6 +24,8 @@ const SCOPES = [
   'repo:dev.roe.entity',
   'repo:dev.roe.invite',
   'repo:dev.roe.location',
+  'repo:dev.roe.project',
+  'repo:dev.roe.projectCategory',
   'repo:dev.roe.talk',
   'repo:dev.roe.talkGroup',
   'repo:dev.roe.usesCategory',

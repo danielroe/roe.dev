@@ -1,14 +1,21 @@
-import { projects } from '#projects.json'
 import { pageMeta } from '#md-page-meta.json'
 
-export default defineEventHandler(() => {
+import { getProjects } from '../utils/cms/projects'
+
+export default defineEventHandler(async event => {
+  if (import.meta.test) {
+    return mdResponse('')
+  }
+
+  const categories = await getProjects(event)
+
   const lines = [
     mdFrontmatter('/projects', pageMeta['/projects']!),
     '',
   ]
 
-  for (const category of projects) {
-    lines.push(`## ${category.category}`)
+  for (const category of categories) {
+    lines.push(`## ${category.title}`)
     lines.push('')
 
     for (const item of category.items) {

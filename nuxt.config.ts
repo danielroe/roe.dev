@@ -170,6 +170,7 @@ export default defineNuxtConfig({
     '/api/talks': { swr: 60 * 60 },
     '/api/upcoming-conferences': { swr: 60 * 60 },
     '/api/uses': { swr: 60 * 60 },
+    '/api/projects': { swr: 60 * 60 },
     '/api/current-location': { swr: 60 * 5 },
     '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },

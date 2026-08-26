@@ -1,7 +1,16 @@
 # lexicons
 
-Schemas for the records my CMS writes to my PDS. `com/` holds vendored copies of
-upstream schemas we reference; everything under `dev/roe/` is mine.
+Schemas for the records my CMS writes to my PDS. `com/` and `community/` hold
+vendored copies of upstream schemas we reference; everything under `dev/roe/` is
+mine.
+
+`community/lexicon/app/defs.json` is a verbatim copy of the
+[Lexicon Community](https://tangled.org/lexicon.community/lexicons) schema,
+checked against the `com.atproto.lexicon.schema` record published at
+`did:plc:mtr7qrqtcyseedx3jyr5o7db`. `dev.roe.project` uses its `#link`,
+`#image` and `#status` defs rather than reinventing them. Refresh it from
+upstream when the shared defs change; `pnpm lex:publish` only writes `dev.roe.*`
+schemas, so vendored files are never republished under my authority.
 
 - `pnpm lex:gen` regenerates the TypeScript types in `shared/lex/`.
 - `pnpm lex:publish` writes each `dev.roe.*` schema to the PDS as a

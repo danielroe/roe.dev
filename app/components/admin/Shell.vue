@@ -22,6 +22,7 @@ const nav = [
   { label: 'AMA', to: '/admin/ama' },
   { label: 'Talks', to: '/admin/talks' },
   { label: 'Uses', to: '/admin/uses' },
+  { label: 'Projects', to: '/admin/projects' },
   { label: 'Entities', to: '/admin/entities' },
   { label: 'Invites', to: '/admin/invites' },
   { label: 'Location', to: '/admin/location' },

@@ -12,11 +12,13 @@ export default defineEventHandler(async event => {
     return total
   }
 
-  const [talks, talkGroups, usesCategories, usesItems] = await Promise.all([
+  const [talks, talkGroups, usesCategories, usesItems, projectCategories, projects] = await Promise.all([
     count(dev.roe.talk.main),
     count(dev.roe.talkGroup.main),
     count(dev.roe.usesCategory.main),
     count(dev.roe.usesItem.main),
+    count(dev.roe.projectCategory.main),
+    count(dev.roe.project.main),
   ])
 
   // Location is a singleton; check by attempting to fetch `self`.
@@ -27,5 +29,5 @@ export default defineEventHandler(async event => {
   }
   catch { /* missing record → false */ }
 
-  return { talks, talkGroups, usesCategories, usesItems, hasLocation }
+  return { talks, talkGroups, usesCategories, usesItems, projectCategories, projects, hasLocation }
 })

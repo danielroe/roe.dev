@@ -1,16 +1,18 @@
 import { defineConfig, presetIcons, presetWind3 } from 'unocss'
 import { createResolver } from 'nuxt/kit'
 
+import { projectIcons } from './shared/project-icons'
+
 const resolver = createResolver(import.meta.url)
 
 export default defineConfig({
   content: {
     filesystem: [
       resolver.resolve('./content/**/*.md'),
-      resolver.resolve('./content/projects.yml'),
       resolver.resolve('./app/**/*.vue'),
     ],
   },
+  safelist: [...projectIcons],
   shortcuts: [
     {
       'underlined-link':
