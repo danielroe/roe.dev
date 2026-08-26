@@ -4,7 +4,7 @@ import { getProjects } from '../utils/cms/projects'
 
 export default defineEventHandler(async event => {
   if (import.meta.test) {
-    return mdResponse('')
+    return mdResponse(event, '')
   }
 
   const categories = await getProjects(event)
@@ -33,5 +33,5 @@ export default defineEventHandler(async event => {
     lines.push('')
   }
 
-  return mdResponse(lines.join('\n'))
+  return mdResponse(event, lines.join('\n'))
 })

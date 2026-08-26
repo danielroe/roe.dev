@@ -1,8 +1,5 @@
 import { Feed } from 'feed'
 
-// @ts-expect-error virtual file
-import { metadata } from '#metadata.json'
-
 export default defineEventHandler(async () => {
   if (!import.meta.dev && !import.meta.prerender) return
 
@@ -27,14 +24,19 @@ export default defineEventHandler(async () => {
     },
   })
 
-  for (const slug in metadata) {
-    const blog = metadata[slug]
+  for (const post of blogPosts()) {
+    const published = new Date(post.data.date)
+
+    if (!post.meta.html) {
+      throw createError(`Cannot render the feed: no HTML body was built for \`${post.path}\`.`)
+    }
+
     feed.addItem({
-      title: blog.title,
-      link: `https://roe.dev/blog/${slug}`,
-      description: blog.description,
-      content: blog.html.replace(/<img src="\//g, '<img src="https://roe.dev/'),
-      category: blog.tags.map((tag: string) => ({ name: tag })),
+      title: post.data.title,
+      link: `https://roe.dev${post.path}`,
+      description: post.data.description,
+      content: post.meta.html.replace(/<img src="\//g, '<img src="https://roe.dev/'),
+      category: post.data.tags.map(tag => ({ name: tag })),
       author: [
         {
           name: 'Daniel Roe',
@@ -42,8 +44,9 @@ export default defineEventHandler(async () => {
           link: 'https://roe.dev',
         },
       ],
-      date: new Date(blog.date),
-      image: `https://roe.dev/_og/s/blog/${slug}/og.png`,
+      // feed items are dated to local midnight rather than the time of day the post was published
+      date: new Date(published.getFullYear(), published.getMonth(), published.getDate()),
+      image: `https://roe.dev/_og/s${post.path}/og.png`,
     })
   }
 

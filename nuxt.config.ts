@@ -9,6 +9,30 @@ import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
 import { pageMeta } from './modules/shared/page-meta'
 
+/**
+ * Rendered routes served from the SWR cache. Applied outside development only:
+ * nitro persists SWR responses to `.nuxt/cache`, so in dev an edit to content
+ * or a component stays invisible until the cached entry expires. Tests opt in
+ * so they cover what the cache does to a handler's return value.
+ */
+const renderedSwrRules: Record<string, { swr: number }> = {
+  ...Object.fromEntries(Object.keys(pageMeta).flatMap(path => [
+    [path, { swr: 60 * 60 }],
+    [path + '/_payload.json', { swr: 60 * 60 }],
+    [path + '.md', { swr: 60 * 60 }],
+  ])),
+  '/blog/**': { swr: 60 * 60 },
+}
+
+/** API routes served from the SWR cache, in dev too, to spare the upstreams. */
+const apiSwrRules: Record<string, { swr: number }> = {
+  '/api/talks': { swr: 60 * 60 },
+  '/api/upcoming-conferences': { swr: 60 * 60 },
+  '/api/uses': { swr: 60 * 60 },
+  '/api/projects': { swr: 60 * 60 },
+  '/api/current-location': { swr: 60 * 5 },
+}
+
 export default defineNuxtConfig({
   modules: [
     'nuxt-og-image',
@@ -50,6 +74,7 @@ export default defineNuxtConfig({
 
   $production: {
     modules: ['nuxt-security'],
+    routeRules: renderedSwrRules,
   },
 
   $test: {
@@ -60,6 +85,7 @@ export default defineNuxtConfig({
         })
       },
     ],
+    routeRules: renderedSwrRules,
     experimental: {
       componentIslands: true,
     },
@@ -159,19 +185,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    ...Object.fromEntries(Object.keys(pageMeta).flatMap(path => [
-      [path, { swr: 60 * 60 }],
-      [path + '/_payload.json', { swr: 60 * 60 }],
-      [path + '.md', { swr: 60 * 60 }],
-    ])),
+    ...apiSwrRules,
     '/admin/**': { prerender: false },
-    '/blog/**': { swr: 60 * 60 },
-    // api routes
-    '/api/talks': { swr: 60 * 60 },
-    '/api/upcoming-conferences': { swr: 60 * 60 },
-    '/api/uses': { swr: 60 * 60 },
-    '/api/projects': { swr: 60 * 60 },
-    '/api/current-location': { swr: 60 * 5 },
     '/api/sponsors': { prerender: true },
     '/api/hi': { cors: true },
     // redirects
