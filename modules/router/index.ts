@@ -94,8 +94,11 @@ export default defineNuxtModule({
           return {
             path: isDynamic
               ? `/${path
-                .replace(/\[(.*)\]/g, '(?<$1>.+)')
-                .replace(/\//g, '\\/')}/`
+                .split(/\[(.*?)\]/g)
+                .map((part, i) =>
+                  i % 2 ? `(?<${part}>.+)` : RegExp.escape(part),
+                )
+                .join('')}/`
               : genString(path),
             component: isAdminFile(f)
               ? `defineAsyncComponent(${genDynamicImport(f, { interopDefault: true })})`
