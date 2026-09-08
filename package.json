@@ -119,5 +119,16 @@
     "commit-msg": "npx commitlint --edit $1",
     "pre-commit": "npx nano-staged"
   },
-  "packageManager": "pnpm@11.24.0"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.0.0",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.24.0",
+      "onFail": "download"
+    }
+  }
 }
