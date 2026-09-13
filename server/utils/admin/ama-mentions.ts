@@ -20,13 +20,13 @@
 import type { DidString, UriString } from '@atproto/lex'
 import type { app } from '@bsky/sdk/lexicons'
 
-import type { dev } from '#shared/lex'
+import type { EntityRecord } from '#shared/cms/records'
 
 export type Platform = 'bluesky' | 'mastodon' | 'linkedin'
 
 export interface EntityLookup {
   /** Entity rkey → record value. */
-  byRkey: Map<string, dev.roe.entity.Main>
+  byRkey: Map<string, EntityRecord>
 }
 
 const MENTION_RE = /@([a-z0-9]{13})\b/g

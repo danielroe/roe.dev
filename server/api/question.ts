@@ -1,9 +1,9 @@
-import { Client, currentDatetimeString } from '@atproto/lex'
-import { PasswordSession } from '@atproto/lex-password-session'
+import { createAirspace, passwordSession } from 'airspace'
+import type { Identity } from 'airspace'
 
 import { sendPushoverNotification } from '../utils/pushover'
 import { encrypt } from '../utils/admin/encryption'
-import { dev } from '#shared/lex'
+import { collections } from '#shared/collections'
 
 export default defineEventHandler(async event => {
   if (event.method === 'OPTIONS') return null
@@ -32,15 +32,24 @@ export default defineEventHandler(async event => {
   return null
 })
 
+/**
+ * Questions arrive from anonymous visitors, so this writes with the site's own
+ * app password rather than the editor's OAuth session.
+ */
 async function persistQuestion (question: string, config: ReturnType<typeof useRuntimeConfig>) {
-  const session = await PasswordSession.login({
-    service: config.public.atproto.service,
-    identifier: config.atproto.handle,
-    password: config.atproto.password,
+  const service = config.public.atproto.service
+  const airspace = createAirspace({
+    identity: { did: config.atproto.did as Identity['did'], service },
+    collections: { ama: collections.ama },
+    session: await passwordSession({
+      service,
+      identifier: config.atproto.handle,
+      password: config.atproto.password,
+    }),
   })
-  await new Client(session).create(dev.roe.ama.main, {
+  await airspace.ama.create({
     status: 'unanswered',
     encryptedQuestion: encrypt(question),
-    createdAt: currentDatetimeString(),
-  }, { validateRequest: true })
+    createdAt: new Date().toISOString(),
+  })
 }

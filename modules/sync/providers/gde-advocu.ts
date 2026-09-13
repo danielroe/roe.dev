@@ -1,10 +1,6 @@
 import { $fetch } from 'ofetch'
-import { Client, asStringFormat, currentDatetimeString } from '@atproto/lex'
-import { PasswordSession } from '@atproto/lex-password-session'
-import { useNuxt } from 'nuxt/kit'
 
-import { listAllRecords } from '../../shared/atproto-read'
-import { dev } from '../../../shared/lex/index.ts'
+import { useBuildAirspaceWithSession } from '../../shared/airspace'
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
 
 const PROVIDER = 'gde-advocu'
@@ -42,21 +38,13 @@ export class GdeAdvocuProvider implements SyncProvider {
     const advocuToken = process.env.NUXT_ADVOCU_TOKEN
     if (!advocuToken) throw new Error('No NUXT_ADVOCU_TOKEN provided.')
 
-    const cfg = useNuxt().options.runtimeConfig
-    const pdsUrl = cfg.public.atproto.service
-    const { handle, password } = cfg.atproto
-    if (!pdsUrl || !handle || !password) {
-      throw new Error('atproto identity / credentials not configured for Advocu dedupe tracking (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
-    }
+    const airspace = await useBuildAirspaceWithSession()
 
     const synced = new Set<string>(
-      (await listAllRecords(dev.roe.sync.main))
+      (await airspace.syncMarkers.list())
         .filter(r => r.value.provider === PROVIDER)
         .map(r => r.value.canonicalUrl),
     )
-
-    const session = await PasswordSession.login({ service: pdsUrl, identifier: handle, password })
-    const client = new Client(session)
 
     const $advocu = $fetch.create({
       baseURL: 'https://api.advocu.com/personal-api/v1/gde',
@@ -106,11 +94,11 @@ export class GdeAdvocuProvider implements SyncProvider {
         continue
       }
 
-      await client.create(dev.roe.sync.main, {
+      await airspace.syncMarkers.create({
         provider: PROVIDER,
-        canonicalUrl: asStringFormat(item.canonical_url, 'uri'),
-        syncedAt: currentDatetimeString(),
-      }, { validateRequest: true })
+        canonicalUrl: item.canonical_url,
+        syncedAt: new Date().toISOString(),
+      })
       count++
     }
 

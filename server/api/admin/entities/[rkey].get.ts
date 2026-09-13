@@ -1,6 +1,5 @@
 import { getAdminRecord } from '../../../utils/admin/crud'
-import { dev } from '#shared/lex'
 
 export default defineEventHandler(event => {
-  return getAdminRecord(event, dev.roe.entity.main, getRouterParam(event, 'rkey'))
+  return getAdminRecord(event, 'entities', getRouterParam(event, 'rkey'))
 })

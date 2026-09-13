@@ -1,5 +1,5 @@
-import type { dev } from '../lex/index.ts'
-import type { Strict } from './strict.ts'
+import type { ProjectCategoryRecord, ProjectRecord } from './records.ts'
+import type { ResolvedViewImage } from './image.ts'
 
 /**
  * The view model the /projects page renders. Records store
@@ -7,19 +7,14 @@ import type { Strict } from './strict.ts'
  * the page uses (site link, source link, screenshot) so the page doesn't have
  * to know about link roles and image purposes.
  */
-export type Project = Omit<Strict<dev.roe.project.Main>, '$type' | 'category' | 'links' | 'images' | 'status' | 'createdAt'> & {
+export type Project = Omit<ProjectRecord, '$type' | 'category' | 'links' | 'images' | 'status' | 'createdAt'> & {
   url: string | null
   repo: string | null
   archived: boolean
-  image: {
-    url: string
-    alt: string
-    width: number | null
-    height: number | null
-  } | null
+  image: ResolvedViewImage | null
 }
 
-export type ProjectCategory = Omit<Strict<dev.roe.projectCategory.Main>, '$type' | 'createdAt'> & {
+export type ProjectCategory = Omit<ProjectCategoryRecord, '$type' | 'createdAt'> & {
   _id: string
   items: Project[]
 }

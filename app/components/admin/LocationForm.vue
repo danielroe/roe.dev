@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose, Strict } from '#shared/cms/strict'
+import type { LocationRecord } from '#shared/cms/records'
 
-type LocationValue = Omit<Loose<Strict<dev.roe.location.Main>>, '$type'>
+type LocationValue = Omit<LocationRecord, '$type'>
 
 const props = defineProps<{
   initial?: Partial<LocationValue>

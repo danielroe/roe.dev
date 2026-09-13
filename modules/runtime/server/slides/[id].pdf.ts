@@ -1,8 +1,9 @@
 /**
  * Dev-only handler for `/slides/:id.pdf`.
  */
-import { listRecords } from '#server/utils/atproto'
-import { dev } from '#shared/lex'
+import type { H3Event } from 'h3'
+
+import { useAirspace } from '#server/utils/airspace'
 
 interface GitHubReleaseAsset {
   id: number
@@ -15,9 +16,9 @@ interface GitHubRelease {
 const assetCache = new Map<string, ArrayBuffer>()
 let knownIds: Set<string> | null = null
 
-async function getKnownSlideIds (event: Parameters<typeof listRecords>[0]): Promise<Set<string>> {
+async function getKnownSlideIds (event: H3Event): Promise<Set<string>> {
   if (knownIds) return knownIds
-  const records = await listRecords(event, dev.roe.talk.main)
+  const records = await useAirspace(event).talks.list()
   knownIds = new Set(
     records
       .map(r => r.value.slides)

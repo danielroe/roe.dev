@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { TalkGroupRecord } from '#shared/cms/records'
 import type { TalkEntry } from '~~/app/components/admin/TalkDraggable.vue'
 
 definePageMeta({ layout: false })
@@ -10,7 +9,7 @@ interface TalkGroupEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.talkGroup.Main>
+  value: TalkGroupRecord
 }
 
 const { data: talksData, refresh: refreshTalks, loading: talksLoading } = useAdminFetch<TalkEntry[]>('/api/admin/talks', { default: () => [] })
@@ -67,7 +66,7 @@ const timeline = computed<TimelineEntry[]>(() => {
 
   for (const group of groupsData.value ?? []) {
     const talks = bucketed.value.get(group.uri) ?? []
-    const sortDate = talks[0]?.value.date ?? group.value.createdAt
+    const sortDate = talks[0]?.value.date ?? group.value.createdAt ?? ''
     entries.push({ kind: 'group', sortDate, group, talks })
   }
 

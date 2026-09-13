@@ -1,17 +1,16 @@
 <script setup lang="ts">
+import type { StrongRef, TalkGroupRecord, TalkRecord } from '#shared/cms/records'
 import { community } from '#shared/lex'
-import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
-import { COMMUNITY_IMAGE_MAX_BYTES, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type { Loose, Strict } from '#shared/cms/strict'
+import { COMMUNITY_IMAGE_MAX_BYTES, pdsBlobUrl } from '#shared/cms/blob'
 
-type TalkValue = Omit<Loose<Strict<dev.roe.talk.Main>>, '$type'>
+type TalkValue = Omit<TalkRecord, '$type'>
 
 interface TalkGroupEntry {
   rkey: string
   uri: string
   cid: string
-  value: dev.roe.talkGroup.Main
+  value: TalkGroupRecord
 }
 
 interface GitHubRelease {
@@ -78,10 +77,7 @@ function toDateInput (iso?: string): string | undefined {
 
 const imageUrl = computed(() => {
   if (localPreviewUrl.value) return localPreviewUrl.value
-  if (!form.image || !pdsService || !pdsDid) return null
-  const cid = cidFromBlob(form.image)
-  if (!cid) return null
-  return blobUrlFor(pdsService, pdsDid, cid)
+  return pdsBlobUrl(pdsService, pdsDid, form.image)
 })
 
 async function onImageChange (e: Event) {
@@ -98,19 +94,16 @@ async function onImageChange (e: Event) {
 
   const buf = new Uint8Array(await file.arrayBuffer())
   try {
-    const [uploaded, clientAspectRatio] = await Promise.all([
-      $fetch<{
-        blob: NonNullable<NonNullable<TalkValue['image']>['image']>
-        aspectRatio?: { width: number, height: number }
-      }>('/api/admin/blobs', {
-        method: 'POST',
-        body: buf,
-        headers: { 'content-type': file.type || 'application/octet-stream' },
-      }),
-      probeImageAspectRatio(file),
-    ])
+    const uploaded = await $fetch<{
+      blob: NonNullable<NonNullable<TalkValue['image']>['image']>
+      aspectRatio?: { width: number, height: number }
+    }>('/api/admin/blobs', {
+      method: 'POST',
+      body: buf,
+      headers: { 'content-type': file.type || 'application/octet-stream' },
+    })
     form.image = uploaded.blob
-    form.aspectRatio = clientAspectRatio ?? uploaded.aspectRatio
+    form.aspectRatio = uploaded.aspectRatio
     if (!form.imageAlt && form.source) form.imageAlt = `Logo for ${form.source}`
   }
   catch (err) {
@@ -143,7 +136,7 @@ async function onSubmit () {
     }
 
     const group = (groups.value ?? []).find(g => g.uri === form.groupUri)
-    const groupRef: Loose<com.atproto.repo.strongRef.Main> | undefined = group
+    const groupRef: StrongRef | undefined = group
       ? { uri: group.uri, cid: group.cid }
       : undefined
 

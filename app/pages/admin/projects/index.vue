@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { ProjectCategoryRecord, ProjectRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'Projects - admin - Daniel Roe' })
@@ -9,14 +8,14 @@ interface CategoryEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.projectCategory.Main>
+  value: ProjectCategoryRecord
 }
 
 interface ProjectEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.project.Main>
+  value: ProjectRecord
 }
 
 const { data: categoriesData, refresh: refreshCategories, loading: categoriesLoading } = useAdminFetch<CategoryEntry[]>('/api/admin/project-categories', { default: () => [] })

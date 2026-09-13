@@ -10,10 +10,9 @@
 import { addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit'
 import { defu } from 'defu'
 
-import { listAllRecords } from '../shared/atproto-read'
+import { useBuildAirspace } from '../shared/airspace'
 import { decryptJSON } from '../../server/utils/admin/encryption'
 import { withCache } from '../shared/build-cache'
-import { dev } from '../../shared/lex/index.ts'
 
 /** In dev the (encrypted) invite records are re-read at most hourly. */
 const DEV_MAX_AGE = 1000 * 60 * 60
@@ -44,7 +43,7 @@ export default defineNuxtModule({
           key: 'records',
           maxAge: nuxt.options.dev ? DEV_MAX_AGE : 0,
           stale: nuxt.options.dev,
-          fetch: async () => (await listAllRecords(dev.roe.invite.main))
+          fetch: async () => (await useBuildAirspace().invites.list())
             .map(r => ({ uri: r.uri, isActive: r.value.isActive, encrypted: r.value.encrypted })),
         }) ?? []
         for (const r of records) {

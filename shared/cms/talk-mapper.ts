@@ -1,4 +1,4 @@
-import type { dev } from '../lex/index.ts'
+import type { TalkGroupRecord, TalkRecord } from './records.ts'
 import type { Talk, TalkGroup } from './talks.ts'
 
 /** Extract the rkey from an `at://did/collection/rkey` URI. */
@@ -9,12 +9,12 @@ export function rkeyFromUri (uri: string): string {
 
 export interface PdsTalkInput {
   uri: string
-  value: dev.roe.talk.Main
+  value: TalkRecord
 }
 
 export interface PdsTalkGroupInput {
   uri: string
-  value: dev.roe.talkGroup.Main
+  value: TalkGroupRecord
 }
 
 export function toTalk (input: PdsTalkInput, group?: PdsTalkGroupInput): Talk {

@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import type { ProjectRecord } from '#shared/cms/records'
 import { useDragAndDrop } from '@formkit/drag-and-drop/vue'
 import { community } from '#shared/lex'
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
 
 interface ProjectEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.project.Main>
+  value: ProjectRecord
 }
 
 const props = defineProps<{

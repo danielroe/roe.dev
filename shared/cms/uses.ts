@@ -1,17 +1,12 @@
-import type { dev } from '../lex/index.ts'
-import type { Strict } from './strict.ts'
+import type { UsesCategoryRecord, UsesItemRecord } from './records.ts'
+import type { ResolvedViewImage } from './image.ts'
 
-export type UsesItem = Omit<Strict<dev.roe.usesItem.Main>, '$type' | 'category' | 'image' | 'links' | 'createdAt'> & {
+export type UsesItem = Omit<UsesItemRecord, '$type' | 'category' | 'image' | 'links' | 'createdAt'> & {
   links: { uri: string, label?: string }[]
-  image: {
-    url: string
-    alt: string
-    width: number | null
-    height: number | null
-  } | null
+  image: ResolvedViewImage | null
 }
 
-export type UsesCategory = Omit<Strict<dev.roe.usesCategory.Main>, '$type' | 'createdAt'> & {
+export type UsesCategory = Omit<UsesCategoryRecord, '$type' | 'createdAt'> & {
   _id: string
   items: UsesItem[]
 }

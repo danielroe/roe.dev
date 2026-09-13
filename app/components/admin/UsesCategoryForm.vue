@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose, Strict } from '#shared/cms/strict'
+import type { UsesCategoryRecord } from '#shared/cms/records'
 
-type UsesCategoryValue = Omit<Loose<Strict<dev.roe.usesCategory.Main>>, '$type'>
+type UsesCategoryValue = Omit<UsesCategoryRecord, '$type'>
 
 const props = defineProps<{
   initial?: Partial<UsesCategoryValue>

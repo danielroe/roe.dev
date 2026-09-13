@@ -1,19 +1,18 @@
 <script setup lang="ts">
+import type { ProjectCategoryRecord, ProjectRecord, StrongRef } from '#shared/cms/records'
 import { community } from '#shared/lex'
-import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
-import { COMMUNITY_IMAGE_MAX_BYTES, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
+import { COMMUNITY_IMAGE_MAX_BYTES, pdsBlobUrl } from '#shared/cms/blob'
 import { projectIcons } from '#shared/project-icons'
-import type { Loose, Strict } from '#shared/cms/strict'
 
-type ProjectValue = Omit<Loose<Strict<dev.roe.project.Main>>, '$type'>
+type ProjectValue = Omit<ProjectRecord, '$type'>
 type ProjectImage = NonNullable<ProjectValue['images']>[number]
 
 interface ProjectCategoryEntry {
   rkey: string
   uri: string
   cid: string
-  value: dev.roe.projectCategory.Main
+  value: ProjectCategoryRecord
 }
 
 const props = defineProps<{
@@ -93,10 +92,7 @@ const error = ref<string | null>(null)
 
 const imageUrl = computed(() => {
   if (localPreviewUrl.value) return localPreviewUrl.value
-  if (!form.image || !pdsService || !pdsDid) return null
-  const cid = cidFromBlob(form.image)
-  if (!cid) return null
-  return blobUrlFor(pdsService, pdsDid, cid)
+  return pdsBlobUrl(pdsService, pdsDid, form.image)
 })
 
 async function onImageChange (e: Event) {
@@ -113,19 +109,16 @@ async function onImageChange (e: Event) {
 
   const buf = new Uint8Array(await file.arrayBuffer())
   try {
-    const [uploaded, clientAspectRatio] = await Promise.all([
-      $fetch<{
-        blob: NonNullable<ProjectImage['image']>
-        aspectRatio?: { width: number, height: number }
-      }>('/api/admin/blobs', {
-        method: 'POST',
-        body: buf,
-        headers: { 'content-type': file.type || 'application/octet-stream' },
-      }),
-      probeImageAspectRatio(file),
-    ])
+    const uploaded = await $fetch<{
+      blob: NonNullable<ProjectImage['image']>
+      aspectRatio?: { width: number, height: number }
+    }>('/api/admin/blobs', {
+      method: 'POST',
+      body: buf,
+      headers: { 'content-type': file.type || 'application/octet-stream' },
+    })
     form.image = uploaded.blob
-    form.aspectRatio = clientAspectRatio ?? uploaded.aspectRatio
+    form.aspectRatio = uploaded.aspectRatio
     if (!form.imageAlt && form.name) form.imageAlt = `Screenshot of ${form.name}`
   }
   catch (err) {
@@ -170,7 +163,7 @@ async function onSubmit () {
       submitting.value = false
       return
     }
-    const categoryRef: Loose<com.atproto.repo.strongRef.Main> = { uri: category.uri, cid: category.cid }
+    const categoryRef: StrongRef = { uri: category.uri, cid: category.cid }
 
     const links = form.links
       .filter(l => l.uri)

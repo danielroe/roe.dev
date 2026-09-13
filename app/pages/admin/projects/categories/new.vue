@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { ProjectCategoryRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'New project category - admin - Daniel Roe' })
 
-type ProjectCategoryValue = Omit<Loose<dev.roe.projectCategory.Main>, '$type'>
+type ProjectCategoryValue = Omit<ProjectCategoryRecord, '$type'>
 
 async function save (value: ProjectCategoryValue) {
   await $fetch('/api/admin/project-categories', { method: 'POST', body: value })

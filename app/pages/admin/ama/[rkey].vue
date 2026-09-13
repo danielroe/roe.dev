@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
+import { pdsBlobUrl } from '#shared/cms/blob'
+import type { AmaPlatforms, AmaPost, AmaPublishedLinks } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'AMA - admin - Daniel Roe' })
@@ -20,9 +21,9 @@ interface AmaEntry {
   cid: string
   status: 'unanswered' | 'answered'
   question: string
-  posts: dev.roe.ama.Post[]
-  platforms?: dev.roe.ama.Platforms
-  publishedLinks?: dev.roe.ama.PublishedLinks
+  posts: AmaPost[]
+  platforms?: AmaPlatforms
+  publishedLinks?: AmaPublishedLinks
   image?: unknown
   imageDimensions?: { width: number, height: number }
   backgroundStyle?: string
@@ -36,10 +37,8 @@ const { data, loading } = useAdminFetch<AmaEntry>(`/api/admin/ama/${rkey.value}`
 
 // Build a public PDS URL for an already-stored image so the generator can
 // show the previously-published version as the initial preview.
-const initialImagePreviewUrl = computed(() => {
-  if (!data.value?.image) return null
-  return useAtprotoBlobUrl(data.value.image)
-})
+const { atproto } = useRuntimeConfig().public
+const initialImagePreviewUrl = computed(() => pdsBlobUrl(atproto?.service, atproto?.did, data.value?.image))
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
+import type { AmaPlatforms, AmaPost, AmaPublishedLinks } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'AMA - admin - Daniel Roe' })
@@ -10,9 +10,9 @@ interface AmaEntry {
   cid: string
   status: 'unanswered' | 'answered'
   question: string
-  posts: dev.roe.ama.Post[]
-  platforms?: dev.roe.ama.Platforms
-  publishedLinks?: dev.roe.ama.PublishedLinks
+  posts: AmaPost[]
+  platforms?: AmaPlatforms
+  publishedLinks?: AmaPublishedLinks
   createdAt: string
   answeredAt?: string
 }

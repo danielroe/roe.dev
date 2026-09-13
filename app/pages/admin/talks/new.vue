@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { TalkRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'New talk - admin - Daniel Roe' })
 
-type TalkValue = Omit<Loose<dev.roe.talk.Main>, '$type'>
+type TalkValue = Omit<TalkRecord, '$type'>
 
 async function save (value: TalkValue) {
   const res = await $fetch<{ rkey: string }>('/api/admin/talks', {

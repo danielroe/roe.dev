@@ -1,6 +1,7 @@
-import type { AdminRecord } from './crud'
+import type { AirspaceRecord } from 'airspace'
+
 import { decryptJSON } from './encryption'
-import type { dev } from '#shared/lex'
+import type lexicons from '../../../lexicons.ts'
 
 export interface InviteView {
   rkey: string
@@ -9,11 +10,11 @@ export interface InviteView {
   slug: string
   repo: string
   isActive: boolean
-  createdAt: string
+  createdAt?: string
 }
 
 /** Decrypt an invite record into the shape exposed to the editor. */
-export function decryptInvite (r: AdminRecord<typeof dev.roe.invite.main>): InviteView {
+export function decryptInvite (r: AirspaceRecord<(typeof lexicons)['invite'], any>): InviteView {
   let slug = ''
   let repo = ''
   try {

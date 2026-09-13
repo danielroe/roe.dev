@@ -1,7 +1,9 @@
-import { createAdminRecord } from '../../utils/admin/crud'
-import { dev } from '#shared/lex'
+import { invalidatePublicReads, requireAdminAirspace } from '../../utils/airspace'
+import { collections } from '#shared/collections'
 
 export default defineEventHandler(async event => {
-  const body = await readBody<Omit<dev.roe.location.Main, '$type' | 'createdAt'>>(event)
-  return createAdminRecord(event, dev.roe.location.main, body, 'self')
+  const airspace = await requireAdminAirspace(event)
+  const result = await airspace.location.put(await readBody(event))
+  invalidatePublicReads(collections.location.nsid)
+  return result
 })

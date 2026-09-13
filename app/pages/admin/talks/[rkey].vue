@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { TalkRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 
@@ -12,13 +11,13 @@ const rkey = computed(() => {
 
 useHead({ title: () => `Edit talk · admin` })
 
-type TalkValue = Omit<Loose<dev.roe.talk.Main>, '$type'>
+type TalkValue = Omit<TalkRecord, '$type'>
 
 interface TalkEntry {
   rkey: string
   uri: string
   cid: string
-  value: dev.roe.talk.Main
+  value: TalkRecord
 }
 
 if (!rkey.value) {

@@ -1,7 +1,7 @@
 /**
  * List releases from danielroe/slides for the talk-editor slides datalist.
  */
-import { requireAdminClient } from '../../utils/admin/client'
+import { requireAdminSession } from '../../utils/admin/oauth'
 
 interface GitHubRelease {
   tag_name: string
@@ -11,7 +11,7 @@ interface GitHubRelease {
 }
 
 export default defineEventHandler(async event => {
-  await requireAdminClient(event)
+  await requireAdminSession(event)
 
   const config = useRuntimeConfig(event)
   if (!config.github.token) {
