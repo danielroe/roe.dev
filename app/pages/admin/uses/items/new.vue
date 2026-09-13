@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { UsesItemRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'New uses item - admin - Daniel Roe' })
 
-type UsesItemValue = Omit<Loose<dev.roe.usesItem.Main>, '$type'>
+type UsesItemValue = Omit<UsesItemRecord, '$type'>
 
 async function save (value: UsesItemValue) {
   await $fetch('/api/admin/uses-items', { method: 'POST', body: value })

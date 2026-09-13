@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TalkRecord } from '#shared/cms/records'
 /**
  * Draggable list of talks. Sibling instances share a drag group so talks
  * can be moved between groups, or between top-level slots and groups,
@@ -6,14 +7,12 @@
  * the canonical date-sorted order; this component is a UI shell.
  */
 import { useDragAndDrop } from '@formkit/drag-and-drop/vue'
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
 
 export interface TalkEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.talk.Main>
+  value: TalkRecord
 }
 
 const props = defineProps<{

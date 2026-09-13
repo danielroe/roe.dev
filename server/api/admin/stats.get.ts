@@ -1,33 +1,25 @@
-import type { Client, RecordSchema } from '@atproto/lex'
-
-import { requireAdminClient } from '../../utils/admin/client'
-import { dev } from '#shared/lex'
+import { requireAdminAirspace } from '../../utils/airspace'
 
 export default defineEventHandler(async event => {
-  const { client, did } = await requireAdminClient(event)
+  const airspace = await requireAdminAirspace(event)
 
-  const count = async (schema: RecordSchema): Promise<number> => {
-    let total = 0
-    for await (const _ of (client as Client).listAll(schema, { repo: did, limit: 100 })) total++
-    return total
-  }
-
-  const [talks, talkGroups, usesCategories, usesItems, projectCategories, projects] = await Promise.all([
-    count(dev.roe.talk.main),
-    count(dev.roe.talkGroup.main),
-    count(dev.roe.usesCategory.main),
-    count(dev.roe.usesItem.main),
-    count(dev.roe.projectCategory.main),
-    count(dev.roe.project.main),
+  const [talks, talkGroups, usesCategories, usesItems, projectCategories, projects, location] = await Promise.all([
+    airspace.talks.list(),
+    airspace.talkGroups.list(),
+    airspace.usesCategories.list(),
+    airspace.usesItems.list(),
+    airspace.projectCategories.list(),
+    airspace.projects.list(),
+    airspace.location.get(),
   ])
 
-  // Location is a singleton; check by attempting to fetch `self`.
-  let hasLocation = false
-  try {
-    await client.getRecord('dev.roe.location', 'self', { repo: did })
-    hasLocation = true
+  return {
+    talks: talks.length,
+    talkGroups: talkGroups.length,
+    usesCategories: usesCategories.length,
+    usesItems: usesItems.length,
+    projectCategories: projectCategories.length,
+    projects: projects.length,
+    hasLocation: !!location,
   }
-  catch { /* missing record → false */ }
-
-  return { talks, talkGroups, usesCategories, usesItems, projectCategories, projects, hasLocation }
 })

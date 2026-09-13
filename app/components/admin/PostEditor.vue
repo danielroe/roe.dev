@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import type { EntityRecord } from '#shared/cms/records'
 import { serialiseEditor } from './post-editor-serialise'
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
 
 /**
  * contenteditable post editor for AMA threads. Stores text in a flat
@@ -19,7 +18,7 @@ interface EntityEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.entity.Main>
+  value: EntityRecord
 }
 
 const props = defineProps<{

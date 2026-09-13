@@ -1,17 +1,16 @@
 <script setup lang="ts">
+import type { StrongRef, UsesCategoryRecord, UsesItemRecord } from '#shared/cms/records'
 import { community } from '#shared/lex'
-import type { com, dev } from '#shared/lex'
 import { ref } from 'vue'
-import { COMMUNITY_IMAGE_MAX_BYTES, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type { Loose, Strict } from '#shared/cms/strict'
+import { COMMUNITY_IMAGE_MAX_BYTES, pdsBlobUrl } from '#shared/cms/blob'
 
-type UsesItemValue = Omit<Loose<Strict<dev.roe.usesItem.Main>>, '$type'>
+type UsesItemValue = Omit<UsesItemRecord, '$type'>
 
 interface UsesCategoryEntry {
   rkey: string
   uri: string
   cid: string
-  value: dev.roe.usesCategory.Main
+  value: UsesCategoryRecord
 }
 
 const props = defineProps<{
@@ -60,10 +59,7 @@ const error = ref<string | null>(null)
 
 const imageUrl = computed(() => {
   if (localPreviewUrl.value) return localPreviewUrl.value
-  if (!form.image || !pdsService || !pdsDid) return null
-  const cid = cidFromBlob(form.image)
-  if (!cid) return null
-  return blobUrlFor(pdsService, pdsDid, cid)
+  return pdsBlobUrl(pdsService, pdsDid, form.image)
 })
 
 async function onImageChange (e: Event) {
@@ -80,19 +76,16 @@ async function onImageChange (e: Event) {
 
   const buf = new Uint8Array(await file.arrayBuffer())
   try {
-    const [uploaded, clientAspectRatio] = await Promise.all([
-      $fetch<{
-        blob: NonNullable<NonNullable<UsesItemValue['image']>['image']>
-        aspectRatio?: { width: number, height: number }
-      }>('/api/admin/blobs', {
-        method: 'POST',
-        body: buf,
-        headers: { 'content-type': file.type || 'application/octet-stream' },
-      }),
-      probeImageAspectRatio(file),
-    ])
+    const uploaded = await $fetch<{
+      blob: NonNullable<NonNullable<UsesItemValue['image']>['image']>
+      aspectRatio?: { width: number, height: number }
+    }>('/api/admin/blobs', {
+      method: 'POST',
+      body: buf,
+      headers: { 'content-type': file.type || 'application/octet-stream' },
+    })
     form.image = uploaded.blob
-    form.aspectRatio = clientAspectRatio ?? uploaded.aspectRatio
+    form.aspectRatio = uploaded.aspectRatio
     if (!form.imageAlt && form.name) form.imageAlt = form.name
   }
   catch (err) {
@@ -132,7 +125,7 @@ async function onSubmit () {
       submitting.value = false
       return
     }
-    const categoryRef: Loose<com.atproto.repo.strongRef.Main> = { uri: category.uri, cid: category.cid }
+    const categoryRef: StrongRef = { uri: category.uri, cid: category.cid }
 
     if (form.image && !form.imageAlt) {
       error.value = 'Please describe the image for screen reader users.'

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { com, dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { AmaPlatforms, AmaPost, AmaPublishedLinks, EntityRecord, StrongRef } from '#shared/cms/records'
 
 interface EntityEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.entity.Main>
+  value: EntityRecord
 }
 
 type AmaPlatform = 'bluesky' | 'mastodon' | 'linkedin' | 'youtubeShorts'
@@ -22,9 +21,9 @@ const props = defineProps<{
   rkey: string
   question: string
   createdAt: string
-  initialPosts?: Loose<dev.roe.ama.Post>[]
-  initialPlatforms?: dev.roe.ama.Platforms
-  initialPublishedLinks?: dev.roe.ama.PublishedLinks
+  initialPosts?: AmaPost[]
+  initialPlatforms?: AmaPlatforms
+  initialPublishedLinks?: AmaPublishedLinks
   /** Public URL of any already-published image, for the generator's initial preview. */
   initialImagePreviewUrl?: string | null
   initialImageDimensions?: { width: number, height: number }
@@ -38,13 +37,13 @@ const { data: entities } = useAdminFetch<EntityEntry[]>('/api/admin/entities', {
 
 interface DraftPost {
   text: string
-  mentions: Loose<com.atproto.repo.strongRef.Main>[]
+  mentions: StrongRef[]
 }
 
 const posts = ref<DraftPost[]>(
   (props.initialPosts ?? [{ text: '' }]).map(p => ({
     text: p.text,
-    mentions: (p.mentions ?? []) as Loose<com.atproto.repo.strongRef.Main>[],
+    mentions: (p.mentions ?? []) as StrongRef[],
   })),
 )
 if (!posts.value.length) posts.value = [{ text: '', mentions: [] }]

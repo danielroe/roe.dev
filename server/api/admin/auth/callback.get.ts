@@ -3,18 +3,18 @@ import { com } from '@bsky/sdk/lexicons'
 
 import {
   clearAdminSessionCookie,
-  getOauthClient,
+  getOauth,
   updateAdminSessionCookie,
 } from '../../../utils/admin/oauth'
 
 export default defineEventHandler(async event => {
   const expectedHandle = useRuntimeConfig(event).atproto.handle
-  const client = getOauthClient(event)
+  const oauth = await getOauth(event)
   const params = new URLSearchParams(getQuery(event) as Record<string, string>)
 
   let session
   try {
-    ;({ session } = await client.callback(params))
+    ;({ session } = await oauth.callback(params))
   }
   catch (err) {
     console.error('[admin] OAuth callback failed:', err)
@@ -24,7 +24,7 @@ export default defineEventHandler(async event => {
   const { handle } = await new Client(session).call(com.atproto.repo.describeRepo, { repo: session.did })
 
   if (handle !== expectedHandle) {
-    await client.revoke(session.did).catch(() => {})
+    await oauth.revoke(session.did).catch(() => {})
     await clearAdminSessionCookie(event)
     throw createError({
       statusCode: 403,

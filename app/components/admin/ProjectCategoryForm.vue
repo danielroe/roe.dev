@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose, Strict } from '#shared/cms/strict'
+import type { ProjectCategoryRecord } from '#shared/cms/records'
 
-type ProjectCategoryValue = Omit<Loose<Strict<dev.roe.projectCategory.Main>>, '$type'>
+type ProjectCategoryValue = Omit<ProjectCategoryRecord, '$type'>
 
 const props = defineProps<{
   initial?: Partial<ProjectCategoryValue>

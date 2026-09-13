@@ -1,26 +1,22 @@
 import type { H3Event } from 'h3'
 
 import type { Talk } from '../md'
-import { listRecords, blobImage } from '../atproto'
-import { dev } from '#shared/lex'
-
+import { useAirspace } from '../airspace'
 import { toTalk, rkeyFromUri } from '#shared/cms/talk-mapper'
 
 export async function getPastTalks (event: H3Event): Promise<Talk[]> {
   const now = new Date().toISOString()
+  const airspace = useAirspace(event)
   const [talks, groups] = await Promise.all([
-    listRecords(event, dev.roe.talk.main),
-    listRecords(event, dev.roe.talkGroup.main),
+    airspace.talks.list(),
+    airspace.talkGroups.list(),
   ])
 
-  const groupByUri = new Map(groups.map(g => [g.uri, g]))
+  const groupByUri = new Map(groups.map(g => [g.uri as string, g]))
 
   return talks
     .filter(t => t.value.date < now && t.value.title && t.value.title.trim() !== '')
-    .map(t => {
-      const groupRef = t.value.group?.uri ? groupByUri.get(t.value.group.uri) : undefined
-      return toTalk(t, groupRef)
-    })
+    .map(t => toTalk(t, t.value.group?.uri ? groupByUri.get(t.value.group.uri) : undefined))
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 
@@ -41,15 +37,16 @@ export interface UpcomingConference {
 
 export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConference[]> {
   const now = new Date().toISOString()
-  const talks = await listRecords(event, dev.roe.talk.main)
+  const airspace = useAirspace(event)
+  const talks = await airspace.talks.list()
 
   const upcoming = talks
     .filter(t => t.value.date >= now)
     .sort((a, b) => a.value.date.localeCompare(b.value.date))
 
-  return Promise.all(upcoming.map(async t => {
+  return await Promise.all(upcoming.map(async t => {
     const v = t.value
-    const image = await talkImage(event, v)
+    const image = await airspace.blobs.image(v.image)
     return {
       ...(v.title ? { title: v.title } : {}),
       name: v.source || v.title || '',
@@ -57,31 +54,9 @@ export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConfere
       ...(v.endDate ? { endDate: v.endDate } : {}),
       link: v.link ?? '',
       location: v.location ?? '',
-      image,
+      image: image && { url: image.url, alt: image.alt, width: image.width ?? 0, height: image.height ?? 0 },
     }
   }))
-}
-
-/**
- * `community.lexicon.app.defs#image` allows either an uploaded blob or a remote
- * `uri`; render whichever the record carries.
- */
-async function talkImage (event: H3Event, value: dev.roe.talk.Main): Promise<UpcomingConference['image']> {
-  const image = value.image
-  if (!image) return null
-
-  if (image.image) {
-    const blob = await blobImage(event, image.image, image.aspectRatio)
-    return blob ? { url: blob.url, alt: image.alt, width: blob.width ?? 0, height: blob.height ?? 0 } : null
-  }
-
-  if (!image.uri) return null
-  return {
-    url: image.uri,
-    alt: image.alt,
-    width: image.aspectRatio?.width ?? 0,
-    height: image.aspectRatio?.height ?? 0,
-  }
 }
 
 export { rkeyFromUri }

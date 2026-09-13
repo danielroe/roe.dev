@@ -1,14 +1,5 @@
-import { getAdminRecord } from '../../utils/admin/crud'
-import { dev } from '#shared/lex'
+import { requireAdminAirspace } from '../../utils/airspace'
 
 export default defineEventHandler(async event => {
-  try {
-    return await getAdminRecord(event, dev.roe.location.main, 'self')
-  }
-  catch (err) {
-    if (err && typeof err === 'object' && 'statusCode' in err && (err as { statusCode: number }).statusCode === 404) {
-      return null
-    }
-    throw err
-  }
+  return (await requireAdminAirspace(event)).location.get()
 })

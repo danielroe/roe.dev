@@ -2,8 +2,7 @@ import { addServerHandler, createResolver, defineNuxtModule, useNuxt, useRuntime
 import { $fetch } from 'ofetch'
 import { put, head } from '@vercel/blob'
 
-import { listAllRecords } from './shared/atproto-read'
-import { dev } from '../shared/lex/index.ts'
+import { useBuildAirspace } from './shared/airspace'
 
 export default defineNuxtModule({
   meta: {
@@ -74,7 +73,7 @@ export default defineNuxtModule({
 })
 
 async function fetchSlideReleases (): Promise<string[]> {
-  const records = await listAllRecords(dev.roe.talk.main)
+  const records = await useBuildAirspace().talks.list()
   return records
     .map(r => r.value.slides)
     .filter((s): s is string => Boolean(s))

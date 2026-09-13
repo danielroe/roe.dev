@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import type { UsesItemRecord } from '#shared/cms/records'
 import { useDragAndDrop } from '@formkit/drag-and-drop/vue'
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
 
 interface ItemEntry {
   rkey: string
   uri: string
   cid: string
-  value: Loose<dev.roe.usesItem.Main>
+  value: UsesItemRecord
 }
 
 const props = defineProps<{

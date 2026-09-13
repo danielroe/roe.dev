@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose, Strict } from '#shared/cms/strict'
+import type { TalkGroupRecord } from '#shared/cms/records'
 
-type TalkGroupValue = Omit<Loose<Strict<dev.roe.talkGroup.Main>>, '$type'>
+type TalkGroupValue = Omit<TalkGroupRecord, '$type'>
 
 const props = defineProps<{
   initial?: Partial<TalkGroupValue>

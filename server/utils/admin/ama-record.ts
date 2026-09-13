@@ -1,21 +1,25 @@
 import type { H3Event } from 'h3'
+import { ConflictError, cidFromBlob } from 'airspace'
+import type { AirspaceRecord } from 'airspace'
 
-import { jsonToLex } from '@atproto/lex'
-import type { JsonValue } from '@atproto/lex'
-
-import { requireAdminClient } from './client'
-import { dev } from '#shared/lex'
-import { blobSize, blobUrlFor, cidFromBlob } from '#shared/cms/blob'
-import type { Loose } from '#shared/cms/strict'
-import type { AdminRecord } from './crud'
+import { invalidatePublicReads, requireAdminAirspace } from '../airspace'
 import { decrypt } from './encryption'
+import { collections } from '#shared/collections'
+import type { AmaRecord } from '#shared/cms/records'
+import type lexicons from '../../../lexicons.ts'
+
+type AmaRecordEnvelope = AirspaceRecord<(typeof lexicons)['ama'], any>
 
 export type AmaPlatform = 'bluesky' | 'mastodon' | 'linkedin' | 'youtubeShorts'
 
+type AmaPost = NonNullable<AmaRecord['posts']>[number]
+type AmaPlatforms = NonNullable<AmaRecord['platforms']>
+type AmaPublishedLinks = NonNullable<AmaRecord['publishedLinks']>
+
 export interface AmaUpdate {
   question?: string
-  posts?: Loose<dev.roe.ama.Post>[] | null
-  platforms?: Partial<dev.roe.ama.Platforms> | null
+  posts?: AmaPost[] | null
+  platforms?: Partial<AmaPlatforms> | null
   image?: unknown | null
   imageDimensions?: { width: number, height: number } | null
   backgroundStyle?: string | null
@@ -27,17 +31,17 @@ export interface AmaView {
   cid: string
   status: 'unanswered' | 'answered'
   question: string
-  posts: Loose<dev.roe.ama.Post>[]
-  platforms?: dev.roe.ama.Platforms
-  publishedLinks?: dev.roe.ama.PublishedLinks
+  posts: AmaPost[]
+  platforms?: AmaPlatforms
+  publishedLinks?: AmaPublishedLinks
   image?: unknown
   imageDimensions?: { width: number, height: number }
   backgroundStyle?: string
-  createdAt: string
+  createdAt?: string
   answeredAt?: string
 }
 
-const DEFAULT_PLATFORMS: dev.roe.ama.Platforms = {
+const DEFAULT_PLATFORMS: AmaPlatforms = {
   bluesky: true,
   mastodon: true,
   linkedin: true,
@@ -54,14 +58,11 @@ function isImageDimensions (value: unknown): value is { width: number, height: n
   return Number.isInteger(v.width) && Number.isInteger(v.height) && Number(v.width) > 0 && Number(v.height) > 0
 }
 
-function normalisePlatforms (platforms?: Partial<dev.roe.ama.Platforms> | null): dev.roe.ama.Platforms {
-  return {
-    ...DEFAULT_PLATFORMS,
-    ...(platforms ?? {}),
-  }
+function normalisePlatforms (platforms?: Partial<AmaPlatforms> | null): AmaPlatforms {
+  return { ...DEFAULT_PLATFORMS, ...(platforms ?? {}) }
 }
 
-function cleanPosts (posts: Loose<dev.roe.ama.Post>[] | null | undefined): Loose<dev.roe.ama.Post>[] {
+function cleanPosts (posts: AmaPost[] | null | undefined): AmaPost[] {
   if (!Array.isArray(posts)) return []
   return posts
     .filter(post => typeof post?.text === 'string' && post.text.trim())
@@ -78,7 +79,7 @@ function cleanPosts (posts: Loose<dev.roe.ama.Post>[] | null | undefined): Loose
     })
 }
 
-function imageFields (current: dev.roe.ama.Main, update: AmaUpdate): Partial<Loose<dev.roe.ama.Main>> {
+function imageFields (current: AmaRecord, update: AmaUpdate): Partial<AmaRecord> {
   const image = hasOwn(update, 'image') ? update.image : current.image
   if (!image) return {}
 
@@ -86,21 +87,21 @@ function imageFields (current: dev.roe.ama.Main, update: AmaUpdate): Partial<Loo
   const backgroundStyle = hasOwn(update, 'backgroundStyle') ? update.backgroundStyle : current.backgroundStyle
 
   return {
-    image: image as Loose<dev.roe.ama.Main>['image'],
+    image: image as AmaRecord['image'],
     ...(isImageDimensions(dimensions) ? { imageDimensions: dimensions } : {}),
     ...(typeof backgroundStyle === 'string' && backgroundStyle ? { backgroundStyle } : {}),
   }
 }
 
-function hasPublishedLinks (links: dev.roe.ama.PublishedLinks | undefined): links is dev.roe.ama.PublishedLinks {
+function hasPublishedLinks (links: AmaPublishedLinks | undefined): links is AmaPublishedLinks {
   return Boolean(links && Object.values(links).some(Boolean))
 }
 
 function buildRecord (
-  current: dev.roe.ama.Main,
+  current: AmaRecord,
   update: AmaUpdate,
   published?: { platform: AmaPlatform, url: string },
-): Loose<dev.roe.ama.Main> {
+): Omit<AmaRecord, '$type'> {
   const status = published || current.status === 'answered' ? 'answered' : 'unanswered'
   const posts = hasOwn(update, 'posts') ? cleanPosts(update.posts) : cleanPosts(current.posts)
   const platforms = hasOwn(update, 'platforms')
@@ -110,8 +111,7 @@ function buildRecord (
     ? { ...(current.publishedLinks ?? {}), [published.platform]: published.url }
     : current.publishedLinks
 
-  const next: Loose<dev.roe.ama.Main> = {
-    $type: 'dev.roe.ama',
+  return {
     status,
     ...(status === 'answered'
       ? { question: update.question ?? current.question ?? '' }
@@ -127,61 +127,40 @@ function buildRecord (
     createdAt: current.createdAt,
     ...(status === 'answered' ? { answeredAt: current.answeredAt ?? new Date().toISOString() } : {}),
   }
-
-  return next
 }
+
+const MAX_ATTEMPTS = 5
 
 /**
- * Blob refs round-trip through the admin UI in their JSON encoding, so the
- * record has to be decoded back to lex before it can be validated or written.
+ * Read-modify-write guarded by the CID we read, so a concurrent publish can't
+ * clobber a draft save. airspace turns a rejected swap into `ConflictError`;
+ * we re-read and retry rather than surfacing it, since every caller here is
+ * merging into the current value rather than replacing it.
  */
-function toLexRecord (record: Loose<dev.roe.ama.Main>, action: string): dev.roe.ama.Main {
-  const result = dev.roe.ama.main.safeValidate(jsonToLex(record as unknown as JsonValue))
-  if (!result.success) {
-    throw createError({
-      statusCode: 422,
-      statusMessage: `Invalid AMA ${action}: ${result.reason.message}`,
-    })
-  }
-  return result.value
-}
-
-function looksLikeSwapMiss (err: unknown): boolean {
-  const e = err as { error?: string, name?: string, status?: number, message?: string } | undefined
-  return e?.error === 'InvalidSwap'
-    || e?.name === 'InvalidSwapError'
-    || /invalidswap|swap|record was at/i.test(e?.message ?? '')
-}
-
 async function mutateAmaRecord (
   event: H3Event,
   rkey: string,
   update: AmaUpdate,
   action: string,
   published?: { platform: AmaPlatform, url: string },
-): Promise<AdminRecord<typeof dev.roe.ama.main>> {
-  const { client, did } = await requireAdminClient(event)
-  const MAX_ATTEMPTS = 5
+): Promise<AmaRecordEnvelope> {
+  const airspace = await requireAdminAirspace(event)
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const existing = await client.get(dev.roe.ama.main, { repo: did, rkey })
-    const lexRecord = toLexRecord(buildRecord(existing.value, update, published), action)
+    const existing = await airspace.ama.get(rkey)
+    if (!existing) {
+      throw createError({ statusCode: 404, statusMessage: `dev.roe.ama/${rkey} not found.` })
+    }
+
+    const value = buildRecord(existing.value, update, published)
 
     try {
-      const res = await client.put(dev.roe.ama.main, lexRecord, {
-        repo: did,
-        rkey,
-        swapRecord: existing.cid,
-      })
-      return {
-        rkey,
-        uri: res.uri,
-        cid: res.cid,
-        value: lexRecord,
-      }
+      const { uri, cid } = await airspace.ama.put(rkey, value, { ifMatch: existing.cid })
+      invalidatePublicReads(collections.ama.nsid)
+      return { ...existing, uri, cid, value: { ...value, $type: 'dev.roe.ama' } as AmaRecord }
     }
     catch (err) {
-      if (!looksLikeSwapMiss(err) || attempt >= MAX_ATTEMPTS) throw err
+      if (!(err instanceof ConflictError) || attempt >= MAX_ATTEMPTS) throw err
       await new Promise(r => setTimeout(r, 50 * attempt))
     }
   }
@@ -192,7 +171,7 @@ async function mutateAmaRecord (
   })
 }
 
-export function viewAma (r: AdminRecord<typeof dev.roe.ama.main>): AmaView {
+export function viewAma (r: AmaRecordEnvelope): AmaView {
   const v = r.value
   let question = v.question ?? ''
   if (v.status === 'unanswered' && v.encryptedQuestion) {
@@ -220,11 +199,7 @@ export function viewAma (r: AdminRecord<typeof dev.roe.ama.main>): AmaView {
   }
 }
 
-export async function saveAmaDraft (
-  event: H3Event,
-  rkey: string,
-  update: AmaUpdate,
-): Promise<AmaView> {
+export async function saveAmaDraft (event: H3Event, rkey: string, update: AmaUpdate): Promise<AmaView> {
   return viewAma(await mutateAmaRecord(event, rkey, update, 'draft save'))
 }
 
@@ -245,9 +220,9 @@ export async function ensureNotAlreadyPublished (
   force: boolean,
 ): Promise<void> {
   if (force) return
-  const { client, did } = await requireAdminClient(event)
-  const res = await client.get(dev.roe.ama.main, { repo: did, rkey })
-  const existing = res.value.publishedLinks?.[platform]
+  const airspace = await requireAdminAirspace(event)
+  const record = await airspace.ama.get(rkey)
+  const existing = record?.value.publishedLinks?.[platform]
   if (existing) {
     throw createError({
       statusCode: 409,
@@ -272,29 +247,28 @@ export async function prepareAmaImage (
 ): Promise<AmaImage | undefined> {
   if (!body.image || !body.imageDimensions) return undefined
 
-  const cid = cidFromBlob(body.image)
-  if (!cid) {
+  if (!cidFromBlob(body.image)) {
     throw createError({
       statusCode: 422,
       statusMessage: `Invalid AMA image blob: ${JSON.stringify(body.image)}`,
     })
   }
 
-  const service = useRuntimeConfig(event).public.atproto.service
-  if (!service) {
-    throw createError({ statusCode: 500, statusMessage: 'PDS service is not configured.' })
+  const airspace = await requireAdminAirspace(event)
+  const url = await airspace.blobs.url(body.image)
+  if (!url) {
+    throw createError({ statusCode: 500, statusMessage: 'Could not build a blob URL for the AMA image.' })
   }
 
-  const { did } = await requireAdminClient(event)
   await saveAmaDraft(event, rkey, body)
 
-  const mimeType = (body.image as { mimeType?: string } | undefined)?.mimeType
+  const { mimeType, size } = body.image as { mimeType?: string, size?: number }
   return {
     blob: body.image,
-    url: blobUrlFor(service, did, cid),
+    url,
     width: body.imageDimensions.width,
     height: body.imageDimensions.height,
     ...(mimeType ? { mimeType } : {}),
-    size: blobSize(body.image),
+    size: typeof size === 'number' && Number.isFinite(size) ? size : null,
   }
 }

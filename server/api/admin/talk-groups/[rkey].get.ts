@@ -1,6 +1,5 @@
 import { getAdminRecord } from '../../../utils/admin/crud'
-import { dev } from '#shared/lex'
 
 export default defineEventHandler(event => {
-  return getAdminRecord(event, dev.roe.talkGroup.main, getRouterParam(event, 'rkey'))
+  return getAdminRecord(event, 'talkGroups', getRouterParam(event, 'rkey'))
 })

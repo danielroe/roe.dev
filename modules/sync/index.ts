@@ -3,8 +3,7 @@ import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
 import { syncAll } from './providers'
 import type { SyncItem } from './providers'
-import { listAllRecords } from '../shared/atproto-read'
-import { dev } from '../../shared/lex/index.ts'
+import { useBuildAirspace } from '../shared/airspace'
 
 const TALK_TYPE_MAP: Record<string, SyncItem['type']> = {
   podcast: 'video',
@@ -44,7 +43,7 @@ export default defineNuxtModule({
 
 async function fetchTalks (): Promise<SyncItem[]> {
   try {
-    const records = await listAllRecords(dev.roe.talk.main)
+    const records = await useBuildAirspace().talks.list()
     const now = new Date().toISOString()
     return records
       .map(r => r.value)

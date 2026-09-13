@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1930k"`)
+      .toMatchInlineSnapshot(`"1940k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"13830k"`)
+      .toMatchInlineSnapshot(`"13930k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -137,6 +137,7 @@ describe('project sizes', () => {
         "@vue/runtime-dom",
         "@vue/server-renderer",
         "@vue/shared",
+        "airspace",
         "comark",
         "comark/node_modules/entities",
         "consola",

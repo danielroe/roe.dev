@@ -1,8 +1,9 @@
 # lexicons
 
-Schemas for the records my CMS writes to my PDS. `com/` and `community/` hold
-vendored copies of upstream schemas we reference; everything under `dev/roe/` is
-mine.
+Vendored copies of the upstream schemas the CMS references. My own `dev.roe.*`
+schemas are not here: they are written in TypeScript in [`../lexicons.ts`](../lexicons.ts)
+with [airspace](https://getair.space), which derives the record types, the
+collection clients and the OAuth scopes from the same definitions.
 
 The files under `community/` are verbatim copies of
 [Lexicon Community](https://tangled.org/lexicon.community/lexicons) schemas,
@@ -14,15 +15,15 @@ checked against the `com.atproto.lexicon.schema` records published at
   `dev.roe.ama` instead of home-grown equivalents.
 - `community.lexicon.location.address` — the body of `dev.roe.location`.
 
-Refresh them from upstream when the shared defs change; `pnpm lex:publish` only
-writes `dev.roe.*` schemas, so vendored files are never republished under my
-authority.
+Refresh them from upstream when the shared defs change.
 
-- `pnpm lex:gen` regenerates the TypeScript types in `shared/lex/`.
+- `pnpm lex:gen` regenerates the TypeScript in `shared/lex/` from these files.
+  `lexicons.ts` references the output directly (`l.ref(() => appDefs.image)`).
 - `pnpm lex:publish` writes each `dev.roe.*` schema to the PDS as a
-  `com.atproto.lexicon.schema` record, with the NSID as the record key. It needs
-  only `NUXT_ATPROTO_PASSWORD`; the DID and PDS endpoint are resolved from DNS
-  and the DID document.
+  `com.atproto.lexicon.schema` record, reading them from `lexicons.ts`. Schemas
+  outside the `dev.roe` authority are never republished under my DID. It reads
+  `NUXT_ATPROTO_PASSWORD` from `.env`; the DID and PDS endpoint are resolved
+  from the handle. Add `--dry-run` to see the plan without credentials.
 
 Third-party resolution also needs a DNS TXT record for the `dev.roe` authority
 (reverse the NSID minus its final segment):

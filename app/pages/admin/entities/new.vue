@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { dev } from '#shared/lex'
-import type { Loose } from '#shared/cms/strict'
+import type { EntityRecord } from '#shared/cms/records'
 
 definePageMeta({ layout: false })
 useHead({ title: 'New entity - admin - Daniel Roe' })
 
-type EntityValue = Omit<Loose<dev.roe.entity.Main>, '$type'>
+type EntityValue = Omit<EntityRecord, '$type'>
 
 async function save (value: EntityValue) {
   await $fetch('/api/admin/entities', { method: 'POST', body: value })
