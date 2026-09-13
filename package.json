@@ -116,8 +116,8 @@
     "vue-tsc": "3.3.11"
   },
   "simple-git-hooks": {
-    "commit-msg": "npx commitlint --edit $1",
-    "pre-commit": "npx nano-staged"
+    "commit-msg": "pnpm commitlint --edit $1",
+    "pre-commit": "pnpm nano-staged"
   },
   "devEngines": {
     "runtime": {
