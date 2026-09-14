@@ -204,6 +204,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  comark: 0.7.0
   '@nuxt/cli': npm:@nuxt/cli-nightly@4.0.0-20260907-104727-9e18028
   rolldown: 1.2.8
   '@atproto/lex-client': 0.3.6
@@ -3764,7 +3765,7 @@ packages:
     hasBin: true
     peerDependencies:
       '@atproto/oauth-client-node': ^0.5.0
-      comark: ^0.6.0 || ^0.7.0
+      comark: 0.7.0
     peerDependenciesMeta:
       '@atproto/oauth-client-node':
         optional: true
@@ -4122,23 +4123,6 @@ packages:
   comark-content@0.4.0:
     resolution: {integrity: sha512-wUCFpDdEl9tNXcAFVMkqpQL+Aa5hcg1YL5X8r+5oAohQkofRp+We4puz6QP4XR33MPbasA41pPfIVf4j+WrT4Q==}
     hasBin: true
-
-  comark@0.6.2:
-    resolution: {integrity: sha512-hlWa7KlGPfRxovQavnHZlLlTUKrfwE7/o4ewCY0FzqFtRvVT8VdslrumQwELIiK9utsurpoSWCBFj1yVMtDOtw==}
-    peerDependencies:
-      beautiful-mermaid: ^1.1.3
-      katex: ^0.17.0
-      rangi: ^2.2.0
-      shiki: ^4.3.1
-    peerDependenciesMeta:
-      beautiful-mermaid:
-        optional: true
-      katex:
-        optional: true
-      rangi:
-        optional: true
-      shiki:
-        optional: true
 
   comark@0.7.0:
     resolution: {integrity: sha512-680hLtUOBcvBEJCD+iCU20jk5TrIJlIcE6X4npdC4x7LBhCvmiYJgByozR2fKav6DYw7AYoXsJVae65kXV6Qhw==}
@@ -12028,7 +12012,7 @@ snapshots:
   comark-content@0.4.0(@vercel/blob@2.8.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2))(shiki@4.4.3):
     dependencies:
       citty: 0.2.2
-      comark: 0.6.2(shiki@4.4.3)
+      comark: 0.7.0(shiki@4.4.3)
       hookable: 6.1.1
       jiti: 2.7.0
       ofetch: 1.5.1
@@ -12061,15 +12045,6 @@ snapshots:
       - rangi
       - shiki
       - uploadthing
-
-  comark@0.6.2(shiki@4.4.3):
-    dependencies:
-      entities: 8.0.0
-      htmlparser2: 12.0.0
-      js-yaml: 5.4.0
-      markdown-exit: 1.1.0-beta.2
-    optionalDependencies:
-      shiki: 4.4.3
 
   comark@0.7.0(shiki@4.4.3):
     dependencies:
