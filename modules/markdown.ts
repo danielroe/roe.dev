@@ -3,11 +3,11 @@ import { gzipSync } from 'node:zlib'
 
 import { addTemplate, addTypeTemplate, defineNuxtModule, updateTemplates, useNuxt } from 'nuxt/kit'
 import { generateSourceTypes } from 'comark-content'
-import type { ContentListFile } from 'comark-content'
+import type { ContentListFile, FileParsedContext } from 'comark-content'
 import type { MarkdownDocument } from 'comark'
 import type { ViteDevServer } from 'vite'
 
-import { blogDir, content } from '../content.config'
+import { blog as blogContent, blogDir, content, page as pageContent } from '../content.config'
 import type { ContentMeta } from '../content.config'
 import { serialize } from './shared/serialisers'
 import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
@@ -122,9 +122,11 @@ export default defineNuxtModule({
 
     // the plain-markdown routes and the feeds serve transformed source text
     // rather than parsed nodes, so it travels with the document
-    content.hooks.hook('file:parsed', async ctx => {
+    const instances = [blogContent, pageContent]
+
+    const onFileParsed = async (ctx: FileParsedContext) => {
       const file = ctx.file
-      if (!file) return
+      if (!file || !ctx.source) return
 
       const raw = String(await ctx.source.getItem(`${file.meta.stem}${file.meta.extension}`))
 
@@ -146,7 +148,11 @@ export default defineNuxtModule({
       if (entry.html) {
         file.meta.html = entry.html
       }
-    })
+    }
+
+    for (const instance of instances) {
+      instance.hooks.hook('file:parsed', onFileParsed)
+    }
 
     await content.init({ partial: true })
 
@@ -330,8 +336,10 @@ export async function getBody () {
         }, 50)
       }
 
-      content.hooks.hook('watch:file:update', refresh)
-      content.hooks.hook('watch:file:remove', refresh)
+      for (const instance of instances) {
+        instance.hooks.hook('watch:file:update', refresh)
+        instance.hooks.hook('watch:file:remove', refresh)
+      }
 
       nuxt.hook('close', async () => {
         clearTimeout(pending)

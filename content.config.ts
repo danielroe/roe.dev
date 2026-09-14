@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
-import { comarkContent } from 'comark-content'
+import { comarkContent, contentHub } from 'comark-content'
 import fsSource from 'comark-content/sources/fs'
 import schemaValidation from 'comark-content/plugins/schema-validation'
 import type { JsonSchema } from 'comark-content'
@@ -36,31 +36,40 @@ const blogSchema = {
   required: ['title', 'date', 'tags', 'description'],
 } satisfies JsonSchema
 
-/** The content layer behind `/blog`, the plain-markdown routes and the feeds. */
-export const content = comarkContent({
-  sources: {
-    blog: fsSource('./content/blog', {
-      prefix: '/blog',
-      schema: blogSchema,
-      cwd: import.meta.url,
+const markdown = {
+  plugins: [
+    headingIds(),
+    // code blocks always render on a dark background, so both themes match
+    shiki({
+      themes: { light: palenight, dark: palenight },
     }),
-    page: fsSource('./content', {
-      // top-level documents only: a nested file would produce a path that has
-      // no `pageMeta` entry and no `.md` route
-      exclude: ['*/**'],
-      cwd: import.meta.url,
-    }),
-  },
+  ],
+}
+
+/** Blog posts, served at `/blog`. */
+export const blog = comarkContent('blog', {
+  source: fsSource('./content/blog', {
+    prefix: '/blog',
+    schema: blogSchema,
+    cwd: import.meta.url,
+  }),
   plugins: [schemaValidation({ onError: isDevelopment ? 'warn' : 'throw' })],
-  markdown: {
-    plugins: [
-      headingIds(),
-      // code blocks always render on a dark background, so both themes match
-      shiki({
-        themes: { light: palenight, dark: palenight },
-      }),
-    ],
-  },
+  markdown,
 })
+
+/** Standalone content pages such as `/ai` and `/bio`. */
+export const page = comarkContent('page', {
+  source: fsSource('./content', {
+    // top-level documents only: a nested file would produce a path that has
+    // no `pageMeta` entry and no `.md` route
+    exclude: ['*/**'],
+    cwd: import.meta.url,
+  }),
+  plugins: [schemaValidation({ onError: isDevelopment ? 'warn' : 'throw' })],
+  markdown,
+})
+
+/** The content layer behind `/blog`, the plain-markdown routes and the feeds. */
+export const content = contentHub([blog, page])
 
 export default content

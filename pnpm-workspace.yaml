@@ -14,8 +14,10 @@ minimumReleaseAgeExclude:
   - airspace@0.1.3
 
 overrides:
-  '@nuxt/cli': 'npm:@nuxt/cli-nightly@4.0.0-20260825-194507-5343f63'
-  rolldown: 1.2.5
+  # comark-content@0.4.0 still pins ^0.6.2
+  comark: 0.7.0
+  '@nuxt/cli': 'npm:@nuxt/cli-nightly@4.0.0-20260907-104727-9e18028'
+  rolldown: 1.2.8
   # airspace and @atproto/lex each pull their own copy of these; without the
   # overrides the server bundle ships both.
   '@atproto/lex-client': 0.3.6
