@@ -12,6 +12,8 @@ export interface SyncItem {
   type: 'blog' | 'talk' | 'article' | 'event' | 'hackathon' | 'oss' | 'video' | 'forum' | 'other'
   date?: string
   tags?: string[]
+  /** `at://` URI of the Bluesky post announcing this item, if there is one. */
+  bluesky?: string
 }
 
 export interface SyncOptions {

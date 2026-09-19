@@ -225,6 +225,7 @@ export default defineNuxtModule({
             text_content: htmlToText(post.meta.html, { wordwrap: false }),
             canonical_url: `https://roe.dev${post.path}/`,
             tags: post.data.tags.length ? post.data.tags : undefined,
+            bluesky: post.data.bluesky,
           }
         })
     }
@@ -423,6 +424,7 @@ declare module '@nuxt/schema' {
       text_content: string
       canonical_url: string
       tags?: string[]
+      bluesky?: string
     }>>) => void
   }
 }
