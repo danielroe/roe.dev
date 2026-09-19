@@ -44,6 +44,11 @@ function externalId (url: string): string {
     .slice(0, 255)
 }
 
+function description (item: SyncItem): string {
+  const text = (item.description || item.body_markdown || item.title).trim()
+  return text.length > 500 ? `${text.slice(0, 499).trimEnd()}…` : text
+}
+
 export class GithubStarsProvider implements SyncProvider {
   name = 'github-stars'
 
@@ -88,7 +93,7 @@ export class GithubStarsProvider implements SyncProvider {
       const data: ContributionInput = {
         type: CONTRIBUTION_TYPE_MAP[item.type] || 'OTHER',
         title: item.title,
-        description: item.description || '',
+        description: description(item),
         url: item.canonical_url,
         date: item.date!,
       }
@@ -100,15 +105,24 @@ export class GithubStarsProvider implements SyncProvider {
         || match.type !== data.type
         || match.date !== data.date
         || (match.description || '') !== data.description
+        || !match.description
       ) {
         changed.push({ id: match?.externalId || externalId(item.canonical_url), data })
       }
     }
 
+    let synced = 0
     for (const { id, data } of changed) {
-      await $stars(`contributions/${encodeURIComponent(id)}`, { method: 'PUT', body: data })
+      try {
+        await $stars(`contributions/${encodeURIComponent(id)}`, { method: 'PUT', body: data })
+        synced++
+      }
+      catch (error) {
+        const message = (error as { data?: { message?: string } }).data?.message
+        console.warn(`[sync:github-stars] ${data.url}: ${message || (error instanceof Error ? error.message : error)}`)
+      }
     }
 
-    console.info(`[sync:github-stars] Done: ${changed.length} created or updated`)
+    console.info(`[sync:github-stars] Done: ${synced} of ${changed.length} created or updated`)
   }
 }
