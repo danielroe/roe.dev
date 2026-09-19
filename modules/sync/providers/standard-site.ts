@@ -1,7 +1,7 @@
 import { Client } from '@atproto/lex'
 import type { LexMap } from '@atproto/lex'
 import { PasswordSession } from '@atproto/lex-password-session'
-import { useNuxt } from 'nuxt/kit'
+import { useRuntimeConfig } from 'nuxt/kit'
 
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
 import { publicationRkey, tidFromDate } from '../../shared/tid'
@@ -23,14 +23,12 @@ export class StandardSiteProvider implements SyncProvider {
       return
     }
 
-    // Build-time module code: pull credentials from the resolved runtime
-    // config rather than `process.env` directly so there's one source of
-    // truth shared with the runtime `server/utils/atproto.ts`.
-    const cfg = useNuxt().options.runtimeConfig
+    const cfg = useRuntimeConfig()
     const pdsUrl = cfg.public.atproto.service
     const { handle, password } = cfg.atproto
     if (!pdsUrl || !handle || !password) {
-      throw new Error('atproto identity / credentials not configured (PDS resolved at build time; check NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
+      const missing = !password ? 'NUXT_ATPROTO_PASSWORD' : 'social.networks.bluesky.identifier'
+      throw new Error(`atproto identity / credentials not configured (missing ${missing}).`)
     }
 
     const session = await PasswordSession.login({ service: pdsUrl, identifier: handle, password })

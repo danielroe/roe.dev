@@ -3,16 +3,15 @@
  * runtime exists and so can't use `server/utils/airspace.ts`.
  *
  * Identity comes from `runtimeConfig.atproto`, populated by `modules/atproto`,
- * so no handle resolution happens here.
  */
 import { createAirspace, passwordSession } from 'airspace'
 import type { Identity } from 'airspace'
-import { useNuxt } from 'nuxt/kit'
+import { useRuntimeConfig } from 'nuxt/kit'
 
 import { collections } from '../../shared/collections.ts'
 
 function identity () {
-  const config = useNuxt().options.runtimeConfig
+  const config = useRuntimeConfig()
   const did = config.atproto.did
   const service = config.public.atproto.service
   if (!did || !service) {
@@ -35,11 +34,10 @@ export function useBuildAirspace () {
  * `NUXT_ATPROTO_PASSWORD`; the PDS and DID are already resolved.
  */
 export async function useBuildAirspaceWithSession () {
-  const config = useNuxt().options.runtimeConfig
-  const { handle, password } = config.atproto
+  const { handle, password } = useRuntimeConfig().atproto
   const { service } = identity()
   if (!handle || !password) {
-    throw new Error('atproto credentials are not configured (NUXT_ATPROTO_PASSWORD and social.networks.bluesky.identifier).')
+    throw new Error(`atproto credentials are not configured (missing ${!handle ? 'social.networks.bluesky.identifier' : 'NUXT_ATPROTO_PASSWORD'}).`)
   }
   return createAirspace({
     identity: identity(),
