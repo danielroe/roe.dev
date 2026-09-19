@@ -10,7 +10,7 @@ description: "Sometimes, it's more important to be good than it is to be nice."
 
 Don't be nice.
 
-Not many people know that the word 'nice' came from the Latin 'nescius,' meaning 'unaware.' Words don't necessarily mean the same thing they did originally, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
+Not many people know that the word 'nice' comes from the Latin 'nescius,' meaning 'unaware.' Words don't necessarily mean the same thing they did originally, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
 
 But sometimes you shouldn't be nice.
 
