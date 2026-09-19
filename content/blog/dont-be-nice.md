@@ -25,7 +25,7 @@ To be perfectly candid, I picked the Nazi example because I think we'll all agre
 
 Sometimes a political party or a person decides to oppose shared human values like the importance of care, kindness, inclusion, or the simple value of welcoming people who are different from you. Maybe they oppose the equality of all people. Maybe they think some people do not deserve human rights.
 
-When that happens, please don't be nice. There's no 'both sides have a point.'
+When that happens, please, don't be nice. There's no 'both sides have a point.'
 
 So I'm not going to be nice.
 
