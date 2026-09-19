@@ -17,7 +17,7 @@ Yesterday, I kicked someone from the Nuxt Discord who had chosen an avatar (for 
 
 I was not nice.
 
-They accused me of being 'political' &ndash; the very thing an open source project _shouldn't_ be, I'm told. It only divides people. Let's just focus on the technology. Surely we can all get behind building amazing, fast, cool websites! 🚀
+They accused me of being 'political' &ndash; the very thing an open source project _shouldn't_ be, I'm told. It only divides people. Let's just focus on the technology. Surely we can all get behind building amazing, fast, cool websites!
 
 **No.**
 
