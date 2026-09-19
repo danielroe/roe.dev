@@ -9,7 +9,7 @@ description: "Sometimes, it's more important to be good than it is to be nice. L
 
 Don't be nice.
 
-I suppose you might know about the origin of the word 'nice.' It comes from the Latin 'nescio,' meaning 'I don't know.' Words don't necessarily carry anything of their origin, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
+Not many people know that the word 'nice' came from the Latin 'nescio,' meaning 'I don't know.' Words don't necessarily mean the same thing they did originally, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
 
 But sometimes you shouldn't be nice.
 
@@ -29,11 +29,11 @@ When that happens, please don't be nice. There's no 'both sides have a point.'
 
 So I'm not going to be nice.
 
-Let me pick a seemingly more controversial example. 
+Let me say something else, seemingly more controversial.
 
-"DHH, if you say that [Black people aren't 'native Brits'](https://world.hey.com/dhh/as-i-remember-london-e7d38e64), or [call for the mass deportation of 'gypsies'](https://world.hey.com/dhh/wolves-sheep-and-gypsies-ba44af6a), you're not welcome in the Nuxt community."
+> DHH, you're not welcome in the Nuxt community, because you say that [Black people aren't 'native Brits'](https://world.hey.com/dhh/as-i-remember-london-e7d38e64) and [call for the mass deportation of 'gypsies'](https://world.hey.com/dhh/wolves-sheep-and-gypsies-ba44af6a).
 
-I doubt he cares what I think. I'm not very important, and he doesn't really want to join.
+Now, I doubt he cares what I think. I'm not very important, and he doesn't really want to join.
 
 But I mention it because the kinds of things that he's saying are being normalised. If you hear enough people say something it somehow becomes 'just another opinion.' And, because he's built a cool-looking Linux distribution (I _love_ Arch, and those Omarchy screenshots are beautiful, by the way!) a lot of people seem to be thinking that the man himself (and his opinions) must be okay. Or at least, not worth making a fuss over.
 
