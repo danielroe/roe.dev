@@ -6,6 +6,7 @@ tags:
   - values
   - community
 description: "Sometimes, it's more important to be good than it is to be nice."
+bluesky: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3mvv5k4ai322h'
 ---
 
 Don't be nice.
