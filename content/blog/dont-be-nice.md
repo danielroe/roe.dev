@@ -10,7 +10,7 @@ description: "Sometimes, it's more important to be good than it is to be nice."
 
 Don't be nice.
 
-Not many people know that the word 'nice' came from the Latin 'nescio,' meaning 'I don't know.' Words don't necessarily mean the same thing they did originally, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
+Not many people know that the word 'nice' came from the Latin 'nescius,' meaning 'unaware.' Words don't necessarily mean the same thing they did originally, but somehow, I think that _is_ a little bit of what it is to be nice. You pull your own opinion back &ndash; to make space for other people.
 
 But sometimes you shouldn't be nice.
 
@@ -43,7 +43,7 @@ I'm sorry. I'm not willing to be nice about this.
 Check out this helpful article, [DHH Is Way Worse Than I Thought](https://jakelazaroff.com/words/dhh-is-way-worse-than-i-thought/). Jake said it better than I can:
 > **DHH’s politics are not normal.** Maybe they used to be, I don’t know, but as of right now the dude is way the fuck outside of what most people would consider moral or acceptable.
 
-I would also like to see [1Password](https://omarchy.org/news/2026/08/1password-and-37signals-become-distinguished-corporate-patrons/), [Digital Ocean](https://www.digitalocean.com/blog/digitalocean-joins-omacom-foundation) and others retract their support of DHH's pet project. I wouldn't judge someone who simply _uses_ Omarchy. But can I ask you to think about it? It leaves a pretty bad taste in my mouth even to imagine using the product of someone who's suggested that Black and Asian Londoners make Britain _worse_.
+I would also like to see [1Password](https://omarchy.org/news/2026/08/1password-and-37signals-become-distinguished-corporate-patrons/), [DigitalOcean](https://www.digitalocean.com/blog/digitalocean-joins-omacom-foundation) and others retract their support of DHH's pet project. I wouldn't judge someone who simply _uses_ Omarchy. But can I ask you to think about it? It leaves a pretty bad taste in my mouth even to imagine using the product of someone who's suggested that Black and Asian Londoners make Britain _worse_.
 
 Nice?
 
