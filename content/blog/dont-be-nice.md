@@ -4,7 +4,7 @@ date: '2026-09-19T09:00:00.000Z'
 tags:
   - open source
   - politics
-description: ""
+description: "Sometimes, it's more important to be good than it is to be nice. Let's stand for care, kindness, inclusion, human rights and equality."
 ---
 
 Don't be nice.
