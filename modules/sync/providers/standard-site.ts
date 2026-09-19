@@ -1,13 +1,17 @@
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
-import { Client } from '@atproto/lex'
-import type { LexMap } from '@atproto/lex'
-import { PasswordSession } from '@atproto/lex-password-session'
-import { useRuntimeConfig } from 'nuxt/kit'
+import type { RecordOf } from 'airspace'
+import type { l } from '@atproto/lex-schema'
+import type { site } from '../../../shared/lex/index.ts'
 
 import type { SyncItem, SyncOptions, SyncProvider } from './index'
+import { useBuildAirspaceWithSession } from '../../shared/airspace'
+import { standardSiteCollections } from '../../../shared/standard-site'
 import { publicationRkey, tidFromDate } from '../../shared/tid'
+
+type Airspace = Awaited<ReturnType<typeof useBuildAirspaceWithSession<typeof standardSiteCollections>>>
+type Document = RecordOf<typeof standardSiteCollections.documents>['value']
 
 export class StandardSiteProvider implements SyncProvider {
   name = 'standard-site'
@@ -26,45 +30,21 @@ export class StandardSiteProvider implements SyncProvider {
       return
     }
 
-    const cfg = useRuntimeConfig()
-    const pdsUrl = cfg.public.atproto.service
-    const { handle, password } = cfg.atproto
-    if (!pdsUrl || !handle || !password) {
-      const missing = !password ? 'NUXT_ATPROTO_PASSWORD' : 'social.networks.bluesky.identifier'
-      throw new Error(`atproto identity / credentials not configured (missing ${missing}).`)
-    }
-
-    const session = await PasswordSession.login({ service: pdsUrl, identifier: handle, password })
-    const client = new Client(session)
-
-    const did = client.assertDid
-
-    const publication: LexMap = {
-      $type: 'site.standard.publication',
-      url: 'https://roe.dev',
-      name: 'Daniel Roe',
-      description: 'The personal website of Daniel Roe',
-      preferences: { showInDiscover: true },
-      basicTheme,
-    }
-
-    const icon = await resolvePublicationIcon(client)
-    if (icon) publication.icon = icon
+    const airspace = await useBuildAirspaceWithSession(standardSiteCollections)
+    const { did } = await airspace.identity()
 
     try {
-      await client.putRecord(publication as LexMap & { $type: 'site.standard.publication' }, publicationRkey)
+      await airspace.publication.put(publicationRkey, {
+        url: 'https://roe.dev',
+        name: 'Daniel Roe',
+        description: 'The personal website of Daniel Roe',
+        preferences: { showInDiscover: true },
+        basicTheme,
+        icon: await resolvePublicationIcon(airspace),
+      })
     }
     catch (error) {
       console.warn('[sync:standard-site] Failed to update publication record:', error instanceof Error ? error.message : error)
-    }
-
-    // Delete legacy 'self' rkey publication record if it exists
-    try {
-      await client.deleteRecord('site.standard.publication', 'self')
-      console.info('[sync:standard-site] Deleted legacy publication record with rkey: self')
-    }
-    catch {
-      // Record may not exist, that's fine
     }
 
     // Build set of expected rkeys from current blog posts
@@ -75,17 +55,15 @@ export class StandardSiteProvider implements SyncProvider {
     )
 
     // Delete any existing records that don't match a current blog post's TID
-    const previous = new Map<string, LexMap>()
+    const previous = new Map<string, Document>()
     try {
-      const existing = await client.listRecords('site.standard.document', { repo: did, limit: 100 })
-      for (const record of existing.body.records) {
-        const rkey = record.uri.split('/').pop()!
-        if (!expectedRkeys.has(rkey)) {
-          console.info(`[sync:standard-site] Deleting stale record with rkey: ${rkey}`)
-          await client.deleteRecord('site.standard.document', rkey)
+      for (const record of await airspace.documents.list()) {
+        if (!expectedRkeys.has(record.rkey)) {
+          console.info(`[sync:standard-site] Deleting stale record with rkey: ${record.rkey}`)
+          await airspace.documents.delete(record.rkey)
           continue
         }
-        previous.set(rkey, record.value as LexMap)
+        previous.set(record.rkey, record.value)
       }
     }
     catch (error) {
@@ -99,29 +77,20 @@ export class StandardSiteProvider implements SyncProvider {
       if (!slug || !item.date) continue
 
       const rkey = tidFromDate(item.date)
+      const existing = previous.get(rkey)
 
-      const record: LexMap = {
-        $type: 'site.standard.document',
+      await airspace.documents.put(rkey, {
         site: `at://${did}/site.standard.publication/${publicationRkey}`,
         path: `/blog/${slug}`,
         title: item.title,
-        publishedAt: new Date(item.date).toISOString(),
-        updatedAt: new Date(now + updated * 1000).toISOString(),
-      }
-
-      if (item.description) record.description = item.description
-      if (item.tags?.length) record.tags = item.tags
-      if (item.text_content) record.textContent = item.text_content
-
-      const existing = previous.get(rkey)
-
-      const bskyPostRef = await resolveBskyPostRef(client, did, item.bluesky, existing)
-      if (bskyPostRef) record.bskyPostRef = bskyPostRef
-
-      const coverImage = await resolveCoverImage(client, item.canonical_url, existing)
-      if (coverImage) record.coverImage = coverImage
-
-      await client.putRecord(record as LexMap & { $type: 'site.standard.document' }, rkey)
+        publishedAt: new Date(item.date).toISOString() as l.DatetimeString,
+        updatedAt: new Date(now + updated * 1000).toISOString() as l.DatetimeString,
+        description: item.description || undefined,
+        tags: item.tags?.length ? item.tags : undefined,
+        textContent: item.text_content,
+        bskyPostRef: await resolveBskyPostRef(airspace, did, item.bluesky, existing),
+        coverImage: await resolveCoverImage(airspace, item.canonical_url, existing),
+      })
 
       updated++
     }
@@ -130,16 +99,14 @@ export class StandardSiteProvider implements SyncProvider {
   }
 }
 
-const rgb = (r: number, g: number, b: number) => ({ $type: 'site.standard.theme.color#rgb', r, g, b })
-
 /** Light-mode palette from `app/assets/main.css`. */
 const basicTheme = {
   $type: 'site.standard.theme.basic',
-  background: rgb(229, 231, 235),
-  foreground: rgb(31, 41, 55),
-  accent: rgb(31, 41, 55),
-  accentForeground: rgb(243, 244, 246),
-}
+  background: { $type: 'site.standard.theme.color#rgb', r: 229, g: 231, b: 235 },
+  foreground: { $type: 'site.standard.theme.color#rgb', r: 31, g: 41, b: 55 },
+  accent: { $type: 'site.standard.theme.color#rgb', r: 31, g: 41, b: 55 },
+  accentForeground: { $type: 'site.standard.theme.color#rgb', r: 243, g: 244, b: 246 },
+} satisfies site.standard.theme.basic.Main
 
 const iconPath = fileURLToPath(new URL('../../../public/android-chrome-512x512.png', import.meta.url))
 
@@ -147,20 +114,13 @@ const iconPath = fileURLToPath(new URL('../../../public/android-chrome-512x512.p
  * Reuses the blob already referenced by the publication record where possible,
  * as re-uploading produces a new CID and invalidates consumers' cached icons.
  */
-async function resolvePublicationIcon (client: Client) {
+async function resolvePublicationIcon (airspace: Airspace) {
   try {
-    const existing = await client.getRecord('site.standard.publication', publicationRkey)
-    const icon = (existing.body.value as LexMap).icon
-    if (icon) return icon
-  }
-  catch {
-    // no publication record yet
-  }
+    const existing = await airspace.publication.get(publicationRkey)
+    if (existing?.value.icon) return existing.value.icon
 
-  try {
-    const data = await readFile(iconPath)
-    const upload = await client.uploadBlob(new Uint8Array(data), { encoding: 'image/png' })
-    return upload.body.blob
+    const upload = await airspace.blobs.upload(await readFile(iconPath), { mimeType: 'image/png' })
+    return upload.blob
   }
   catch (error) {
     console.warn('[sync:standard-site] Failed to upload publication icon:', error instanceof Error ? error.message : error)
@@ -174,19 +134,15 @@ const MAX_COVER_BYTES = 1_000_000
  * A strong ref needs the post's CID as well as its URI, so the announcement
  * post is read back from the repo unless the stored ref already points at it.
  */
-async function resolveBskyPostRef (client: Client, did: string, uri: string | undefined, existing: LexMap | undefined) {
+async function resolveBskyPostRef (airspace: Airspace, did: string, uri: string | undefined, existing: Document | undefined) {
   if (!uri) return
 
-  const stored = existing?.bskyPostRef as { uri?: string } | undefined
-  if (stored?.uri === uri) return stored
-
-  const [, , repo, collection, rkey] = uri.split('/')
-  if (repo !== did || collection !== 'app.bsky.feed.post' || !rkey) return
+  if (existing?.bskyPostRef?.uri === uri) return existing.bskyPostRef
+  if (!uri.startsWith(`at://${did}/app.bsky.feed.post/`)) return
 
   try {
-    const post = await client.getRecord(collection, rkey)
-    if (!post.body.cid) return
-    return { uri: post.body.uri, cid: post.body.cid }
+    const post = await airspace.resolve(uri)
+    if (post) return { uri: post.uri, cid: post.cid }
   }
   catch (error) {
     console.warn(`[sync:standard-site] Failed to resolve Bluesky post ${uri}:`, error instanceof Error ? error.message : error)
@@ -194,14 +150,13 @@ async function resolveBskyPostRef (client: Client, did: string, uri: string | un
 }
 
 /**
- * Uses the page's own Open Graph image as the cover. It is read from the
- * deployed site rather than generated here, as og images are rendered during
- * prerender and do not exist on disk while this runs; a post published in this
- * deploy therefore picks its cover up on the next one.
+ * Uses the page's own Open Graph image as the cover. Blog pages are rendered
+ * on demand rather than prerendered, and the image URL is signed, so the
+ * deployed page is the only place the URL can be read from; a post published
+ * in this deploy picks its cover up on the next one.
  */
-async function resolveCoverImage (client: Client, canonicalURL: string, existing: LexMap | undefined) {
-  const stored = existing?.coverImage
-  if (stored) return stored
+async function resolveCoverImage (airspace: Airspace, canonicalURL: string, existing: Document | undefined) {
+  if (existing?.coverImage) return existing.coverImage
 
   try {
     const html = await fetch(canonicalURL).then(r => r.ok ? r.text() : null)
@@ -209,15 +164,14 @@ async function resolveCoverImage (client: Client, canonicalURL: string, existing
     if (!url) return
 
     const response = await fetch(url)
-    if (!response.ok) return
+    const mimeType = response.headers.get('content-type')
+    if (!response.ok || !mimeType?.startsWith('image/')) return
 
-    const type = response.headers.get('content-type')
-    const encoding = type?.startsWith('image/') ? type as `image/${string}` : 'image/png'
     const data = new Uint8Array(await response.arrayBuffer())
     if (data.byteLength > MAX_COVER_BYTES) return
 
-    const upload = await client.uploadBlob(data, { encoding })
-    return upload.body.blob
+    const upload = await airspace.blobs.upload(data, { mimeType })
+    return upload.blob
   }
   catch (error) {
     console.warn(`[sync:standard-site] Failed to upload cover image for ${canonicalURL}:`, error instanceof Error ? error.message : error)

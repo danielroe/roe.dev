@@ -15,6 +15,13 @@ checked against the `com.atproto.lexicon.schema` records published at
   `dev.roe.ama` instead of home-grown equivalents.
 - `community.lexicon.location.address` — the body of `dev.roe.location`.
 
+The files under `site/standard/` are copies of the
+[standard.site](https://standard.site) schemas published at
+`did:plc:re3ebnp5v7ffagz6rb6xfei4`. `shared/standard-site.ts` turns
+`site.standard.publication` and `site.standard.document` into collections, which
+the build-time sync writes to. `com/atproto/label/defs.json` is here because
+both of them reference `#selfLabels`.
+
 Refresh them from upstream when the shared defs change.
 
 - `pnpm lex:gen` regenerates the TypeScript in `shared/lex/` from these files.

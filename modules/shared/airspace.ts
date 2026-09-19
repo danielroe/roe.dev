@@ -5,7 +5,7 @@
  * Identity comes from `runtimeConfig.atproto`, populated by `modules/atproto`,
  */
 import { createAirspace, passwordSession } from 'airspace'
-import type { Identity } from 'airspace'
+import type { AnyCollection, Identity } from 'airspace'
 import { useRuntimeConfig } from 'nuxt/kit'
 
 import { collections } from '../../shared/collections.ts'
@@ -33,7 +33,9 @@ export function useBuildAirspace () {
  * A client that can write, for the sync providers. Needs
  * `NUXT_ATPROTO_PASSWORD`; the PDS and DID are already resolved.
  */
-export async function useBuildAirspaceWithSession () {
+export async function useBuildAirspaceWithSession<const C extends Record<string, AnyCollection>> (used: C): Promise<ReturnType<typeof createAirspace<C>>>
+export async function useBuildAirspaceWithSession (): Promise<ReturnType<typeof createAirspace<typeof collections>>>
+export async function useBuildAirspaceWithSession (used: Record<string, AnyCollection> = collections) {
   const { handle, password } = useRuntimeConfig().atproto
   const { service } = identity()
   if (!handle || !password) {
@@ -41,7 +43,7 @@ export async function useBuildAirspaceWithSession () {
   }
   return createAirspace({
     identity: identity(),
-    collections,
+    collections: used,
     session: await passwordSession({ service, identifier: handle, password }),
   })
 }

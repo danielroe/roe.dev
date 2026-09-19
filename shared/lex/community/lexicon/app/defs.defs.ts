@@ -88,29 +88,30 @@ const linkRole = /*#__PURE__*/ l.string<{
 export { linkRole }
 
 /** Primary website or landing page. */
-type LinkRoleWebsite = 'community.lexicon.app.defs#linkRoleWebsite'
-
-export type { LinkRoleWebsite }
-
-/** Primary website or landing page. */
 const linkRoleWebsite = /*#__PURE__*/ l.token($nsid, 'linkRoleWebsite')
 
 export { linkRoleWebsite }
 
-/** Web App Manifest. */
-type LinkRoleWebManifest = 'community.lexicon.app.defs#linkRoleWebManifest'
+/** Primary website or landing page. */
+const LinkRoleWebsite = /*#__PURE__*/ linkRoleWebsite.value
 
-export type { LinkRoleWebManifest }
+/** Primary website or landing page. */
+type LinkRoleWebsite = typeof LinkRoleWebsite
+
+export { LinkRoleWebsite }
 
 /** Web App Manifest. */
 const linkRoleWebManifest = /*#__PURE__*/ l.token($nsid, 'linkRoleWebManifest')
 
 export { linkRoleWebManifest }
 
-/** Privacy policy. */
-type LinkRolePrivacyPolicy = 'community.lexicon.app.defs#linkRolePrivacyPolicy'
+/** Web App Manifest. */
+const LinkRoleWebManifest = /*#__PURE__*/ linkRoleWebManifest.value
 
-export type { LinkRolePrivacyPolicy }
+/** Web App Manifest. */
+type LinkRoleWebManifest = typeof LinkRoleWebManifest
+
+export { LinkRoleWebManifest }
 
 /** Privacy policy. */
 const linkRolePrivacyPolicy = /*#__PURE__*/ l.token(
@@ -120,11 +121,13 @@ const linkRolePrivacyPolicy = /*#__PURE__*/ l.token(
 
 export { linkRolePrivacyPolicy }
 
-/** Terms of service. */
-type LinkRoleTermsOfService =
-  'community.lexicon.app.defs#linkRoleTermsOfService'
+/** Privacy policy. */
+const LinkRolePrivacyPolicy = /*#__PURE__*/ linkRolePrivacyPolicy.value
 
-export type { LinkRoleTermsOfService }
+/** Privacy policy. */
+type LinkRolePrivacyPolicy = typeof LinkRolePrivacyPolicy
+
+export { LinkRolePrivacyPolicy }
 
 /** Terms of service. */
 const linkRoleTermsOfService = /*#__PURE__*/ l.token(
@@ -134,85 +137,117 @@ const linkRoleTermsOfService = /*#__PURE__*/ l.token(
 
 export { linkRoleTermsOfService }
 
-/** Support, help, or contact page. */
-type LinkRoleSupport = 'community.lexicon.app.defs#linkRoleSupport'
+/** Terms of service. */
+const LinkRoleTermsOfService = /*#__PURE__*/ linkRoleTermsOfService.value
 
-export type { LinkRoleSupport }
+/** Terms of service. */
+type LinkRoleTermsOfService = typeof LinkRoleTermsOfService
+
+export { LinkRoleTermsOfService }
 
 /** Support, help, or contact page. */
 const linkRoleSupport = /*#__PURE__*/ l.token($nsid, 'linkRoleSupport')
 
 export { linkRoleSupport }
 
-/** Source code repository or source distribution. */
-type LinkRoleSourceCode = 'community.lexicon.app.defs#linkRoleSourceCode'
+/** Support, help, or contact page. */
+const LinkRoleSupport = /*#__PURE__*/ linkRoleSupport.value
 
-export type { LinkRoleSourceCode }
+/** Support, help, or contact page. */
+type LinkRoleSupport = typeof LinkRoleSupport
+
+export { LinkRoleSupport }
 
 /** Source code repository or source distribution. */
 const linkRoleSourceCode = /*#__PURE__*/ l.token($nsid, 'linkRoleSourceCode')
 
 export { linkRoleSourceCode }
 
-/** Documentation. */
-type LinkRoleDocs = 'community.lexicon.app.defs#linkRoleDocs'
+/** Source code repository or source distribution. */
+const LinkRoleSourceCode = /*#__PURE__*/ linkRoleSourceCode.value
 
-export type { LinkRoleDocs }
+/** Source code repository or source distribution. */
+type LinkRoleSourceCode = typeof LinkRoleSourceCode
+
+export { LinkRoleSourceCode }
 
 /** Documentation. */
 const linkRoleDocs = /*#__PURE__*/ l.token($nsid, 'linkRoleDocs')
 
 export { linkRoleDocs }
 
-/** Changelog or release notes. */
-type LinkRoleChangelog = 'community.lexicon.app.defs#linkRoleChangelog'
+/** Documentation. */
+const LinkRoleDocs = /*#__PURE__*/ linkRoleDocs.value
 
-export type { LinkRoleChangelog }
+/** Documentation. */
+type LinkRoleDocs = typeof LinkRoleDocs
+
+export { LinkRoleDocs }
 
 /** Changelog or release notes. */
 const linkRoleChangelog = /*#__PURE__*/ l.token($nsid, 'linkRoleChangelog')
 
 export { linkRoleChangelog }
 
-/** Service status page. */
-type LinkRoleStatus = 'community.lexicon.app.defs#linkRoleStatus'
+/** Changelog or release notes. */
+const LinkRoleChangelog = /*#__PURE__*/ linkRoleChangelog.value
 
-export type { LinkRoleStatus }
+/** Changelog or release notes. */
+type LinkRoleChangelog = typeof LinkRoleChangelog
+
+export { LinkRoleChangelog }
 
 /** Service status page. */
 const linkRoleStatus = /*#__PURE__*/ l.token($nsid, 'linkRoleStatus')
 
 export { linkRoleStatus }
 
-/** Apple App Store listing. */
-type LinkRoleAppStore = 'community.lexicon.app.defs#linkRoleAppStore'
+/** Service status page. */
+const LinkRoleStatus = /*#__PURE__*/ linkRoleStatus.value
 
-export type { LinkRoleAppStore }
+/** Service status page. */
+type LinkRoleStatus = typeof LinkRoleStatus
+
+export { LinkRoleStatus }
 
 /** Apple App Store listing. */
 const linkRoleAppStore = /*#__PURE__*/ l.token($nsid, 'linkRoleAppStore')
 
 export { linkRoleAppStore }
 
-/** Google Play Store listing. */
-type LinkRolePlayStore = 'community.lexicon.app.defs#linkRolePlayStore'
+/** Apple App Store listing. */
+const LinkRoleAppStore = /*#__PURE__*/ linkRoleAppStore.value
 
-export type { LinkRolePlayStore }
+/** Apple App Store listing. */
+type LinkRoleAppStore = typeof LinkRoleAppStore
+
+export { LinkRoleAppStore }
 
 /** Google Play Store listing. */
 const linkRolePlayStore = /*#__PURE__*/ l.token($nsid, 'linkRolePlayStore')
 
 export { linkRolePlayStore }
 
-/** F-Droid listing. */
-type LinkRoleFDroid = 'community.lexicon.app.defs#linkRoleFDroid'
+/** Google Play Store listing. */
+const LinkRolePlayStore = /*#__PURE__*/ linkRolePlayStore.value
 
-export type { LinkRoleFDroid }
+/** Google Play Store listing. */
+type LinkRolePlayStore = typeof LinkRolePlayStore
+
+export { LinkRolePlayStore }
 
 /** F-Droid listing. */
 const linkRoleFDroid = /*#__PURE__*/ l.token($nsid, 'linkRoleFDroid')
 
 export { linkRoleFDroid }
+
+/** F-Droid listing. */
+const LinkRoleFDroid = /*#__PURE__*/ linkRoleFDroid.value
+
+/** F-Droid listing. */
+type LinkRoleFDroid = typeof LinkRoleFDroid
+
+export { LinkRoleFDroid }
 
 /** An image associated with an app, including accessibility and display metadata. Exactly one of `image` (ATProto blob) or `uri` (remote URL) MUST be present. Consumers SHOULD ignore image items that have neither or both. */
 type Image = {
@@ -305,84 +340,108 @@ const aspectRatio = /*#__PURE__*/ l.typedObject<AspectRatio>(
 export { aspectRatio }
 
 /** A small square icon representing the app, typically used in launchers, lists, and tab bars. */
-type PurposeIcon = 'community.lexicon.app.defs#purposeIcon'
-
-export type { PurposeIcon }
-
-/** A small square icon representing the app, typically used in launchers, lists, and tab bars. */
 const purposeIcon = /*#__PURE__*/ l.token($nsid, 'purposeIcon')
 
 export { purposeIcon }
 
-/** A logotype or wordmark for the app. */
-type PurposeLogo = 'community.lexicon.app.defs#purposeLogo'
+/** A small square icon representing the app, typically used in launchers, lists, and tab bars. */
+const PurposeIcon = /*#__PURE__*/ purposeIcon.value
 
-export type { PurposeLogo }
+/** A small square icon representing the app, typically used in launchers, lists, and tab bars. */
+type PurposeIcon = typeof PurposeIcon
+
+export { PurposeIcon }
 
 /** A logotype or wordmark for the app. */
 const purposeLogo = /*#__PURE__*/ l.token($nsid, 'purposeLogo')
 
 export { purposeLogo }
 
-/** A large promotional or feature image, typically used at the top of a directory listing. */
-type PurposeHero = 'community.lexicon.app.defs#purposeHero'
+/** A logotype or wordmark for the app. */
+const PurposeLogo = /*#__PURE__*/ purposeLogo.value
 
-export type { PurposeHero }
+/** A logotype or wordmark for the app. */
+type PurposeLogo = typeof PurposeLogo
+
+export { PurposeLogo }
 
 /** A large promotional or feature image, typically used at the top of a directory listing. */
 const purposeHero = /*#__PURE__*/ l.token($nsid, 'purposeHero')
 
 export { purposeHero }
 
-/** A screenshot of the app's UI, used in directory and store listings. */
-type PurposeScreenshot = 'community.lexicon.app.defs#purposeScreenshot'
+/** A large promotional or feature image, typically used at the top of a directory listing. */
+const PurposeHero = /*#__PURE__*/ purposeHero.value
 
-export type { PurposeScreenshot }
+/** A large promotional or feature image, typically used at the top of a directory listing. */
+type PurposeHero = typeof PurposeHero
+
+export { PurposeHero }
 
 /** A screenshot of the app's UI, used in directory and store listings. */
 const purposeScreenshot = /*#__PURE__*/ l.token($nsid, 'purposeScreenshot')
 
 export { purposeScreenshot }
 
-/** A wide banner image, such as a header image for a profile or listing page. */
-type PurposeBanner = 'community.lexicon.app.defs#purposeBanner'
+/** A screenshot of the app's UI, used in directory and store listings. */
+const PurposeScreenshot = /*#__PURE__*/ purposeScreenshot.value
 
-export type { PurposeBanner }
+/** A screenshot of the app's UI, used in directory and store listings. */
+type PurposeScreenshot = typeof PurposeScreenshot
+
+export { PurposeScreenshot }
 
 /** A wide banner image, such as a header image for a profile or listing page. */
 const purposeBanner = /*#__PURE__*/ l.token($nsid, 'purposeBanner')
 
 export { purposeBanner }
 
-/** An image sized and formatted for social media sharing previews (Open Graph, Twitter Card, etc.). */
-type PurposeSocialCard = 'community.lexicon.app.defs#purposeSocialCard'
+/** A wide banner image, such as a header image for a profile or listing page. */
+const PurposeBanner = /*#__PURE__*/ purposeBanner.value
 
-export type { PurposeSocialCard }
+/** A wide banner image, such as a header image for a profile or listing page. */
+type PurposeBanner = typeof PurposeBanner
+
+export { PurposeBanner }
 
 /** An image sized and formatted for social media sharing previews (Open Graph, Twitter Card, etc.). */
 const purposeSocialCard = /*#__PURE__*/ l.token($nsid, 'purposeSocialCard')
 
 export { purposeSocialCard }
 
-/** A promotional image formatted for a native app store listing. */
-type PurposeAppStore = 'community.lexicon.app.defs#purposeAppStore'
+/** An image sized and formatted for social media sharing previews (Open Graph, Twitter Card, etc.). */
+const PurposeSocialCard = /*#__PURE__*/ purposeSocialCard.value
 
-export type { PurposeAppStore }
+/** An image sized and formatted for social media sharing previews (Open Graph, Twitter Card, etc.). */
+type PurposeSocialCard = typeof PurposeSocialCard
+
+export { PurposeSocialCard }
 
 /** A promotional image formatted for a native app store listing. */
 const purposeAppStore = /*#__PURE__*/ l.token($nsid, 'purposeAppStore')
 
 export { purposeAppStore }
 
-/** A promotional or advertising image. */
-type PurposeAd = 'community.lexicon.app.defs#purposeAd'
+/** A promotional image formatted for a native app store listing. */
+const PurposeAppStore = /*#__PURE__*/ purposeAppStore.value
 
-export type { PurposeAd }
+/** A promotional image formatted for a native app store listing. */
+type PurposeAppStore = typeof PurposeAppStore
+
+export { PurposeAppStore }
 
 /** A promotional or advertising image. */
 const purposeAd = /*#__PURE__*/ l.token($nsid, 'purposeAd')
 
 export { purposeAd }
+
+/** A promotional or advertising image. */
+const PurposeAd = /*#__PURE__*/ purposeAd.value
+
+/** A promotional or advertising image. */
+type PurposeAd = typeof PurposeAd
+
+export { PurposeAd }
 
 /** Current release or maintenance status of an app. */
 type Status =
@@ -409,54 +468,69 @@ const status = /*#__PURE__*/ l.string<{
 export { status }
 
 /** The app has been announced but is not yet available. */
-type Unreleased = 'community.lexicon.app.defs#unreleased'
-
-export type { Unreleased }
-
-/** The app has been announced but is not yet available. */
 const unreleased = /*#__PURE__*/ l.token($nsid, 'unreleased')
 
 export { unreleased }
 
-/** The app is available as an alpha, beta, early access, or preview release. */
-type Preview = 'community.lexicon.app.defs#preview'
+/** The app has been announced but is not yet available. */
+const Unreleased = /*#__PURE__*/ unreleased.value
 
-export type { Preview }
+/** The app has been announced but is not yet available. */
+type Unreleased = typeof Unreleased
+
+export { Unreleased }
 
 /** The app is available as an alpha, beta, early access, or preview release. */
 const preview = /*#__PURE__*/ l.token($nsid, 'preview')
 
 export { preview }
 
-/** The app is generally available. */
-type Released = 'community.lexicon.app.defs#released'
+/** The app is available as an alpha, beta, early access, or preview release. */
+const Preview = /*#__PURE__*/ preview.value
 
-export type { Released }
+/** The app is available as an alpha, beta, early access, or preview release. */
+type Preview = typeof Preview
+
+export { Preview }
 
 /** The app is generally available. */
 const released = /*#__PURE__*/ l.token($nsid, 'released')
 
 export { released }
 
-/** The app may still be available, but is no longer actively maintained. */
-type Unmaintained = 'community.lexicon.app.defs#unmaintained'
+/** The app is generally available. */
+const Released = /*#__PURE__*/ released.value
 
-export type { Unmaintained }
+/** The app is generally available. */
+type Released = typeof Released
+
+export { Released }
 
 /** The app may still be available, but is no longer actively maintained. */
 const unmaintained = /*#__PURE__*/ l.token($nsid, 'unmaintained')
 
 export { unmaintained }
 
-/** The app is no longer available or supported. */
-type Discontinued = 'community.lexicon.app.defs#discontinued'
+/** The app may still be available, but is no longer actively maintained. */
+const Unmaintained = /*#__PURE__*/ unmaintained.value
 
-export type { Discontinued }
+/** The app may still be available, but is no longer actively maintained. */
+type Unmaintained = typeof Unmaintained
+
+export { Unmaintained }
 
 /** The app is no longer available or supported. */
 const discontinued = /*#__PURE__*/ l.token($nsid, 'discontinued')
 
 export { discontinued }
+
+/** The app is no longer available or supported. */
+const Discontinued = /*#__PURE__*/ discontinued.value
+
+/** The app is no longer available or supported. */
+type Discontinued = typeof Discontinued
+
+export { Discontinued }
 
 /** Platform where an app is available. */
 type Platform =
@@ -487,74 +561,95 @@ const platform = /*#__PURE__*/ l.string<{
 export { platform }
 
 /** Web app or website. */
-type PlatformWeb = 'community.lexicon.app.defs#platformWeb'
-
-export type { PlatformWeb }
-
-/** Web app or website. */
 const platformWeb = /*#__PURE__*/ l.token($nsid, 'platformWeb')
 
 export { platformWeb }
 
-/** iOS app. */
-type PlatformIOS = 'community.lexicon.app.defs#platformIOS'
+/** Web app or website. */
+const PlatformWeb = /*#__PURE__*/ platformWeb.value
 
-export type { PlatformIOS as PlatformIos }
+/** Web app or website. */
+type PlatformWeb = typeof PlatformWeb
+
+export { PlatformWeb }
 
 /** iOS app. */
 const platformIOS = /*#__PURE__*/ l.token($nsid, 'platformIOS')
 
 export { platformIOS }
 
-/** Android app. */
-type PlatformAndroid = 'community.lexicon.app.defs#platformAndroid'
+/** iOS app. */
+const PlatformIos = /*#__PURE__*/ platformIOS.value
 
-export type { PlatformAndroid }
+/** iOS app. */
+type PlatformIos = typeof PlatformIos
+
+export { PlatformIos }
 
 /** Android app. */
 const platformAndroid = /*#__PURE__*/ l.token($nsid, 'platformAndroid')
 
 export { platformAndroid }
 
-/** macOS app. */
-type PlatformMacOS = 'community.lexicon.app.defs#platformMacOS'
+/** Android app. */
+const PlatformAndroid = /*#__PURE__*/ platformAndroid.value
 
-export type { PlatformMacOS as PlatformMacOs }
+/** Android app. */
+type PlatformAndroid = typeof PlatformAndroid
+
+export { PlatformAndroid }
 
 /** macOS app. */
 const platformMacOS = /*#__PURE__*/ l.token($nsid, 'platformMacOS')
 
 export { platformMacOS }
 
-/** Windows app. */
-type PlatformWindows = 'community.lexicon.app.defs#platformWindows'
+/** macOS app. */
+const PlatformMacOs = /*#__PURE__*/ platformMacOS.value
 
-export type { PlatformWindows }
+/** macOS app. */
+type PlatformMacOs = typeof PlatformMacOs
+
+export { PlatformMacOs }
 
 /** Windows app. */
 const platformWindows = /*#__PURE__*/ l.token($nsid, 'platformWindows')
 
 export { platformWindows }
 
-/** Linux app. */
-type PlatformLinux = 'community.lexicon.app.defs#platformLinux'
+/** Windows app. */
+const PlatformWindows = /*#__PURE__*/ platformWindows.value
 
-export type { PlatformLinux }
+/** Windows app. */
+type PlatformWindows = typeof PlatformWindows
+
+export { PlatformWindows }
 
 /** Linux app. */
 const platformLinux = /*#__PURE__*/ l.token($nsid, 'platformLinux')
 
 export { platformLinux }
 
-/** Command line interface. */
-type PlatformCLI = 'community.lexicon.app.defs#platformCLI'
+/** Linux app. */
+const PlatformLinux = /*#__PURE__*/ platformLinux.value
 
-export type { PlatformCLI as PlatformCli }
+/** Linux app. */
+type PlatformLinux = typeof PlatformLinux
+
+export { PlatformLinux }
 
 /** Command line interface. */
 const platformCLI = /*#__PURE__*/ l.token($nsid, 'platformCLI')
 
 export { platformCLI }
+
+/** Command line interface. */
+const PlatformCli = /*#__PURE__*/ platformCLI.value
+
+/** Command line interface. */
+type PlatformCli = typeof PlatformCli
+
+export { PlatformCli }
 
 /** Self-declared AT Protocol lexicon interoperability signals. */
 type LexiconInterop = {
