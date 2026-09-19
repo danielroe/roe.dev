@@ -14,6 +14,36 @@ const CONTRIBUTION_TYPE_MAP: Record<SyncItem['type'], string> = {
   other: 'OTHER',
 }
 
+interface Contribution {
+  id: string
+  externalId?: string
+  url: string
+  title: string
+  type: string
+  date: string
+  description?: string
+}
+
+interface ContributionInput {
+  type: string
+  title: string
+  description: string
+  url: string
+  date: string
+}
+
+/**
+ * Client-supplied stable ID for a contribution. The API accepts 1-255
+ * characters of letters, numbers, periods, underscores, hyphens or colons.
+ */
+function externalId (url: string): string {
+  return url
+    .replace(/^https?:\/\//, '')
+    .replace(/[^\w.:-]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 255)
+}
+
 export class GithubStarsProvider implements SyncProvider {
   name = 'github-stars'
 
@@ -33,35 +63,29 @@ export class GithubStarsProvider implements SyncProvider {
     if (!token) throw new Error('No NUXT_GITHUB_STARS_TOKEN provided.')
 
     const $stars = $fetch.create({
-      baseURL: 'https://api-stars.github.com/',
+      baseURL: 'https://stars.github.com/api/',
       headers: { 'content-type': 'application/json', 'Authorization': `Bearer ${token}` },
     })
 
-    const existing = await $stars<{
-      data: {
-        contributions: Array<{
-          id: string
-          url: string
-          title: string
-          type: string
-          date: string
-          description: string
-        }>
-      }
-    }>('', {
-      method: 'POST',
-      body: { query: `query { contributions { id url title type date description } }` },
-    })
+    const existing: Contribution[] = []
+    let page = 1
+    let totalPages: number
+    do {
+      const response = await $stars<{
+        data: Contribution[]
+        pagination?: { page: number, limit: number, total: number, totalPages: number }
+      }>('contributions', { query: { page } })
+      existing.push(...(response.data || []))
+      totalPages = response.pagination?.totalPages ?? 1
+      page++
+    } while (page <= totalPages)
 
-    const existingByUrl = new Map(
-      (existing.data?.contributions || []).map(c => [c.url, c]),
-    )
+    const existingByUrl = new Map(existing.map(c => [c.url, c]))
 
-    const toCreate: Array<{ type: string, title: string, description: string, url: string, date: string }> = []
-    const toUpdate: Array<{ id: string, data: { type: string, title: string, description: string, url: string, date: string } }> = []
+    const changed: Array<{ id: string, data: ContributionInput }> = []
 
     for (const item of eligible) {
-      const input = {
+      const data: ContributionInput = {
         type: CONTRIBUTION_TYPE_MAP[item.type] || 'OTHER',
         title: item.title,
         description: item.description || '',
@@ -70,44 +94,21 @@ export class GithubStarsProvider implements SyncProvider {
       }
 
       const match = existingByUrl.get(item.canonical_url)
-      if (!match) {
-        toCreate.push(input)
-      }
-      else if (
-        match.title !== input.title
-        || match.type !== input.type
-        || match.date !== input.date
-        || (match.description || '') !== input.description
+      if (
+        !match
+        || match.title !== data.title
+        || match.type !== data.type
+        || match.date !== data.date
+        || (match.description || '') !== data.description
       ) {
-        toUpdate.push({ id: match.id, data: input })
+        changed.push({ id: match?.externalId || externalId(item.canonical_url), data })
       }
     }
 
-    let created = 0
-    let updated = 0
-
-    if (toCreate.length) {
-      const response = await $stars<{ data: { createContributions: Array<unknown> } }>('', {
-        method: 'POST',
-        body: {
-          query: `mutation createContributions($data: [ContributionInput!]!) { createContributions(data: $data) { type title url description date } }`,
-          variables: { data: toCreate },
-        },
-      })
-      created = response.data?.createContributions?.length || 0
+    for (const { id, data } of changed) {
+      await $stars(`contributions/${encodeURIComponent(id)}`, { method: 'PUT', body: data })
     }
 
-    for (const { id, data } of toUpdate) {
-      await $stars('', {
-        method: 'POST',
-        body: {
-          query: `mutation updateContribution($id: String!, $data: ContributionInput!) { updateContribution(id: $id, data: $data) { id } }`,
-          variables: { id, data },
-        },
-      })
-      updated++
-    }
-
-    console.info(`[sync:github-stars] Done: ${created} created, ${updated} updated`)
+    console.info(`[sync:github-stars] Done: ${changed.length} created or updated`)
   }
 }
