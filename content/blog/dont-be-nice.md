@@ -1,6 +1,6 @@
 ---
 title: "Don't be nice"
-date: '2026-09-19T09:00:00.000Z'
+date: '2026-09-19T17:00:00.000Z'
 tags:
   - open source
   - values
