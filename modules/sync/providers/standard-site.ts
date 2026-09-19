@@ -51,7 +51,12 @@ export class StandardSiteProvider implements SyncProvider {
     const icon = await resolvePublicationIcon(client)
     if (icon) publication.icon = icon
 
-    await client.putRecord(publication as LexMap & { $type: 'site.standard.publication' }, publicationRkey)
+    try {
+      await client.putRecord(publication as LexMap & { $type: 'site.standard.publication' }, publicationRkey)
+    }
+    catch (error) {
+      console.warn('[sync:standard-site] Failed to update publication record:', error instanceof Error ? error.message : error)
+    }
 
     // Delete legacy 'self' rkey publication record if it exists
     try {
@@ -129,6 +134,7 @@ const rgb = (r: number, g: number, b: number) => ({ $type: 'site.standard.theme.
 
 /** Light-mode palette from `app/assets/main.css`. */
 const basicTheme = {
+  $type: 'site.standard.theme.basic',
   background: rgb(229, 231, 235),
   foreground: rgb(31, 41, 55),
   accent: rgb(31, 41, 55),
