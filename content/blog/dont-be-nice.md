@@ -39,7 +39,7 @@ But I mention it because the kinds of things that he's saying are being normalis
 
 I'm sorry. I'm not willing to be nice about this.
 
-Check out Jake Lazaroff's helpful article, [DHH Is Way Worse Than I Thought](https://jakelazaroff.com/words/dhh-is-way-worse-than-i-thought/). He said it better than I can:
+Check out this helpful article, [DHH Is Way Worse Than I Thought](https://jakelazaroff.com/words/dhh-is-way-worse-than-i-thought/). Jake said it better than I can:
 > **DHH’s politics are not normal.** Maybe they used to be, I don’t know, but as of right now the dude is way the fuck outside of what most people would consider moral or acceptable.
 
 I would also like to see [1Password](https://omarchy.org/news/2026/08/1password-and-37signals-become-distinguished-corporate-patrons/), [Digital Ocean](https://www.digitalocean.com/blog/digitalocean-joins-omacom-foundation) and others retract their support of DHH's pet project. I wouldn't judge someone who simply _uses_ Omarchy. But can I ask you to think about it? It leaves a pretty bad taste in my mouth even to imagine using the product of someone who's suggested that Black and Asian Londoners make Britain _worse_.
