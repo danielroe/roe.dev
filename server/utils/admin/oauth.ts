@@ -23,15 +23,9 @@ export const OAUTH_SCOPES = scopesFor({ collections })
 type NodeSavedSession = NonNullable<Awaited<ReturnType<NodeSavedSessionStore['get']>>>
 type NodeSavedState = NonNullable<Awaited<ReturnType<NodeSavedStateStore['get']>>>
 
-/**
- * In-flight authorizations, shared across requests: `authorize()` and the
- * callback are two requests, and the OAuth client is built per request.
- */
-const states = new Map<string, NodeSavedState>()
-const stateStore: NodeSavedStateStore = {
-  async get (key) { return states.get(key) },
-  async set (key, value) { states.set(key, value) },
-  async del (key) { states.delete(key) },
+interface AdminStateData {
+  key?: string
+  state?: NodeSavedState
 }
 
 interface AdminSessionData {
@@ -66,6 +60,34 @@ export async function updateAdminSessionCookie (event: H3Event, patch: Partial<A
 
 export function clearAdminSessionCookie (event: H3Event) {
   return clearSession(event, sessionConfig(event))
+}
+
+function stateSessionConfig (event: H3Event) {
+  return {
+    ...sessionConfig(event),
+    name: 'admin-oauth-state',
+    maxAge: 60 * 10,
+  }
+}
+
+/**
+ * In-flight authorization state, held in a short-lived cookie: `authorize()`
+ * and the callback are separate requests that are not guaranteed to hit the
+ * same serverless instance, so it cannot live in process memory.
+ */
+function cookieStateStore (event: H3Event): NodeSavedStateStore {
+  return {
+    async get (key: string): Promise<NodeSavedState | undefined> {
+      const sess = await getSession<AdminStateData>(event, stateSessionConfig(event))
+      return sess.data.key === key ? sess.data.state : undefined
+    },
+    async set (key: string, value: NodeSavedState): Promise<void> {
+      await updateSession<AdminStateData>(event, stateSessionConfig(event), { key, state: value })
+    },
+    async del (): Promise<void> {
+      await clearSession(event, stateSessionConfig(event))
+    },
+  }
 }
 
 function baseUrlFor (event: H3Event): string {
@@ -116,7 +138,7 @@ export function getOauth (event: H3Event) {
     redirectPath: REDIRECT_PATH,
     name: nameFor(baseUrl),
     scopes: OAUTH_SCOPES,
-    stores: { state: stateStore, session: cookieSessionStore(event) },
+    stores: { state: cookieStateStore(event), session: cookieSessionStore(event) },
   })
 }
 
