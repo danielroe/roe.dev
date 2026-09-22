@@ -121,6 +121,7 @@ export async function publishBlueskyThread (
 
     const post = await client.call(createPost, {
       text,
+      langs: [asStringFormat('en', 'language')],
       embed,
       reply: replyTo,
       facets: resolvedFacets.length ? resolvedFacets : undefined,
@@ -222,6 +223,7 @@ export async function publishMastodon (
     }
     const status = await client.v1.statuses.create({
       status: chunks[i]!,
+      language: 'en',
       mediaIds,
       inReplyToId,
     })
