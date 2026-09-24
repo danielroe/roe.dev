@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"1960k"`)
+      .toMatchInlineSnapshot(`"1970k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14040k"`)
+      .toMatchInlineSnapshot(`"14250k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -128,14 +128,21 @@ describe('project sizes', () => {
         "@takumi-rs/core",
         "@takumi-rs/helpers",
         "@vue/compiler-core",
+        "@vue/compiler-core/node_modules/@vue/shared",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
         "@vue/compiler-dom",
+        "@vue/compiler-dom/node_modules/@vue/shared",
         "@vue/compiler-ssr",
+        "@vue/compiler-ssr/node_modules/@vue/shared",
         "@vue/reactivity",
+        "@vue/reactivity/node_modules/@vue/shared",
         "@vue/runtime-core",
+        "@vue/runtime-core/node_modules/@vue/shared",
         "@vue/runtime-dom",
+        "@vue/runtime-dom/node_modules/@vue/shared",
         "@vue/server-renderer",
+        "@vue/server-renderer/node_modules/@vue/shared",
         "@vue/shared",
         "airspace",
         "comark",
@@ -182,6 +189,7 @@ describe('project sizes', () => {
         "unicode-segmenter",
         "vue",
         "vue-bundle-renderer",
+        "vue/node_modules/@vue/shared",
         "xml-js",
         "zod",
       ]
