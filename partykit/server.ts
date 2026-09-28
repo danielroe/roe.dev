@@ -1,8 +1,24 @@
 import type { PartyKitServer, Room } from 'partykit/server'
-import { isValidEmoji } from '#shared/utils/emoji'
+import { isValidEmoji } from '../shared/utils/emoji'
+import CursorsParty from './cursors'
+
+const cursorParties = new Map<string, Promise<CursorsParty>>()
+function getCursors (room: Room) {
+  let party = cursorParties.get(room.id)
+  if (!party) {
+    const instance = new CursorsParty(room)
+    party = instance.onStart().then(() => instance)
+    cursorParties.set(room.id, party)
+  }
+  return party
+}
 
 export default {
-  async onConnect (ws, party) {
+  async onConnect (ws, party, ctx) {
+    if (party.id === 'cursors') {
+      return getCursors(party).then(c => c.onConnect(ws, ctx))
+    }
+
     // 1. send current vote count if applicable
     ws.send(`count:${await getCount(party)}`)
 
@@ -63,6 +79,10 @@ export default {
     return new Response('Invalid request', { status: 422 })
   },
   async onMessage (message, ws, party) {
+    if (party.id === 'cursors') {
+      return getCursors(party).then(c => c.onMessage(message, ws))
+    }
+
     const messageStr = message.toString()
 
     // 8. handle clearing votes from slide deck
@@ -97,6 +117,16 @@ export default {
 
       // Broadcast to all clients
       party.broadcast(messageStr)
+    }
+  },
+  async onClose (ws, party) {
+    if (party.id === 'cursors') {
+      return getCursors(party).then(c => c.onClose(ws))
+    }
+  },
+  async onError (ws, _err, party) {
+    if (party.id === 'cursors') {
+      return getCursors(party).then(c => c.onError(ws))
     }
   },
 } satisfies PartyKitServer
