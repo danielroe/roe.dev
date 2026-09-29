@@ -17,6 +17,17 @@ async function waitForImages (page: Page) {
   ))
 }
 
+async function removeSections (page: Page, headings: string[]) {
+  await page.evaluate(headings => {
+    for (const h2 of document.querySelectorAll('section > h2')) {
+      if (!headings.includes(h2.textContent!.trim())) continue
+      const section = h2.parentElement!
+      if (section.previousElementSibling?.tagName === 'HR') section.previousElementSibling.remove()
+      section.remove()
+    }
+  }, headings)
+}
+
 const baseURL = process.env.BASE_URL || 'https://roe.dev/'
 
 const url = (path: string) => joinURL(baseURL, path)
@@ -50,8 +61,7 @@ test.describe(`pages`, () => {
         page.locator('img[src*="s2/favicons"]'),
       ]
       if (path === '/') {
-        mask.push(page.locator('section:has(h2:text("some recent streams")) ul'))
-        mask.push(page.locator('section:has(h2:text("upcoming talks")) ul'))
+        await removeSections(page, ['some recent streams', 'upcoming talks'])
         mask.push(page.locator('section:has(h2:text("recent talks")) ul'))
       }
 
