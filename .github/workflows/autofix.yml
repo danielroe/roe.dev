@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  deployments: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
@@ -13,6 +14,9 @@ concurrency:
 jobs:
   code:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -26,6 +30,37 @@ jobs:
 
       - name: Update bundle size
         run: pnpm vitest run bundle -u
+
+      - name: Wait for preview deployment
+        id: preview
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const sha = context.payload.pull_request.head.sha
+            const deadline = Date.now() + 15 * 60 * 1000
+            while (Date.now() < deadline) {
+              const { data: deployments } = await github.rest.repos.listDeployments({ ...context.repo, sha, environment: 'Preview' })
+              for (const deployment of deployments) {
+                const { data: statuses } = await github.rest.repos.listDeploymentStatuses({ ...context.repo, deployment_id: deployment.id })
+                const status = statuses[0]
+                if (status?.state === 'success' && status.environment_url) {
+                  core.setOutput('url', status.environment_url)
+                  return
+                }
+                if (status && ['failure', 'error'].includes(status.state)) {
+                  core.warning(`Preview deployment ${status.state}; skipping screenshot update`)
+                  return
+                }
+              }
+              await new Promise(resolve => setTimeout(resolve, 20_000))
+            }
+            core.warning('Timed out waiting for preview deployment; skipping screenshot update')
+
+      - name: Update screenshots
+        if: steps.preview.outputs.url
+        run: pnpm playwright test test/e2e --update-snapshots=changed || true
+        env:
+          BASE_URL: ${{ steps.preview.outputs.url }}
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27
         with:
