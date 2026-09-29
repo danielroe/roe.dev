@@ -30,7 +30,7 @@ defineOgImage('DefaultImage', {
   tags: [],
 })
 
-const isAdmin = computed(() => route.path === '/admin' || route.path.startsWith('/admin/'))
+const isAdmin = computed(() => route.path === '/admin' || route.path.startsWith('/admin/') || route.path === '/touchpad')
 
 // TODO: interactive components within server components
 const highlightIslands = ref(false)
