@@ -263,7 +263,7 @@ async function requestWakeLock () {
 function onVisibility () {
   if (document.visibilityState === 'visible') {
     requestWakeLock()
-    socket?.reconnect()
+    if (socket && socket.readyState !== WebSocket.OPEN) socket.reconnect()
   }
 }
 

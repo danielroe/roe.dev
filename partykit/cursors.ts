@@ -33,6 +33,7 @@ const NOUNS = ['Knedlík', 'Trdelník', 'Golem', 'Krtek', 'Pivo', 'Koláček', '
 const COLORS = ['#ff5d8f', '#ffb347', '#ffe156', '#8ce99a', '#38d9a9', '#4dabf7', '#748ffc', '#b197fc', '#f783ac', '#ff8787', '#63e6be', '#74c0fc', '#ffa94d', '#d0bfff', '#a9e34b', '#66d9e8']
 
 const BROADCAST_INTERVAL = 33
+const MAX_CURSORS = 500
 
 const clamp = (n: unknown) => typeof n === 'number' && Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0.5
 
@@ -54,7 +55,9 @@ export default class CursorsParty implements Party.Server {
   }
 
   onConnect (conn: Party.Connection<ConnState>, ctx: Party.ConnectionContext) {
-    const role = new URL(ctx.request.url).searchParams.get('role') === 'host' ? 'host' : 'phone'
+    const params = new URL(ctx.request.url).searchParams
+    const token = this.room.env.CURSORS_HOST_TOKEN as string | undefined
+    const role = params.get('role') === 'host' && (!token || params.get('token') === token) ? 'host' : 'phone'
     conn.setState({ role })
     if (role === 'host') {
       conn.send(JSON.stringify({ t: 'sync', cursors: this.onlineCursors() }))
@@ -85,7 +88,7 @@ export default class CursorsParty implements Party.Server {
 
     switch (msg.t) {
       case 'hello': {
-        const id = typeof msg.id === 'string' && msg.id.length <= 64 ? msg.id : conn.id
+        const id = typeof msg.id === 'string' && msg.id.length >= 16 && msg.id.length <= 64 ? msg.id : conn.id
         if (state.id && state.id !== id) this.detach(state.id, conn.id)
         conn.setState({ role: 'phone', id })
         let cursor = this.cursors.get(id)
@@ -99,6 +102,7 @@ export default class CursorsParty implements Party.Server {
             y: 0.5,
           }
           this.cursors.set(id, cursor)
+          this.evict()
           this.persist()
         }
         if (typeof msg.name === 'string' && msg.name.trim()) {
@@ -187,6 +191,13 @@ export default class CursorsParty implements Party.Server {
     this.pending.delete(id)
     this.toHosts({ t: 'leave', id })
     this.persist()
+  }
+
+  evict () {
+    for (const id of this.cursors.keys()) {
+      if (this.cursors.size <= MAX_CURSORS) return
+      if (!this.online.get(id)?.size) this.cursors.delete(id)
+    }
   }
 
   schedule () {

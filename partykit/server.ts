@@ -7,7 +7,10 @@ function getCursors (room: Room) {
   let party = cursorParties.get(room.id)
   if (!party) {
     const instance = new CursorsParty(room)
-    party = instance.onStart().then(() => instance)
+    party = instance.onStart().then(() => instance, err => {
+      cursorParties.delete(room.id)
+      throw err
+    })
     cursorParties.set(room.id, party)
   }
   return party
