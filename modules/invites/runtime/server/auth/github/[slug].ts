@@ -1,23 +1,25 @@
+import { createError, defineEventHandler, getQuery, getRouterParam, sendRedirect, useRuntimeConfig } from 'nuxt/server'
 import type { RuntimeConfig } from 'nuxt/schema'
+import { $fetch } from 'ofetch'
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')
   const repo = slug && config.invites?.map?.[slug as keyof RuntimeConfig['invites']['map']]
   if (!repo) {
-    throw createError({ statusCode: 404 })
+    throw createError({ status: 404 })
   }
 
   const { code } = getQuery(event)
 
   if (!code) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Missing authorisation code.',
+      status: 422,
+      statusText: 'Missing authorisation code.',
     })
   }
 
-  const { access_token } = await $fetch<{ access_token: string }>(
+  const { access_token } = await $fetch<{ access_token?: string }>(
     'https://github.com/login/oauth/access_token',
     {
       method: 'POST',
@@ -34,8 +36,8 @@ export default defineEventHandler(async event => {
 
   if (!access_token) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Authorisation code invalid.',
+      status: 422,
+      statusText: 'Authorisation code invalid.',
     })
   }
 
@@ -48,8 +50,8 @@ export default defineEventHandler(async event => {
 
   if (!username) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Access code invalid.',
+      status: 422,
+      statusText: 'Access code invalid.',
     })
   }
 

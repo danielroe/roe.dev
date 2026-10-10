@@ -3,7 +3,8 @@
  * already-resolved post text (mentions swapped, footer appended) plus an
  * optional image and the original question as alt text.
  */
-import type { H3Event } from 'h3'
+import { createError, useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
 import { Client, asStringFormat, isBlobRef, jsonToLex } from '@atproto/lex'
 import type { $Typed, JsonValue } from '@atproto/lex'
 import { PasswordSession } from '@atproto/lex-password-session'
@@ -52,12 +53,11 @@ async function resolveBlueskyPds (handle: string): Promise<string> {
 }
 
 export async function publishBlueskyThread (
-  event: H3Event,
   posts: ResolvedPost[],
   image: BlueskyImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const { identifier } = config.social.networks.bluesky
   const password = config.bluesky.accessToken
 
@@ -75,8 +75,8 @@ export async function publishBlueskyThread (
     if (i === 0 && image) {
       if (image.size != null && image.size > BLUESKY_IMAGE_MAX_BYTES) {
         throw createError({
-          statusCode: 413,
-          statusMessage: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
+          status: 413,
+          statusText: `AMA image is ${image.size} bytes; Bluesky embeds must be under ${BLUESKY_IMAGE_MAX_BYTES}. Regenerate the image to compress it.`,
         })
       }
       const blob = jsonToLex(image.blob as JsonValue)
@@ -184,12 +184,11 @@ function splitIntoChunks (text: string, maxLength: number): string[] {
 }
 
 export async function publishMastodon (
-  event: H3Event,
   text: string,
   image: PublishImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const { identifier } = config.social.networks.mastodon
 
   const accessToken = config.mastodon.accessToken
@@ -272,12 +271,11 @@ async function uploadImageToLinkedIn (imageUrl: string, accessToken: string, per
 }
 
 export async function publishLinkedIn (
-  event: H3Event,
   text: string,
   image: PublishImage | undefined,
   altText: string,
 ): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const accessToken = config.linkedin.accessToken
   if (!accessToken) throw new Error('LinkedIn access token not configured (NUXT_LINKEDIN_ACCESS_TOKEN).')
 

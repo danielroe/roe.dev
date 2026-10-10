@@ -1,10 +1,12 @@
+import { createError, defineEventHandler, useRuntimeConfig } from 'nuxt/server'
 import { createRestAPIClient } from 'masto'
+import { $fetch } from 'ofetch'
 import { parseURL, withProtocol } from 'ufo'
 
 import { linkifyBareUrls } from './linkify'
 
-export default defineEventHandler(async event => {
-  const acct = useRuntimeConfig(event).social.networks.mastodon.identifier
+export default defineEventHandler(async () => {
+  const acct = useRuntimeConfig().social.networks.mastodon.identifier
 
   const server = acct.split('@')[1]
   if (!server) throw createError('Invalid Mastodon account identifier')

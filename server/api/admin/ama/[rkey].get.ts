@@ -1,3 +1,5 @@
+import { defineEventHandler, getRouterParam } from 'nuxt/server'
+
 import { getAdminRecord } from '../../../utils/admin/crud'
 import { viewAma } from '../../../utils/admin/ama-record'
 

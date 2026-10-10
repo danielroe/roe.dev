@@ -1,3 +1,5 @@
+import { defineEventHandler, readBody } from 'nuxt/server'
+
 import { invalidatePublicReads, requireAdminAirspace } from '../../utils/airspace'
 import { collections } from '#shared/collections'
 

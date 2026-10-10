@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import { createError } from 'nuxt/server'
+import type { RequestEvent } from 'nuxt/server'
 import { ConflictError, cidFromBlob } from 'airspace'
 import type { AirspaceRecord } from 'airspace'
 
@@ -138,7 +139,7 @@ const MAX_ATTEMPTS = 5
  * merging into the current value rather than replacing it.
  */
 async function mutateAmaRecord (
-  event: H3Event,
+  event: RequestEvent,
   rkey: string,
   update: AmaUpdate,
   action: string,
@@ -149,7 +150,7 @@ async function mutateAmaRecord (
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     const existing = await airspace.ama.get(rkey)
     if (!existing) {
-      throw createError({ statusCode: 404, statusMessage: `dev.roe.ama/${rkey} not found.` })
+      throw createError({ status: 404, statusText: `dev.roe.ama/${rkey} not found.` })
     }
 
     const value = buildRecord(existing.value, update, published)
@@ -166,8 +167,8 @@ async function mutateAmaRecord (
   }
 
   throw createError({
-    statusCode: 500,
-    statusMessage: `AMA ${action} exhausted ${MAX_ATTEMPTS} attempts for rkey=${rkey} without writing.`,
+    status: 500,
+    statusText: `AMA ${action} exhausted ${MAX_ATTEMPTS} attempts for rkey=${rkey} without writing.`,
   })
 }
 
@@ -199,12 +200,12 @@ export function viewAma (r: AmaRecordEnvelope): AmaView {
   }
 }
 
-export async function saveAmaDraft (event: H3Event, rkey: string, update: AmaUpdate): Promise<AmaView> {
+export async function saveAmaDraft (event: RequestEvent, rkey: string, update: AmaUpdate): Promise<AmaView> {
   return viewAma(await mutateAmaRecord(event, rkey, update, 'draft save'))
 }
 
 export async function mergePublishedLink (
-  event: H3Event,
+  event: RequestEvent,
   rkey: string,
   platform: AmaPlatform,
   url: string,
@@ -214,7 +215,7 @@ export async function mergePublishedLink (
 }
 
 export async function ensureNotAlreadyPublished (
-  event: H3Event,
+  event: RequestEvent,
   rkey: string,
   platform: AmaPlatform,
   force: boolean,
@@ -225,8 +226,8 @@ export async function ensureNotAlreadyPublished (
   const existing = record?.value.publishedLinks?.[platform]
   if (existing) {
     throw createError({
-      statusCode: 409,
-      statusMessage: `${platform} already published at ${existing}. Pass force=true to re-publish.`,
+      status: 409,
+      statusText: `${platform} already published at ${existing}. Pass force=true to re-publish.`,
     })
   }
 }
@@ -241,7 +242,7 @@ export interface AmaImage {
 }
 
 export async function prepareAmaImage (
-  event: H3Event,
+  event: RequestEvent,
   rkey: string,
   body: AmaUpdate,
 ): Promise<AmaImage | undefined> {
@@ -249,15 +250,15 @@ export async function prepareAmaImage (
 
   if (!cidFromBlob(body.image)) {
     throw createError({
-      statusCode: 422,
-      statusMessage: `Invalid AMA image blob: ${JSON.stringify(body.image)}`,
+      status: 422,
+      statusText: `Invalid AMA image blob: ${JSON.stringify(body.image)}`,
     })
   }
 
   const airspace = await requireAdminAirspace(event)
   const url = await airspace.blobs.url(body.image)
   if (!url) {
-    throw createError({ statusCode: 500, statusMessage: 'Could not build a blob URL for the AMA image.' })
+    throw createError({ status: 500, statusText: 'Could not build a blob URL for the AMA image.' })
   }
 
   await saveAmaDraft(event, rkey, body)

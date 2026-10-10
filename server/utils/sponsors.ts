@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import { useRuntimeConfig } from 'nuxt/server'
+
 import { query } from './github'
 
 interface Sponsor {
@@ -7,42 +8,36 @@ interface Sponsor {
   name?: string
 }
 
-interface CacheEntry {
-  value: Sponsor[]
-}
+/** Reused across requests in development only. */
+let devSponsors: Sponsor[] | undefined
 
-export async function getSponsors (event: H3Event): Promise<Sponsor[]> {
-  const token = useRuntimeConfig(event).github.token
+export async function getSponsors (): Promise<Sponsor[]> {
+  const token = useRuntimeConfig().github.token
   if (!token) return []
-  const entry: CacheEntry = ((await useStorage().getItem('sponsors')) as any) || {}
+  if (import.meta.dev && devSponsors) return devSponsors
 
-  if (!entry.value || !import.meta.dev) {
-    entry.value = await query(
-      token,
-      sponsorQuery,
-    ).then(r => r?.user.sponsors.edges.map((e: any) => e.node) || [])
+  const sponsors: Sponsor[] = await query(
+    token,
+    sponsorQuery,
+  ).then(r => r?.user.sponsors.edges.map((e: any) => e.node) || [])
 
-    // my ID
-    entry.value.push({ id: useRuntimeConfig(event).github.id })
+  // my ID
+  sponsors.push({ id: useRuntimeConfig().github.id })
 
-    // NuxtLabs
-    entry.value.unshift({
-      name: 'Vercel',
-      id: 'MDEyOk9yZ2FuaXphdGlvbjE0OTg1MDIw',
-      avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?v=4',
-    },
-    {
-      name: 'NuxtLabs',
-      id: 'MDEyOk9yZ2FuaXphdGlvbjYyMDE3NDAw',
-      avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
-    })
+  // NuxtLabs
+  sponsors.unshift({
+    name: 'Vercel',
+    id: 'MDEyOk9yZ2FuaXphdGlvbjE0OTg1MDIw',
+    avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?v=4',
+  },
+  {
+    name: 'NuxtLabs',
+    id: 'MDEyOk9yZ2FuaXphdGlvbjYyMDE3NDAw',
+    avatarUrl: 'https://avatars.githubusercontent.com/u/62017400?v=4',
+  })
 
-    useStorage()
-      .setItem('sponsors', entry)
-      .catch((error: any) => console.error('[nitro] [cache]', error))
-  }
-
-  return entry.value
+  if (import.meta.dev) devSponsors = sponsors
+  return sponsors
 }
 
 const sponsorQuery = /* graqhql */ `

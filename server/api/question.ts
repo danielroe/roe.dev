@@ -1,3 +1,4 @@
+import { createError, defineEventHandler, readBody, useRuntimeConfig } from 'nuxt/server'
 import { createAirspace, passwordSession } from 'airspace'
 import type { Identity } from 'airspace'
 
@@ -6,15 +7,17 @@ import { encrypt } from '../utils/admin/encryption'
 import { collections } from '#shared/collections'
 
 export default defineEventHandler(async event => {
-  if (event.method === 'OPTIONS') return null
-  assertMethod(event, 'POST')
-
-  const { question } = await readBody(event)
-  if (!question || typeof question !== 'string' || !question.trim()) {
-    throw createError({ statusCode: 422, statusMessage: 'question is required' })
+  if (event.req.method === 'OPTIONS') return null
+  if (event.req.method !== 'POST') {
+    throw createError({ status: 405, statusText: 'HTTP method is not allowed.' })
   }
 
-  const config = useRuntimeConfig(event)
+  const { question } = await readBody<{ question?: unknown }>(event)
+  if (!question || typeof question !== 'string' || !question.trim()) {
+    throw createError({ status: 422, statusText: 'question is required' })
+  }
+
+  const config = useRuntimeConfig()
 
   const persist = process.env.NUXT_PDS_ENCRYPTION_KEY
     ? persistQuestion(question, config).catch(err => {
@@ -22,7 +25,7 @@ export default defineEventHandler(async event => {
       })
     : (console.error('[question] NUXT_PDS_ENCRYPTION_KEY is not configured; question will not be persisted.'), Promise.resolve())
 
-  const notify = sendPushoverNotification(event, {
+  const notify = sendPushoverNotification({
     title: 'Anonymous question',
     message: question,
     priority: 0,

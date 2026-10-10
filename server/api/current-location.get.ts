@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'nuxt/server'
+
 import { getCurrentLocation } from '../utils/cms/location'
 
 const regionalFlags: Record<string, string> = {
@@ -6,8 +8,8 @@ const regionalFlags: Record<string, string> = {
 
 const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
-export default defineEventHandler(async event => {
-  const location = await getCurrentLocation(event)
+export default defineEventHandler(async () => {
+  const location = await getCurrentLocation()
   if (!location) return null
 
   const countryCode = location.countryCode.toUpperCase()

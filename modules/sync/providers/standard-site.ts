@@ -5,10 +5,10 @@ import type { RecordOf } from 'airspace'
 import type { l } from '@atproto/lex-schema'
 import type { site } from '../../../shared/lex/index.ts'
 
-import type { SyncItem, SyncOptions, SyncProvider } from './index'
-import { useBuildAirspaceWithSession } from '../../shared/airspace'
-import { standardSiteCollections } from '../../../shared/standard-site'
-import { publicationRkey, tidFromDate } from '../../shared/tid'
+import type { SyncItem, SyncOptions, SyncProvider } from './index.ts'
+import { useBuildAirspaceWithSession } from '../../shared/airspace.ts'
+import { standardSiteCollections } from '../../../shared/standard-site.ts'
+import { publicationRkey, tidFromDate } from '../../shared/tid.ts'
 
 type Airspace = Awaited<ReturnType<typeof useBuildAirspaceWithSession<typeof standardSiteCollections>>>
 type Document = RecordOf<typeof standardSiteCollections.documents>['value']

@@ -1,6 +1,9 @@
 /**
  * List releases from danielroe/slides for the talk-editor slides datalist.
  */
+import { createError, defineEventHandler, useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
+
 import { requireAdminSession } from '../../utils/admin/oauth'
 
 interface GitHubRelease {
@@ -13,11 +16,11 @@ interface GitHubRelease {
 export default defineEventHandler(async event => {
   await requireAdminSession(event)
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   if (!config.github.token) {
     throw createError({
-      statusCode: 503,
-      statusMessage: 'GitHub token not configured (NUXT_GITHUB_TOKEN). Slides dropdown will be empty.',
+      status: 503,
+      statusText: 'GitHub token not configured (NUXT_GITHUB_TOKEN). Slides dropdown will be empty.',
     })
   }
 
@@ -44,8 +47,8 @@ export default defineEventHandler(async event => {
   catch (err) {
     console.error('[admin] github-releases fetch failed:', err)
     throw createError({
-      statusCode: 502,
-      statusMessage: `GitHub API error: ${err instanceof Error ? err.message : String(err)}`,
+      status: 502,
+      statusText: `GitHub API error: ${err instanceof Error ? err.message : String(err)}`,
     })
   }
 })

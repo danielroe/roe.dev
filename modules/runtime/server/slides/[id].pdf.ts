@@ -1,7 +1,8 @@
 /**
  * Dev-only handler for `/slides/:id.pdf`.
  */
-import type { H3Event } from 'h3'
+import { createError, defineEventHandler, getRouterParam, useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
 
 import { useAirspace } from '#server/utils/airspace'
 
@@ -16,9 +17,9 @@ interface GitHubRelease {
 const assetCache = new Map<string, ArrayBuffer>()
 let knownIds: Set<string> | null = null
 
-async function getKnownSlideIds (event: H3Event): Promise<Set<string>> {
+async function getKnownSlideIds (): Promise<Set<string>> {
   if (knownIds) return knownIds
-  const records = await useAirspace(event).talks.list()
+  const records = await useAirspace().talks.list()
   knownIds = new Set(
     records
       .map(r => r.value.slides)
@@ -29,20 +30,20 @@ async function getKnownSlideIds (event: H3Event): Promise<Set<string>> {
 
 export default defineEventHandler(async event => {
   const id = getRouterParam(event, 'id')
-  if (!id) throw createError({ statusCode: 404 })
+  if (!id) throw createError({ status: 404 })
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   if (!config.github.token) {
     throw createError({
-      statusCode: 503,
-      statusMessage: 'GitHub token not configured (NUXT_GITHUB_TOKEN); cannot serve slides in dev.',
+      status: 503,
+      statusText: 'GitHub token not configured (NUXT_GITHUB_TOKEN); cannot serve slides in dev.',
     })
   }
 
-  const known = await getKnownSlideIds(event)
-  if (!known.has(id)) throw createError({ statusCode: 404 })
+  const known = await getKnownSlideIds()
+  if (!known.has(id)) throw createError({ status: 404 })
 
-  setResponseHeader(event, 'content-type', 'application/pdf')
+  event.res.headers.set('content-type', 'application/pdf')
 
   const cached = assetCache.get(id)
   if (cached) return new Uint8Array(cached)
@@ -59,9 +60,9 @@ export default defineEventHandler(async event => {
   )
 
   const assetId = release.assets.find(a => a.name.endsWith('.pdf'))?.id
-  if (!assetId) throw createError({ statusCode: 404 })
+  if (!assetId) throw createError({ status: 404 })
 
-  const file = await $fetch<ArrayBuffer>(
+  const file = await $fetch(
     `https://api.github.com/repos/danielroe/slides/releases/assets/${assetId}`,
     {
       responseType: 'arrayBuffer',

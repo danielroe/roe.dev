@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { RequestEvent } from 'nuxt/server'
 
 import { invalidatePublicReads, requireAdminAirspace, useAirspace } from '../airspace'
 import { collections } from '#shared/collections'
@@ -10,8 +10,8 @@ export interface Location {
   meetupAvailable: boolean
 }
 
-export async function getCurrentLocation (event: H3Event): Promise<Location | null> {
-  const record = await useAirspace(event).location.get()
+export async function getCurrentLocation (): Promise<Location | null> {
+  const record = await useAirspace().location.get()
   if (!record) return null
   const v = record.value
   return {
@@ -22,7 +22,7 @@ export async function getCurrentLocation (event: H3Event): Promise<Location | nu
   }
 }
 
-export async function setCurrentLocation (event: H3Event, loc: Location): Promise<void> {
+export async function setCurrentLocation (event: RequestEvent, loc: Location): Promise<void> {
   const airspace = await requireAdminAirspace(event)
   await airspace.location.put({
     address: {

@@ -1,7 +1,7 @@
-import { GithubStarsProvider } from './github-stars'
-import { DevToProvider } from './dev-to'
-import { GdeAdvocuProvider } from './gde-advocu'
-import { StandardSiteProvider } from './standard-site'
+import { GithubStarsProvider } from './github-stars.ts'
+import { DevToProvider } from './dev-to.ts'
+import { GdeAdvocuProvider } from './gde-advocu.ts'
+import { StandardSiteProvider } from './standard-site.ts'
 
 export interface SyncItem {
   title: string

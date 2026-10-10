@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import { createError } from 'nuxt/server'
+import type { RequestEvent } from 'nuxt/server'
 import { ConflictError, ValidationError } from 'airspace'
 
 import { invalidatePublicReads, requireAdminAirspace } from '../airspace'
@@ -11,7 +12,7 @@ export type CollectionName = Exclude<keyof typeof collections, 'location'>
 
 const nsidOf = (name: CollectionName): string => collections[name].nsid
 
-async function clientFor<K extends CollectionName> (event: H3Event, name: K): Promise<Airspace[K]> {
+async function clientFor<K extends CollectionName> (event: RequestEvent, name: K): Promise<Airspace[K]> {
   return (await requireAdminAirspace(event))[name]
 }
 
@@ -32,7 +33,7 @@ const untyped = (client: unknown): AnyClient => client as AnyClient
 
 function assertRkey (rkey: string | undefined): asserts rkey is string {
   if (!rkey || rkey === 'undefined' || rkey === 'null') {
-    throw createError({ statusCode: 400, statusMessage: 'Missing or invalid rkey.' })
+    throw createError({ status: 400, statusText: 'Missing or invalid rkey.' })
   }
 }
 
@@ -42,10 +43,10 @@ function assertRkey (rkey: string | undefined): asserts rkey is string {
  */
 function asHttpError (err: unknown, name: CollectionName): never {
   if (err instanceof ValidationError) {
-    throw createError({ statusCode: 422, statusMessage: `Invalid ${nsidOf(name)}: ${err.message}` })
+    throw createError({ status: 422, statusText: `Invalid ${nsidOf(name)}: ${err.message}` })
   }
   if (err instanceof ConflictError) {
-    throw createError({ statusCode: 409, statusMessage: err.message })
+    throw createError({ status: 409, statusText: err.message })
   }
   throw err
 }
@@ -63,21 +64,21 @@ async function write<T> (name: CollectionName, run: () => Promise<T>): Promise<T
   }
 }
 
-export async function listAdminRecords<K extends CollectionName> (event: H3Event, name: K): Promise<Awaited<ReturnType<Airspace[K]['list']>>> {
+export async function listAdminRecords<K extends CollectionName> (event: RequestEvent, name: K): Promise<Awaited<ReturnType<Airspace[K]['list']>>> {
   return await untyped(await clientFor(event, name)).list() as never
 }
 
-export async function getAdminRecord<K extends CollectionName> (event: H3Event, name: K, rkey: string | undefined): Promise<NonNullable<Awaited<ReturnType<Airspace[K]['get']>>>> {
+export async function getAdminRecord<K extends CollectionName> (event: RequestEvent, name: K, rkey: string | undefined): Promise<NonNullable<Awaited<ReturnType<Airspace[K]['get']>>>> {
   assertRkey(rkey)
   const record = await untyped(await clientFor(event, name)).get(rkey)
   if (!record) {
-    throw createError({ statusCode: 404, statusMessage: `${nsidOf(name)}/${rkey} not found.` })
+    throw createError({ status: 404, statusText: `${nsidOf(name)}/${rkey} not found.` })
   }
   return record as never
 }
 
 export async function createAdminRecord<K extends CollectionName> (
-  event: H3Event,
+  event: RequestEvent,
   name: K,
   value: Parameters<Airspace[K]['create']>[0],
 ): Promise<Awaited<ReturnType<Airspace[K]['create']>>> {
@@ -86,7 +87,7 @@ export async function createAdminRecord<K extends CollectionName> (
 }
 
 export async function updateAdminRecord<K extends CollectionName> (
-  event: H3Event,
+  event: RequestEvent,
   name: K,
   rkey: string | undefined,
   value: Parameters<Airspace[K]['put']>[1],
@@ -96,7 +97,7 @@ export async function updateAdminRecord<K extends CollectionName> (
   return await write(name, () => client.put(rkey, value))
 }
 
-export async function deleteAdminRecord<K extends CollectionName> (event: H3Event, name: K, rkey: string | undefined) {
+export async function deleteAdminRecord<K extends CollectionName> (event: RequestEvent, name: K, rkey: string | undefined) {
   assertRkey(rkey)
   const client = untyped(await clientFor(event, name))
   await write(name, () => client.delete(rkey))

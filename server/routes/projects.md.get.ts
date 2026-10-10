@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'nuxt/server'
+
 import { pageMeta } from '#md-page-meta.json'
 
 import { getProjects } from '../utils/cms/projects'
@@ -7,7 +9,7 @@ export default defineEventHandler(async event => {
     return mdResponse(event, '')
   }
 
-  const categories = await getProjects(event)
+  const categories = await getProjects()
 
   const lines = [
     mdFrontmatter('/projects', pageMeta['/projects']!),

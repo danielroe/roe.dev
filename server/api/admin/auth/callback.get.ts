@@ -1,3 +1,4 @@
+import { createError, defineEventHandler, sendRedirect, useRuntimeConfig } from 'nuxt/server'
 import { Client } from '@atproto/lex'
 import { com } from '@bsky/sdk/lexicons'
 
@@ -8,17 +9,15 @@ import {
 } from '../../../utils/admin/oauth'
 
 export default defineEventHandler(async event => {
-  const expectedHandle = useRuntimeConfig(event).atproto.handle
+  const expectedHandle = useRuntimeConfig().atproto.handle
   const oauth = await getOauth(event)
-  const params = new URLSearchParams(getQuery(event) as Record<string, string>)
-
   let session
   try {
-    ;({ session } = await oauth.callback(params))
+    ;({ session } = await oauth.callback(event.url.searchParams))
   }
   catch (err) {
     console.error('[admin] OAuth callback failed:', err)
-    throw createError({ statusCode: 401, statusMessage: 'OAuth callback failed.' })
+    throw createError({ status: 401, statusText: 'OAuth callback failed.' })
   }
 
   const { handle } = await new Client(session).call(com.atproto.repo.describeRepo, { repo: session.did })
@@ -27,8 +26,8 @@ export default defineEventHandler(async event => {
     await oauth.revoke(session.did).catch(() => {})
     await clearAdminSessionCookie(event)
     throw createError({
-      statusCode: 403,
-      statusMessage: `OAuth session belongs to ${handle}; only ${expectedHandle} can access /admin.`,
+      status: 403,
+      statusText: `OAuth session belongs to ${handle}; only ${expectedHandle} can access /admin.`,
     })
   }
 

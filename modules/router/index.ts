@@ -22,7 +22,7 @@ import {
 } from 'nuxt/kit'
 import { withLeadingSlash } from 'ufo'
 
-import { pageMeta } from '../shared/page-meta'
+import { pageMeta } from '../shared/page-meta.ts'
 
 export default defineNuxtModule({
   meta: {

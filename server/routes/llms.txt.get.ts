@@ -1,3 +1,7 @@
+import { defineEventHandler } from 'nuxt/server'
+
+import { formatConferenceDates, getUpcomingTalks } from '../utils/cms/talks'
+import type { UpcomingConference } from '../utils/cms/talks'
 import { pageMeta } from '#md-page-meta.json'
 import { links } from '#shared/utils/links'
 
@@ -6,7 +10,7 @@ export default defineEventHandler(async () => {
     return new Response('', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
   }
 
-  const upcomingConferences = await $fetch<Conference[]>('/api/upcoming-conferences').catch(() => [] as Conference[])
+  const upcomingConferences = await getUpcomingTalks().catch(() => [] as UpcomingConference[])
 
   const recentPosts = blogPosts().slice(0, 5)
 
@@ -38,7 +42,7 @@ export default defineEventHandler(async () => {
     lines.push('## Upcoming Conferences')
     lines.push('')
     for (const conf of upcomingConferences) {
-      lines.push(`- ${conf.name} — ${conf.dates}${conf.location ? ` (${conf.location})` : ''}`)
+      lines.push(`- ${conf.name} — ${formatConferenceDates(conf)}${conf.location ? ` (${conf.location})` : ''}`)
     }
     lines.push('')
   }

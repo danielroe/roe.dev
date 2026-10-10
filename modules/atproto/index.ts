@@ -11,7 +11,7 @@ import { api } from '@bsky/sdk'
 import { com } from '@bsky/sdk/lexicons'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
-import { hashKey, withCache } from '../shared/build-cache'
+import { hashKey, withCache } from '../shared/build-cache.ts'
 
 /**
  * Resolving `handle -> did -> PDS` costs two sequential round-trips before any

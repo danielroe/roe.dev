@@ -1,3 +1,5 @@
+import { createError, defineEventHandler, getRouterParam, readBody } from 'nuxt/server'
+
 import { updateAdminRecord } from '../../../utils/admin/crud'
 import { encryptJSON } from '../../../utils/admin/encryption'
 
@@ -11,7 +13,7 @@ interface Body {
 export default defineEventHandler(async event => {
   const body = await readBody<Body>(event)
   if (!body.slug || !body.repo) {
-    throw createError({ statusCode: 422, statusMessage: 'slug and repo are required.' })
+    throw createError({ status: 422, statusText: 'slug and repo are required.' })
   }
   return updateAdminRecord(event, 'invites', getRouterParam(event, 'rkey'), {
     encrypted: encryptJSON({ slug: body.slug, repo: body.repo }),

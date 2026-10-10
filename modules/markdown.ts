@@ -1,17 +1,17 @@
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 
-import { addTemplate, addTypeTemplate, defineNuxtModule, updateTemplates, useNuxt } from 'nuxt/kit'
+import { addServerTemplate, addTemplate, addTypeTemplate, defineNuxtModule, updateTemplates, useNuxt } from 'nuxt/kit'
 import { generateSourceTypes } from 'comark-content'
 import type { ContentListFile, FileParsedContext } from 'comark-content'
 import type { MarkdownDocument } from 'comark'
 import type { ViteDevServer } from 'vite'
 
-import { blog as blogContent, blogDir, content, page as pageContent } from '../content.config'
-import type { ContentMeta } from '../content.config'
-import { serialize } from './shared/serialisers'
-import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms'
-import { tidFromDate } from './shared/tid'
+import { blog as blogContent, blogDir, content, page as pageContent } from '../content.config.ts'
+import type { ContentMeta } from '../content.config.ts'
+import { serialize } from './shared/serialisers.ts'
+import { mdCleanHtml, mdInternalLinks, mdStripContainers } from './shared/md-transforms.ts'
+import { tidFromDate } from './shared/tid.ts'
 
 type ContentDocument = ContentListFile<Record<string, any>, ContentMeta>
 
@@ -289,16 +289,14 @@ export async function getBody () {
 
     const manifestPath = join(nuxt.options.buildDir, 'markdown/manifest.json')
 
-    nuxt.options.nitro.virtual ||= {}
-    // in dev the manifest is read back from disk so that a content change is a
-    // template write rather than a rebuild of the server bundle
-    nuxt.options.nitro.virtual['#content-manifest'] = () => nuxt.options.dev
-      ? devManifestModule(manifestPath)
-      : inlineManifestModule(documents)
-
-    nuxt.options.nitro.externals ||= {}
-    nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#content-manifest')
+    addServerTemplate({
+      filename: '#content-manifest',
+      // in dev the manifest is read back from disk so that a content change is a
+      // template write rather than a rebuild of the server bundle
+      getContents: () => nuxt.options.dev
+        ? devManifestModule(manifestPath)
+        : inlineManifestModule(documents),
+    })
 
     if (nuxt.options.dev) {
       addTemplate({
@@ -399,9 +397,6 @@ declare module '#md-page-meta.json' {
   export const pageMeta: Record<string, PageMeta>
 }
 
-declare module '#md-pages.json' {
-  export const mdPages: Set<string>
-}
 `,
     }, { nuxt: true, nitro: true })
   },

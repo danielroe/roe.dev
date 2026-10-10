@@ -1,14 +1,16 @@
+import { createError, defineEventHandler } from 'nuxt/server'
+
 import { getPastTalks } from '../utils/cms/talks'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   try {
-    return await getPastTalks(event)
+    return await getPastTalks()
   }
   catch (error) {
     console.error('Failed to fetch talks:', error)
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to fetch talks',
+      status: 500,
+      statusText: 'Failed to fetch talks',
     })
   }
 })

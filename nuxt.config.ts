@@ -7,7 +7,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { extendViteConfig } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
-import { pageMeta } from './modules/shared/page-meta'
+import { pageMeta } from './modules/shared/page-meta.ts'
 
 /**
  * Rendered routes served from the SWR cache. Applied outside development only:
@@ -31,6 +31,8 @@ const apiSwrRules: Record<string, { swr: number }> = {
   '/api/uses': { swr: 60 * 60 },
   '/api/projects': { swr: 60 * 60 },
   '/api/current-location': { swr: 60 * 5 },
+  '/api/streams': { swr: 60 * 60 },
+  '/api/discover-bluesky-post': { swr: 60 * 60 },
 }
 
 export default defineNuxtConfig({
@@ -151,7 +153,6 @@ export default defineNuxtConfig({
       amaPlaylistId: 'PLQnM-cL9ttacD7fyv6yrtQxaICAUs-2KJ',
     },
     voteUrl: '',
-    sessionPassword: '',
     // Pushover notifications
     pushover: {
       token: '',
@@ -207,6 +208,10 @@ export default defineNuxtConfig({
 
   sourcemap: { client: true, server: false },
 
+  future: {
+    compatibilityVersion: 5,
+  },
+
   experimental: {
     viewTransition: true,
   },
@@ -238,20 +243,7 @@ export default defineNuxtConfig({
     replace: {
       'import.meta.test': isTest,
     },
-    typescript: {
-      tsConfig: {
-        compilerOptions: {
-          noUncheckedIndexedAccess: true,
-          allowImportingTsExtensions: true,
-          noEmit: true,
-        },
-      },
-    },
     future: { nativeSWR: true },
-    prerender: {
-      crawlLinks: true,
-      routes: ['/rss.xml', '/llms.txt', '/llms-full.txt'],
-    },
     hooks: {
       'prerender:generate' (route) {
         if (route.fileName)
@@ -277,6 +269,7 @@ export default defineNuxtConfig({
 
   vite: {
     css: {
+      // TODO: remove with `@nuxt/fonts` v1
       lightningcss: {},
     },
     build: {
@@ -300,11 +293,6 @@ export default defineNuxtConfig({
         },
       },
     },
-    vue: {
-      features: {
-        optionsAPI: false,
-      },
-    },
     optimizeDeps: {
       include: [
         '@formkit/drag-and-drop/vue',
@@ -325,21 +313,10 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
-        noEmit: true,
       },
     },
     nodeTsConfig: {
       include: ['../scripts'],
-      compilerOptions: {
-        allowImportingTsExtensions: true,
-        noEmit: true,
-      },
-    },
-    sharedTsConfig: {
-      compilerOptions: {
-        allowImportingTsExtensions: true,
-        noEmit: true,
-      },
     },
   },
 
@@ -431,6 +408,11 @@ export default defineNuxtConfig({
   plausible: {
     domain: 'roe.dev',
     apiHost: 'https://v.roe.dev',
+  },
+
+  prerender: {
+    crawlLinks: true,
+    routes: ['/rss.xml', '/llms.txt', '/llms-full.txt'],
   },
 
   scripts: {

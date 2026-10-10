@@ -1,5 +1,4 @@
-import { addServerHandler, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { resolveModulePath } from 'exsolve'
+import { addServerHandler, createResolver, defineNuxtModule, extendRouteRules, useNuxt } from 'nuxt/kit'
 import { defu } from 'defu'
 
 const networks = {
@@ -47,17 +46,8 @@ export default defineNuxtModule({
     nuxt.options.alias['node-fetch'] = 'node-fetch-native'
     nuxt.options.build.transpile.push(
       'masto',
-      '@mastojs/ponyfills',
       'magic-string',
     )
-
-    const mockProxy = resolveModulePath('mocked-exports/proxy')
-    nuxt.options.nitro = defu(nuxt.options.nitro, {
-      alias: {
-        'eventemitter3': mockProxy,
-        'isomorphic-ws': mockProxy,
-      },
-    })
 
     nuxt.options.alias = defu(nuxt.options.alias, {
       '@jridgewell/sourcemap-codec': resolver.resolve('./mocks/sourcemap-codec'),
@@ -77,11 +67,7 @@ export default defineNuxtModule({
     }
 
     if (!nuxt.options.dev) {
-      nuxt.options.nitro.routeRules ||= {}
-      nuxt.options.nitro.routeRules['/_social/**'] = {
-        isr: 60,
-        swr: 60,
-      }
+      extendRouteRules('/_social/**', { isr: 60, swr: 60 })
     }
   },
 })

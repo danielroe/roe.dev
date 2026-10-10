@@ -63,7 +63,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"283k"`)
+      .toMatchInlineSnapshot(`"281k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2060k"`)
+      .toMatchInlineSnapshot(`"2050k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14220k"`)
+      .toMatchInlineSnapshot(`"14210k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -94,7 +94,6 @@ describe('project sizes', () => {
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
-        "@atcute/bluesky-richtext-segmenter",
         "@atproto-labs/did-resolver",
         "@atproto-labs/fetch",
         "@atproto-labs/fetch-node",
@@ -174,6 +173,7 @@ describe('project sizes', () => {
         "srvx",
         "ts-custom-error",
         "ufo",
+        "uint8array-extras",
         "ultrahtml",
         "undici",
         "undici_v6",
