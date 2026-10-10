@@ -1,5 +1,3 @@
-import type { H3Event } from 'h3'
-
 import { useAirspace } from '../airspace'
 import { toViewImage } from '#shared/cms/image'
 import type { UsesCategory, UsesItem } from '#shared/cms/uses'
@@ -11,8 +9,8 @@ export type { UsesCategory, UsesItem } from '#shared/cms/uses'
  * category isn't in the repo are dropped (defence against orphans if a
  * category was deleted without cascading).
  */
-export async function getUses (event: H3Event): Promise<UsesCategory[]> {
-  const airspace = useAirspace(event)
+export async function getUses (): Promise<UsesCategory[]> {
+  const airspace = useAirspace()
   const [categories, items] = await Promise.all([
     airspace.usesCategories.list(),
     airspace.usesItems.list(),

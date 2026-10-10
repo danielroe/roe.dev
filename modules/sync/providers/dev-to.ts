@@ -1,6 +1,6 @@
 import { $fetch } from 'ofetch'
 
-import type { SyncItem, SyncOptions, SyncProvider } from './index'
+import type { SyncItem, SyncOptions, SyncProvider } from './index.ts'
 
 export class DevToProvider implements SyncProvider {
   name = 'dev-to'

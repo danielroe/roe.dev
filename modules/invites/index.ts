@@ -8,11 +8,10 @@
  * to read once the OAuth round-trip lands.
  */
 import { addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit'
-import { defu } from 'defu'
 
-import { useBuildAirspace } from '../shared/airspace'
-import { decryptJSON } from '../../server/utils/admin/encryption'
-import { withCache } from '../shared/build-cache'
+import { useBuildAirspace } from '../shared/airspace.ts'
+import { decryptJSON } from '../../server/utils/admin/encryption.ts'
+import { withCache } from '../shared/build-cache.ts'
 
 /** In dev the (encrypted) invite records are re-read at most hourly. */
 const DEV_MAX_AGE = 1000 * 60 * 60
@@ -22,10 +21,6 @@ export default defineNuxtModule({
     name: 'invites',
   },
   async setup (_, nuxt) {
-    nuxt.options.nitro.typescript = defu(nuxt.options.nitro.typescript, {
-      include: ['../modules/runtime/server/**/*'],
-    })
-
     if (nuxt.options._prepare) {
       nuxt.options.runtimeConfig.invites = { map: {} }
       return
@@ -69,15 +64,12 @@ export default defineNuxtModule({
 
     if (!gitHubClientId || Object.keys(map).length === 0) return
 
-    const redirect = nuxt.options.dev
-      ? '&redirect_uri=http://localhost:3000/auth/github'
-      : '&redirect_uri=https://roe.dev/auth/github'
-
-    nuxt.options.nitro.routeRules ||= {}
     for (const slug in map) {
-      nuxt.options.nitro.routeRules['/' + slug] = {
-        redirect: `https://github.com/login/oauth/authorize?client_id=${gitHubClientId}${redirect}/${slug}`,
-      }
+      addServerHandler({
+        route: '/' + slug,
+        method: 'get',
+        handler: resolver.resolve('./runtime/server/invite.get'),
+      })
     }
 
     addServerHandler({

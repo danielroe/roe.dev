@@ -8,10 +8,8 @@ await setup({
   rootDir: fileURLToPath(new URL('../..', import.meta.url)),
   nuxtConfig: {
     sourcemap: false,
-    nitro: {
-      prerender: {
-        crawlLinks: false,
-      },
+    prerender: {
+      crawlLinks: false,
     },
     hooks: {
       'prerender:routes' (routes) {

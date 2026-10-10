@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import { createError } from 'nuxt/server'
+import type { RequestEvent } from 'nuxt/server'
 
 import { pageMeta } from '#md-page-meta.json'
 
@@ -30,16 +31,16 @@ export function mdFrontmatter (path: string, meta: { title: string, description?
  * whatever the handler returns, so a `Response` round-trips through the cache
  * as `{}` and every request after the first serves that instead of the document.
  */
-export function mdResponse (event: H3Event, content: string): string {
-  setResponseHeader(event, 'content-type', 'text/markdown; charset=utf-8')
+export function mdResponse (event: RequestEvent, content: string): string {
+  event.res.headers.set('content-type', 'text/markdown; charset=utf-8')
   return content
 }
 
 /** Serve a content page (`/ai`, `/bio`) as plain markdown. */
-export function contentPageResponse (event: H3Event, path: string): string {
+export function contentPageResponse (event: RequestEvent, path: string): string {
   const page = contentPage(path)
   if (!page) {
-    throw createError({ statusCode: 404, statusMessage: 'Not found' })
+    throw createError({ status: 404, statusText: 'Not found' })
   }
 
   return mdResponse(event, [
@@ -60,10 +61,3 @@ export function formatDate (dateStr: string): string {
 }
 
 export type { Talk } from '#shared/cms/talks'
-
-export interface Conference {
-  name: string
-  dates: string
-  link?: string
-  location?: string
-}

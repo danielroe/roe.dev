@@ -1,3 +1,7 @@
+import { defineEventHandler } from 'nuxt/server'
+
+import { formatConferenceDates, getPastTalks, getUpcomingTalks } from '../utils/cms/talks'
+import type { UpcomingConference } from '../utils/cms/talks'
 import { links } from '#shared/utils/links'
 
 export default defineEventHandler(async () => {
@@ -6,8 +10,8 @@ export default defineEventHandler(async () => {
   }
 
   const [talks, upcomingConferences] = await Promise.all([
-    $fetch<Talk[]>('/api/talks').catch(() => [] as Talk[]),
-    $fetch<Conference[]>('/api/upcoming-conferences').catch(() => [] as Conference[]),
+    getPastTalks().catch(() => [] as Talk[]),
+    getUpcomingTalks().catch(() => [] as UpcomingConference[]),
   ])
 
   const bio = contentPage('/bio')
@@ -40,7 +44,7 @@ export default defineEventHandler(async () => {
     lines.push('')
     for (const conf of upcomingConferences) {
       const link = conf.link ? `[${conf.name}](${conf.link})` : conf.name
-      lines.push(`- ${link} — ${conf.dates}${conf.location ? ` (${conf.location})` : ''}`)
+      lines.push(`- ${link} — ${formatConferenceDates(conf)}${conf.location ? ` (${conf.location})` : ''}`)
     }
     lines.push('')
     lines.push('---')

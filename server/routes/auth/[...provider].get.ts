@@ -1,8 +1,11 @@
+import { createError, defineEventHandler, getQuery, sendRedirect, useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
+
 export default defineEventHandler(async event => {
   const { code, error, error_description, error_uri } = getQuery(event)
 
   if (import.meta.dev) {
-    console.log(event.path)
+    console.log(event.url.pathname + event.url.search)
   }
 
   if (error) {
@@ -12,13 +15,13 @@ export default defineEventHandler(async event => {
 
   if (!code) {
     throw createError({
-      statusCode: 422,
-      statusMessage: 'Missing authorisation code.',
+      status: 422,
+      statusText: 'Missing authorisation code.',
     })
   }
 
-  const config = useRuntimeConfig(event)
-  const { access_token } = await $fetch<{ access_token: string }>(
+  const config = useRuntimeConfig()
+  const { access_token } = await $fetch<{ access_token?: string }>(
     'https://github.com/login/oauth/access_token',
     {
       method: 'POST',
@@ -47,7 +50,7 @@ export default defineEventHandler(async event => {
           console.error('viewer', err)
           return {}
         }),
-      getSponsors(event)
+      getSponsors()
         .then(r => r.map(s => s.id))
         .catch(err => {
           console.error('sponsor', err)

@@ -1,7 +1,7 @@
 import { $fetch } from 'ofetch'
 
-import { useBuildAirspaceWithSession } from '../../shared/airspace'
-import type { SyncItem, SyncOptions, SyncProvider } from './index'
+import { useBuildAirspaceWithSession } from '../../shared/airspace.ts'
+import type { SyncItem, SyncOptions, SyncProvider } from './index.ts'
 
 const PROVIDER = 'gde-advocu'
 

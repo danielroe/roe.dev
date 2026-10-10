@@ -1,3 +1,5 @@
+import { createError, defineEventHandler, getRequestURL } from 'nuxt/server'
+
 export default defineEventHandler(event => {
   const url = getRequestURL(event)
   const match = url.pathname.match(/\/blog\/(.+)\.md$/)
@@ -7,7 +9,7 @@ export default defineEventHandler(event => {
     ? blogPosts().find(p => p.meta.stem === slug)
     : undefined
   if (!post) {
-    throw createError({ statusCode: 404, statusMessage: 'Not found' })
+    throw createError({ status: 404, statusText: 'Not found' })
   }
 
   const { title, date, tags, description } = post.data

@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'nuxt/server'
+
 import { listAdminRecords } from '../../../utils/admin/crud'
 import { viewAma } from '../../../utils/admin/ama-record'
 

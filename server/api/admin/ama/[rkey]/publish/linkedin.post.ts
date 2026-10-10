@@ -1,3 +1,5 @@
+import { createError, defineEventHandler, getRouterParam, readBody } from 'nuxt/server'
+
 import { ensureNotAlreadyPublished, mergePublishedLink, prepareAmaImage } from '../../../../../utils/admin/ama-record'
 import { buildEntityLookup, platformText } from '../../../../../utils/admin/ama-resolve'
 import { publishLinkedIn } from '../../../../../utils/admin/ama-publish'
@@ -12,17 +14,16 @@ interface Body extends AmaUpdate {
 
 export default defineEventHandler(async event => {
   const rkey = getRouterParam(event, 'rkey')
-  if (!rkey) throw createError({ statusCode: 400, statusMessage: 'Missing rkey.' })
+  if (!rkey) throw createError({ status: 400, statusText: 'Missing rkey.' })
 
   const body = await readBody<Body>(event)
   if (!body.question || !body.posts?.length) {
-    throw createError({ statusCode: 422, statusMessage: 'question and at least one post are required.' })
+    throw createError({ status: 422, statusText: 'question and at least one post are required.' })
   }
 
   await ensureNotAlreadyPublished(event, rkey, 'linkedin', Boolean(body.force))
   const entities = await buildEntityLookup(event)
   const { url } = await publishLinkedIn(
-    event,
     platformText(body.posts, 'linkedin', entities),
     await prepareAmaImage(event, rkey, body),
     getImageAltText(body.question, body.backgroundStyle ?? undefined),

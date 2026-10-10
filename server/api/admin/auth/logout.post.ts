@@ -1,3 +1,5 @@
+import { defineEventHandler, sendRedirect } from 'nuxt/server'
+
 import { clearAdminSessionCookie, getAdminSessionCookie, getOauth } from '../../../utils/admin/oauth'
 
 export default defineEventHandler(async event => {

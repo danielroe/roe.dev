@@ -2,7 +2,7 @@ import { addServerHandler, createResolver, defineNuxtModule, useNuxt, useRuntime
 import { $fetch } from 'ofetch'
 import { put, head } from '@vercel/blob'
 
-import { useBuildAirspace } from './shared/airspace'
+import { useBuildAirspace } from './shared/airspace.ts'
 
 export default defineNuxtModule({
   meta: {

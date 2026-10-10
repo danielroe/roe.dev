@@ -8,7 +8,7 @@ import { isDevelopment } from 'std-env'
 import shiki from 'comark/plugins/shiki'
 import palenight from 'shiki/themes/material-theme-palenight.mjs'
 
-import { headingIds } from './modules/shared/comark-heading-ids'
+import { headingIds } from './modules/shared/comark-heading-ids.ts'
 
 /** Absolute path to the blog source directory, as the sources below resolve it. */
 export const blogDir = fileURLToPath(new URL('./content/blog', import.meta.url))

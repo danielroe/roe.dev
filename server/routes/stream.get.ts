@@ -1,15 +1,17 @@
+import { defineEventHandler, getRequestHeader, sendRedirect } from 'nuxt/server'
+
 const BOT_RE = /bot\b|index|spider|facebookexternalhit|crawl|wget|slurp|mediapartners-google|whatsapp|twitter|linkedin|mastodon|bluesky|bsky/i
 
 export default defineEventHandler(async event => {
-  setHeader(event, 'vary', 'user-agent')
+  event.res.headers.set('vary', 'user-agent')
 
   const userAgent = getRequestHeader(event, 'user-agent')
   const isOpenGraphCrawler = userAgent && BOT_RE.test(userAgent)
   if (!isOpenGraphCrawler) {
-    return await sendRedirect(event, 'https://twitch.tv/danielroe')
+    return sendRedirect(event, 'https://twitch.tv/danielroe')
   }
 
-  setHeader(event, 'content-type', 'text/html')
+  event.res.headers.set('content-type', 'text/html')
 
   return `<!DOCTYPE html>
 <html lang="en">

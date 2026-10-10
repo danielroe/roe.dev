@@ -1,7 +1,10 @@
-export default defineCachedEventHandler(async event => {
+import { defineEventHandler, useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
+
+export default defineEventHandler(async () => {
   if (import.meta.test) return []
 
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   const token = await $fetch<TwitchTokenResponse>(
     'https://id.twitch.tv/oauth2/token',
     {

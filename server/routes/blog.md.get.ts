@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'nuxt/server'
+
 import { pageMeta } from '#md-page-meta.json'
 
 export default defineEventHandler(event => {

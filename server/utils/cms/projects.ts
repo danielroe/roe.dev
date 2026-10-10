@@ -1,5 +1,3 @@
-import type { H3Event } from 'h3'
-
 import { useAirspace } from '../airspace'
 import { toViewImage } from '#shared/cms/image'
 import type { Project, ProjectCategory } from '#shared/cms/projects'
@@ -21,8 +19,8 @@ const ARCHIVED_STATUSES = new Set([
  * `order`. Projects whose parent category isn't in the repo are dropped
  * (defence against orphans if a category was deleted without cascading).
  */
-export async function getProjects (event: H3Event): Promise<ProjectCategory[]> {
-  const airspace = useAirspace(event)
+export async function getProjects (): Promise<ProjectCategory[]> {
+  const airspace = useAirspace()
   const [categories, projects] = await Promise.all([
     airspace.projectCategories.list(),
     airspace.projects.list(),

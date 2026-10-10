@@ -1,6 +1,6 @@
 import { $fetch } from 'ofetch'
 
-import type { SyncItem, SyncOptions, SyncProvider } from './index'
+import type { SyncItem, SyncOptions, SyncProvider } from './index.ts'
 
 const CONTRIBUTION_TYPE_MAP: Record<SyncItem['type'], string> = {
   blog: 'BLOGPOST',

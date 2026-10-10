@@ -12,10 +12,4 @@ export default withNuxt([
       '@typescript-eslint/ban-types': 'off',
     },
   },
-  {
-    files: ['*.config.js'],
-    rules: {
-      'no-undef': 'off',
-    },
-  },
 ])

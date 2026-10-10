@@ -8,7 +8,7 @@ import { api } from '@bsky/sdk'
 import { app, com } from '@bsky/sdk/lexicons'
 import { toValue } from 'vue'
 
-import { createBuildCache, hashKey } from './shared/build-cache'
+import { createBuildCache, hashKey } from './shared/build-cache.ts'
 
 // when I created my Bluesky account - don't judge me for hard coding it!
 const BLUESKY_ACCOUNT_CREATED = new Date('2023-04-26T05:22:14.855Z')

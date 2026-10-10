@@ -1,3 +1,6 @@
+import { defineEventHandler } from 'nuxt/server'
+
+import { getPastTalks } from '../utils/cms/talks'
 import { pageMeta } from '#md-page-meta.json'
 
 export default defineEventHandler(async event => {
@@ -5,7 +8,7 @@ export default defineEventHandler(async event => {
     return mdResponse(event, '')
   }
 
-  const talks = await $fetch<Talk[]>('/api/talks')
+  const talks = await getPastTalks()
 
   // Group talks the same way the page does
   const groupedTalks: Record<string, Talk[]> = {}

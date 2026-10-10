@@ -1,49 +1,27 @@
-import { addServerHandler, createResolver, defineNuxtModule, useNuxt } from 'nuxt/kit'
-import { pageMeta } from './shared/page-meta'
+import { addServerHandler, addServerTemplate, createResolver, defineNuxtModule } from 'nuxt/kit'
+import { pageMeta } from './shared/page-meta.ts'
 
 export default defineNuxtModule({
   meta: {
     name: 'md-routes',
   },
-  setup () {
-    const nuxt = useNuxt()
+  setup (_, nuxt) {
     const resolver = createResolver(import.meta.url)
 
     // Expose page meta as a virtual module for server routes
-    nuxt.options.nitro.virtual ||= {}
-    nuxt.options.nitro.virtual['#md-page-meta.json'] = () =>
-      `export const pageMeta = ${JSON.stringify(pageMeta)}`
-
-    const mdPages = [
-      '/',
-      '/ai',
-      '/bio',
-      '/talks',
-      '/uses',
-      '/projects',
-      '/blog',
-    ]
+    addServerTemplate({
+      filename: '#md-page-meta.json',
+      getContents: () => `export const pageMeta = ${JSON.stringify(pageMeta)}`,
+    })
 
     // Register blog post .md handlers once we know all the slugs
     nuxt.hook('markdown:blog-entries', entries => {
       for (const entry of entries) {
-        const route = `${entry.path}.md`
-
         addServerHandler({
-          route,
+          route: `${entry.path}.md`,
           handler: resolver.resolve('./md-routes/runtime/server/blog-md.get'),
         })
-
-        mdPages.push(entry.path)
       }
-
-      // Now that all pages are known, expose them for the middleware
-      nuxt.options.nitro.virtual!['#md-pages.json'] = () =>
-        `export const mdPages = new Set(${JSON.stringify(mdPages)})`
     })
-
-    nuxt.options.nitro.externals ||= {}
-    nuxt.options.nitro.externals.inline ||= []
-    nuxt.options.nitro.externals.inline.push('#md-page-meta.json', '#md-pages.json')
   },
 })

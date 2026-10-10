@@ -1,5 +1,7 @@
-export default defineNitroPlugin(nitroApp => {
-  nitroApp.hooks.hook('render:island', island => {
+import { useServerHooks } from 'nuxt/server'
+
+export default function () {
+  useServerHooks().hook('render:island', island => {
     if (island.html.startsWith('<!--[-->')) {
       island.html = `<div data-island>${island.html}</div>`
     }
@@ -7,4 +9,4 @@ export default defineNitroPlugin(nitroApp => {
       island.html = island.html.replace(/(<\w+)([ >])/, '$1 data-island$2')
     }
   })
-})
+}

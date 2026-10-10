@@ -1,12 +1,10 @@
-import type { H3Event } from 'h3'
-
 import type { Talk } from '../md'
 import { useAirspace } from '../airspace'
 import { toTalk, rkeyFromUri } from '#shared/cms/talk-mapper'
 
-export async function getPastTalks (event: H3Event): Promise<Talk[]> {
+export async function getPastTalks (): Promise<Talk[]> {
   const now = new Date().toISOString()
-  const airspace = useAirspace(event)
+  const airspace = useAirspace()
   const [talks, groups] = await Promise.all([
     airspace.talks.list(),
     airspace.talkGroups.list(),
@@ -35,9 +33,20 @@ export interface UpcomingConference {
   } | null
 }
 
-export async function getUpcomingTalks (event: H3Event): Promise<UpcomingConference[]> {
+const conferenceDateFormatter = new Intl.DateTimeFormat('en', {
+  month: 'long',
+  day: 'numeric',
+})
+
+/** The conference's dates for display, such as `June 4 - June 6`. */
+export function formatConferenceDates (conference: Pick<UpcomingConference, 'dates' | 'endDate'>): string {
+  const start = conferenceDateFormatter.format(new Date(conference.dates))
+  return conference.endDate ? `${start} - ${conferenceDateFormatter.format(new Date(conference.endDate))}` : start
+}
+
+export async function getUpcomingTalks (): Promise<UpcomingConference[]> {
   const now = new Date().toISOString()
-  const airspace = useAirspace(event)
+  const airspace = useAirspace()
   const talks = await airspace.talks.list()
 
   const upcoming = talks

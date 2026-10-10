@@ -1,9 +1,9 @@
 import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 
-import { syncAll } from './providers'
-import type { SyncItem } from './providers'
-import { useBuildAirspace } from '../shared/airspace'
+import { syncAll } from './providers/index.ts'
+import type { SyncItem } from './providers/index.ts'
+import { useBuildAirspace } from '../shared/airspace.ts'
 
 const TALK_TYPE_MAP: Record<string, SyncItem['type']> = {
   podcast: 'video',

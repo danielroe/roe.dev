@@ -1,11 +1,12 @@
+import { defineEventHandler, useRuntimeConfig } from 'nuxt/server'
 import { Client, asStringFormat } from '@atproto/lex'
 import { api } from '@bsky/sdk'
 import { app } from '@bsky/sdk/lexicons'
 import MagicString from 'magic-string'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
   const client = new Client(api.app.urlPublic)
-  const { identifier } = useRuntimeConfig(event).social.networks.bluesky
+  const { identifier } = useRuntimeConfig().social.networks.bluesky
 
   const feed: app.bsky.feed.defs.FeedViewPost[] = []
   let cursor: string | undefined

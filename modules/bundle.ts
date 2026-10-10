@@ -25,9 +25,6 @@ export default defineNuxtModule({
     nuxt.hook('prerender:routes', routes => {
       routes.routes.clear()
     })
-    nuxt.hook('nitro:config', config => {
-      config.prerender ||= {}
-      config.prerender.crawlLinks = false
-    })
+    nuxt.options.prerender.crawlLinks = false
   },
 })

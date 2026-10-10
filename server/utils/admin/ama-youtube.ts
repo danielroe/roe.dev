@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import { useRuntimeConfig } from 'nuxt/server'
 
 import { getValidYouTubeAccessToken } from '../youtube/auth'
 
@@ -146,12 +146,9 @@ export interface PublishYouTubeOptions {
   videoMimeType: string
 }
 
-export async function publishYouTubeShorts (
-  event: H3Event,
-  options: PublishYouTubeOptions,
-): Promise<{ url: string }> {
-  const config = useRuntimeConfig(event)
-  const accessToken = await getValidYouTubeAccessToken(event)
+export async function publishYouTubeShorts (options: PublishYouTubeOptions): Promise<{ url: string }> {
+  const config = useRuntimeConfig()
+  const accessToken = await getValidYouTubeAccessToken()
 
   const meta = generateVideoMetadata(options.question, options.answer)
   const title = meta.title.length > 100 ? meta.title.slice(0, 97) + '…' : meta.title

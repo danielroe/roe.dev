@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import { useRuntimeConfig } from 'nuxt/server'
+import { $fetch } from 'ofetch'
 
 export interface PushoverOptions {
   title: string
@@ -8,8 +9,8 @@ export interface PushoverOptions {
   urlTitle?: string
 }
 
-export function sendPushoverNotification (event: H3Event, options: PushoverOptions) {
-  const config = useRuntimeConfig(event)
+export function sendPushoverNotification (options: PushoverOptions) {
+  const config = useRuntimeConfig()
 
   if (!config.pushover.token || !config.pushover.userKey) {
     console.warn('Pushover credentials not configured')

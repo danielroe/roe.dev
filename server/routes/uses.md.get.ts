@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'nuxt/server'
+
 import { pageMeta } from '#md-page-meta.json'
 
 import { getUses } from '../utils/cms/uses'
@@ -7,7 +9,7 @@ export default defineEventHandler(async event => {
     return mdResponse(event, '')
   }
 
-  const categories = await getUses(event)
+  const categories = await getUses()
   const sorted = [...categories].sort((a, b) => (a.order || 100) - (b.order || 100))
 
   const lines = [

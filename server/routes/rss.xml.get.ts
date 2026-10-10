@@ -1,3 +1,4 @@
+import { createError, defineEventHandler } from 'nuxt/server'
 import { Feed } from 'feed'
 
 export default defineEventHandler(async () => {

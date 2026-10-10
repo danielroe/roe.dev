@@ -3,7 +3,7 @@
  * entity lookup once and exposes helpers that produce the
  * platform-specific text + (for Bluesky) facets.
  */
-import type { H3Event } from 'h3'
+import type { RequestEvent } from 'nuxt/server'
 
 import { listAdminRecords } from './crud'
 import { resolveForPlatform, resolveBluesky } from './ama-mentions'
@@ -18,7 +18,7 @@ export interface AmaPostInput {
   mentions?: Array<{ uri: string, cid: string }>
 }
 
-export async function buildEntityLookup (event: H3Event): Promise<EntityLookup> {
+export async function buildEntityLookup (event: RequestEvent): Promise<EntityLookup> {
   const records = await listAdminRecords(event, 'entities')
   const byRkey = new Map<string, EntityRecord>()
   for (const r of records) byRkey.set(r.rkey, r.value)

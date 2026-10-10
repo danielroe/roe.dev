@@ -1,31 +1,24 @@
+import { defineEventHandler } from 'nuxt/server'
 import { imageMeta } from 'image-meta'
+import { $fetch } from 'ofetch'
 
-import { getUpcomingTalks } from '../utils/cms/talks'
+import { formatConferenceDates, getUpcomingTalks } from '../utils/cms/talks'
 import type { UpcomingConference } from '../utils/cms/talks'
 
-export default defineEventHandler(async event => {
-  const upcomingConferences = await getUpcomingTalks(event)
-
-  const formatter = new Intl.DateTimeFormat('en', {
-    month: 'long',
-    day: 'numeric',
-  })
+export default defineEventHandler(async () => {
+  const upcomingConferences = await getUpcomingTalks()
 
   return Promise.all(
     upcomingConferences.map(async conference => {
-      let dates = formatter.format(new Date(conference.dates))
-      if (conference.endDate) {
-        dates += ` - ${formatter.format(new Date(conference.endDate))}`
-        delete conference.endDate
-      }
-      conference.dates = dates
+      conference.dates = formatConferenceDates(conference)
+      delete conference.endDate
 
       if (conference.image?.url && conference.image.width && conference.image.height) {
         return conference as Omit<UpcomingConference, 'image'> & { image: NonNullable<UpcomingConference['image']> }
       }
 
       const imageUrl = conference.image?.url ?? await (async () => {
-        const html = await $fetch<string>(conference.link)
+        const html = await $fetch(conference.link, { responseType: 'text' })
         return html.match(
           /<meta[^>]*property="og:image"[^>]*content="([^"]+)"|<meta[^>]*content="([^"]+)"[^>]*property="og:image"/,
         )?.[1] ?? null
@@ -43,7 +36,7 @@ export default defineEventHandler(async event => {
         }
       }
 
-      const res = await $fetch<ArrayBuffer>(imageUrl, { responseType: 'arrayBuffer' })
+      const res = await $fetch(imageUrl, { responseType: 'arrayBuffer' })
       const metadata = imageMeta(new Uint8Array(res))
 
       return {

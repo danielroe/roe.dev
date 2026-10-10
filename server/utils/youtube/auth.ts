@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import { useRuntimeConfig } from 'nuxt/server'
 
 interface YouTubeTokenResponse {
   access_token: string
@@ -51,8 +51,8 @@ export async function refreshYouTubeAccessToken (credentials: YouTubeCredentials
   }
 }
 
-export async function getValidYouTubeAccessToken (event: H3Event): Promise<string> {
-  const config = useRuntimeConfig(event)
+export async function getValidYouTubeAccessToken (): Promise<string> {
+  const config = useRuntimeConfig()
 
   // Check if we have a refresh token configured
   const refreshToken = config.youtube.refreshToken

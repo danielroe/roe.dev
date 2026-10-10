@@ -7,8 +7,8 @@
  * `<baseUrl>/oauth-client-metadata.json`. Loopback base URLs use the spec's
  * `http://localhost?…` convention, so dev needs no public hosting.
  */
-import type { H3Event } from 'h3'
-import { clearSession, getSession, updateSession } from 'h3'
+import { clearSession, createError, getSession, updateSession, useRuntimeConfig } from 'nuxt/server'
+import type { RequestEvent, SessionConfig } from 'nuxt/server'
 import { scopesFor } from 'airspace'
 import { clientMetadata, createOAuth } from 'airspace/oauth'
 import type { NodeSavedSessionStore, NodeSavedStateStore, OAuthSession } from 'airspace/oauth'
@@ -23,12 +23,12 @@ export const OAUTH_SCOPES = scopesFor({ collections })
 type NodeSavedSession = NonNullable<Awaited<ReturnType<NodeSavedSessionStore['get']>>>
 type NodeSavedState = NonNullable<Awaited<ReturnType<NodeSavedStateStore['get']>>>
 
-interface AdminStateData {
+type AdminStateData = {
   key?: string
   state?: NodeSavedState
 }
 
-interface AdminSessionData {
+type AdminSessionData = {
   did?: string
   handle?: string
   oauth?: {
@@ -37,37 +37,27 @@ interface AdminSessionData {
   }
 }
 
-function sessionConfig (event: H3Event) {
-  return {
-    password: useRuntimeConfig(event).sessionPassword,
-    name: 'admin-session',
-    cookie: {
-      httpOnly: true,
-      sameSite: 'lax' as const,
-      secure: !import.meta.dev,
-      path: '/',
-    },
-  }
+const sessionConfig: SessionConfig = {
+  name: 'admin-session',
+  cookie: { secure: !import.meta.dev },
 }
 
-export function getAdminSessionCookie (event: H3Event) {
-  return getSession<AdminSessionData>(event, sessionConfig(event))
+export function getAdminSessionCookie (event: RequestEvent) {
+  return getSession<AdminSessionData>(event, sessionConfig)
 }
 
-export async function updateAdminSessionCookie (event: H3Event, patch: Partial<AdminSessionData>): Promise<void> {
-  await updateSession<AdminSessionData>(event, sessionConfig(event), patch)
+export async function updateAdminSessionCookie (event: RequestEvent, patch: Partial<AdminSessionData>): Promise<void> {
+  await updateSession<AdminSessionData>(event, sessionConfig, patch)
 }
 
-export function clearAdminSessionCookie (event: H3Event) {
-  return clearSession(event, sessionConfig(event))
+export function clearAdminSessionCookie (event: RequestEvent) {
+  return clearSession(event, sessionConfig)
 }
 
-function stateSessionConfig (event: H3Event) {
-  return {
-    ...sessionConfig(event),
-    name: 'admin-oauth-state',
-    maxAge: 60 * 10,
-  }
+const stateSessionConfig: SessionConfig = {
+  ...sessionConfig,
+  name: 'admin-oauth-state',
+  maxAge: 60 * 10,
 }
 
 /**
@@ -75,23 +65,23 @@ function stateSessionConfig (event: H3Event) {
  * and the callback are separate requests that are not guaranteed to hit the
  * same serverless instance, so it cannot live in process memory.
  */
-function cookieStateStore (event: H3Event): NodeSavedStateStore {
+function cookieStateStore (event: RequestEvent): NodeSavedStateStore {
   return {
     async get (key: string): Promise<NodeSavedState | undefined> {
-      const sess = await getSession<AdminStateData>(event, stateSessionConfig(event))
+      const sess = await getSession<AdminStateData>(event, stateSessionConfig)
       return sess.data.key === key ? sess.data.state : undefined
     },
     async set (key: string, value: NodeSavedState): Promise<void> {
-      await updateSession<AdminStateData>(event, stateSessionConfig(event), { key, state: value })
+      await updateSession<AdminStateData>(event, stateSessionConfig, { key, state: value })
     },
     async del (): Promise<void> {
-      await clearSession(event, stateSessionConfig(event))
+      await clearSession(event, stateSessionConfig)
     },
   }
 }
 
-function baseUrlFor (event: H3Event): string {
-  return useRuntimeConfig(event).admin.baseUrl.replace(/\/$/, '')
+function baseUrlFor (): string {
+  return useRuntimeConfig().admin.baseUrl.replace(/\/$/, '')
 }
 
 function nameFor (baseUrl: string): string {
@@ -99,18 +89,18 @@ function nameFor (baseUrl: string): string {
 }
 
 /** The document `/oauth-client-metadata.json` serves. */
-export function getClientMetadata (event: H3Event) {
-  const baseUrl = baseUrlFor(event)
+export function getClientMetadata () {
+  const baseUrl = baseUrlFor()
   return clientMetadata({ baseUrl, redirectPath: REDIRECT_PATH, name: nameFor(baseUrl), scopes: OAUTH_SCOPES })
 }
 
 /**
  * The OAuth session payload (DPoP JWK + access/refresh tokens + AS metadata)
- * sealed with iron-session lands around 4-6 KB, close to the 4096-byte
- * per-cookie soft limit. If browsers start truncating it, this needs to move
- * to KV-backed storage.
+ * sealed with iron lands around 4-6 KB, close to the 4096-byte per-cookie
+ * limit. Sealing throws once it outgrows that, at which point this needs to
+ * move to KV-backed storage.
  */
-function cookieSessionStore (event: H3Event): NodeSavedSessionStore {
+function cookieSessionStore (event: RequestEvent): NodeSavedSessionStore {
   return {
     async get (sub: string): Promise<NodeSavedSession | undefined> {
       const sess = await getAdminSessionCookie(event)
@@ -131,8 +121,8 @@ function cookieSessionStore (event: H3Event): NodeSavedSessionStore {
 /**
  * Built per request, because the session store closes over the event.
  */
-export function getOauth (event: H3Event) {
-  const baseUrl = baseUrlFor(event)
+export function getOauth (event: RequestEvent) {
+  const baseUrl = baseUrlFor()
   return createOAuth({
     baseUrl,
     redirectPath: REDIRECT_PATH,
@@ -143,11 +133,11 @@ export function getOauth (event: H3Event) {
 }
 
 /** Restore the editor's OAuth session, for `createAirspace({ session })`. */
-export async function requireAdminSession (event: H3Event): Promise<OAuthSession> {
+export async function requireAdminSession (event: RequestEvent): Promise<OAuthSession> {
   const sess = await getAdminSessionCookie(event)
   const did = sess.data.did
   if (!did) {
-    throw createError({ statusCode: 401, statusMessage: 'Not signed in.' })
+    throw createError({ status: 401, statusText: 'Not signed in.' })
   }
 
   try {
@@ -156,6 +146,6 @@ export async function requireAdminSession (event: H3Event): Promise<OAuthSession
   catch (err) {
     console.warn('[admin] OAuth restore failed:', err instanceof Error ? err.message : err)
     await clearAdminSessionCookie(event)
-    throw createError({ statusCode: 401, statusMessage: 'Session expired. Please sign in again.' })
+    throw createError({ status: 401, statusText: 'Session expired. Please sign in again.' })
   }
 }
