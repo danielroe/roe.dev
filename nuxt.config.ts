@@ -167,7 +167,7 @@ export default defineNuxtConfig({
     },
     github: {
       // my GH ID
-      id: 'MDQ6VXNlcjI4NzA2Mzcy',
+      id: '28706372',
       // fetching GH repos in build + sponsors when deployed
       token: '',
       // token used to update GitHub status
@@ -239,6 +239,7 @@ export default defineNuxtConfig({
           }
         }),
       ),
+      inline: ['forges'],
     },
     replace: {
       'import.meta.test': isTest,

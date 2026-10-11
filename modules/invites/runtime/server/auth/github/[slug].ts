@@ -41,8 +41,8 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const username = await query(access_token, `{ viewer { login } }`)
-    .then(r => r?.viewer.login)
+  const username = await createGitHub(access_token).users.me()
+    .then(user => user.login)
     .catch(err => {
       console.error('viewer', err)
       return null
@@ -55,27 +55,5 @@ export default defineEventHandler(async event => {
     })
   }
 
-  try {
-    const res = await fetch(
-      `https://api.github.com/repos/${repo}/collaborators/${encodeURIComponent(username)}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ permission: 'push' }),
-        headers: {
-          'User-Agent': 'https://roe.dev',
-          'Content-Type': 'application/json',
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-          'Authorization': `Bearer ${config.github.inviteToken}`,
-        },
-      },
-    )
-
-    console.log({ res: await res.json() })
-  }
-  catch (err) {
-    console.log('could not add collaborator', err)
-    console.log({ inviteToken: config.github.inviteToken })
-  }
-  return sendRedirect(event, `https://github.com/${repo}/invitations`)
+  return sendRedirect(event, await inviteCollaborator(createGitHub(config.github.inviteToken), repo, username))
 })

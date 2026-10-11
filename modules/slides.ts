@@ -1,7 +1,7 @@
 import { addServerHandler, createResolver, defineNuxtModule, useNuxt, useRuntimeConfig } from 'nuxt/kit'
-import { $fetch } from 'ofetch'
 import { put, head } from '@vercel/blob'
 
+import { createGitHub, downloadSlides } from '../server/utils/github.ts'
 import { useBuildAirspace } from './shared/airspace.ts'
 
 export default defineNuxtModule({
@@ -23,12 +23,7 @@ export default defineNuxtModule({
       return
     }
 
-    const $gh = $fetch.create({
-      baseURL: 'https://api.github.com/repos/danielroe/slides/releases',
-      headers: {
-        Authorization: `token ${config.github.token}`,
-      },
-    })
+    const gh = createGitHub(config.github.token)
 
     const token = config.blobReadWriteToken
 
@@ -39,15 +34,9 @@ export default defineNuxtModule({
 
       const existingBlob = await head(pathname, { token }).catch(() => null)
       if (!existingBlob) {
-        const ghRelease = await $gh<GitHubRelease>(`/tags/${release}`)
-        const id = ghRelease?.assets.find(a => a.name.endsWith('.pdf'))?.id
+        const file = await downloadSlides(gh, release)
 
-        if (!id) continue
-
-        const file = await $gh(`/assets/${id}`, {
-          responseType: 'arrayBuffer',
-          headers: { Accept: 'application/octet-stream' },
-        })
+        if (!file) continue
 
         // Upload file to Vercel Blob
         const blob = await put(pathname, Buffer.from(file), {
@@ -77,8 +66,4 @@ async function fetchSlideReleases (): Promise<string[]> {
   return records
     .map(r => r.value.slides)
     .filter((s): s is string => Boolean(s))
-}
-
-interface GitHubRelease {
-  assets: Array<{ id: number, name: string }>
 }

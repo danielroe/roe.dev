@@ -59,13 +59,13 @@ export default defineEventHandler(async event => {
           ? String.fromCodePoint(...[...locationData.countryCode.toUpperCase()].map(char => char.charCodeAt(0) + 127397))
           : '🌍'
 
-    await query(config.github.profileToken, `
-      mutation {
-        changeUserStatus(input: { emoji: "${emoji}" }) {
+    await createGitHub(config.github.profileToken).graphql(`
+      mutation ($emoji: String!) {
+        changeUserStatus(input: { emoji: $emoji }) {
           status { emoji }
         }
       }
-    `)
+    `, { emoji })
   }
   catch (error) {
     console.error('Failed to update GitHub status:', error)
