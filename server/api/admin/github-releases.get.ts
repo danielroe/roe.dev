@@ -2,16 +2,9 @@
  * List releases from danielroe/slides for the talk-editor slides datalist.
  */
 import { createError, defineEventHandler, useRuntimeConfig } from 'nuxt/server'
-import { $fetch } from 'ofetch'
 
 import { requireAdminSession } from '../../utils/admin/oauth'
-
-interface GitHubRelease {
-  tag_name: string
-  name: string | null
-  published_at: string | null
-  draft: boolean
-}
+import { createGitHub, SLIDES_REPO } from '../../utils/github'
 
 export default defineEventHandler(async event => {
   await requireAdminSession(event)
@@ -25,23 +18,14 @@ export default defineEventHandler(async event => {
   }
 
   try {
-    const releases = await $fetch<GitHubRelease[]>(
-      'https://api.github.com/repos/danielroe/slides/releases?per_page=100',
-      {
-        headers: {
-          'Authorization': `token ${config.github.token}`,
-          'User-Agent': 'roe.dev-admin',
-          'Accept': 'application/vnd.github+json',
-        },
-      },
-    )
+    const releases = await Array.fromAsync(createGitHub(config.github.token).releases.list(SLIDES_REPO, { perPage: 100 }))
 
     return releases
-      .filter(r => !r.draft)
+      .filter(r => !r.isDraft)
       .map(r => ({
-        tag: r.tag_name,
-        name: r.name || r.tag_name,
-        publishedAt: r.published_at,
+        tag: r.tag,
+        name: r.name || r.tag,
+        publishedAt: r.publishedAt?.toISOString() ?? null,
       }))
   }
   catch (err) {

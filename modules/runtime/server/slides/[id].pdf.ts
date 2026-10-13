@@ -2,19 +2,11 @@
  * Dev-only handler for `/slides/:id.pdf`.
  */
 import { createError, defineEventHandler, getRouterParam, useRuntimeConfig } from 'nuxt/server'
-import { $fetch } from 'ofetch'
 
 import { useAirspace } from '#server/utils/airspace'
+import { createGitHub, downloadSlides } from '#server/utils/github'
 
-interface GitHubReleaseAsset {
-  id: number
-  name: string
-}
-interface GitHubRelease {
-  assets: GitHubReleaseAsset[]
-}
-
-const assetCache = new Map<string, ArrayBuffer>()
+const assetCache = new Map<string, Uint8Array>()
 let knownIds: Set<string> | null = null
 
 async function getKnownSlideIds (): Promise<Set<string>> {
@@ -46,34 +38,11 @@ export default defineEventHandler(async event => {
   event.res.headers.set('content-type', 'application/pdf')
 
   const cached = assetCache.get(id)
-  if (cached) return new Uint8Array(cached)
+  if (cached) return cached
 
-  const release = await $fetch<GitHubRelease>(
-    `https://api.github.com/repos/danielroe/slides/releases/tags/${id}`,
-    {
-      headers: {
-        'Authorization': `token ${config.github.token}`,
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'roe.dev-dev',
-      },
-    },
-  )
-
-  const assetId = release.assets.find(a => a.name.endsWith('.pdf'))?.id
-  if (!assetId) throw createError({ status: 404 })
-
-  const file = await $fetch(
-    `https://api.github.com/repos/danielroe/slides/releases/assets/${assetId}`,
-    {
-      responseType: 'arrayBuffer',
-      headers: {
-        'Authorization': `token ${config.github.token}`,
-        'Accept': 'application/octet-stream',
-        'User-Agent': 'roe.dev-dev',
-      },
-    },
-  )
+  const file = await downloadSlides(createGitHub(config.github.token), id)
+  if (!file) throw createError({ status: 404 })
 
   assetCache.set(id, file)
-  return new Uint8Array(file)
+  return file
 })

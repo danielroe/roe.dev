@@ -264,6 +264,9 @@ importers:
       feed:
         specifier: ^6.0.0
         version: 6.0.0
+      forges:
+        specifier: https://pkg.pr.new/danielroe/forges@a5fbeaf
+        version: https://pkg.pr.new/danielroe/forges@a5fbeaf
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
@@ -4592,6 +4595,11 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
+
+  forges@https://pkg.pr.new/danielroe/forges@a5fbeaf:
+    resolution: {integrity: sha512-82APilw1DEbm7ozCi2lzkcucXz260cwXB4Nr7a0PdXnKDNrBpMNiPtL6ecyhbB+BjQzBOg66keVBjgMUxsKiyg==, tarball: https://pkg.pr.new/danielroe/forges@a5fbeaf}
+    version: 0.1.0
+    engines: {node: '>=22.18'}
 
   formdata-polyfill@4.0.10:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
@@ -12458,6 +12466,8 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  forges@https://pkg.pr.new/danielroe/forges@a5fbeaf: {}
 
   formdata-polyfill@4.0.10:
     dependencies:

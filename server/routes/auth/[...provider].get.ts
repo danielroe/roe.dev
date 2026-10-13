@@ -37,60 +37,36 @@ export default defineEventHandler(async event => {
   })
 
   if (access_token) {
+    const gh = createGitHub(access_token)
     // Determine if user is a sponsor
-    const [viewer, ids] = await Promise.all([
-      query(access_token, organisationQuery)
-        .then(r => {
-          const viewer = r?.viewer || {}
-          viewer.orgs
-            = viewer.organizations.edges.map((e: any) => e.node.id) || []
-          return viewer
-        })
-        .catch(err => {
-          console.error('viewer', err)
-          return {}
-        }),
+    const [viewer, orgs, ids] = await Promise.all([
+      gh.users.me().catch(err => {
+        console.error('viewer', err)
+        return undefined
+      }),
+      fetchOrgIds(gh).catch(err => {
+        console.error('orgs', err)
+        return [] as string[]
+      }),
       getSponsors()
         .then(r => r.map(s => s.id))
         .catch(err => {
           console.error('sponsor', err)
-          return []
+          return [] as string[]
         }),
     ])
 
-    console.info({
-      sponsor:
-        // @ts-expect-error no typings for gh api response
-        ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
-      avatar: viewer.avatarUrl,
-      name: viewer.name,
-    })
+    const session = {
+      sponsor: isSponsor(ids, viewer ? [viewer.id, ...orgs] : orgs),
+      avatar: viewer?.avatarUrl,
+      name: viewer?.name,
+    }
+
+    console.info(session)
 
     // set custom JWT claim
-    await setUserSession(event, {
-      authenticated: true,
-      sponsor:
-        // @ts-expect-error no typings for gh api response
-        ids.includes(viewer.id) || ids.some(i => viewer.orgs.includes(i)),
-      avatar: viewer.avatarUrl,
-      name: viewer.name,
-    })
+    await setUserSession(event, { authenticated: true, ...session })
   }
 
   return sendRedirect(event, '/')
 })
-
-const organisationQuery = `{
-  viewer {
-    id
-    name
-    avatarUrl
-    organizations(first: 100) {
-      edges {
-        node {
-          id
-        }
-      }
-    }
-  }
-}`
