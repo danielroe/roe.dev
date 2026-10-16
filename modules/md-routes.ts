@@ -10,7 +10,7 @@ export default defineNuxtModule({
 
     // Expose page meta as a virtual module for server routes
     addServerTemplate({
-      filename: '#md-page-meta.json',
+      filename: '#md-page-meta',
       getContents: () => `export const pageMeta = ${JSON.stringify(pageMeta)}`,
     })
 

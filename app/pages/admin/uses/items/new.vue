@@ -7,7 +7,7 @@ useHead({ title: 'New uses item - admin - Daniel Roe' })
 type UsesItemValue = Omit<UsesItemRecord, '$type'>
 
 async function save (value: UsesItemValue) {
-  await $fetch('/api/admin/uses-items', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/uses-items', { method: 'POST', body: value })
   await navigateTo('/admin/uses')
 }
 </script>

@@ -9,7 +9,7 @@ interface InviteValue {
 }
 
 async function save (value: InviteValue) {
-  await $fetch('/api/admin/invites', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/invites', { method: 'POST', body: value })
   await navigateTo('/admin/invites')
 }
 </script>

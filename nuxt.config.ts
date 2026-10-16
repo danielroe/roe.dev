@@ -75,8 +75,8 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    modules: ['nuxt-security'],
-    routeRules: renderedSwrRules,
+    // modules: ['nuxt-security'],
+    // routeRules: renderedSwrRules,
   },
 
   $test: {
@@ -296,7 +296,10 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: [
+        '@atcute/bluesky-richtext-segmenter',
+        '@atproto/lex-schema',
         '@formkit/drag-and-drop/vue',
+        'airspace',
         'gsap',
         'magic-regexp',
         'mediabunny',

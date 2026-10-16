@@ -63,7 +63,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"283k"`)
+      .toMatchInlineSnapshot(`"274k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2310k"`)
+      .toMatchInlineSnapshot(`"7990k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14220k"`)
+      .toMatchInlineSnapshot(`"390k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -94,97 +94,12 @@ describe('project sizes', () => {
       .sort()
     expect.soft(packages).toMatchInlineSnapshot(`
       [
-        "@atproto-labs/did-resolver",
-        "@atproto-labs/fetch",
-        "@atproto-labs/fetch-node",
-        "@atproto-labs/fetch-node/node_modules/undici",
-        "@atproto-labs/handle-resolver",
-        "@atproto-labs/handle-resolver-node",
-        "@atproto-labs/identity-resolver",
-        "@atproto-labs/pipe",
-        "@atproto-labs/simple-store",
-        "@atproto-labs/simple-store-memory",
-        "@atproto-labs/simple-store-memory/node_modules/lru-cache",
-        "@atproto-labs/simple-store-memory/node_modules/lru-cache/dist/esm",
-        "@atproto/did",
-        "@atproto/jwk",
-        "@atproto/jwk-jose",
-        "@atproto/jwk-webcrypto",
-        "@atproto/lex",
-        "@atproto/lex-client",
-        "@atproto/lex-data",
-        "@atproto/lex-json",
-        "@atproto/lex-password-session",
-        "@atproto/lex-schema",
-        "@atproto/oauth-client",
-        "@atproto/oauth-client-node",
-        "@atproto/oauth-types",
-        "@atproto/syntax",
-        "@babel/parser",
-        "@bsky/sdk",
-        "@formkit/drag-and-drop",
         "@img/colour",
         "@takumi-rs/core",
         "@takumi-rs/helpers",
-        "@vue/compiler-core",
-        "@vue/compiler-core/node_modules/entities",
-        "@vue/compiler-core/node_modules/entities/dist/commonjs",
-        "@vue/compiler-dom",
-        "@vue/compiler-ssr",
-        "@vue/reactivity",
-        "@vue/runtime-core",
-        "@vue/runtime-dom",
-        "@vue/server-renderer",
-        "@vue/shared",
-        "airspace",
-        "airspace/node_modules/image-meta",
-        "comark",
-        "comark/node_modules/entities",
-        "consola",
-        "core-js",
         "detect-libc",
-        "devalue",
-        "entities",
-        "estree-walker",
-        "events-to-async",
-        "events-to-async/module",
-        "feed",
-        "fnv1a-64",
-        "hookable",
-        "image-meta",
-        "ipaddr.js",
-        "ipx",
-        "iso-datestring-validator",
-        "jose",
-        "jose/dist/node/esm",
-        "js-yaml",
-        "lru-cache",
-        "lru-cache/dist/esm",
-        "mediabunny",
-        "modern-screenshot",
-        "multiformats",
-        "nostics",
-        "object-identity",
-        "partysocket",
-        "sax",
         "semver",
         "sharp",
-        "source-map-js",
-        "srvx",
-        "ts-custom-error",
-        "ufo",
-        "uint8array-extras",
-        "ultrahtml",
-        "undici",
-        "undici_v6",
-        "undici_v7",
-        "undici_v8",
-        "unhead",
-        "unicode-segmenter",
-        "vue",
-        "vue-bundle-renderer",
-        "xml-js",
-        "zod",
       ]
     `)
   })

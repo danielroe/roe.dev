@@ -2,7 +2,7 @@ import { defineEventHandler } from 'nuxt/server'
 
 import { formatConferenceDates, getUpcomingTalks } from '../utils/cms/talks'
 import type { UpcomingConference } from '../utils/cms/talks'
-import { pageMeta } from '#md-page-meta.json'
+import { pageMeta } from '#md-page-meta'
 import { links } from '#shared/utils/links'
 
 export default defineEventHandler(async () => {
