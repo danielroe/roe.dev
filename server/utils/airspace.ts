@@ -3,6 +3,7 @@ import type { RequestEvent } from 'nuxt/server'
 import { createAirspace } from 'airspace'
 import type { Identity } from 'airspace'
 import { timestamps } from 'airspace/plugins/timestamps'
+import { requireAdminSession } from './admin/oauth'
 
 import { collections } from '#shared/collections'
 
