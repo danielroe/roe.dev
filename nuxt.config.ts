@@ -75,8 +75,8 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    modules: ['nuxt-security'],
-    routeRules: renderedSwrRules,
+    // modules: ['nuxt-security'],
+    // routeRules: renderedSwrRules,
   },
 
   $test: {
