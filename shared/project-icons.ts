@@ -38,4 +38,5 @@ export const projectIcons = [
   'i-ri:toggle-line',
   'i-ri:vidicon-line',
   'i-ri:walk-line',
+  'i-tabler:brand-nuxt',
 ] as const

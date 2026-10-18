@@ -1,0 +1,117 @@
+{
+  "lexicon": 1,
+  "id": "id.sifa.profile.project",
+  "description": "A project the user has worked on.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Record representing a single project.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxGraphemes": 256,
+            "maxLength": 2560,
+            "description": "Project name."
+          },
+          "role": {
+            "type": "string",
+            "maxGraphemes": 256,
+            "maxLength": 2560,
+            "description": "The user's own role on the project (e.g. 'Maintainer', 'Core contributor', 'Project lead'). Roles of other people named on the project live on members."
+          },
+          "description": {
+            "type": "string",
+            "maxGraphemes": 5000,
+            "maxLength": 50000,
+            "description": "Description of the project, the user's role, and outcomes."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the project (website, repository, demo, etc.)."
+          },
+          "projectRef": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Reference to the first-class id.sifa.project.self record this personal entry corresponds to, when there is one. A composition link, not a peer one: for the same project recorded on someone else's profile, see sameAs."
+          },
+          "position": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Reference to the associated id.sifa.profile.position record, if applicable."
+          },
+          "sameAs": {
+            "type": "ref",
+            "ref": "id.sifa.defs#externalRecordRef",
+            "description": "The same project as recorded on another person's profile. Set when you keep your own entry for work someone else has also recorded, so consumers can tell the two describe one thing rather than showing it twice. Each side stays its own record: the other person cannot edit yours, and yours does not change theirs. Resolve by AT-URI, since they will keep editing their copy."
+          },
+          "members": {
+            "type": "array",
+            "maxLength": 50,
+            "items": {
+              "type": "ref",
+              "ref": "id.sifa.defs#projectMemberRef"
+            },
+            "description": "Other people who worked on this project. Each entry is a claim by the record author and is not self-verifying: the named person supplies the other half by publishing an id.sifa.confirmation record whose subject is this record and whose relation is id.sifa.defs#projectMember. Until they do, consumers must render the entry without their display name, avatar, or profile link. Confirming never puts this record on the named person's profile: it lives in the author's repository and the author can rename it at any time. A named person who wants the project on their profile keeps their own id.sifa.profile.project record and points its projectRef here."
+          },
+          "events": {
+            "type": "array",
+            "maxLength": 200,
+            "items": {
+              "type": "ref",
+              "ref": "#projectEvent"
+            },
+            "description": "Event occurrences this project organized or hosted, for example every edition of a conference or every meetup of a series. Each entry should reference a distinct event; consumers ignore entries that don't resolve to a community.lexicon.calendar.event. A talk the user also gave at one of these events is a separate id.sifa.profile.presentationDelivery whose eventRef points at the same event.",
+            "x-skos:relatedMatch": ["schema:organizer"]
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "Project start date in YYYY-MM or YYYY-MM-DD format."
+          },
+          "endedAt": {
+            "type": "string",
+            "description": "Project end date in YYYY-MM or YYYY-MM-DD format. Omit if ongoing."
+          },
+          "labels": {
+            "type": "union",
+            "description": "Self-label values for this project record.",
+            "refs": ["com.atproto.label.defs#selfLabels"]
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "Whether this is the user's primary ongoing project, surfaced in profile Highlights. Only ongoing entries may be primary."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created."
+          }
+        }
+      },
+      "x-skos:exactMatch": ["schema:Project", "foaf:Project"]
+    },
+    "projectEvent": {
+      "type": "object",
+      "description": "One event occurrence linked to a project.",
+      "required": ["event"],
+      "properties": {
+        "event": {
+          "type": "ref",
+          "ref": "id.sifa.defs#externalRecordRef",
+          "description": "Reference to the community.lexicon.calendar.event. Resolve by AT-URI; the CID is an optional integrity hint."
+        },
+        "role": {
+          "type": "string",
+          "maxGraphemes": 64,
+          "maxLength": 640,
+          "description": "The user's role at this occurrence when it differs from the project's role (e.g. 'Organizer' for one edition, 'Host' for another). Omit to inherit project.role."
+        }
+      }
+    }
+  }
+}

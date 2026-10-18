@@ -1,0 +1,101 @@
+{
+  "lexicon": 1,
+  "id": "id.sifa.profile.presentation",
+  "description": "A reusable presentation: the content a person presents (a talk, workshop, poster, or demo), independent of any single occasion on which it is delivered. Delivered at one or more id.sifa.profile.presentationDelivery occasions.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Record representing a single reusable presentation (the content), distinct from the occasions on which it is delivered.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["title", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxGraphemes": 300,
+            "maxLength": 3000,
+            "description": "Title of the presentation.",
+            "x-skos:exactMatch": ["dcterms:title", "schema:name"]
+          },
+          "description": {
+            "type": "string",
+            "maxGraphemes": 5000,
+            "maxLength": 50000,
+            "description": "Description or abstract of the presentation.",
+            "x-skos:exactMatch": ["bibo:abstract", "schema:abstract"]
+          },
+          "duration": {
+            "type": "ref",
+            "ref": "#duration",
+            "description": "Typical length of the presentation, a fixed value or a range, in minutes.",
+            "x-skos:narrowMatch": ["schema:timeRequired"],
+            "x-skos:note": "The lexicon models a range; schema:timeRequired is a single ISO 8601 duration."
+          },
+          "intendedAudiences": {
+            "type": "array",
+            "maxLength": 20,
+            "items": {
+              "type": "string",
+              "maxGraphemes": 100,
+              "maxLength": 1000
+            },
+            "description": "Intended audiences for this presentation, open text (e.g. 'Engineering leaders', 'Beginners').",
+            "x-skos:closeMatch": ["schema:audience"]
+          },
+          "links": {
+            "type": "array",
+            "maxLength": 20,
+            "items": {
+              "type": "ref",
+              "ref": "id.sifa.defs#presentationLink"
+            },
+            "description": "Canonical links for this content, such as slides or a recording."
+          },
+          "writeupRef": {
+            "type": "ref",
+            "ref": "id.sifa.defs#externalRecordRef",
+            "description": "Optional reference to a long-form write-up of this presentation (a pub.leaflet.document or site.standard.document holding video, transcript, or article).",
+            "x-skos:closeMatch": ["dcterms:isReferencedBy", "schema:subjectOf"]
+          },
+          "coverImage": {
+            "type": "blob",
+            "accept": ["image/png", "image/jpeg", "image/webp"],
+            "maxSize": 2000000,
+            "description": "Optional cover image for the presentation. Rendered as the talk-page hero and OpenGraph image. Max 2 MB, PNG, JPEG, or WebP.",
+            "x-skos:exactMatch": ["schema:image", "foaf:depiction"]
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "Whether this is the user's primary talk, surfaced in profile Highlights. Only reusable talks (not one-off sessions) may be primary."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created."
+          }
+        }
+      },
+      "x-skos:closeMatch": ["bibo:Slideshow", "schema:PresentationDigitalDocument"],
+      "x-skos:note": "Neither term carries the \"reusable, deliverable more than once\" semantics of the Sifa record."
+    },
+    "duration": {
+      "type": "object",
+      "description": "A presentation length in minutes: a fixed value (minMinutes only) or a range (minMinutes to maxMinutes).",
+      "required": ["minMinutes"],
+      "properties": {
+        "minMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Length in minutes, or the lower bound when the length is offered as a range."
+        },
+        "maxMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Upper bound in minutes when the length is offered as a range. Omit for a fixed length."
+        }
+      }
+    }
+  }
+}

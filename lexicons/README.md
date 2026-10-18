@@ -22,6 +22,13 @@ The files under `site/standard/` are copies of the
 the build-time sync writes to. `com/atproto/label/defs.json` is here because
 both of them reference `#selfLabels`.
 
+The files under `id/sifa/` are copies of the [Sifa](https://sifa.id) schemas from
+[singi-labs/sifa-lexicons](https://github.com/singi-labs/sifa-lexicons), published at
+`did:plc:2f2ahswozqy4v5lvu676375y`. `shared/sifa.ts` turns
+`id.sifa.profile.presentation`, `id.sifa.profile.presentationDelivery` and
+`id.sifa.profile.project` into collections, which the build-time sync mirrors
+from `dev.roe.talkGroup`, `dev.roe.talk` and `dev.roe.project`.
+
 Refresh them from upstream when the shared defs change.
 
 - `pnpm lex:gen` regenerates the TypeScript in `shared/lex/` from these files.

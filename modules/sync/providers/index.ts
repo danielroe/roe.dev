@@ -2,6 +2,7 @@ import { GithubStarsProvider } from './github-stars.ts'
 import { DevToProvider } from './dev-to.ts'
 import { GdeAdvocuProvider } from './gde-advocu.ts'
 import { StandardSiteProvider } from './standard-site.ts'
+import { SifaProvider } from './sifa.ts'
 
 export interface SyncItem {
   title: string
@@ -31,6 +32,7 @@ function createProviders (): SyncProvider[] {
     new DevToProvider(),
     new GdeAdvocuProvider(),
     new StandardSiteProvider(),
+    new SifaProvider(),
   ]
 }
 

@@ -1,0 +1,131 @@
+{
+  "lexicon": 1,
+  "id": "id.sifa.profile.presentationDelivery",
+  "description": "An occasion on which a person delivered a presentation: a specific talk, panel, workshop, or demo at an event. References the reusable id.sifa.profile.presentation content and, optionally, the calendar event.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Record representing a single occasion on which a presentation was delivered. This is the entry shown on a profile's activity timeline. At least one of presentationRef, title, or eventName is expected, enforced at the app layer.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["createdAt"],
+        "properties": {
+          "presentationRef": {
+            "type": "ref",
+            "ref": "id.sifa.defs#externalRecordRef",
+            "description": "Optional reference to the id.sifa.profile.presentation (the content) delivered here. When set, title, duration, and audiences are taken from it.",
+            "x-skos:closeMatch": ["bibo:presentedAt", "schema:workPerformed"]
+          },
+          "sameAs": {
+            "type": "ref",
+            "ref": "id.sifa.defs#externalRecordRef",
+            "description": "The same session as recorded on another person's profile. Set when you keep your own entry for work someone else has also recorded, so consumers can tell the two describe one thing rather than showing it twice. Each side stays its own record: the other person cannot edit yours, and yours does not change theirs. Resolve by AT-URI, since they will keep editing their copy."
+          },
+          "title": {
+            "type": "string",
+            "maxGraphemes": 300,
+            "maxLength": 3000,
+            "description": "Fallback title for this delivery, used when no presentationRef is set.",
+            "x-skos:exactMatch": ["dcterms:title", "schema:name"]
+          },
+          "role": {
+            "type": "string",
+            "maxGraphemes": 64,
+            "maxLength": 640,
+            "description": "The presenter's role in this delivery. Open set; see id.sifa.defs#presentationRole.",
+            "knownValues": [
+              "id.sifa.defs#presenter",
+              "id.sifa.defs#panelist",
+              "id.sifa.defs#keynote",
+              "id.sifa.defs#workshop",
+              "id.sifa.defs#host"
+            ],
+            "x-skos:closeMatch": ["bibo:performer", "schema:performer"],
+            "x-skos:note": "No external vocabulary distinguishes presenter, panelist, keynote, workshop and host at this granularity."
+          },
+          "eventName": {
+            "type": "string",
+            "maxGraphemes": 300,
+            "maxLength": 3000,
+            "description": "Name of the event or venue. On the linked branch, hydrated from the calendar event's name.",
+            "x-skos:closeMatch": ["schema:superEvent", "bibo:Conference"]
+          },
+          "date": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "Calendar date of this delivery as YYYY-MM-DD, or YYYY-MM or YYYY when the exact day or month is not known (no time). Future dates are allowed for upcoming deliveries. The shape is enforced at the app layer. On the linked branch, derived from the event's startsAt in the event's own offset, and always a full day.",
+            "x-skos:exactMatch": ["schema:startDate", "event:time"]
+          },
+          "location": {
+            "type": "string",
+            "maxGraphemes": 256,
+            "maxLength": 2560,
+            "description": "Legacy free-text display location (city, country, or venue), retained for dual-read. Prefer the structured address field. On the linked branch, composed from the calendar event's structured locations."
+          },
+          "address": {
+            "type": "ref",
+            "ref": "community.lexicon.location.address",
+            "description": "Structured delivery location. Sifa enforces ISO 3166-1 alpha-2 country codes at the app layer and surfaces country (for a flag) and locality (city); region, postalCode, and street are unused for deliveries. Takes precedence over the legacy location string when present.",
+            "x-skos:exactMatch": ["schema:location", "event:place"]
+          },
+          "mode": {
+            "type": "string",
+            "description": "Whether this delivery was in person, virtual, or hybrid. Stores the full community.lexicon.calendar.event mode token; absent means in person.",
+            "knownValues": [
+              "community.lexicon.calendar.event#inperson",
+              "community.lexicon.calendar.event#virtual",
+              "community.lexicon.calendar.event#hybrid"
+            ],
+            "x-skos:exactMatch": ["schema:eventAttendanceMode"],
+            "x-skos:note": "The community.lexicon.calendar.event known values are already one-to-one with the schema.org enumeration."
+          },
+          "status": {
+            "type": "string",
+            "description": "Scheduling status of this delivery, typically hydrated from a linked calendar event. Stores the full community.lexicon.calendar.event status token. Consumers should surface cancelled and postponed states.",
+            "knownValues": [
+              "community.lexicon.calendar.event#scheduled",
+              "community.lexicon.calendar.event#cancelled",
+              "community.lexicon.calendar.event#postponed",
+              "community.lexicon.calendar.event#rescheduled",
+              "community.lexicon.calendar.event#planned"
+            ],
+            "x-skos:exactMatch": ["schema:eventStatus"],
+            "x-skos:note": "As with mode, already one-to-one with the schema.org enumeration."
+          },
+          "links": {
+            "type": "array",
+            "maxLength": 20,
+            "items": {
+              "type": "ref",
+              "ref": "id.sifa.defs#presentationLink"
+            },
+            "description": "Links specific to this delivery, such as the recording of this occasion."
+          },
+          "eventRef": {
+            "type": "ref",
+            "ref": "id.sifa.defs#externalRecordRef",
+            "description": "Optional reference to a community.lexicon.calendar.event for this occasion. Display fields are hydrated live from the target by AT-URI, with the stored fields as a fallback when the target is unavailable."
+          },
+          "coSpeakers": {
+            "type": "array",
+            "maxLength": 20,
+            "items": {
+              "type": "string",
+              "format": "did"
+            },
+            "description": "DIDs of co-speakers who presented alongside the author at this occasion. Any atproto account is allowed; hydrated to profile cards on read and linked to the co-speaker's Sifa profile.",
+            "x-skos:exactMatch": ["schema:performer"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created."
+          }
+        }
+      },
+      "x-skos:closeMatch": ["schema:Event", "event:Event"],
+      "x-skos:note": "BIBO models this relation as bibo:Slideshow bibo:presentedAt event:Event."
+    }
+  }
+}

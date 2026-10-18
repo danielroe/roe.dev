@@ -33,5 +33,14 @@ export function tidFromDate (date: string | Date): string {
   return s32(micros, 11) + s32(CLOCK_ID, 2)
 }
 
+/** The timestamp a TID encodes, as an ISO string. */
+export function dateFromTid (tid: string): string {
+  let micros = 0
+  for (const char of tid.slice(0, 11)) {
+    micros = micros * 32 + S32_ALPHABET.indexOf(char)
+  }
+  return new Date(Math.floor(micros / MS_TO_MICROSECONDS)).toISOString()
+}
+
 /** Stable TID for the site's publication record, derived from the first commit date. */
 export const publicationRkey = tidFromDate('2019-12-10T20:18:52.000Z')
