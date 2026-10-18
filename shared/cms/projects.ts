@@ -7,7 +7,7 @@ import type { ResolvedViewImage } from './image.ts'
  * the page uses (site link, source link, screenshot) so the page doesn't have
  * to know about link roles and image purposes.
  */
-export type Project = Omit<ProjectRecord, '$type' | 'category' | 'links' | 'images' | 'status' | 'createdAt'> & {
+export type Project = Omit<ProjectRecord, '$type' | 'category' | 'links' | 'images' | 'status' | 'role' | 'createdAt'> & {
   url: string | null
   repo: string | null
   archived: boolean

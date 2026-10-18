@@ -42,6 +42,7 @@ export default defineLexicons('dev.roe', {
   project: record({
     category: field.ref('projectCategory').describe('Strong-ref to the parent dev.roe.projectCategory record.'),
     name: field.text({ max: 256 }),
+    role: field.text({ max: 256 }).describe('My role on the project, e.g. `Project lead` or `Core contributor`.').optional(),
     description: field.text({ max: 2500 }).optional(),
     links: field.list(link(), { max: 12 })
       .describe('Relevant destinations for the project. The site links the card at the first `linkRoleWebsite`, falling back to the first link of any role.')

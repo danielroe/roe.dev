@@ -36,7 +36,7 @@ export async function getProjects (): Promise<ProjectCategory[]> {
   return await Promise.all(categories.map(async cat => {
     const bucket = byCategoryUri.get(cat.uri) ?? []
     const items: Project[] = await Promise.all(bucket.map(async it => {
-      const { $type, category, links, images, status, createdAt, ...passthrough } = it.value
+      const { $type, category, links, images, status, role, createdAt, ...passthrough } = it.value
       const image = images?.find(i => i.purpose === PURPOSE_SCREENSHOT) ?? images?.[0]
       return {
         ...passthrough,

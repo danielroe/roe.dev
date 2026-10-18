@@ -108,6 +108,7 @@ describe('toProject', () => {
       value: {
         $type: 'dev.roe.project',
         name: 'magic-regexp',
+        role: 'Creator',
         description: 'A compiled-away, type-safe, readable RegExp alternative',
         category: { uri: `at://${did}/dev.roe.projectCategory/3mtxxqyu2rz26`, cid: 'bafy' },
         links: [
@@ -120,6 +121,7 @@ describe('toProject', () => {
 
     expect(project).toEqual({
       name: 'magic-regexp',
+      role: 'Creator',
       description: 'A compiled-away, type-safe, readable RegExp alternative',
       url: 'https://regexp.dev',
       createdAt: '2026-08-26T08:58:54.746Z',

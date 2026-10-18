@@ -61,6 +61,7 @@ const initialImage = props.initial?.images?.find(i => i.purpose === defs.purpose
 const form = reactive({
   categoryUri: props.initial?.category?.uri ?? '',
   name: props.initial?.name ?? '',
+  role: props.initial?.role ?? '',
   description: props.initial?.description ?? '',
   links: (props.initial?.links ?? []).map(l => ({ uri: l.uri, label: l.label ?? '', role: l.role ?? '' })),
   status: props.initial?.status ?? '',
@@ -177,6 +178,7 @@ async function onSubmit () {
     const value: ProjectValue = {
       category: categoryRef,
       name: form.name,
+      ...(form.role ? { role: form.role } : {}),
       ...(form.description ? { description: form.description } : {}),
       ...(links.length ? { links } : {}),
       ...(form.image
@@ -244,6 +246,16 @@ async function onSubmit () {
         v-model="form.name"
         required
         type="text"
+        class="bg-accent px-3 py-2"
+      >
+    </label>
+
+    <label class="flex flex-col gap-1 text-sm">
+      <span class="text-muted">My role</span>
+      <input
+        v-model="form.role"
+        type="text"
+        placeholder="Project lead"
         class="bg-accent px-3 py-2"
       >
     </label>

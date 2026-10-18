@@ -105,6 +105,7 @@ export function toProject ({ rkey, value }: Source<ProjectRecord>): Project {
   const url = (value.links?.find(link => link.role === 'community.lexicon.app.defs#linkRoleWebsite') ?? value.links?.[0])?.uri
   return {
     name: value.name,
+    ...(value.role ? { role: value.role } : {}),
     ...(value.description ? { description: value.description } : {}),
     ...(url ? { url: url as l.UriString } : {}),
     createdAt: (value.createdAt ?? dateFromTid(rkey)) as l.DatetimeString,
