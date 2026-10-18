@@ -16,7 +16,7 @@ interface LocationEntry {
 const { data, refresh, loading } = useAdminFetch<LocationEntry | null>('/api/admin/location')
 
 async function save (value: LocationValue) {
-  await $fetch('/api/admin/location', {
+  await authorisedApi('/api/admin/location', {
     method: 'PUT',
     body: value,
   })

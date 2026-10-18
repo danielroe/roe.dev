@@ -7,7 +7,7 @@ useHead({ title: 'New project - admin - Daniel Roe' })
 type ProjectValue = Omit<ProjectRecord, '$type'>
 
 async function save (value: ProjectValue) {
-  await $fetch('/api/admin/projects', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/projects', { method: 'POST', body: value })
   await navigateTo('/admin/projects')
 }
 </script>

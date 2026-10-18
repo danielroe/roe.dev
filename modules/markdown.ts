@@ -388,7 +388,7 @@ declare module '#content-manifest' {
   export function getDocuments (): Array<Record<string, any>>
 }
 
-declare module '#md-page-meta.json' {
+declare module '#md-page-meta' {
   interface PageMeta {
     title: string
     description?: string

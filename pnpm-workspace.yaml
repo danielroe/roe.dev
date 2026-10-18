@@ -2,6 +2,8 @@ ignoreWorkspaceRootCheck: true
 
 savePrefix: ''
 
+blockExoticSubdeps: false
+
 shellEmulator: true
 
 minimumReleaseAgeExclude:
@@ -24,7 +26,7 @@ minimumReleaseAgeExclude:
 overrides:
   # comark-content@0.4.0 still pins ^0.6.2
   comark: 0.7.0
-  rolldown: 1.2.13
+  rolldown: 1.2.14
   # airspace and @atproto/lex each pull their own copy of these; without the
   # overrides the server bundle ships both.
   '@atproto/lex-client': 0.3.7
