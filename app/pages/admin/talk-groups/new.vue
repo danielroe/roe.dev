@@ -7,7 +7,7 @@ useHead({ title: 'New talk group - admin - Daniel Roe' })
 type TalkGroupValue = Omit<TalkGroupRecord, '$type'>
 
 async function save (value: TalkGroupValue) {
-  await $fetch('/api/admin/talk-groups', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/talk-groups', { method: 'POST', body: value })
   await navigateTo('/admin/talks')
 }
 </script>

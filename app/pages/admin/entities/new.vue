@@ -7,7 +7,7 @@ useHead({ title: 'New entity - admin - Daniel Roe' })
 type EntityValue = Omit<EntityRecord, '$type'>
 
 async function save (value: EntityValue) {
-  await $fetch('/api/admin/entities', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/entities', { method: 'POST', body: value })
   await navigateTo('/admin/entities')
 }
 </script>

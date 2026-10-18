@@ -7,7 +7,7 @@ useHead({ title: 'New uses category - admin - Daniel Roe' })
 type UsesCategoryValue = Omit<UsesCategoryRecord, '$type'>
 
 async function save (value: UsesCategoryValue) {
-  await $fetch('/api/admin/uses-categories', { method: 'POST', body: value })
+  await authorisedApi('/api/admin/uses-categories', { method: 'POST', body: value })
   await navigateTo('/admin/uses')
 }
 </script>
