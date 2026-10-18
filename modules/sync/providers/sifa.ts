@@ -29,6 +29,13 @@ export const SIFA_PROJECT_CATEGORIES = new Set([
 const VIRTUAL_LOCATIONS = new Set(['🌐', '🌍', '🌎', '🌏'])
 const VIRTUAL_TYPES = new Set(['podcast', 'stream'])
 
+const ROLES: Record<string, Delivery['role']> = {
+  speaker: 'id.sifa.defs#presenter',
+  keynote: 'id.sifa.defs#keynote',
+  panelist: 'id.sifa.defs#panelist',
+  host: 'id.sifa.defs#host',
+}
+
 const REGIONS: Record<string, string> = {
   gbeng: 'England',
   gbsct: 'Scotland',
@@ -77,9 +84,9 @@ export function toDelivery ({ rkey, value }: Source<TalkRecord>, presentationUri
   const isVirtual = VIRTUAL_TYPES.has(value.type) || VIRTUAL_LOCATIONS.has(value.location?.replace(/\uFE0F/g, '') ?? '')
   const presentationUri = value.group && presentationUris.get(rkeyFromUri(value.group.uri))
   const address = isVirtual ? undefined : addressFromFlag(value.location)
-  const role = value.type === 'workshop'
+  const role = (value.role && ROLES[value.role]) || (value.type === 'workshop'
     ? 'id.sifa.defs#workshop'
-    : VIRTUAL_TYPES.has(value.type) ? undefined : 'id.sifa.defs#presenter'
+    : VIRTUAL_TYPES.has(value.type) ? undefined : 'id.sifa.defs#presenter')
 
   const links: PresentationLink[] = []
   if (value.video) links.push({ uri: value.video as l.UriString, type: 'id.sifa.defs#linkRecording' })

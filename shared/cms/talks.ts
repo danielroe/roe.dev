@@ -7,7 +7,7 @@ export type TalkGroup = Omit<TalkGroupRecord, DroppedHousekeeping> & {
   _id: string
 }
 
-export type Talk = Omit<TalkRecord, DroppedHousekeeping | UpcomingOnly | 'title' | 'group'> & {
+export type Talk = Omit<TalkRecord, DroppedHousekeeping | UpcomingOnly | 'title' | 'role' | 'group'> & {
   _id: string
   title: string
   group?: TalkGroup

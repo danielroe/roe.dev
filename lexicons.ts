@@ -87,6 +87,7 @@ export default defineLexicons('dev.roe', {
     source: field.text({ max: 512 }).describe('Conference name, meetup, podcast title, etc.'),
     location: field.text({ max: 512 }).describe('Free-form: city, country, or \'Online\'.').optional(),
     type: field.raw(l.string({ knownValues: ['conference', 'meetup', 'podcast', 'workshop', 'stream', 'talk'] })),
+    role: field.raw(l.string({ knownValues: ['speaker', 'keynote', 'panelist', 'host'], description: 'My role at the event. When absent, workshops count as `workshop` and podcasts and streams have no role.' })).optional(),
     tags: field.list(field.text({ max: 64 }), { max: 32 }).optional(),
     link: field.url().describe('Event page, podcast episode URL, etc.').optional(),
     video: field.url().optional(),

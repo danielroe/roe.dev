@@ -86,6 +86,11 @@ describe('toDelivery', () => {
     expect(toDelivery(talk({ type: 'workshop' }), presentationUris).role).toBe('id.sifa.defs#workshop')
   })
 
+  it('maps an explicit role', () => {
+    expect(toDelivery(talk({ type: 'conference', role: 'keynote' }), presentationUris).role).toBe('id.sifa.defs#keynote')
+    expect(toDelivery(talk({ type: 'stream', role: 'host' }), presentationUris).role).toBe('id.sifa.defs#host')
+  })
+
   it('omits references to unknown groups', () => {
     const delivery = toDelivery(talk({ group: { uri: `at://${did}/dev.roe.talkGroup/3aaaaaaaaaaaa`, cid: 'bafy' } as TalkRecord['group'] }), presentationUris)
 

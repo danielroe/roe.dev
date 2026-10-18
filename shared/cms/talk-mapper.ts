@@ -18,7 +18,7 @@ export interface PdsTalkGroupInput {
 }
 
 export function toTalk (input: PdsTalkInput, group?: PdsTalkGroupInput): Talk {
-  const { $type, createdAt, endDate, location, image, title, group: _strongRef, ...passthrough } = input.value
+  const { $type, createdAt, endDate, location, image, title, role, group: _strongRef, ...passthrough } = input.value
   return {
     ...passthrough,
     _id: rkeyFromUri(input.uri),

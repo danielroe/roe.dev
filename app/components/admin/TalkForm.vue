@@ -36,6 +36,7 @@ const pdsService = publicConfig.atproto?.service || null
 const pdsDid = publicConfig.atproto?.did || null
 
 const TYPES = ['conference', 'meetup', 'podcast', 'workshop', 'stream', 'talk'] as const
+const ROLES = ['speaker', 'keynote', 'panelist', 'host'] as const
 
 const form = reactive({
   title: props.initial?.title ?? '',
@@ -45,6 +46,7 @@ const form = reactive({
   source: props.initial?.source ?? '',
   location: props.initial?.location ?? '',
   type: (props.initial?.type as typeof TYPES[number]) ?? 'conference',
+  role: props.initial?.role ?? '',
   tags: (props.initial?.tags ?? []).join(', '),
   link: props.initial?.link ?? '',
   video: props.initial?.video ?? '',
@@ -148,6 +150,7 @@ async function onSubmit () {
       source: form.source,
       ...(form.location ? { location: form.location } : {}),
       type: form.type,
+      ...(form.role ? { role: form.role } : {}),
       ...(form.tags.trim() ? { tags: form.tags.split(',').map(t => t.trim()).filter(Boolean) } : {}),
       ...(form.link ? { link: form.link } : {}),
       ...(form.video ? { video: form.video } : {}),
@@ -264,6 +267,24 @@ async function onSubmit () {
             :value="t"
           >
             {{ t }}
+          </option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm">
+        <span class="text-muted">Role</span>
+        <select
+          v-model="form.role"
+          class="bg-accent px-3 py-2"
+        >
+          <option value="">
+            (default)
+          </option>
+          <option
+            v-for="r in ROLES"
+            :key="r"
+            :value="r"
+          >
+            {{ r }}
           </option>
         </select>
       </label>
