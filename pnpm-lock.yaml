@@ -368,8 +368,8 @@ importers:
         specifier: 21.2.3
         version: 21.2.3
       '@nuxt/test-utils':
-        specifier: 4.3.3
-        version: 4.3.3(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))
+        specifier: 4.3.4
+        version: 4.3.4(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -1878,9 +1878,9 @@ packages:
     peerDependencies:
       '@nuxt/kit': '>=3.0.0'
 
-  '@nuxt/test-utils@4.3.3':
-    resolution: {integrity: sha512-0Nxp6e+VJROAMGuyurTX3+ON+l3y79TuNDsciy+7TfCPx4GcitTrYsxjomi65jLVi0H32aEb2sloh/qmiwj6aA==}
-    version: 4.3.3
+  '@nuxt/test-utils@4.3.4':
+    resolution: {integrity: sha512-8x0w16DDUi1/6ZivL1zuOaDt9xtACZFHMQySBirUZNIU0H0qljjB5yyajXPtlb8YCQ5l6piFJqafK/zDpDcCnA==}
+    version: 4.3.4
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
       '@cucumber/cucumber': '>=11.0.0'
@@ -4021,10 +4021,6 @@ packages:
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
-
-  devalue@6.0.2:
-    resolution: {integrity: sha512-6V1HzU4to74skg//ScZR2mp9bdz+rESC9jQzVIIG/ha0HYgymHcXIQQCjH0+ivRaSuY82fa9fZ7Ro6QZT4s4uw==}
-    engines: {node: '>=22.17'}
 
   devalue@6.0.3:
     resolution: {integrity: sha512-3woMEITftG1wKeO/4d/QXH1DVKctTSZg3jNGPpjp9hNr5Hos8MCFF5McTML5ZtgKDObm2R591B0spRp2IVernA==}
@@ -7111,10 +7107,6 @@ packages:
     resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
     engines: {node: '>=20.18.1'}
 
-  undici@8.11.2:
-    resolution: {integrity: sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63txhrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ==}
-    engines: {node: '>=22.19.0'}
-
   undici@8.12.1:
     resolution: {integrity: sha512-usz3OVQBeh1LxNn0DzU0voLXMgn5CU/WUdpBsY6Ti5afNao+vTkmn4H/NxoXolc10cOqe2+YIG0Hspq2rsl64w==}
     engines: {node: '>=22.19.0'}
@@ -7550,9 +7542,6 @@ packages:
   vue-bundle-renderer@2.4.0:
     resolution: {integrity: sha512-IxHopQZgzTGBiuGERrQrAS7Lr3dCv+qxvgirEgCUFGAD4gYNfiaGYzC1DDojeZmJAmehp9gG8+17PGuVP6Ab2Q==}
 
-  vue-component-type-helpers@3.3.12:
-    resolution: {integrity: sha512-HwCqmgTfLFskQc4P5TRnbduCMyPat2Ezu0elLWOGn0dD/6BKHP15B5bxce6aDi+E4kblPtru8amIBQzu0Di3qQ==}
-
   vue-component-type-helpers@3.3.13:
     resolution: {integrity: sha512-02KCxSmKDhIITjKyJ4QT5csP6L0WoRborLqY/34a40+S9uvMvdNgMV0yVjO3p2Gkz3ZoPmFz/0JsGHacwJYTxw==}
 
@@ -7811,7 +7800,7 @@ snapshots:
       ipaddr.js: 2.5.0
       undici_v6: undici@6.28.0
       undici_v7: undici@7.29.0
-      undici_v8: undici@8.11.2
+      undici_v8: undici@8.12.1
 
   '@atproto-labs/fetch@0.3.6':
     dependencies:
@@ -9698,7 +9687,7 @@ snapshots:
       rc9: 3.1.0
       std-env: 4.3.0
 
-  '@nuxt/test-utils@4.3.3(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))':
+  '@nuxt/test-utils@4.3.4(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))':
     dependencies:
       '@clack/prompts': 1.8.1
       '@nuxt/devtools-kit': 3.4.2(@nuxt/schema@4.6.1)(confbox@0.3.1)(dotenv@17.4.2)(giget@3.3.1)(jiti@2.7.0)(magic-string@1.4.3)(mlly@1.8.2)(oxc-parser@0.153.0)(rolldown@1.2.14)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29)))(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))
@@ -11134,7 +11123,7 @@ snapshots:
       '@vue/compiler-dom': 3.5.44
       js-beautify: 2.0.3
       vue: 3.5.44(typescript@6.0.3)
-      vue-component-type-helpers: 3.3.12
+      vue-component-type-helpers: 3.3.13
     optionalDependencies:
       '@vue/server-renderer': 3.5.44
 
@@ -11913,8 +11902,6 @@ snapshots:
   detect-indent@7.0.2: {}
 
   detect-libc@2.1.2: {}
-
-  devalue@6.0.2: {}
 
   devalue@6.0.3: {}
 
@@ -13875,7 +13862,7 @@ snapshots:
       '@vue/compiler-sfc': 3.5.44
       consola: 3.4.2
       defu: 6.1.7
-      devalue: 6.0.2
+      devalue: 6.0.3
       exsolve: 1.1.3
       fnv1a-64: 0.1.2
       lightningcss: 1.33.0
@@ -15555,8 +15542,6 @@ snapshots:
 
   undici@7.29.0: {}
 
-  undici@8.11.2: {}
-
   undici@8.12.1: {}
 
   unenv@2.0.0-rc.0:
@@ -15609,7 +15594,7 @@ snapshots:
       css-tree: 3.2.1
       fnv1a-64: 0.1.2
       std-env: 4.3.0
-      undici: 8.11.2
+      undici: 8.12.1
 
   unimport@6.4.0(esbuild@0.28.2)(oxc-parser@0.153.0)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29)):
     dependencies:
@@ -15984,7 +15969,7 @@ snapshots:
 
   vitest-environment-nuxt@2.0.0:
     dependencies:
-      '@nuxt/test-utils': 4.3.3(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))
+      '@nuxt/test-utils': 4.3.4(@nuxt/schema@4.6.1)(@oxc-project/types@0.153.0)(@playwright/test@1.64.1)(@vue/test-utils@2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3)))(confbox@0.3.1)(dotenv@17.4.2)(esbuild@0.28.2)(giget@3.3.1)(h3@1.15.11)(happy-dom@21.0.1)(jiti@2.7.0)(mlly@1.8.2)(nuxt@https://pkg.pr.new/nuxt@5adfcb1(a83bad7f7ace76ff1650be334558ce46))(oxc-parser@0.153.0)(playwright-core@1.64.1)(rolldown@1.2.14)(rollup@4.64.7)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0))(vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)))(vue@3.5.44(typescript@6.0.3))(webpack@5.109.2(cssnano@9.4.0(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.29))
 
   vitest@5.0.4(@types/node@26.3.0)(happy-dom@21.0.1)(vite@8.3.4(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.50.0)(yaml@2.9.0)):
     dependencies:
@@ -16028,8 +16013,6 @@ snapshots:
   vue-bundle-renderer@2.4.0:
     dependencies:
       ufo: 1.6.4
-
-  vue-component-type-helpers@3.3.12: {}
 
   vue-component-type-helpers@3.3.13: {}
 
