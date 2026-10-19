@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2310k"`)
+      .toMatchInlineSnapshot(`"2300k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14220k"`)
+      .toMatchInlineSnapshot(`"14250k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -115,6 +115,7 @@ describe('project sizes', () => {
         "@atproto/lex-data",
         "@atproto/lex-json",
         "@atproto/lex-password-session",
+        "@atproto/lex-rpc",
         "@atproto/lex-schema",
         "@atproto/oauth-client",
         "@atproto/oauth-client-node",
@@ -164,7 +165,6 @@ describe('project sizes', () => {
         "modern-screenshot",
         "multiformats",
         "nostics",
-        "object-identity",
         "partysocket",
         "sax",
         "semver",
