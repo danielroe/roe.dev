@@ -111,7 +111,7 @@ describe('party rooms', () => {
     await settle()
 
     const you = phone.json().find(m => m.t === 'you')
-    expect(you).toMatchObject({ id: 'a-phone-identifier', name: 'Brave Knedlík', x: 0.5, y: 0.5 })
+    expect(you).toMatchObject({ id: 'a-phone-identifier', name: 'Brave Otter', x: 0.5, y: 0.5 })
     expect(host.json()).toEqual([
       { t: 'sync', cursors: [] },
       { t: 'scene', scene: null },
@@ -122,6 +122,40 @@ describe('party rooms', () => {
     await b!.close(phone)
     await settle()
     expect(host.json().at(-1)).toEqual({ t: 'leave', id: 'a-phone-identifier' })
+  })
+
+  it('themes new cursor names from the host', async () => {
+    const [a, b] = createInstances()
+    const host = createPeer()
+    const phone = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await b!.open(phone, url('cursors'))
+
+    await a!.message(host, JSON.stringify({ t: 'names', adjectives: [' Brave ', 42, ''], nouns: ['Ajolote', 'Quetzal'] }))
+    await b!.message(phone, JSON.stringify({ t: 'hello', id: 'a-phone-identifier' }))
+
+    expect(phone.json().find(m => m.t === 'you')).toMatchObject({ id: 'a-phone-identifier', name: 'Brave Ajolote' })
+  })
+
+  it('ignores name lists from phones and keeps them through clear', async () => {
+    const [a] = createInstances(1)
+    const host = createPeer()
+    const phone = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await a!.open(phone, url('cursors'))
+
+    await a!.message(host, JSON.stringify({ t: 'names', adjectives: ['Brave', 'Sleepy'], nouns: ['Ajolote', 'Quetzal'] }))
+    await a!.message(phone, JSON.stringify({ t: 'names', adjectives: ['Nope'], nouns: ['Nope'] }))
+    await a!.message(phone, JSON.stringify({ t: 'hello', id: 'a-phone-identifier' }))
+    expect(phone.json().find(m => m.t === 'you')).toMatchObject({ name: 'Brave Ajolote' })
+
+    await a!.message(host, JSON.stringify({ t: 'clear' }))
+    expect(phone.closed).toBe(4000)
+
+    const next = createPeer()
+    await a!.open(next, url('cursors'))
+    await a!.message(next, JSON.stringify({ t: 'hello', id: 'next-phone-identifier' }))
+    expect(next.json().find(m => m.t === 'you')).toMatchObject({ name: 'Brave Ajolote' })
   })
 
   it('keeps a cursor online while it is still connected to another instance', async () => {

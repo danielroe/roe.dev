@@ -44,6 +44,11 @@ interface Scene {
   zones: Zone[]
 }
 
+interface Names {
+  adjectives: string[]
+  nouns: string[]
+}
+
 interface Conn {
   peer: PartyPeer
   room: Room
@@ -65,8 +70,8 @@ const STALE_AFTER = 75_000
 const BROADCAST_INTERVAL = 33
 const PERSIST_INTERVAL = 1000
 
-const ADJECTIVES = ['Brave', 'Sleepy', 'Jolly', 'Sneaky', 'Fuzzy', 'Clever', 'Bouncy', 'Cosy', 'Zippy', 'Plucky', 'Witty', 'Sunny', 'Mighty', 'Curious', 'Dapper', 'Nimble', 'Gentle', 'Merry', 'Bold', 'Quirky']
-const NOUNS = ['Knedlík', 'Trdelník', 'Golem', 'Krtek', 'Pivo', 'Koláček', 'Rohlík', 'Vltava', 'Klobása', 'Švejk', 'Beaver', 'Otter', 'Lynx', 'Heron', 'Badger', 'Hedgehog', 'Stork', 'Marten', 'Owl', 'Carp']
+const DEFAULT_ADJECTIVES = ['Brave', 'Sleepy', 'Jolly', 'Sneaky', 'Fuzzy', 'Clever', 'Bouncy', 'Cosy', 'Zippy', 'Plucky', 'Witty', 'Sunny', 'Mighty', 'Curious', 'Dapper', 'Nimble', 'Gentle', 'Merry', 'Bold', 'Quirky']
+const DEFAULT_NOUNS = ['Otter', 'Heron', 'Badger', 'Hedgehog', 'Owl', 'Fox', 'Raven', 'Squirrel', 'Beaver', 'Rabbit', 'Moose', 'Falcon', 'Wolf', 'Robin', 'Lynx', 'Marten', 'Stork', 'Carp', 'Frog', 'Seal']
 const COLORS = ['#ff5d8f', '#ffb347', '#ffe156', '#8ce99a', '#38d9a9', '#4dabf7', '#748ffc', '#b197fc', '#f783ac', '#ff8787', '#63e6be', '#74c0fc', '#ffa94d', '#d0bfff', '#a9e34b', '#66d9e8']
 
 const clamp = (n: unknown) => typeof n === 'number' && Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0.5
@@ -277,6 +282,10 @@ class CursorsRoom extends Room {
   flushTimer?: ReturnType<typeof setTimeout>
   persistTimer?: ReturnType<typeof setTimeout>
 
+  async activeNames () {
+    return resolveNames(await this.store.get<Names>(this.key('names')) ?? {})
+  }
+
   async join (conn: Conn, params: URLSearchParams) {
     conn.host = params.get('role') === 'host' && this.options.authorise(params.get('token'))
     const scene = await this.store.get<Scene>(this.key('scene'))
@@ -327,7 +336,8 @@ class CursorsRoom extends Room {
     let changed = false
     if (!cursor) {
       const n = await this.store.incr(this.key('assigned')) - 1
-      cursor = { id, name: makeName(n), color: COLORS[n % COLORS.length]!, x: 0.5, y: 0.5 }
+      const names = await this.activeNames()
+      cursor = { id, name: makeName(n, names), color: COLORS[n % COLORS.length]!, x: 0.5, y: 0.5 }
       changed = true
     }
     if (typeof msg.name === 'string' && msg.name.trim()) {
@@ -382,6 +392,12 @@ class CursorsRoom extends Room {
       case 'result':
         await this.publish({ to: 'phone', ms: [JSON.stringify({ t: 'result', zoneId: typeof msg.zoneId === 'string' ? msg.zoneId : null })] })
         break
+      case 'names': {
+        const names = resolveNames(msg)
+        if (sameNames(names, await this.activeNames())) break
+        await this.store.set(this.key('names'), names)
+        break
+      }
       case 'reset': {
         const cursors = await this.store.hgetall<Cursor>(this.key('cursors'))
         for (const cursor of Object.values(cursors)) {
@@ -503,10 +519,37 @@ class CursorsRoom extends Room {
   }
 }
 
-function makeName (n: number) {
-  const adj = ADJECTIVES[n % ADJECTIVES.length]
-  const noun = NOUNS[(n * 7 + Math.floor(n / ADJECTIVES.length)) % NOUNS.length]
+function makeName (n: number, names: Names) {
+  const adjectives = names.adjectives
+  const nouns = names.nouns
+  const adj = adjectives[n % adjectives.length]
+  const noun = nouns[(n * 7 + Math.floor(n / adjectives.length)) % nouns.length]
   return `${adj} ${noun}`
+}
+
+function sanitiseList (value: unknown) {
+  if (!Array.isArray(value)) return []
+  return value
+    .filter((entry): entry is string => typeof entry === 'string')
+    .map(entry => entry.trim().slice(0, 24))
+    .filter(Boolean)
+    .slice(0, 100)
+}
+
+function resolveNames (input: { adjectives?: unknown, nouns?: unknown }): Names {
+  const adjectives = sanitiseList(input.adjectives)
+  const nouns = sanitiseList(input.nouns)
+  return {
+    adjectives: adjectives.length ? adjectives : [...DEFAULT_ADJECTIVES],
+    nouns: nouns.length ? nouns : [...DEFAULT_NOUNS],
+  }
+}
+
+function sameNames (a: Names, b: Names) {
+  return a.adjectives.length === b.adjectives.length
+    && a.adjectives.every((name, i) => name === b.adjectives[i])
+    && a.nouns.length === b.nouns.length
+    && a.nouns.every((name, i) => name === b.nouns[i])
 }
 
 function sanitiseScene (scene: unknown): Scene | null {
