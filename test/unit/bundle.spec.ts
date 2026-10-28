@@ -63,7 +63,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"283k"`)
+      .toMatchInlineSnapshot(`"282k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2310k"`)
+      .toMatchInlineSnapshot(`"2500k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14220k"`)
+      .toMatchInlineSnapshot(`"14400k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -126,6 +126,7 @@ describe('project sizes', () => {
         "@img/colour",
         "@takumi-rs/core",
         "@takumi-rs/helpers",
+        "@upstash/redis",
         "@vue/compiler-core",
         "@vue/compiler-core/node_modules/entities",
         "@vue/compiler-core/node_modules/entities/dist/commonjs",
@@ -175,6 +176,7 @@ describe('project sizes', () => {
         "ufo",
         "uint8array-extras",
         "ultrahtml",
+        "uncrypto",
         "undici",
         "undici_v6",
         "undici_v7",

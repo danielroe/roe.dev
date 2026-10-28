@@ -271,7 +271,7 @@ let resizeObserver: ResizeObserver | undefined
 
 onMounted(() => {
   const params = new URLSearchParams(location.search)
-  const host = params.get('host') || (import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev')
+  const host = params.get('host') || location.host
   socket = new PartySocket({ host, room: 'cursors', query: { role: 'phone' } })
 
   socket.addEventListener('open', () => {

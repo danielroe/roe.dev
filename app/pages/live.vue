@@ -90,12 +90,11 @@ const displayedReactions = ref<Array<{
 }>>([])
 const isConnected = ref(false)
 
-// Connect to PartyKit
 let partySocket: PartySocket
 if (import.meta.client) {
   onNuxtReady(() => {
     partySocket = new PartySocket({
-      host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
+      host: location.host,
       room: 'reactions',
     })
 

@@ -81,7 +81,7 @@ if (import.meta.client) {
   let partySocket: PartySocket
   onNuxtReady(() => {
     partySocket = new PartySocket({
-      host: import.meta.dev ? 'localhost:1999' : 'v.danielroe.partykit.dev',
+      host: location.host,
       room: 'site',
     })
 

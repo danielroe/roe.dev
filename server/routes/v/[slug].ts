@@ -1,16 +1,12 @@
-import { createError, defineEventHandler, getRouterParam, sendRedirect, useRuntimeConfig } from 'nuxt/server'
-import { $fetch } from 'ofetch'
+import { createError, defineEventHandler, getRouterParam, sendRedirect } from 'nuxt/server'
+
+import { useParty } from '../../utils/party'
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig()
   const slug = getRouterParam(event, 'slug')
   if (!slug || !/^[\da-z]+$/.test(slug)) {
     throw createError({ status: 400, statusText: 'Missing slug' })
   }
-  await $fetch(slug, {
-    baseURL: config.voteUrl,
-    body: { type: 'vote' },
-    method: 'POST',
-  })
+  await (await useParty()).request(slug, { type: 'vote' })
   return sendRedirect(event, '/voted')
 })

@@ -76,7 +76,11 @@ export default defineNuxtConfig({
 
   $production: {
     modules: ['nuxt-security'],
-    routeRules: renderedSwrRules,
+    routeRules: {
+      ...renderedSwrRules,
+      // a conference audience shares a handful of venue IPs
+      '/parties/**': { security: { rateLimiter: false } },
+    },
   },
 
   $test: {
@@ -152,7 +156,10 @@ export default defineNuxtConfig({
       clientSecret: '',
       amaPlaylistId: 'PLQnM-cL9ttacD7fyv6yrtQxaICAUs-2KJ',
     },
-    voteUrl: '',
+    party: {
+      // grants host access to realtime rooms and sets live status
+      token: '',
+    },
     // Pushover notifications
     pushover: {
       token: '',
@@ -245,6 +252,7 @@ export default defineNuxtConfig({
       'import.meta.test': isTest,
     },
     future: { nativeSWR: true },
+    experimental: { websocket: true },
     hooks: {
       'prerender:generate' (route) {
         if (route.fileName)
