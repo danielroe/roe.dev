@@ -1,4 +1,4 @@
-import { isValidEmoji } from '../../../shared/utils/emoji'
+import { isSingleEmoji, isValidEmoji } from '../../../shared/utils/emoji'
 import type { PartyStore } from './store'
 
 export interface PartyPeer {
@@ -363,7 +363,7 @@ class CursorsRoom extends Room {
     const local = conn.id ? this.phones.get(conn.id) : undefined
     if (!local || typeof emoji !== 'string') return
     const { mode, emojis } = await this.currentMode()
-    if (mode === 'cursor' || !emojis.includes(emoji) || !takeReactToken(local)) return
+    if (mode === 'cursor' || !(emojis.includes(emoji) || isSingleEmoji(emoji)) || !takeReactToken(local)) return
     await this.publish({ to: 'host', ms: [JSON.stringify({ t: 'react', id: local.cursor.id, emoji })] })
   }
 

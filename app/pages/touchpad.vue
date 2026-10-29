@@ -66,7 +66,10 @@
         />
       </div>
       <p class="min-h-[1.25em] text-sm text-center text-muted">
-        <template v-if="winner && winnerLabel">
+        <template v-if="customOpen">
+          pick any emoji on your keyboard
+        </template>
+        <template v-else-if="winner && winnerLabel">
           🎉 {{ winnerLabel }}
         </template>
         <template v-else-if="scene?.zones?.length">
@@ -89,7 +92,7 @@
         {{ scene.title }}
       </p>
       <p class="text-sm text-muted">
-        tap to react
+        {{ customOpen ? 'pick any emoji on your keyboard' : 'tap to react' }}
       </p>
     </div>
 
@@ -97,8 +100,8 @@
       v-if="mode !== 'cursor'"
       class="touchpad-emojis grid gap-2"
       :style="mode === 'react'
-        ? { gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${Math.ceil(emojis.length / gridColumns)}, minmax(0, 1fr))` }
-        : { gridTemplateColumns: `repeat(${emojis.length}, minmax(0, 1fr))` }"
+        ? { gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${Math.ceil(tiles / gridColumns)}, minmax(0, 1fr))` }
+        : { gridTemplateColumns: `repeat(${tiles}, minmax(0, 1fr))` }"
     >
       <button
         v-for="emoji in emojis"
@@ -106,12 +109,38 @@
         type="button"
         class="touchpad-emoji f-ring-inset flex items-center justify-center bg-accent"
         :aria-label="`react with ${emoji}`"
-        @pointerdown="onReact(emoji, $event)"
-        @click="$event.detail === 0 && onReact(emoji, $event)"
+        @pointerdown="onReact(emoji, $event.currentTarget)"
+        @click="$event.detail === 0 && onReact(emoji, $event.currentTarget)"
         @contextmenu.prevent
       >
         <span aria-hidden="true">{{ emoji }}</span>
       </button>
+      <label
+        class="touchpad-emoji touchpad-custom relative flex items-center justify-center bg-accent"
+        :class="{ 'is-open': customOpen }"
+        :style="mode === 'react' ? { gridColumn: `span ${gridColumns - emojis.length % gridColumns}` } : undefined"
+      >
+        <span
+          v-show="!customOpen"
+          class="text-muted"
+          aria-hidden="true"
+        >+</span>
+        <input
+          type="text"
+          class="absolute inset-0 w-full h-full p-0 text-center bg-transparent border-none outline-none"
+          aria-label="react with any emoji"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          enterkeyhint="done"
+          @focus="customOpen = true"
+          @blur="onCustomBlur"
+          @input="onCustomInput"
+          @compositionend="onCustomInput"
+          @keydown.enter.prevent="($event.target as HTMLInputElement).blur()"
+        >
+      </label>
     </div>
 
     <div
@@ -161,7 +190,9 @@ const ripples = ref<Array<{ id: number, x: number, y: number }>>([])
 const mapSize = reactive({ w: 0, h: 0 })
 const mode = ref<Mode>('cursor')
 const emojis = ref<string[]>([])
-const gridColumns = computed(() => emojis.value.length <= 1 ? 1 : emojis.value.length <= 4 ? 2 : 3)
+const customOpen = ref(false)
+const tiles = computed(() => emojis.value.length + 1)
+const gridColumns = computed(() => tiles.value <= 4 ? 2 : 3)
 
 const currentZone = computed(() => scene.value?.zones.find(z => pos.x >= z.x && pos.x <= z.x + z.w && pos.y >= z.y && pos.y <= z.y + z.h)?.id ?? null)
 const currentZoneLabel = computed(() => scene.value?.zones.find(z => z.id === currentZone.value)?.label)
@@ -293,14 +324,32 @@ function tap (e: PointerEvent) {
   }, 600)
 }
 
-function onReact (emoji: string, e: Event) {
+function onReact (emoji: string, el?: EventTarget | null) {
   send({ t: 'react', emoji })
   vibrate(10)
-  const el = e.currentTarget as HTMLElement | null
-  el?.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(0.85)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 220, easing: 'ease-out' })
+  ;(el as HTMLElement | null)?.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(0.85)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 220, easing: 'ease-out' })
+}
+
+function onCustomInput (e: Event) {
+  if ((e as InputEvent).isComposing) return
+  const input = e.target as HTMLInputElement
+  const last = splitGraphemes(input.value.trim()).at(-1)
+  if (last && isSingleEmoji(last)) {
+    input.value = ''
+    onReact(last, input.parentElement)
+  }
+  else if (input.value.length > 32) {
+    input.value = ''
+  }
+}
+
+function onCustomBlur (e: FocusEvent) {
+  (e.target as HTMLInputElement).value = ''
+  customOpen.value = false
 }
 
 watch(mode, value => {
+  if (value === 'cursor') customOpen.value = false
   if (value !== 'react') return
   stopInertia()
   activePointer = null
@@ -462,6 +511,21 @@ html.touchpad-root body {
 
 .touchpad-emoji:active {
   background: color-mix(in srgb, var(--me) 25%, var(--accent));
+}
+
+.touchpad-custom input {
+  font-size: 2rem;
+  opacity: 0;
+  user-select: text;
+  caret-color: var(--me);
+}
+
+.touchpad-custom.is-open input {
+  opacity: 1;
+}
+
+.touchpad-custom.is-open {
+  box-shadow: inset 0 0 0 2px var(--me);
 }
 
 .is-both .touchpad-emoji {

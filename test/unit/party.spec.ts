@@ -253,12 +253,31 @@ describe('party rooms', () => {
     await settle()
 
     await b!.message(phone, JSON.stringify({ t: 'react', emoji: '🎉' }))
-    await b!.message(phone, JSON.stringify({ t: 'react', emoji: '❤️' }))
+    await b!.message(phone, JSON.stringify({ t: 'react', emoji: 'nope' }))
     await b!.message(phone, JSON.stringify({ t: 'react', emoji: 42 }))
     await settle()
 
     expect(host.json().filter(m => m.t === 'react')).toEqual([{ t: 'react', id: 'a-phone-identifier', emoji: '🎉' }])
     expect(other.json().some(m => m.t === 'react')).toBe(false)
+  })
+
+  it('accepts single custom emoji and rejects anything else', async () => {
+    const [a] = createInstances(1)
+    const host = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'both', emojis: ['🎉'] }))
+
+    const accepted = ['🌮', '❤️', '👍🏽', '👨‍👩‍👧‍👦', '🏳️‍🌈', '🇲🇽', '🏴󠁧󠁢󠁳󠁣󠁴󠁿']
+    const rejected = ['a', 'hello', '1', '🌮🌮', '🌮a', ' 🌮', '🇲', '🇲🇽🇲', '', '👨‍👩‍👧‍👦👍']
+    for (const emoji of [...accepted, ...rejected]) {
+      const phone = createPeer()
+      await a!.open(phone, url('cursors'))
+      await a!.message(phone, JSON.stringify({ t: 'hello', id: `phone-identifier-${phone.id}` }))
+      await a!.message(phone, JSON.stringify({ t: 'react', emoji }))
+    }
+    await settle()
+
+    expect(host.json().filter(m => m.t === 'react').map(m => m.emoji)).toEqual(accepted)
   })
 
   it('drops reactions in cursor mode and from phones that have not said hello', async () => {

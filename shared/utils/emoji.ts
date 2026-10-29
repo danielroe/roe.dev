@@ -7,3 +7,20 @@ export function isValidEmoji (str: string): boolean {
   if (!str) return false
   return emojiRegex.test(str)
 }
+
+const graphemeSegmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : undefined
+const pictographicRe = /^\p{Extended_Pictographic}/u
+const flagRe = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u
+
+/** Splits a string into user-perceived characters (grapheme clusters). */
+export function splitGraphemes (str: string): string[] {
+  if (!graphemeSegmenter) return Array.from(str)
+  return Array.from(graphemeSegmenter.segment(str), s => s.segment)
+}
+
+/** Whether `str` is exactly one emoji: a pictographic grapheme or a regional-indicator flag. */
+export function isSingleEmoji (str: unknown): str is string {
+  if (typeof str !== 'string' || !str || str.length > 16) return false
+  if (splitGraphemes(str).length !== 1) return false
+  return pictographicRe.test(str) || flagRe.test(str)
+}
