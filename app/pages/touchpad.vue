@@ -1,6 +1,7 @@
 <template>
   <div
     class="touchpad fixed inset-0 grid gap-4 bg-background text-primary font-sans select-none touch-none"
+    :class="`is-${mode}`"
     :style="{ '--me': me?.color || 'rgb(var(--muted))' }"
   >
     <header class="touchpad-header flex items-center justify-between">
@@ -26,6 +27,7 @@
     </header>
 
     <section
+      v-show="mode !== 'react'"
       class="touchpad-map-wrap flex flex-col gap-2"
       aria-hidden="true"
     >
@@ -77,6 +79,43 @@
     </section>
 
     <div
+      v-if="mode === 'react'"
+      class="touchpad-map-wrap flex flex-col justify-center gap-1 text-center"
+    >
+      <p
+        v-if="scene?.title"
+        class="text-lg"
+      >
+        {{ scene.title }}
+      </p>
+      <p class="text-sm text-muted">
+        tap to react
+      </p>
+    </div>
+
+    <div
+      v-if="mode !== 'cursor'"
+      class="touchpad-emojis grid gap-2"
+      :style="mode === 'react'
+        ? { gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${Math.ceil(emojis.length / gridColumns)}, minmax(0, 1fr))` }
+        : { gridTemplateColumns: `repeat(${emojis.length}, minmax(0, 1fr))` }"
+    >
+      <button
+        v-for="emoji in emojis"
+        :key="emoji"
+        type="button"
+        class="touchpad-emoji f-ring-inset flex items-center justify-center bg-accent"
+        :aria-label="`react with ${emoji}`"
+        @pointerdown="onReact(emoji, $event)"
+        @click="$event.detail === 0 && onReact(emoji, $event)"
+        @contextmenu.prevent
+      >
+        <span aria-hidden="true">{{ emoji }}</span>
+      </button>
+    </div>
+
+    <div
+      v-if="mode !== 'react'"
       ref="surface"
       class="touchpad-surface relative min-h-32 overflow-hidden touch-none cursor-crosshair bg-accent"
       @pointerdown="onDown"
@@ -101,6 +140,7 @@ import PartySocket from 'partysocket'
 interface Zone { id: string, label: string, color: string, x: number, y: number, w: number, h: number }
 interface Scene { title?: string, zones: Zone[] }
 interface Me { id: string, name: string, color: string }
+type Mode = 'cursor' | 'react' | 'both'
 
 useHead({
   title: 'touchpad',
@@ -119,6 +159,9 @@ const surface = useTemplateRef<HTMLElement>('surface')
 const mapEl = useTemplateRef<HTMLElement>('map')
 const ripples = ref<Array<{ id: number, x: number, y: number }>>([])
 const mapSize = reactive({ w: 0, h: 0 })
+const mode = ref<Mode>('cursor')
+const emojis = ref<string[]>([])
+const gridColumns = computed(() => emojis.value.length <= 1 ? 1 : emojis.value.length <= 4 ? 2 : 3)
 
 const currentZone = computed(() => scene.value?.zones.find(z => pos.x >= z.x && pos.x <= z.x + z.w && pos.y >= z.y && pos.y <= z.y + z.h)?.id ?? null)
 const currentZoneLabel = computed(() => scene.value?.zones.find(z => z.id === currentZone.value)?.label)
@@ -250,6 +293,19 @@ function tap (e: PointerEvent) {
   }, 600)
 }
 
+function onReact (emoji: string, e: Event) {
+  send({ t: 'react', emoji })
+  vibrate(10)
+  const el = e.currentTarget as HTMLElement | null
+  el?.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(0.85)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 220, easing: 'ease-out' })
+}
+
+watch(mode, value => {
+  if (value !== 'react') return
+  stopInertia()
+  activePointer = null
+})
+
 /* wake lock keeps the phone from sleeping mid-talk */
 let wakeLock: { release: () => Promise<void> } | undefined
 async function requestWakeLock () {
@@ -296,6 +352,11 @@ onMounted(() => {
           pos.x = msg.x
           pos.y = msg.y
         }
+        break
+      case 'mode':
+        mode.value = ['cursor', 'react', 'both'].includes(msg.mode) ? msg.mode : 'cursor'
+        emojis.value = Array.isArray(msg.emojis) ? msg.emojis.filter((e: unknown) => typeof e === 'string') : []
+        if (!emojis.value.length && mode.value !== 'cursor') mode.value = 'cursor'
         break
       case 'scene':
         scene.value = msg.scene
@@ -352,10 +413,59 @@ html.touchpad-root body {
 
 <style scoped>
 .touchpad {
-  grid-template-rows: auto auto 1fr;
+  grid-template:
+    "header" auto
+    "map" auto
+    "surface" 1fr
+    / minmax(0, 1fr);
   padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+.touchpad.is-both {
+  grid-template-areas: "header" "map" "emojis" "surface";
+  grid-template-rows: auto auto auto 1fr;
+}
+
+.touchpad.is-react {
+  grid-template-areas: "header" "map" "emojis";
+  grid-template-rows: auto auto 1fr;
+}
+
+.touchpad-header {
+  grid-area: header;
+}
+
+.touchpad-map-wrap {
+  grid-area: map;
+}
+
+.touchpad-emojis {
+  grid-area: emojis;
+}
+
+.touchpad-emoji {
+  container-type: size;
+  min-height: 3.5rem;
+  font-size: 2rem;
+  line-height: 1;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.touchpad-emoji > span {
+  font-size: clamp(1.75rem, 60cqmin, 6rem);
+  pointer-events: none;
+}
+
+.touchpad-emoji:active {
+  background: color-mix(in srgb, var(--me) 25%, var(--accent));
+}
+
+.is-both .touchpad-emoji {
+  height: 4rem;
 }
 
 .touchpad-zone {
@@ -373,6 +483,7 @@ html.touchpad-root body {
 }
 
 .touchpad-surface {
+  grid-area: surface;
   background-image: radial-gradient(circle at center, rgb(var(--muted) / 25%) 1px, transparent 1.5px);
   background-size: 22px 22px;
 }
@@ -383,22 +494,20 @@ html.touchpad-root body {
 
 @media (orientation: landscape) and (height <= 600px) {
   .touchpad {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    grid-template:
+      "header surface" auto
+      "map surface" 1fr
+      / minmax(0, 2fr) minmax(0, 3fr);
+  }
+
+  .touchpad.is-both {
+    grid-template-areas: "header surface" "map surface" "map emojis";
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .touchpad.is-react {
+    grid-template-areas: "header emojis" "map emojis";
     grid-template-rows: auto 1fr;
-  }
-
-  .touchpad-header {
-    grid-column: 1;
-  }
-
-  .touchpad-map-wrap {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .touchpad-surface {
-    grid-column: 2;
-    grid-row: 1 / span 2;
   }
 }
 

@@ -192,4 +192,114 @@ describe('party rooms', () => {
     expect(phone.closed).toBe(4000)
     expect(realHost.json().at(-1)).toEqual({ t: 'sync', cursors: [] })
   })
+
+  it('stores the pad mode and broadcasts it to phones on every instance', async () => {
+    const [a, b] = createInstances()
+    const host = createPeer()
+    const phone = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await b!.open(phone, url('cursors'))
+    expect(phone.json().at(-1)).toEqual({ t: 'mode', mode: 'cursor', emojis: ['❤️', '👏', '🎉', '😂', '🤯', '🔥'] })
+
+    const before = phone.messages.length
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'both', emojis: [' 🌮 ', 42, '', 'way too long for an emoji', '🌮', '🌶️'] }))
+    await settle()
+    expect(phone.json().at(-1)).toEqual({ t: 'mode', mode: 'both', emojis: ['🌮', '🌶️'] })
+    expect(phone.messages.length).toBe(before + 1)
+
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'both', emojis: ['🌮', '🌶️'] }))
+    await settle()
+    expect(phone.messages.length).toBe(before + 1)
+    expect(host.json().some(m => m.t === 'mode')).toBe(false)
+
+    const next = createPeer()
+    await a!.open(next, url('cursors'))
+    expect(next.json()).toEqual([
+      { t: 'scene', scene: null },
+      { t: 'mode', mode: 'both', emojis: ['🌮', '🌶️'] },
+    ])
+
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'nonsense', emojis: [] }))
+    await settle()
+    expect(phone.json().at(-1)).toEqual({ t: 'mode', mode: 'cursor', emojis: ['❤️', '👏', '🎉', '😂', '🤯', '🔥'] })
+  })
+
+  it('ignores mode changes from phones', async () => {
+    const [a] = createInstances(1)
+    const phone = createPeer()
+    const fakeHost = createPeer()
+    await a!.open(phone, url('cursors'))
+    await a!.open(fakeHost, url('cursors', '?role=host&token=wrong'))
+    await a!.message(phone, JSON.stringify({ t: 'mode', mode: 'react' }))
+    await a!.message(fakeHost, JSON.stringify({ t: 'mode', mode: 'react' }))
+    await settle()
+
+    expect(phone.json().filter(m => m.t === 'mode')).toEqual([{ t: 'mode', mode: 'cursor', emojis: expect.any(Array) }])
+    const next = createPeer()
+    await a!.open(next, url('cursors'))
+    expect(next.json().at(-1)).toMatchObject({ t: 'mode', mode: 'cursor' })
+  })
+
+  it.each(['react', 'both'])('relays reactions to hosts in %s mode', async mode => {
+    const [a, b] = createInstances()
+    const host = createPeer()
+    const phone = createPeer()
+    const other = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await b!.open(phone, url('cursors'))
+    await b!.open(other, url('cursors'))
+    await b!.message(phone, JSON.stringify({ t: 'hello', id: 'a-phone-identifier' }))
+    await a!.message(host, JSON.stringify({ t: 'mode', mode, emojis: ['🎉', '🔥'] }))
+    await settle()
+
+    await b!.message(phone, JSON.stringify({ t: 'react', emoji: '🎉' }))
+    await b!.message(phone, JSON.stringify({ t: 'react', emoji: '❤️' }))
+    await b!.message(phone, JSON.stringify({ t: 'react', emoji: 42 }))
+    await settle()
+
+    expect(host.json().filter(m => m.t === 'react')).toEqual([{ t: 'react', id: 'a-phone-identifier', emoji: '🎉' }])
+    expect(other.json().some(m => m.t === 'react')).toBe(false)
+  })
+
+  it('drops reactions in cursor mode and from phones that have not said hello', async () => {
+    const [a] = createInstances(1)
+    const host = createPeer()
+    const phone = createPeer()
+    const anonymous = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await a!.open(phone, url('cursors'))
+    await a!.open(anonymous, url('cursors'))
+    await a!.message(phone, JSON.stringify({ t: 'hello', id: 'a-phone-identifier' }))
+    await a!.message(phone, JSON.stringify({ t: 'react', emoji: '🎉' }))
+
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'react' }))
+    await a!.message(anonymous, JSON.stringify({ t: 'react', emoji: '🎉' }))
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'cursor' }))
+    await a!.message(phone, JSON.stringify({ t: 'react', emoji: '🎉' }))
+    await settle()
+
+    expect(host.json().some(m => m.t === 'react')).toBe(false)
+  })
+
+  it('rate limits reactions per phone', async () => {
+    const [a] = createInstances(1)
+    const host = createPeer()
+    const phone = createPeer()
+    await a!.open(host, url('cursors', `?role=host&token=${TOKEN}`))
+    await a!.open(phone, url('cursors'))
+    await a!.message(phone, JSON.stringify({ t: 'hello', id: 'a-phone-identifier' }))
+    await a!.message(host, JSON.stringify({ t: 'mode', mode: 'react' }))
+    const reactions = () => host.json().filter(m => m.t === 'react').length
+
+    for (let i = 0; i < 10; i++) await a!.message(phone, JSON.stringify({ t: 'react', emoji: '🔥' }))
+    expect(reactions()).toBe(4)
+
+    await vi.advanceTimersByTimeAsync(500)
+    for (let i = 0; i < 10; i++) await a!.message(phone, JSON.stringify({ t: 'react', emoji: '🔥' }))
+    expect(reactions()).toBe(6)
+
+    await vi.advanceTimersByTimeAsync(5000)
+    for (let i = 0; i < 10; i++) await a!.message(phone, JSON.stringify({ t: 'react', emoji: '🔥' }))
+    expect(reactions()).toBe(10)
+  })
 })

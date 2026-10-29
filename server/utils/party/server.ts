@@ -49,6 +49,13 @@ interface Names {
   nouns: string[]
 }
 
+type Mode = 'cursor' | 'react' | 'both'
+
+interface ModeState {
+  mode: Mode
+  emojis: string[]
+}
+
 interface Conn {
   peer: PartyPeer
   room: Room
@@ -62,6 +69,7 @@ type Envelope
   = | { to?: 'host' | 'phone', ms: string[] }
     | { c: 'reset' | 'clear' }
     | { c: 'leave', id: string }
+    | { c: 'mode', state: ModeState }
 
 const ROOM_RE = /^[\w-]{1,64}$/
 
@@ -69,6 +77,11 @@ const HEARTBEAT_INTERVAL = 30_000
 const STALE_AFTER = 75_000
 const BROADCAST_INTERVAL = 33
 const PERSIST_INTERVAL = 1000
+const REACT_BURST = 4
+const REACT_PER_MS = 4 / 1000
+
+const MODES: Mode[] = ['cursor', 'react', 'both']
+const DEFAULT_EMOJIS = ['❤️', '👏', '🎉', '😂', '🤯', '🔥']
 
 const DEFAULT_ADJECTIVES = ['Brave', 'Sleepy', 'Jolly', 'Sneaky', 'Fuzzy', 'Clever', 'Bouncy', 'Cosy', 'Zippy', 'Plucky', 'Witty', 'Sunny', 'Mighty', 'Curious', 'Dapper', 'Nimble', 'Gentle', 'Merry', 'Bold', 'Quirky']
 const DEFAULT_NOUNS = ['Otter', 'Heron', 'Badger', 'Hedgehog', 'Owl', 'Fox', 'Raven', 'Squirrel', 'Beaver', 'Rabbit', 'Moose', 'Falcon', 'Wolf', 'Robin', 'Lynx', 'Marten', 'Stork', 'Carp', 'Frog', 'Seal']
@@ -273,6 +286,8 @@ class BasicRoom extends Room {
 interface LocalCursor {
   cursor: Cursor
   conns: Set<Conn>
+  reactTokens: number
+  reactRefilled: number
 }
 
 class CursorsRoom extends Room {
@@ -281,16 +296,31 @@ class CursorsRoom extends Room {
   dirty = new Set<string>()
   flushTimer?: ReturnType<typeof setTimeout>
   persistTimer?: ReturnType<typeof setTimeout>
+  modeState?: ModeState
 
   async activeNames () {
     return resolveNames(await this.store.get<Names>(this.key('names')) ?? {})
   }
 
+  async storedMode () {
+    return resolveMode(await this.store.get<ModeState>(this.key('mode')) ?? {})
+  }
+
+  async currentMode () {
+    if (this.modeState) return this.modeState
+    const state = await this.storedMode()
+    return this.modeState ??= state
+  }
+
   async join (conn: Conn, params: URLSearchParams) {
     conn.host = params.get('role') === 'host' && this.options.authorise(params.get('token'))
-    const scene = await this.store.get<Scene>(this.key('scene'))
+    const [scene, mode] = await Promise.all([
+      this.store.get<Scene>(this.key('scene')),
+      conn.host ? undefined : this.currentMode(),
+    ])
     if (conn.host) conn.peer.send(JSON.stringify({ t: 'sync', cursors: await this.onlineCursors() }))
     conn.peer.send(JSON.stringify({ t: 'scene', scene }))
+    if (mode) conn.peer.send(JSON.stringify({ t: 'mode', ...mode }))
   }
 
   async message (conn: Conn, text: string) {
@@ -322,8 +352,19 @@ class CursorsRoom extends Room {
         }
         this.pending.delete(local.cursor.id)
         await this.publish({ to: 'host', ms: [JSON.stringify({ t: 'tap', id: local.cursor.id, x: local.cursor.x, y: local.cursor.y })] })
+        return
       }
+      case 'react':
+        return this.react(conn, msg.emoji)
     }
+  }
+
+  async react (conn: Conn, emoji: unknown) {
+    const local = conn.id ? this.phones.get(conn.id) : undefined
+    if (!local || typeof emoji !== 'string') return
+    const { mode, emojis } = await this.currentMode()
+    if (mode === 'cursor' || !emojis.includes(emoji) || !takeReactToken(local)) return
+    await this.publish({ to: 'host', ms: [JSON.stringify({ t: 'react', id: local.cursor.id, emoji })] })
   }
 
   async hello (conn: Conn, msg: Record<string, any>) {
@@ -346,7 +387,7 @@ class CursorsRoom extends Room {
     }
     if (changed) await this.store.hset(this.key('cursors'), { [id]: cursor })
 
-    if (!local) this.phones.set(id, local = { cursor, conns: new Set() })
+    if (!local) this.phones.set(id, local = { cursor, conns: new Set(), reactTokens: REACT_BURST, reactRefilled: Date.now() })
     local.conns.add(conn)
     conn.peer.send(JSON.stringify({ t: 'you', ...cursor }))
     if (local.conns.size === 1) await this.online(cursor)
@@ -379,6 +420,10 @@ class CursorsRoom extends Room {
     for (const id of await this.store.prune(key, Date.now() - STALE_AFTER)) {
       await this.publish({ c: 'leave', id })
     }
+    if (this.modeState) {
+      const state = await this.storedMode()
+      if (!sameMode(state, this.modeState)) this.deliver({ c: 'mode', state })
+    }
   }
 
   async onHostMessage (msg: Record<string, any>) {
@@ -387,6 +432,13 @@ class CursorsRoom extends Room {
         const scene = sanitiseScene(msg.scene)
         await this.store.set(this.key('scene'), scene)
         await this.publish({ ms: [JSON.stringify({ t: 'scene', scene })] })
+        break
+      }
+      case 'mode': {
+        const state = resolveMode(msg)
+        if (sameMode(state, await this.storedMode())) break
+        await this.store.set(this.key('mode'), state)
+        await this.publish({ c: 'mode', state })
         break
       }
       case 'result':
@@ -441,6 +493,10 @@ class CursorsRoom extends Room {
         }
         this.schedule()
         this.toPhones({ t: 'reset' })
+        return
+      case 'mode':
+        this.modeState = envelope.state
+        this.toPhones({ t: 'mode', ...envelope.state })
         return
       case 'clear':
         for (const { conns } of this.phones.values()) {
@@ -550,6 +606,31 @@ function sameNames (a: Names, b: Names) {
     && a.adjectives.every((name, i) => name === b.adjectives[i])
     && a.nouns.length === b.nouns.length
     && a.nouns.every((name, i) => name === b.nouns[i])
+}
+
+function takeReactToken (local: LocalCursor, now = Date.now()) {
+  local.reactTokens = Math.min(REACT_BURST, local.reactTokens + (now - local.reactRefilled) * REACT_PER_MS)
+  local.reactRefilled = now
+  if (local.reactTokens < 1) return false
+  local.reactTokens--
+  return true
+}
+
+function resolveMode (input: { mode?: unknown, emojis?: unknown }): ModeState {
+  const emojis = Array.isArray(input.emojis)
+    ? [...new Set(input.emojis
+        .filter((entry): entry is string => typeof entry === 'string')
+        .map(entry => entry.trim())
+        .filter(entry => entry && [...entry].length <= 8))].slice(0, 12)
+    : []
+  return {
+    mode: MODES.includes(input.mode as Mode) ? input.mode as Mode : 'cursor',
+    emojis: emojis.length ? emojis : [...DEFAULT_EMOJIS],
+  }
+}
+
+function sameMode (a: ModeState, b: ModeState) {
+  return a.mode === b.mode && a.emojis.length === b.emojis.length && a.emojis.every((emoji, i) => emoji === b.emojis[i])
 }
 
 function sanitiseScene (scene: unknown): Scene | null {
