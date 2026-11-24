@@ -2,7 +2,7 @@ import { useRuntimeConfig } from 'nuxt/server'
 
 import { getValidYouTubeAccessToken } from '../youtube/auth'
 
-export interface YouTubeMetadata {
+interface YouTubeMetadata {
   title: string
   description: string
   hashtags: string[]
@@ -10,7 +10,7 @@ export interface YouTubeMetadata {
 
 // Title is the (truncated) question; hashtags blend a baseline set with
 // topic-specific tags matched against a small keyword list.
-export function generateVideoMetadata (question: string, answer: string): YouTubeMetadata {
+function generateVideoMetadata (question: string, answer: string): YouTubeMetadata {
   const title = question.length > 47 ? question.slice(0, 47) + '…' : question
 
   const contentText = `${question} ${answer}`.toLowerCase()

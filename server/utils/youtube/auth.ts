@@ -13,7 +13,7 @@ interface YouTubeCredentials {
   refreshToken: string
 }
 
-export async function refreshYouTubeAccessToken (credentials: YouTubeCredentials): Promise<string> {
+async function refreshYouTubeAccessToken (credentials: YouTubeCredentials): Promise<string> {
   const tokenUrl = 'https://oauth2.googleapis.com/token'
 
   const body = new URLSearchParams({

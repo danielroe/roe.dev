@@ -69,7 +69,7 @@ interface VideoEncoderConfig {
   keyFrameEvery?: number
 }
 
-export function isWebCodecsSupported (): boolean {
+function isWebCodecsSupported (): boolean {
   return typeof window !== 'undefined'
     && 'VideoEncoder' in window
     && 'VideoFrame' in window

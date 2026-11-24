@@ -36,6 +36,9 @@ jobs:
       - name: Lint project
         run: pnpm lint
 
+      - name: Lint dependencies
+        run: pnpm lint:deps
+
       - name: Type check
         run: pnpm test:types
 

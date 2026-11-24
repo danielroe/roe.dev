@@ -17,7 +17,7 @@ import { collections } from '#shared/collections'
 
 const REDIRECT_PATH = '/api/admin/auth/callback'
 
-export const OAUTH_SCOPES = scopesFor({ collections })
+const OAUTH_SCOPES = scopesFor({ collections })
 
 // `airspace/oauth` re-exports the store interfaces but not the values they hold.
 type NodeSavedSession = NonNullable<Awaited<ReturnType<NodeSavedSessionStore['get']>>>

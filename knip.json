@@ -1,0 +1,29 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "content.config.ts",
+    "lexicons.ts"
+  ],
+  "ignore": [
+    "shared/lex/**"
+  ],
+  "ignoreDependencies": [
+    "@iconify-json/ri",
+    "@iconify-json/svg-spinners",
+    "@iconify-json/tabler",
+    "@nuxt/devtools",
+    "bsky-runtime-discovery-server.mjs",
+    "nuxt-security",
+    "postcss-nesting",
+    "rollup-plugin-node-polyfills",
+    "scule"
+  ],
+  "ignoreUnresolved": [
+    "#content-manifest"
+  ],
+  "ignoreIssues": {
+    "content.config.ts": [
+      "duplicates"
+    ]
+  }
+}

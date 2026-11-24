@@ -9,18 +9,18 @@ export interface BlueskyFacetFeature {
   tag?: string
 }
 
-export interface BlueskyFacet {
+interface BlueskyFacet {
   index: { byteStart: number, byteEnd: number }
   features: BlueskyFacetFeature[]
 }
 
-export interface BlueskyPostRecord {
+interface BlueskyPostRecord {
   createdAt: string
   text?: string
   facets?: BlueskyFacet[]
 }
 
-export interface BlueskyEmbed {
+interface BlueskyEmbed {
   external?: { uri?: string }
 }
 
@@ -40,7 +40,7 @@ export interface BlueskyFeedResponse {
   cursor?: string
 }
 
-export function extractLinksFromPost (post: BlueskyFeedPost): string[] {
+function extractLinksFromPost (post: BlueskyFeedPost): string[] {
   const links: string[] = []
 
   if (post.record.facets) {
@@ -72,5 +72,5 @@ export function atUriToWebUrl (atUri: string): string | null {
   return `https://bsky.app/profile/${did}/post/${rkey}`
 }
 
-export type { RichtextSegment, Facet } from '@atcute/bluesky-richtext-segmenter'
+export type { Facet } from '@atcute/bluesky-richtext-segmenter'
 export { segmentize } from '@atcute/bluesky-richtext-segmenter'

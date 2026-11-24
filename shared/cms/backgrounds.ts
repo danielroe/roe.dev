@@ -154,7 +154,7 @@ export function parseGradient (spec: string | undefined): ParsedGradient | undef
   }
 }
 
-export interface EmojiBackgroundOptions {
+interface EmojiBackgroundOptions {
   /** Emoji to scatter. Each tile picks from these at random. */
   emojis: string[]
   /** CSS background painted beneath the emoji layer. */
@@ -195,7 +195,7 @@ function seededRandom (seed: number) {
  * CSS property bag. The data URI is percent-encoded rather than base64 because
  * `btoa` cannot handle the astral-plane codepoints emoji live in.
  */
-export function createEmojiBackground (options: EmojiBackgroundOptions): Record<string, string> {
+function createEmojiBackground (options: EmojiBackgroundOptions): Record<string, string> {
   const {
     emojis,
     base,
@@ -321,7 +321,7 @@ export const CUSTOM_EMOJI_PREFIX = 'emoji:'
 const GRADIENT_SEPARATOR = '|'
 
 /** Splits a string into grapheme clusters, so multi-codepoint emoji survive intact. */
-export function parseEmojiList (input: string): string[] {
+function parseEmojiList (input: string): string[] {
   const trimmed = input.trim()
   if (!trimmed) return []
   const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' })

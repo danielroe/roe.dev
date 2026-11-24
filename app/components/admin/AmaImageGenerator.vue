@@ -6,7 +6,7 @@ import { ref } from 'vue'
 
 // The blob is held locally until publish time (unreferenced PDS blobs
 // get GC'd, so we wait until the record write that anchors it).
-export interface GeneratedImage {
+interface GeneratedImage {
   blob: Blob
   width: number
   height: number

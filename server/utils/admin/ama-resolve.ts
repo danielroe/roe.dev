@@ -11,7 +11,7 @@ import type { EntityLookup } from './ama-mentions'
 import type { ResolvedPost } from './ama-publish'
 import type { EntityRecord } from '#shared/cms/records'
 
-export const FOOTER = '\n\nroe.dev/ama\n\n#ama'
+const FOOTER = '\n\nroe.dev/ama\n\n#ama'
 
 export interface AmaPostInput {
   text: string

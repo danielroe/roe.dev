@@ -2,7 +2,7 @@ import { belongsTo, defineCollections } from 'airspace'
 
 import lexicons from '../lexicons.ts'
 
-export const {
+const {
   ama,
   entity: entities,
   invite: invites,
