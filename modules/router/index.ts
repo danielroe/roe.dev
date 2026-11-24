@@ -44,12 +44,6 @@ export default defineNuxtModule({
       priority: 20,
     })
 
-    addImports({
-      name: 'useRoute',
-      from: resolver.resolve('./runtime/route-composables'),
-      priority: 20,
-    })
-
     addPlugin(resolver.resolve('./runtime/link-navigation.client'))
 
     addComponent({

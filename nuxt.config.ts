@@ -286,22 +286,6 @@ export default defineNuxtConfig({
         polyfill: false,
       },
     },
-    $client: {
-      build: {
-        rollupOptions: {
-          output: {
-            codeSplitting: {
-              groups: [
-                {
-                  name: 'shared',
-                  tags: ['$initial'],
-                },
-              ],
-            },
-          },
-        },
-      },
-    },
     optimizeDeps: {
       include: [
         '@formkit/drag-and-drop/vue',

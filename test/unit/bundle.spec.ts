@@ -63,7 +63,7 @@ describe('project sizes', () => {
 
     expect
       .soft(roundToKilobytes(stats.client.totalBytes))
-      .toMatchInlineSnapshot(`"286k"`)
+      .toMatchInlineSnapshot(`"296k"`)
     expect.soft(stats.client.files.map(f => f.replace(/\..*\.js/, '.js')).sort())
       .toMatchInlineSnapshot(`
         [
@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2510k"`)
+      .toMatchInlineSnapshot(`"2910k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"14400k"`)
+      .toMatchInlineSnapshot(`"12500k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -120,33 +120,24 @@ describe('project sizes', () => {
         "@atproto/oauth-client-node",
         "@atproto/oauth-types",
         "@atproto/syntax",
-        "@babel/parser",
         "@bsky/sdk",
         "@formkit/drag-and-drop",
         "@img/colour",
         "@takumi-rs/core",
         "@takumi-rs/helpers",
         "@upstash/redis",
-        "@vue/compiler-core",
-        "@vue/compiler-core/node_modules/entities",
-        "@vue/compiler-core/node_modules/entities/dist/commonjs",
-        "@vue/compiler-dom",
-        "@vue/compiler-ssr",
         "@vue/reactivity",
         "@vue/runtime-core",
         "@vue/runtime-dom",
         "@vue/server-renderer",
         "@vue/shared",
         "airspace",
-        "airspace/node_modules/image-meta",
         "comark",
-        "comark/node_modules/entities",
         "consola",
         "core-js",
         "detect-libc",
         "devalue",
         "entities",
-        "estree-walker",
         "events-to-async",
         "events-to-async/module",
         "feed",
@@ -170,7 +161,6 @@ describe('project sizes', () => {
         "sax",
         "semver",
         "sharp",
-        "source-map-js",
         "srvx",
         "ts-custom-error",
         "ufo",
