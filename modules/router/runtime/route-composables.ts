@@ -1,2 +1,2 @@
-/*! @__NO_SIDE_EFFECTS__ */
+/* @__NO_SIDE_EFFECTS__ */
 export const definePageMeta = (_args: any) => {}
