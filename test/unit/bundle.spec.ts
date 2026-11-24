@@ -77,7 +77,7 @@ describe('project sizes', () => {
     stats.server = await analyzeSizes(['**/*.mjs', '!node_modules'], serverDir)
     expect
       .soft(roundToKilobytes(stats.server.totalBytes, 10))
-      .toMatchInlineSnapshot(`"2910k"`)
+      .toMatchInlineSnapshot(`"2960k"`)
 
     const modules = await analyzeSizes('node_modules/**/*', serverDir)
     const portableModules = await analyzeSizes(
@@ -86,7 +86,7 @@ describe('project sizes', () => {
     )
     expect
       .soft(roundToKilobytes(portableModules.totalBytes, 10))
-      .toMatchInlineSnapshot(`"12500k"`)
+      .toMatchInlineSnapshot(`"13040k"`)
 
     const packages = modules.files
       .filter(m => m.endsWith('package.json') && !NATIVE_BINARY_RE.test(m))
@@ -111,15 +111,19 @@ describe('project sizes', () => {
         "@atproto/jwk-jose",
         "@atproto/jwk-webcrypto",
         "@atproto/lex",
+        "@atproto/lex-cbor",
         "@atproto/lex-client",
         "@atproto/lex-data",
         "@atproto/lex-json",
         "@atproto/lex-password-session",
+        "@atproto/lex-rpc",
         "@atproto/lex-schema",
         "@atproto/oauth-client",
         "@atproto/oauth-client-node",
+        "@atproto/oauth-resolver",
         "@atproto/oauth-types",
         "@atproto/syntax",
+        "@atproto/ws-client",
         "@bsky/sdk",
         "@formkit/drag-and-drop",
         "@img/colour",
@@ -132,12 +136,12 @@ describe('project sizes', () => {
         "@vue/server-renderer",
         "@vue/shared",
         "airspace",
+        "cborg",
         "comark",
         "consola",
         "core-js",
         "detect-libc",
         "devalue",
-        "entities",
         "events-to-async",
         "events-to-async/module",
         "feed",
@@ -149,14 +153,12 @@ describe('project sizes', () => {
         "iso-datestring-validator",
         "jose",
         "jose/dist/node/esm",
-        "js-yaml",
         "lru-cache",
         "lru-cache/dist/esm",
         "mediabunny",
         "modern-screenshot",
         "multiformats",
         "nostics",
-        "object-identity",
         "partysocket",
         "sax",
         "semver",
@@ -175,6 +177,7 @@ describe('project sizes', () => {
         "unicode-segmenter",
         "vue",
         "vue-bundle-renderer",
+        "ws",
         "xml-js",
         "zod",
       ]
