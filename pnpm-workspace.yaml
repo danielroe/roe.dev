@@ -25,8 +25,6 @@ minimumReleaseAgeExclude:
   - '@nuxt/nitro-v3-server@4.7.0'
 
 overrides:
-  # comark-content@0.4.0 still pins ^0.6.2
-  comark: 0.9.2
   # airspace and @atproto/lex each pull their own copy of these; without the
   # overrides the server bundle ships both.
   '@atproto/lex-client': 0.6.1
