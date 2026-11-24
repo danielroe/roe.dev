@@ -338,6 +338,17 @@ export default defineNuxtConfig({
       await mkdir(dirname(target), { recursive: true })
       await writeFile(target, JSON.stringify(manifest), 'utf8')
     },
+    // TODO: remove once `@nuxt/fonts` stops reporting CSS-relative URLs (`./fonts/x.woff2`)
+    // from its `generateBundle` pass, which `nuxt-og-image` fetches from the site root.
+    'fonts:resolved' (font) {
+      const toPublicURL = (url: string) => url.startsWith('./') ? '/_nuxt/' + url.slice(2) : url
+      for (const file of font.files) file.url = toPublicURL(file.url)
+      for (const face of font.fonts) {
+        for (const source of face.src) {
+          if ('url' in source) source.url = toPublicURL(source.url)
+        }
+      }
+    },
   },
 
   eslint: {
@@ -348,7 +359,7 @@ export default defineNuxtConfig({
 
   fonts: {
     families: [
-      { name: 'Barlow', preload: true },
+      { name: 'Barlow', weights: [400, 500, 700], preload: true },
     ],
   },
 
