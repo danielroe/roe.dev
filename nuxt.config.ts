@@ -37,15 +37,10 @@ const apiSwrRules: Record<string, { swr: number }> = {
 }
 
 /**
- * The runtime config values that are required in production (see `runtimeConfig`
- * below). Development and tests do not have the real secrets, so they supply
- * empty placeholders rather than failing to start.
+ * A secret a production deployment must set. Vercel previews, CI and local
+ * builds have no real value for it, so there it defaults to empty.
  */
-const requiredConfigPlaceholders = {
-  atproto: { password: '' },
-  twitch: { clientId: '', clientSecret: '' },
-  github: { token: '', clientSecret: '', inviteToken: '' },
-}
+const productionSecret = () => process.env.VERCEL_ENV === 'production' ? z.string() : z.string().default('')
 
 export default defineNuxtConfig({
   modules: [
@@ -80,7 +75,6 @@ export default defineNuxtConfig({
       admin: {
         baseUrl: 'http://127.0.0.1:3000',
       },
-      ...requiredConfigPlaceholders,
     },
     devServer: {
       host: '127.0.0.1',
@@ -104,7 +98,6 @@ export default defineNuxtConfig({
         })
       },
     ],
-    runtimeConfig: requiredConfigPlaceholders,
     routeRules: renderedSwrRules,
     experimental: {
       componentIslands: true,
@@ -140,7 +133,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     atproto: {
-      password: z.string(),
+      password: productionSecret(),
       did: '',
       handle: '',
     },
@@ -182,19 +175,19 @@ export default defineNuxtConfig({
     // Location API key for secure updates
     locationApiKey: '',
     twitch: {
-      clientId: z.string(),
-      clientSecret: z.string(),
+      clientId: productionSecret(),
+      clientSecret: productionSecret(),
     },
     github: {
       // my GH ID
       id: '28706372',
       // fetching GH repos in build + sponsors when deployed
-      token: z.string(),
+      token: productionSecret(),
       // token used to update GitHub status
       profileToken: '',
       // oauth flow
-      clientSecret: z.string(),
-      inviteToken: z.string(),
+      clientSecret: productionSecret(),
+      inviteToken: productionSecret(),
     },
     public: {
       githubClientId: '',
