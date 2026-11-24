@@ -1,5 +1,6 @@
-import { addServerHandler, createResolver, defineNuxtModule, extendRouteRules, useNuxt } from 'nuxt/kit'
+import { addServerHandler, createResolver, defineNuxtModule, extendRouteRules, updateRuntimeConfig, useNuxt } from 'nuxt/kit'
 import { defu } from 'defu'
+import { z } from 'zod'
 
 const networks = {
   bluesky: 'bluesky',
@@ -12,7 +13,6 @@ type Network = keyof typeof networks
 type NetworkOptions = {
   bluesky?: {
     identifier: string
-    password?: string
   }
   mastodon?: {
     identifier: string
@@ -34,13 +34,21 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
 
-    if (options.networks.bluesky) {
-      options.networks.bluesky.password ||= ''
-    }
-
-    nuxt.options.runtimeConfig.social = {
-      networks: options.networks as any,
-    }
+    updateRuntimeConfig({
+      social: z.object({
+        networks: z.object({
+          bluesky: z.object({
+            identifier: z.string(),
+          }),
+          mastodon: z.object({
+            identifier: z.string(),
+          }),
+          linkedin: z.object({
+            identifier: z.string(),
+          }),
+        }),
+      }).default({ networks: options.networks as Required<NetworkOptions> }),
+    })
 
     // Prevent all the extra stuff `masto` will add
     nuxt.options.alias['node-fetch'] = 'node-fetch-native'

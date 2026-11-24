@@ -7,6 +7,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { extendViteConfig } from 'nuxt/kit'
 import { isTest } from 'std-env'
 import type { HmrOptions } from 'vite'
+import { z } from 'zod'
 import { pageMeta } from './modules/shared/page-meta.ts'
 
 /**
@@ -33,6 +34,17 @@ const apiSwrRules: Record<string, { swr: number }> = {
   '/api/current-location': { swr: 60 * 5 },
   '/api/streams': { swr: 60 * 60 },
   '/api/discover-bluesky-post': { swr: 60 * 60 },
+}
+
+/**
+ * The runtime config values that are required in production (see `runtimeConfig`
+ * below). Development and tests do not have the real secrets, so they supply
+ * empty placeholders rather than failing to start.
+ */
+const requiredConfigPlaceholders = {
+  atproto: { password: '' },
+  twitch: { clientId: '', clientSecret: '' },
+  github: { token: '', clientSecret: '', inviteToken: '' },
 }
 
 export default defineNuxtConfig({
@@ -68,6 +80,7 @@ export default defineNuxtConfig({
       admin: {
         baseUrl: 'http://127.0.0.1:3000',
       },
+      ...requiredConfigPlaceholders,
     },
     devServer: {
       host: '127.0.0.1',
@@ -91,6 +104,7 @@ export default defineNuxtConfig({
         })
       },
     ],
+    runtimeConfig: requiredConfigPlaceholders,
     routeRules: renderedSwrRules,
     experimental: {
       componentIslands: true,
@@ -126,7 +140,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     atproto: {
-      password: '',
+      password: z.string(),
       did: '',
       handle: '',
     },
@@ -167,21 +181,20 @@ export default defineNuxtConfig({
     },
     // Location API key for secure updates
     locationApiKey: '',
-    bigdataApiKey: '',
     twitch: {
-      clientId: '',
-      clientSecret: '',
+      clientId: z.string(),
+      clientSecret: z.string(),
     },
     github: {
       // my GH ID
       id: '28706372',
       // fetching GH repos in build + sponsors when deployed
-      token: '',
+      token: z.string(),
       // token used to update GitHub status
       profileToken: '',
       // oauth flow
-      clientSecret: '',
-      inviteToken: '',
+      clientSecret: z.string(),
+      inviteToken: z.string(),
     },
     public: {
       githubClientId: '',
