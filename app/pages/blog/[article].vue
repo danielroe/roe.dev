@@ -65,7 +65,7 @@ import { needsRuntimeDiscovery, pendingDiscovery } from '#build/bsky-runtime-dis
 
 const standardSiteDid = useRuntimeConfig().public.atproto?.did || null
 
-const route = useRoute('blog-article')
+const route = useRoute()
 const slug = route.params.article
 if (!slug) navigateTo('/blog')
 
