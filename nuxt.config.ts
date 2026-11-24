@@ -45,7 +45,7 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@comark/nuxt',
+    '@comark/vue',
     '@nuxtjs/plausible',
     '@nuxt/fonts',
     '@nuxt/scripts',
