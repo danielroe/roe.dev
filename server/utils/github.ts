@@ -15,7 +15,7 @@ export function createGitHub (token: string): GitHubProvider {
   return github({
     auth: { type: 'token', token },
     userAgent: 'roe (https://roe.dev, 0.1)',
-  }).create()
+  })
 }
 
 export async function downloadSlides (gh: GitHubProvider, tag: string): Promise<Uint8Array | undefined> {

@@ -277,7 +277,7 @@ importers:
         version: 0.9.2(shiki@4.6.0)
       comark-content:
         specifier: 0.6.2
-        version: 0.6.2(forges@https://pkg.pr.new/danielroe/forges@a5fbeaf)(shiki@4.6.0)(unstorage@1.17.6(@upstash/redis@1.41.0)(@vercel/blob@2.9.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2)))
+        version: 0.6.2(forges@0.4.1)(shiki@4.6.0)(unstorage@1.17.6(@upstash/redis@1.41.0)(@vercel/blob@2.9.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2)))
       crossws:
         specifier: 0.3.5
         version: 0.3.5
@@ -288,8 +288,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       forges:
-        specifier: https://pkg.pr.new/danielroe/forges@a5fbeaf
-        version: https://pkg.pr.new/danielroe/forges@a5fbeaf
+        specifier: 0.4.1
+        version: 0.4.1
       gsap:
         specifier: ^3.15.0
         version: 3.15.1
@@ -3911,7 +3911,6 @@ packages:
 
   comark-content@0.6.2:
     resolution: {integrity: sha512-LqWmTQYHCHwlWolCVad0ErzBWNiJxQdWRC8m5+z/htOB6YrVpuIScCicoMh3Yk9tPnNWQyVQd5JL+sm9acqUFA==}
-    version: 0.6.2
     hasBin: true
     peerDependencies:
       forges: ^0.3.0
@@ -4676,9 +4675,8 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
-  forges@https://pkg.pr.new/danielroe/forges@a5fbeaf:
-    resolution: {integrity: sha512-82APilw1DEbm7ozCi2lzkcucXz260cwXB4Nr7a0PdXnKDNrBpMNiPtL6ecyhbB+BjQzBOg66keVBjgMUxsKiyg==, tarball: https://pkg.pr.new/danielroe/forges@a5fbeaf}
-    version: 0.1.0
+  forges@0.4.1:
+    resolution: {integrity: sha512-FFvFo0gSAGpR/MWs/Rr7p0a4sp+quMk2Ysbe4sbCbS7FVtTjzyjWynMIVV43V/AlLbQRZmynnaiOHF/7yEM23w==}
     engines: {node: '>=22.18'}
 
   formdata-polyfill@4.0.10:
@@ -11659,7 +11657,7 @@ snapshots:
 
   colorette@2.0.20: {}
 
-  comark-content@0.6.2(forges@https://pkg.pr.new/danielroe/forges@a5fbeaf)(shiki@4.6.0)(unstorage@1.17.6(@upstash/redis@1.41.0)(@vercel/blob@2.9.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2))):
+  comark-content@0.6.2(forges@0.4.1)(shiki@4.6.0)(unstorage@1.17.6(@upstash/redis@1.41.0)(@vercel/blob@2.9.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2))):
     dependencies:
       comark: 0.9.2(shiki@4.6.0)
       hookable: 6.1.2
@@ -11667,7 +11665,7 @@ snapshots:
       picomatch: 4.0.7
       ufo: 1.6.4
     optionalDependencies:
-      forges: https://pkg.pr.new/danielroe/forges@a5fbeaf
+      forges: 0.4.1
       unstorage: 1.17.6(@upstash/redis@1.41.0)(@vercel/blob@2.9.0)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2))
     transitivePeerDependencies:
       - beautiful-mermaid
@@ -12434,7 +12432,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  forges@https://pkg.pr.new/danielroe/forges@a5fbeaf: {}
+  forges@0.4.1: {}
 
   formdata-polyfill@4.0.10:
     dependencies:

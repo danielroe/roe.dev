@@ -9,7 +9,7 @@ const API = 'https://api.github.com'
 
 function createProvider (responses: Record<string, Fixture['response']>) {
   const { fetch } = fixtureFetch([], responses)
-  return github({ auth: { type: 'token', token: 'test' }, fetch }).create()
+  return github({ auth: { type: 'token', token: 'test' }, fetch })
 }
 
 const viewer = { status: 200, body: { login: 'octocat', id: 583231, node_id: 'MDQ6VXNlcjU4MzIzMQ==', type: 'User' } }
