@@ -42,8 +42,11 @@ defineProps({
         </div>
         <div class="font-medium mx-8 flex flex-row gap-4">
           <template v-for="(tag, index) in tags">
-            <span v-if="index > 0">•</span>
-            <span>{{ tag }}</span>
+            <span
+              v-if="index > 0"
+              class="block"
+            >•</span>
+            <span class="block">{{ tag }}</span>
           </template>
         </div>
       </div>
