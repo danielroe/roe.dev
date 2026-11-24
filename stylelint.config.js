@@ -10,12 +10,6 @@ export default {
         ignoreAtRules: ['apply'],
       },
     ],
-    'function-no-unknown': [
-      true,
-      {
-        ignoreFunctions: ['theme'],
-      },
-    ],
     'at-rule-no-unknown': [
       true,
       {

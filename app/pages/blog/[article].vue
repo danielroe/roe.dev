@@ -205,8 +205,7 @@ header dl dd:first-of-type {
   pre {
     @apply font-code text-sm my-0;
 
-    /* stylelint-disable-next-line declaration-property-value-no-unknown */
-    background-color: theme('colors.gray.900') !important;
+    background-color: var(--gray-900) !important;
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 1rem 50vw !important;
@@ -292,9 +291,7 @@ header dl dd:first-of-type {
     @apply mt-6 py-1 uppercase text-xs text-gray-600;
 
     letter-spacing: 0.15rem;
-
-    /* stylelint-disable-next-line declaration-property-value-no-unknown */
-    background-color: theme('colors.gray.900');
+    background-color: var(--gray-900);
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 1rem 50vw;
