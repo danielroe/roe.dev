@@ -8,7 +8,7 @@
  */
 import { gsap } from 'gsap'
 
-import { ANIMATION_CONFIG } from './video-animation-config'
+import { ANIMATION_CONFIG } from './animation-config'
 
 export interface GSAPTimeline {
   timeline: gsap.core.Timeline

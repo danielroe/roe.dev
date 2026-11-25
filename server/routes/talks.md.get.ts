@@ -1,7 +1,7 @@
 import { defineEventHandler } from 'nuxt/server'
 
 import { getPastTalks } from '../utils/cms/talks'
-import { pageMeta } from '#md-page-meta.json'
+import { pageMeta } from '#md-page-meta'
 
 export default defineEventHandler(async event => {
   if (import.meta.test) {

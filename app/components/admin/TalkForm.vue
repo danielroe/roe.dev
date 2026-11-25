@@ -96,7 +96,7 @@ async function onImageChange (e: Event) {
 
   const buf = new Uint8Array(await file.arrayBuffer())
   try {
-    const uploaded = await $fetch<{
+    const uploaded = await $adminFetch<{
       blob: NonNullable<NonNullable<TalkValue['image']>['image']>
       aspectRatio?: { width: number, height: number }
     }>('/api/admin/blobs', {

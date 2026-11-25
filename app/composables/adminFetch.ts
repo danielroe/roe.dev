@@ -13,6 +13,13 @@ type AdminAsyncData<T> = AsyncData<T, NuxtError<unknown> | undefined> & { loadin
 
 const cache = new Map<string, unknown>()
 
+/** `$fetch` for `/api/admin/*` that sends the browser to `/login` on a 401 or 403. */
+export const $adminFetch = $fetch.create({
+  onResponseError ({ response }) {
+    if (isUnauthorised(response)) redirectToLogin()
+  },
+})
+
 /**
  * `useFetch` wrapper for the /admin surface. Requests are client-only
  * (`server: false`): the admin session lives in an httpOnly cookie the

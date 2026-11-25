@@ -31,7 +31,7 @@ const { data, loading } = useAdminFetch<CategoryEntry>(`/api/admin/uses-categori
 
 async function save (value: UsesCategoryValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/uses-categories/${rkey.value}`, { method: 'PUT', body: value })
+  await $adminFetch(`/api/admin/uses-categories/${rkey.value}`, { method: 'PUT', body: value })
   await navigateTo('/admin/uses')
 }
 </script>

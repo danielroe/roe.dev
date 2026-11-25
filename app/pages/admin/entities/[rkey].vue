@@ -29,7 +29,7 @@ const { data, loading } = useAdminFetch<EntityEntry>(`/api/admin/entities/${rkey
 
 async function save (value: EntityValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/entities/${rkey.value}`, { method: 'PUT', body: value })
+  await $adminFetch(`/api/admin/entities/${rkey.value}`, { method: 'PUT', body: value })
   await navigateTo('/admin/entities')
 }
 </script>

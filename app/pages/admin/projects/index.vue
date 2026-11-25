@@ -50,7 +50,7 @@ async function removeCategory (rkey: string, title: string) {
   const previous = categoriesData.value
   categoriesData.value = categoriesData.value.filter(c => c.rkey !== rkey)
   try {
-    await $fetch(`/api/admin/project-categories/${rkey}`, { method: 'DELETE' })
+    await $adminFetch(`/api/admin/project-categories/${rkey}`, { method: 'DELETE' })
     refreshCategories()
   }
   catch (error) {
@@ -64,7 +64,7 @@ async function removeProject (rkey: string, name: string) {
   const previous = projectsData.value
   projectsData.value = projectsData.value.filter(i => i.rkey !== rkey)
   try {
-    await $fetch(`/api/admin/projects/${rkey}`, { method: 'DELETE' })
+    await $adminFetch(`/api/admin/projects/${rkey}`, { method: 'DELETE' })
     refreshProjects()
   }
   catch (error) {
@@ -87,7 +87,7 @@ async function persistProjectOrder (items: ProjectEntry[]) {
   await Promise.all(items.map((item, i) => {
     const value = { ...item.value, order: (i + 1) * 10 }
     delete (value as Record<string, unknown>).$type
-    return $fetch(`/api/admin/projects/${item.rkey}`, { method: 'PUT', body: value })
+    return $adminFetch(`/api/admin/projects/${item.rkey}`, { method: 'PUT', body: value })
   }))
   refreshProjects()
 }

@@ -83,7 +83,7 @@ async function putTalk (talk: TalkEntry, mutate: (value: TalkEntry['value']) => 
     t.rkey === talk.rkey ? { ...t, value: { ...value, $type: talk.value.$type } } : t,
   )
   try {
-    await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'PUT', body: value })
+    await $adminFetch(`/api/admin/talks/${talk.rkey}`, { method: 'PUT', body: value })
     refreshTalks()
   }
   catch (error) {
@@ -95,7 +95,7 @@ async function putTalk (talk: TalkEntry, mutate: (value: TalkEntry['value']) => 
 async function makeGroupFromTalk (talk: TalkEntry) {
   if (!talk.value.title) return
 
-  const created = await $fetch<{ rkey: string, uri: string, cid: string }>(
+  const created = await $adminFetch<{ rkey: string, uri: string, cid: string }>(
     '/api/admin/talk-groups',
     {
       method: 'POST',
@@ -143,7 +143,7 @@ async function deleteTalk (talk: TalkEntry) {
   const previous = talksData.value
   talksData.value = talksData.value.filter(t => t.rkey !== talk.rkey)
   try {
-    await $fetch(`/api/admin/talks/${talk.rkey}`, { method: 'DELETE' })
+    await $adminFetch(`/api/admin/talks/${talk.rkey}`, { method: 'DELETE' })
     refreshTalks()
   }
   catch (error) {
@@ -176,9 +176,9 @@ async function deleteGroup (group: TalkGroupEntry) {
       const value = { ...child.value }
       delete value.group
       delete (value as Record<string, unknown>).$type
-      await $fetch(`/api/admin/talks/${child.rkey}`, { method: 'PUT', body: value })
+      await $adminFetch(`/api/admin/talks/${child.rkey}`, { method: 'PUT', body: value })
     }
-    await $fetch(`/api/admin/talk-groups/${group.rkey}`, { method: 'DELETE' })
+    await $adminFetch(`/api/admin/talk-groups/${group.rkey}`, { method: 'DELETE' })
     refreshTalks()
     refreshGroups()
   }

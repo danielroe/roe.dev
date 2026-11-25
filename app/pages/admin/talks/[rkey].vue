@@ -32,7 +32,7 @@ const { data, loading } = useAdminFetch<TalkEntry>(`/api/admin/talks/${rkey.valu
 
 async function save (value: TalkValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/talks/${rkey.value}`, {
+  await $adminFetch(`/api/admin/talks/${rkey.value}`, {
     method: 'PUT',
     body: value,
   })

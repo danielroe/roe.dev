@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'nuxt/server'
 
-import { pageMeta } from '#md-page-meta.json'
+import { pageMeta } from '#md-page-meta'
 
 import { getProjects } from '../utils/cms/projects'
 
