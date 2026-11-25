@@ -31,7 +31,7 @@ const { data, loading } = useAdminFetch<TalkGroupEntry>(`/api/admin/talk-groups/
 
 async function save (value: TalkGroupValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/talk-groups/${rkey.value}`, { method: 'PUT', body: value })
+  await $adminFetch(`/api/admin/talk-groups/${rkey.value}`, { method: 'PUT', body: value })
   await navigateTo('/admin/talks')
 }
 </script>

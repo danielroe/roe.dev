@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { gsap } from 'gsap'
-import { calculateVideoDuration } from '#shared/cms/video-animation-config'
-import { createVideo } from '#shared/cms/video-recorder'
+import { calculateVideoDuration } from '~/utils/ama-video/animation-config'
+import { createVideo } from '~/utils/ama-video/recorder'
 import {
   createPreviewAnimation,
   stopAnimations,
   type GSAPTimeline,
-} from '#shared/cms/video-gsap-animations'
+} from '~/utils/ama-video/gsap-animations'
 import { getBackgroundStyle, getForegroundStyle } from '#shared/cms/backgrounds'
 
 interface PendingVideo {

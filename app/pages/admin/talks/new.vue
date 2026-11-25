@@ -7,7 +7,7 @@ useHead({ title: 'New talk - admin - Daniel Roe' })
 type TalkValue = Omit<TalkRecord, '$type'>
 
 async function save (value: TalkValue) {
-  const res = await $fetch<{ rkey: string }>('/api/admin/talks', {
+  const res = await $adminFetch<{ rkey: string }>('/api/admin/talks', {
     method: 'POST',
     body: value,
   })

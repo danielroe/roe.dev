@@ -6,8 +6,8 @@ import { gsap } from 'gsap'
 import { domToBlob } from 'modern-screenshot'
 import { Output, WebMOutputFormat, BufferTarget, VideoSampleSource, VideoSample } from 'mediabunny'
 
-import { ANIMATION_CONFIG, calculateVideoDuration } from './video-animation-config'
-import { createGSAPTimeline, resetCharacterStates } from './video-gsap-animations'
+import { ANIMATION_CONFIG, calculateVideoDuration } from './animation-config'
+import { createGSAPTimeline, resetCharacterStates } from './gsap-animations'
 
 interface VideoOptions {
   element: HTMLElement

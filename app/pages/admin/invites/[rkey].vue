@@ -35,7 +35,7 @@ const { data, loading } = useAdminFetch<InviteEntry>(`/api/admin/invites/${rkey.
 
 async function save (value: InviteValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/invites/${rkey.value}`, { method: 'PUT', body: value })
+  await $adminFetch(`/api/admin/invites/${rkey.value}`, { method: 'PUT', body: value })
   await navigateTo('/admin/invites')
 }
 </script>

@@ -31,7 +31,7 @@ const { data, loading } = useAdminFetch<ProjectEntry>(`/api/admin/projects/${rke
 
 async function save (value: ProjectValue) {
   if (!rkey.value) return
-  await $fetch(`/api/admin/projects/${rkey.value}`, { method: 'PUT', body: value })
+  await $adminFetch(`/api/admin/projects/${rkey.value}`, { method: 'PUT', body: value })
   await navigateTo('/admin/projects')
 }
 </script>

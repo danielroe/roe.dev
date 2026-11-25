@@ -1,7 +1,7 @@
 import { createError } from 'nuxt/server'
 import type { RequestEvent } from 'nuxt/server'
 
-import { pageMeta } from '#md-page-meta.json'
+import { pageMeta } from '#md-page-meta'
 
 function yamlEscape (str: string): string {
   return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"')

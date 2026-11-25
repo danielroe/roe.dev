@@ -187,7 +187,7 @@ async function ensureImageUploaded (): Promise<unknown> {
   const blob = pendingImage.value.blob
   uploadingPromise = (async () => {
     const buf = new Uint8Array(await blob.arrayBuffer())
-    const result = await $fetch<{ blob: unknown }>('/api/admin/blobs', {
+    const result = await $adminFetch<{ blob: unknown }>('/api/admin/blobs', {
       method: 'POST',
       body: buf,
       headers: { 'content-type': blob.type || 'image/png' },
@@ -243,7 +243,7 @@ async function saveDraft () {
   saving.value = true
   saveError.value = null
   try {
-    await $fetch(`/api/admin/ama/${props.rkey}`, { method: 'PATCH', body: await buildPayload() })
+    await $adminFetch(`/api/admin/ama/${props.rkey}`, { method: 'PATCH', body: await buildPayload() })
     savedAt.value = new Date().toISOString()
     imageRemoved.value = false
   }
@@ -270,7 +270,7 @@ async function publishToPlatform (platform: AmaPlatform, force = false) {
 
     const res = platform === 'youtubeShorts'
       ? await publishYouTube(baseBody)
-      : await $fetch<{ success: boolean, url: string }>(
+      : await $adminFetch<{ success: boolean, url: string }>(
           `/api/admin/ama/${props.rkey}/publish/${platform}`,
           { method: 'POST', body: baseBody },
         )
@@ -290,7 +290,7 @@ async function publishYouTube (baseBody: object): Promise<{ success: boolean, ur
   const form = new FormData()
   form.append('payload', new Blob([JSON.stringify({ ...baseBody, answer: plainAnswerForVideo.value })], { type: 'application/json' }))
   form.append('video', pendingVideo.value.blob, 'ama.webm')
-  return $fetch<{ success: boolean, url: string }>(
+  return $adminFetch<{ success: boolean, url: string }>(
     `/api/admin/ama/${props.rkey}/publish/youtube-shorts`,
     { method: 'POST', body: form },
   )

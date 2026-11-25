@@ -1,5 +1,4 @@
 import { mkdir, writeFile } from 'node:fs/promises'
-import { createRequire } from 'node:module'
 import { dirname } from 'node:path'
 import process from 'node:process'
 
@@ -82,11 +81,19 @@ export default defineNuxtConfig({
   },
 
   $production: {
-    modules: ['nuxt-security'],
     routeRules: {
+      '/**': {
+        headers: {
+          'referrer-policy': 'no-referrer',
+          'strict-transport-security': 'max-age=15552000; includeSubDomains',
+          'x-content-type-options': 'nosniff',
+          'x-download-options': 'noopen',
+          'x-frame-options': 'SAMEORIGIN',
+          'x-permitted-cross-domain-policies': 'none',
+          'x-xss-protection': '0',
+        },
+      },
       ...renderedSwrRules,
-      // a conference audience shares a handful of venue IPs
-      '/parties/**': { security: { rateLimiter: false } },
     },
   },
 
@@ -214,7 +221,7 @@ export default defineNuxtConfig({
     '/.well-known/webfinger/**': {
       redirect: {
         to: 'https://mastodon.roe.dev/.well-known/webfinger/**',
-        statusCode: 301,
+        status: 301,
       },
     },
   },
@@ -232,33 +239,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-09',
 
   nitro: {
-    externals: {
-      // `@atproto-labs/fetch-node` depends on undici via npm aliases
-      // (`undici_v6`, etc.), which nitro's externals tracing collapses to the
-      // real package name, breaking the aliased imports at runtime.
-      // https://github.com/nitrojs/nitro/issues/1574
-      traceAlias: Object.fromEntries(
-        ['undici_v6', 'undici_v7', 'undici_v8'].flatMap(alias => {
-          try {
-            let req = createRequire(import.meta.url)
-            for (const hop of ['@atproto/oauth-client-node', '@atproto-labs/handle-resolver-node', '@atproto-labs/fetch-node']) {
-              req = createRequire(req.resolve(hop))
-            }
-            const { version } = req(`${alias}/package.json`)
-            return [[`.nitro/undici@${version}`, alias]]
-          }
-          catch {
-            return []
-          }
-        }),
-      ),
-      inline: ['forges'],
-    },
     replace: {
-      'import.meta.test': isTest,
+      'import.meta.test': String(isTest),
     },
-    future: { nativeSWR: true },
-    experimental: { websocket: true },
+    features: { websocket: true },
     hooks: {
       'prerender:generate' (route) {
         if (route.fileName)
@@ -428,17 +412,6 @@ export default defineNuxtConfig({
   scripts: {
     defaultScriptOptions: {
       bundle: true,
-    },
-  },
-
-  security: {
-    headers: {
-      crossOriginEmbedderPolicy: false,
-      contentSecurityPolicy: {
-        'script-src-attr': ['\'self\'', '\'unsafe-inline\''],
-        'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://static.cloudflareinsights.com'],
-        'img-src': ['\'self\'', 'data:', 'https://avatars.githubusercontent.com', 'https://www.google.com', 'https://*.gstatic.com', 'https://cdn.bsky.app', 'https://npmx.social'],
-      },
     },
   },
 

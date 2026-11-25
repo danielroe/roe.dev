@@ -1,8 +1,10 @@
 import { createError, defineEventHandler } from 'nuxt/server'
 import { Feed } from 'feed'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async event => {
   if (!import.meta.dev && !import.meta.prerender) return
+
+  event.res.headers.set('content-type', 'application/xml; charset=utf-8')
 
   const feed = new Feed({
     title: 'Daniel Roe',

@@ -2,7 +2,8 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": [
     "content.config.ts",
-    "lexicons.ts"
+    "lexicons.ts",
+    "server/utils/**/*.ts"
   ],
   "ignore": [
     "shared/lex/**"
@@ -13,13 +14,15 @@
     "@iconify-json/tabler",
     "@nuxt/devtools",
     "bsky-runtime-discovery-server.mjs",
-    "nuxt-security",
+    "lru-cache",
+    "nuxt-nightly",
     "postcss-nesting",
     "rollup-plugin-node-polyfills",
     "scule"
   ],
   "ignoreUnresolved": [
-    "#content-manifest"
+    "#content-manifest",
+    "#md-page-meta"
   ],
   "ignoreIssues": {
     "content.config.ts": [

@@ -42,7 +42,7 @@ async function remove (rkey: string) {
   const previous = data.value
   data.value = data.value.filter(a => a.rkey !== rkey)
   try {
-    await $fetch(`/api/admin/ama/${rkey}`, { method: 'DELETE' })
+    await $adminFetch(`/api/admin/ama/${rkey}`, { method: 'DELETE' })
     refresh()
   }
   catch (error) {
